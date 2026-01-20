@@ -1,0 +1,27 @@
+/* Waldur Quest - Game Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0f0f23;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+canvas {
+    display: block;
+}
+
+/* Hide scrollbars */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Game font classes for KAPLAY text */
+.pixel-font {
+    font-family: 'Press Start 2P', cursive;
+}
