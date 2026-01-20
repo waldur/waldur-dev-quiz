@@ -1103,10 +1103,12 @@ k.scene('quiz', ({ skillId, level }) => {
         questionText.text = q.q;
         progressText.text = `Question ${currentQuestion + 1}/${quizQuestions.length}`;
 
-        // Shuffle options for display
+        // Shuffle options for display (Fisher-Yates shuffle)
         const shuffledOptions = q.options.map((opt, i) => ({ text: opt, originalIndex: i }));
-        // Keep track of correct answer after shuffle
-        const correctOriginalIndex = q.correct;
+        for (let i = shuffledOptions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+        }
 
         shuffledOptions.forEach((opt, i) => {
             optionButtons[i].color = COLORS.bgLight;
