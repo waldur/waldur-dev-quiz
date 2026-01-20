@@ -145,6 +145,195 @@ k.scene('menu', () => {
         k.pos(k.width() - 20, k.height() - 30),
         k.anchor('topright'),
     ]);
+
+    // Help button
+    const helpBtn = k.add([
+        k.circle(20),
+        k.color(COLORS.bgLight),
+        k.pos(k.width() - 35, 35),
+        k.anchor('center'),
+        k.area(),
+        k.outline(2, COLORS.primary),
+    ]);
+    k.add([
+        k.text('?', { size: 24, font: 'Inter' }),
+        k.color(COLORS.primary),
+        k.pos(k.width() - 35, 35),
+        k.anchor('center'),
+    ]);
+
+    helpBtn.onHover(() => helpBtn.color = COLORS.primary);
+    helpBtn.onHoverEnd(() => helpBtn.color = COLORS.bgLight);
+
+    // Help overlay state
+    let helpVisible = false;
+    let helpElements = [];
+    let helpClosing = false;
+
+    function showHelp() {
+        if (helpVisible || helpClosing) return;
+        helpVisible = true;
+
+        // Track when overlay was opened to ignore initial click
+        const openedAt = Date.now();
+
+        // Overlay background (with area to capture clicks)
+        const overlayBg = k.add([
+            k.rect(k.width(), k.height()),
+            k.color(0, 0, 0),
+            k.opacity(0.85),
+            k.pos(0, 0),
+            k.z(100),
+            k.area(),
+            'helpOverlay',
+        ]);
+        overlayBg.onClick(() => {
+            // Ignore clicks within 100ms of opening (prevents same-click close)
+            if (Date.now() - openedAt < 100) return;
+            hideHelp();
+        });
+        helpElements.push(overlayBg);
+
+        // Help panel
+        const panelWidth = 800;
+        const panelHeight = 580;
+        const panelX = k.width() / 2;
+        const panelY = k.height() / 2;
+
+        const panel = k.add([
+            k.rect(panelWidth, panelHeight, { radius: 12 }),
+            k.color(COLORS.bgLight),
+            k.pos(panelX, panelY),
+            k.anchor('center'),
+            k.outline(2, COLORS.primary),
+            k.z(101),
+            k.area(),
+            'helpOverlay',
+        ]);
+        panel.onClick(() => {}); // Prevent clicks from going through panel
+        helpElements.push(panel);
+
+        // Title
+        helpElements.push(k.add([
+            k.text('How to Play', { size: 36, font: 'Inter' }),
+            k.color(COLORS.gold),
+            k.pos(panelX, panelY - 250),
+            k.anchor('center'),
+            k.z(102),
+            'helpOverlay',
+        ]));
+
+        // Helper to add a section
+        const addSection = (icon, title, lines, x, y) => {
+            // Section header
+            helpElements.push(k.add([
+                k.text(`${icon}  ${title}`, { size: 20, font: 'Inter' }),
+                k.color(COLORS.text),
+                k.pos(x, y),
+                k.z(102),
+                'helpOverlay',
+            ]));
+            // Section content
+            lines.forEach((line, i) => {
+                helpElements.push(k.add([
+                    k.text(line, { size: 17, font: 'Inter', width: 340 }),
+                    k.color(k.rgb(180, 180, 195)),
+                    k.pos(x, y + 28 + i * 22),
+                    k.z(102),
+                    'helpOverlay',
+                ]));
+            });
+        };
+
+        const leftX = panelX - panelWidth / 2 + 40;
+        const rightX = panelX + 30;
+        const row1Y = panelY - 200;
+        const row2Y = panelY - 50;
+        const row3Y = panelY + 95;
+
+        // Left column
+        addSection('🎯', 'Goal', [
+            'Master Waldur development skills',
+            'across 5 tiers to level up.',
+        ], leftX, row1Y);
+
+        addSection('📚', 'Skill Tiers', [
+            'Literacy → Product → Foundation',
+            '→ Core → Specialization',
+        ], leftX, row2Y);
+
+        addSection('⌨️', 'Controls', [
+            'Press 1-4 to select answer',
+            'Enter or Space for next',
+        ], leftX, row3Y);
+
+        // Right column
+        addSection('📐', 'T-Shaped Developer', [
+            'Breadth: Master Literacy & Foundation',
+            'Depth: Specialize in 1-3 areas',
+            'Balance both to evolve your profile!',
+        ], rightX, row1Y);
+
+        addSection('💎', 'XP System', [
+            '+20 per correct  •  +50 for passing',
+            '+100 for perfect  •  +5 per streak',
+        ], rightX, row2Y);
+
+        addSection('🗡️', 'Your Rank', [
+            'As your T-shape grows, your rank',
+            'evolves: Dagger → Shield → Spear',
+            '→ Lance → Bident → Trident',
+        ], rightX, row3Y);
+
+        // Close button
+        const closeBtn = k.add([
+            k.rect(150, 44, { radius: 8 }),
+            k.color(COLORS.primary),
+            k.pos(panelX, panelY + 245),
+            k.anchor('center'),
+            k.area(),
+            k.z(103),
+            'helpOverlay',
+        ]);
+        helpElements.push(closeBtn);
+
+        helpElements.push(k.add([
+            k.text('Got it!', { size: 20, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(panelX, panelY + 245),
+            k.anchor('center'),
+            k.z(104),
+            'helpOverlay',
+        ]));
+
+        closeBtn.onClick(() => {
+            hideHelp();
+        });
+        closeBtn.onHover(() => closeBtn.color = k.rgb(100, 120, 200));
+        closeBtn.onHoverEnd(() => closeBtn.color = COLORS.primary);
+    }
+
+    function hideHelp() {
+        if (!helpVisible || helpClosing) return;
+        helpClosing = true;
+        helpVisible = false;
+
+        // Delay destruction to prevent click from propagating to elements below
+        setTimeout(() => {
+            helpElements.forEach(el => {
+                if (el.exists()) k.destroy(el);
+            });
+            helpElements = [];
+            helpClosing = false;
+        }, 50);
+    }
+
+    helpBtn.onClick(showHelp);
+
+    // ESC to close help
+    k.onKeyPress('escape', () => {
+        if (helpVisible) hideHelp();
+    });
 });
 
 // ============================================================================
@@ -153,6 +342,91 @@ k.scene('menu', () => {
 k.scene('skillTree', () => {
     let selectedTier = 'literacy';
     let scrollOffset = 0;
+
+    // Calculate T-shape progress
+    function calculateTShape() {
+        const literacySkills = getSkillsByTier('literacy').filter(s => hasQuestions(s.id));
+        const foundationSkills = getSkillsByTier('foundation').filter(s => hasQuestions(s.id));
+        const specSkills = getSkillsByTier('specialization').filter(s => hasQuestions(s.id));
+
+        const literacyStarted = literacySkills.filter(s => getSkillProgress(s.id).level > 0).length;
+        const foundationStarted = foundationSkills.filter(s => getSkillProgress(s.id).level > 0).length;
+        const specExpert = specSkills.filter(s => getSkillProgress(s.id).level >= 3).length;
+
+        const breadthPercent = Math.round(((literacyStarted + foundationStarted) / (literacySkills.length + foundationSkills.length)) * 100);
+        const depthCount = specExpert;
+
+        return {
+            breadthPercent,
+            depthCount,
+            literacyPercent: Math.round((literacyStarted / literacySkills.length) * 100),
+            foundationPercent: Math.round((foundationStarted / foundationSkills.length) * 100),
+            literacyStarted,
+            literacyTotal: literacySkills.length,
+            foundationStarted,
+            foundationTotal: foundationSkills.length,
+            specExpert,
+            specTotal: specSkills.length,
+        };
+    }
+
+    // Get recommended next skills
+    function getRecommendations() {
+        const recommendations = [];
+        const tShape = calculateTShape();
+
+        // Priority 1: Literacy gaps (need breadth first)
+        if (tShape.literacyPercent < 80) {
+            const literacySkills = getSkillsByTier('literacy').filter(s => hasQuestions(s.id));
+            const notStarted = literacySkills.filter(s => getSkillProgress(s.id).level === 0);
+            notStarted.slice(0, 2).forEach(s => {
+                recommendations.push({ skill: s, reason: 'Build breadth', priority: 'high' });
+            });
+        }
+
+        // Priority 2: Foundation gaps
+        if (tShape.literacyPercent >= 50 && tShape.foundationPercent < 50) {
+            const foundationSkills = getSkillsByTier('foundation').filter(s => hasQuestions(s.id));
+            const notStarted = foundationSkills.filter(s => getSkillProgress(s.id).level === 0);
+            notStarted.slice(0, 2).forEach(s => {
+                recommendations.push({ skill: s, reason: 'Strengthen foundation', priority: 'high' });
+            });
+        }
+
+        // Priority 3: Specialization (need depth for T-shape)
+        if (tShape.breadthPercent >= 40 && tShape.depthCount < 2) {
+            const specSkills = getSkillsByTier('specialization').filter(s => hasQuestions(s.id));
+            const inProgress = specSkills.filter(s => {
+                const p = getSkillProgress(s.id);
+                return p.level > 0 && p.level < 3;
+            });
+            const notStarted = specSkills.filter(s => getSkillProgress(s.id).level === 0);
+
+            inProgress.slice(0, 1).forEach(s => {
+                recommendations.push({ skill: s, reason: 'Deepen expertise', priority: 'medium' });
+            });
+            if (recommendations.length < 3) {
+                notStarted.slice(0, 1).forEach(s => {
+                    recommendations.push({ skill: s, reason: 'Start specialization', priority: 'medium' });
+                });
+            }
+        }
+
+        // Priority 4: Level up existing skills
+        if (recommendations.length < 3) {
+            const allSkills = skills.filter(s => hasQuestions(s.id));
+            const canLevelUp = allSkills.filter(s => {
+                const p = getSkillProgress(s.id);
+                const levels = getAvailableLevels(s.id);
+                return p.level > 0 && p.level < Math.max(...levels);
+            });
+            canLevelUp.slice(0, 3 - recommendations.length).forEach(s => {
+                recommendations.push({ skill: s, reason: 'Level up', priority: 'low' });
+            });
+        }
+
+        return recommendations.slice(0, 3);
+    }
 
     // Background
     k.add([
@@ -191,10 +465,169 @@ k.scene('skillTree', () => {
     ]);
     backBtn.onClick(() => k.go('menu'));
 
-    // Tier tabs
+    // === RIGHT PANEL: T-Shape Progress ===
+    const panelX = k.width() - 280;
+    const panelWidth = 260;
+
+    k.add([
+        k.rect(panelWidth, k.height() - 80),
+        k.color(k.rgb(25, 25, 50)),
+        k.pos(panelX, 70),
+        k.outline(2, COLORS.bgLight),
+    ]);
+
+    // Panel title
+    k.add([
+        k.text('Your T-Shape', { size: 20, font: 'Inter' }),
+        k.color(COLORS.gold),
+        k.pos(panelX + panelWidth / 2, 95),
+        k.anchor('center'),
+    ]);
+
+    const tShape = calculateTShape();
+    const profile = weaponProfiles.find(p => p.id === gameState.currentProfile) || weaponProfiles[0];
+
+    // Current profile
+    k.add([
+        k.text(`${profile.icon} ${profile.name}`, { size: 16, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(panelX + panelWidth / 2, 125),
+        k.anchor('center'),
+    ]);
+
+    // Breadth section
+    k.add([
+        k.text('━ Breadth (horizontal bar)', { size: 12, font: 'Inter' }),
+        k.color(COLORS.textMuted),
+        k.pos(panelX + 15, 160),
+    ]);
+
+    // Literacy bar
+    k.add([
+        k.text(`📚 Literacy: ${tShape.literacyStarted}/${tShape.literacyTotal}`, { size: 12, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(panelX + 15, 185),
+    ]);
+    k.add([
+        k.rect(panelWidth - 30, 8, { radius: 4 }),
+        k.color(k.rgb(40, 40, 70)),
+        k.pos(panelX + 15, 205),
+    ]);
+    if (tShape.literacyPercent > 0) {
+        k.add([
+            k.rect((panelWidth - 30) * tShape.literacyPercent / 100, 8, { radius: 4 }),
+            k.color(TIER_COLORS.literacy),
+            k.pos(panelX + 15, 205),
+        ]);
+    }
+
+    // Foundation bar
+    k.add([
+        k.text(`🧱 Foundation: ${tShape.foundationStarted}/${tShape.foundationTotal}`, { size: 12, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(panelX + 15, 225),
+    ]);
+    k.add([
+        k.rect(panelWidth - 30, 8, { radius: 4 }),
+        k.color(k.rgb(40, 40, 70)),
+        k.pos(panelX + 15, 245),
+    ]);
+    if (tShape.foundationPercent > 0) {
+        k.add([
+            k.rect((panelWidth - 30) * tShape.foundationPercent / 100, 8, { radius: 4 }),
+            k.color(TIER_COLORS.foundation),
+            k.pos(panelX + 15, 245),
+        ]);
+    }
+
+    // Depth section
+    k.add([
+        k.text('┃ Depth (vertical spike)', { size: 12, font: 'Inter' }),
+        k.color(COLORS.textMuted),
+        k.pos(panelX + 15, 275),
+    ]);
+
+    k.add([
+        k.text(`🎯 Specializations: ${tShape.specExpert}/${tShape.specTotal} expert`, { size: 12, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(panelX + 15, 300),
+    ]);
+
+    // T-shape visualization
+    const tShapeY = 340;
+    const barColor = tShape.breadthPercent >= 50 ? COLORS.success : COLORS.warning;
+    const spikeColor = tShape.depthCount >= 1 ? COLORS.success : COLORS.textMuted;
+
+    // Horizontal bar of T
+    const hBarWidth = Math.max(20, (panelWidth - 60) * tShape.breadthPercent / 100);
+    k.add([
+        k.rect(hBarWidth, 12, { radius: 2 }),
+        k.color(barColor),
+        k.pos(panelX + (panelWidth - hBarWidth) / 2, tShapeY),
+    ]);
+
+    // Vertical spike of T
+    const spikeHeight = Math.max(10, 40 * Math.min(tShape.depthCount, 3));
+    k.add([
+        k.rect(12, spikeHeight, { radius: 2 }),
+        k.color(spikeColor),
+        k.pos(panelX + panelWidth / 2 - 6, tShapeY + 12),
+    ]);
+
+    // Recommendations section
+    k.add([
+        k.text('💡 Recommended Next', { size: 14, font: 'Inter' }),
+        k.color(COLORS.gold),
+        k.pos(panelX + 15, 410),
+    ]);
+
+    const recommendations = getRecommendations();
+    recommendations.forEach((rec, i) => {
+        const recY = 440 + i * 70;
+        const priorityColor = rec.priority === 'high' ? COLORS.warning :
+                             rec.priority === 'medium' ? COLORS.primary : COLORS.textMuted;
+
+        const recBtn = k.add([
+            k.rect(panelWidth - 30, 60, { radius: 6 }),
+            k.color(COLORS.bgLight),
+            k.pos(panelX + 15, recY),
+            k.area(),
+            k.outline(1, priorityColor),
+        ]);
+
+        k.add([
+            k.text(rec.skill.name, { size: 12, font: 'Inter', width: panelWidth - 50 }),
+            k.color(COLORS.text),
+            k.pos(panelX + 25, recY + 12),
+        ]);
+
+        const progress = getSkillProgress(rec.skill.id);
+        const levels = getAvailableLevels(rec.skill.id);
+        const levelStr = progress.level > 0 ? `Lv.${progress.level}` : 'New';
+
+        k.add([
+            k.text(`${levelStr} • ${rec.reason}`, { size: 10, font: 'Inter' }),
+            k.color(priorityColor),
+            k.pos(panelX + 25, recY + 38),
+        ]);
+
+        recBtn.onClick(() => k.go('skillDetail', { skillId: rec.skill.id }));
+        recBtn.onHover(() => recBtn.color = COLORS.primary);
+        recBtn.onHoverEnd(() => recBtn.color = COLORS.bgLight);
+    });
+
+    if (recommendations.length === 0) {
+        k.add([
+            k.text('Great job! Keep leveling\nup your skills.', { size: 12, font: 'Inter' }),
+            k.color(COLORS.success),
+            k.pos(panelX + 15, 445),
+        ]);
+    }
+
+    // === LEFT SIDE: Tier tabs (narrower) ===
     const tabY = 90;
-    const tabWidth = 180;
-    let tabX = 50;
+    const tabWidth = 140;
+    let tabX = 20;
 
     const tierTabs = [];
     skillTiers.forEach((tier, i) => {
@@ -207,7 +640,7 @@ k.scene('skillTree', () => {
         const tab = k.add([
             k.rect(tabWidth, 50, { radius: 8 }),
             k.color(selectedTier === tier.id ? TIER_COLORS[tier.id] : COLORS.bgLight),
-            k.pos(tabX + i * (tabWidth + 10), tabY),
+            k.pos(tabX + i * (tabWidth + 8), tabY),
             k.area(),
             k.opacity(selectedTier === tier.id ? 1 : 0.7),
             { tierId: tier.id },
@@ -215,25 +648,26 @@ k.scene('skillTree', () => {
         ]);
 
         k.add([
-            k.text(`${tier.icon} ${tier.name}`, { size: 14, font: 'Inter' }),
+            k.text(`${tier.icon} ${tier.name}`, { size: 11, font: 'Inter' }),
             k.color(COLORS.text),
-            k.pos(tabX + i * (tabWidth + 10) + tabWidth / 2, tabY + 18),
+            k.pos(tabX + i * (tabWidth + 8) + tabWidth / 2, tabY + 18),
             k.anchor('center'),
         ]);
 
         k.add([
-            k.text(`${passedCount}/${tierSkills.length}`, { size: 12, font: 'Inter' }),
+            k.text(`${passedCount}/${tierSkills.length}`, { size: 10, font: 'Inter' }),
             k.color(COLORS.textMuted),
-            k.pos(tabX + i * (tabWidth + 10) + tabWidth / 2, tabY + 38),
+            k.pos(tabX + i * (tabWidth + 8) + tabWidth / 2, tabY + 36),
             k.anchor('center'),
         ]);
 
         tierTabs.push(tab);
     });
 
-    // Skills display area
+    // Skills display area (narrower to fit panel)
+    const skillsAreaWidth = panelX - 40;
     const skillsArea = k.add([
-        k.rect(k.width() - 40, k.height() - 180),
+        k.rect(skillsAreaWidth, k.height() - 180),
         k.color(k.rgb(20, 20, 45)),
         k.pos(20, 160),
         k.outline(2, COLORS.bgLight),
@@ -246,12 +680,12 @@ k.scene('skillTree', () => {
         k.get('skillText').forEach(n => k.destroy(n));
 
         const tierSkills = getSkillsByTier(selectedTier).filter(s => hasQuestions(s.id));
-        const cols = 4;
-        const nodeWidth = 280;
+        const cols = 3;
+        const nodeWidth = (skillsAreaWidth - 80) / cols;
         const nodeHeight = 80;
-        const startX = 60;
+        const startX = 40;
         const startY = 190;
-        const gapX = 20;
+        const gapX = 15;
         const gapY = 15;
 
         tierSkills.forEach((skill, i) => {
@@ -280,16 +714,16 @@ k.scene('skillTree', () => {
 
             // Skill name
             k.add([
-                k.text(skill.name, { size: 14, width: nodeWidth - 20, font: 'Inter' }),
+                k.text(skill.name, { size: 13, width: nodeWidth - 20, font: 'Inter' }),
                 k.color(COLORS.text),
-                k.pos(x + 10, y + 12),
+                k.pos(x + 10, y + 10),
                 'skillText',
             ]);
 
             // Level indicator
             const levelText = progress.level > 0 ? `Lv.${progress.level}/${maxLevel}` : 'Not Started';
             k.add([
-                k.text(levelText, { size: 12, font: 'Inter' }),
+                k.text(levelText, { size: 11, font: 'Inter' }),
                 k.color(progress.level > 0 ? COLORS.gold : COLORS.textMuted),
                 k.pos(x + 10, y + 35),
                 'skillText',
@@ -347,7 +781,7 @@ k.scene('skillTree', () => {
     // Scroll handling
     k.onScroll((delta) => {
         const tierSkills = getSkillsByTier(selectedTier).filter(s => hasQuestions(s.id));
-        const maxScroll = Math.max(0, Math.ceil(tierSkills.length / 4) * 95 - 400);
+        const maxScroll = Math.max(0, Math.ceil(tierSkills.length / 3) * 95 - 400);
         scrollOffset = Math.max(0, Math.min(maxScroll, scrollOffset + delta.y * 30));
         renderSkills();
     });
@@ -524,10 +958,28 @@ k.scene('quiz', ({ skillId, level }) => {
         k.opacity(0.3),
     ]);
 
+    // Exit button
+    const exitBtn = k.add([
+        k.rect(80, 36, { radius: 6 }),
+        k.color(COLORS.bgLight),
+        k.pos(20, 22),
+        k.area(),
+        k.opacity(0.9),
+    ]);
+    k.add([
+        k.text('✕ Exit', { size: 14, font: 'Inter' }),
+        k.color(COLORS.textMuted),
+        k.pos(60, 40),
+        k.anchor('center'),
+    ]);
+    exitBtn.onHover(() => exitBtn.opacity = 1);
+    exitBtn.onHoverEnd(() => exitBtn.opacity = 0.9);
+    exitBtn.onClick(() => k.go('skillTree'));
+
     k.add([
         k.text(`${skill.name} - Level ${level}`, { size: 24, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(20, 25),
+        k.pos(115, 25),
     ]);
 
     // Progress indicator
@@ -557,36 +1009,65 @@ k.scene('quiz', ({ skillId, level }) => {
     // Options
     const optionButtons = [];
     const optionTexts = [];
-    const optionY = 280;
-    const optionHeight = 70;
+    const optionNumbers = [];
+    const optionY = 250;
+    const optionHeight = 60;
+    const optionSpacing = 12;
     const optionWidth = k.width() - 200;
 
     for (let i = 0; i < 4; i++) {
+        const btnY = optionY + i * (optionHeight + optionSpacing);
         const btn = k.add([
             k.rect(optionWidth, optionHeight, { radius: 8 }),
             k.color(COLORS.bgLight),
-            k.pos(100, optionY + i * (optionHeight + 15)),
+            k.pos(100, btnY),
             k.area(),
             { optionIndex: i },
             'optionBtn',
         ]);
 
-        const txt = k.add([
-            k.text('', { size: 18, width: optionWidth - 40, font: 'Inter' }),
+        // Number hint badge
+        const numBadge = k.add([
+            k.circle(14),
+            k.color(COLORS.primary),
+            k.pos(128, btnY + optionHeight / 2),
+            k.anchor('center'),
+            k.opacity(0.8),
+        ]);
+
+        const numText = k.add([
+            k.text(`${i + 1}`, { size: 14, font: 'Inter' }),
             k.color(COLORS.text),
-            k.pos(120, optionY + i * (optionHeight + 15) + optionHeight / 2),
+            k.pos(128, btnY + optionHeight / 2),
+            k.anchor('center'),
+        ]);
+
+        const txt = k.add([
+            k.text('', { size: 17, width: optionWidth - 70, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(155, btnY + optionHeight / 2),
             k.anchor('left'),
         ]);
 
         optionButtons.push(btn);
         optionTexts.push(txt);
+        optionNumbers.push({ badge: numBadge, text: numText });
     }
+
+    // Keyboard hint at the bottom
+    k.add([
+        k.text('Press 1-4 to answer  •  Space/Enter for next', { size: 14, font: 'Inter' }),
+        k.color(COLORS.textMuted),
+        k.pos(k.width() / 2, k.height() - 15),
+        k.anchor('center'),
+        k.opacity(0.7),
+    ]);
 
     // Feedback text
     const feedbackText = k.add([
         k.text('', { size: 24, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(k.width() / 2, k.height() - 100),
+        k.pos(k.width() / 2, k.height() - 120),
         k.anchor('center'),
         k.opacity(0),
     ]);
@@ -595,7 +1076,7 @@ k.scene('quiz', ({ skillId, level }) => {
     const nextBtn = k.add([
         k.rect(200, 50, { radius: 8 }),
         k.color(COLORS.primary),
-        k.pos(k.width() / 2, k.height() - 40),
+        k.pos(k.width() / 2, k.height() - 60),
         k.anchor('center'),
         k.area(),
         k.opacity(0),
@@ -603,7 +1084,7 @@ k.scene('quiz', ({ skillId, level }) => {
     const nextBtnText = k.add([
         k.text('Next', { size: 20, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(k.width() / 2, k.height() - 40),
+        k.pos(k.width() / 2, k.height() - 60),
         k.anchor('center'),
         k.opacity(0),
     ]);
@@ -824,16 +1305,32 @@ k.scene('results', ({ skillId, level, score, total, streak }) => {
 
     // Buttons
     const buttonY = 550;
+    const hasNextLevel = level < 5;
 
     if (!passed) {
+        // Failed: Try Again + Skill Tree
         createButton('Try Again', k.width() / 2 - 120, buttonY, () => {
             k.go('quiz', { skillId, level });
         }, COLORS.warning);
-    }
 
-    createButton('Skill Tree', k.width() / 2 + (passed ? 0 : 120), buttonY, () => {
-        k.go('skillTree');
-    });
+        createButton('Skill Tree', k.width() / 2 + 120, buttonY, () => {
+            k.go('skillTree');
+        });
+    } else if (hasNextLevel) {
+        // Passed with next level available: Next Level + Skill Tree
+        createButton('Next Level →', k.width() / 2 - 120, buttonY, () => {
+            k.go('quiz', { skillId, level: level + 1 });
+        }, COLORS.success);
+
+        createButton('Skill Tree', k.width() / 2 + 120, buttonY, () => {
+            k.go('skillTree');
+        });
+    } else {
+        // Passed at max level: just Skill Tree centered
+        createButton('Skill Tree', k.width() / 2, buttonY, () => {
+            k.go('skillTree');
+        });
+    }
 
     createButton('Main Menu', k.width() / 2, buttonY + 60, () => {
         k.go('menu');
@@ -992,6 +1489,153 @@ k.scene('profile', () => {
             k.pos(x + barWidth / 2, barY + 55),
             k.anchor('center'),
         ]);
+    });
+
+    // Reset Progress button
+    const resetBtn = k.add([
+        k.rect(180, 40, { radius: 8 }),
+        k.color(COLORS.danger),
+        k.pos(k.width() / 2, k.height() - 40),
+        k.anchor('center'),
+        k.area(),
+        k.opacity(0.8),
+    ]);
+    k.add([
+        k.text('Reset Progress', { size: 16, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(k.width() / 2, k.height() - 40),
+        k.anchor('center'),
+    ]);
+    resetBtn.onHover(() => resetBtn.opacity = 1);
+    resetBtn.onHoverEnd(() => resetBtn.opacity = 0.8);
+
+    // Confirmation dialog state
+    let confirmElements = [];
+    let confirmVisible = false;
+
+    function showConfirmDialog() {
+        if (confirmVisible) return;
+        confirmVisible = true;
+
+        const openedAt = Date.now();
+
+        // Overlay
+        const overlay = k.add([
+            k.rect(k.width(), k.height()),
+            k.color(0, 0, 0),
+            k.opacity(0.85),
+            k.pos(0, 0),
+            k.z(100),
+            k.area(),
+        ]);
+        overlay.onClick(() => {
+            if (Date.now() - openedAt < 100) return;
+            hideConfirmDialog();
+        });
+        confirmElements.push(overlay);
+
+        // Dialog box
+        const dialog = k.add([
+            k.rect(400, 200, { radius: 12 }),
+            k.color(COLORS.bgLight),
+            k.pos(k.width() / 2, k.height() / 2),
+            k.anchor('center'),
+            k.outline(2, COLORS.danger),
+            k.z(101),
+            k.area(),
+        ]);
+        dialog.onClick(() => {});
+        confirmElements.push(dialog);
+
+        // Warning icon and title
+        confirmElements.push(k.add([
+            k.text('⚠️  Reset All Progress?', { size: 24, font: 'Inter' }),
+            k.color(COLORS.danger),
+            k.pos(k.width() / 2, k.height() / 2 - 55),
+            k.anchor('center'),
+            k.z(102),
+        ]));
+
+        // Message
+        confirmElements.push(k.add([
+            k.text('This will delete all your XP, skill levels,', { size: 16, font: 'Inter' }),
+            k.color(COLORS.textMuted),
+            k.pos(k.width() / 2, k.height() / 2 - 10),
+            k.anchor('center'),
+            k.z(102),
+        ]));
+        confirmElements.push(k.add([
+            k.text('and achievements. This cannot be undone!', { size: 16, font: 'Inter' }),
+            k.color(COLORS.textMuted),
+            k.pos(k.width() / 2, k.height() / 2 + 14),
+            k.anchor('center'),
+            k.z(102),
+        ]));
+
+        // Cancel button
+        const cancelBtn = k.add([
+            k.rect(120, 40, { radius: 8 }),
+            k.color(COLORS.bgLight),
+            k.pos(k.width() / 2 - 75, k.height() / 2 + 65),
+            k.anchor('center'),
+            k.outline(2, COLORS.textMuted),
+            k.area(),
+            k.z(102),
+        ]);
+        confirmElements.push(cancelBtn);
+        confirmElements.push(k.add([
+            k.text('Cancel', { size: 16, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(k.width() / 2 - 75, k.height() / 2 + 65),
+            k.anchor('center'),
+            k.z(103),
+        ]));
+        cancelBtn.onClick(() => hideConfirmDialog());
+        cancelBtn.onHover(() => cancelBtn.opacity = 0.8);
+        cancelBtn.onHoverEnd(() => cancelBtn.opacity = 1);
+
+        // Confirm button
+        const confirmBtn = k.add([
+            k.rect(120, 40, { radius: 8 }),
+            k.color(COLORS.danger),
+            k.pos(k.width() / 2 + 75, k.height() / 2 + 65),
+            k.anchor('center'),
+            k.area(),
+            k.z(102),
+        ]);
+        confirmElements.push(confirmBtn);
+        confirmElements.push(k.add([
+            k.text('Reset', { size: 16, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(k.width() / 2 + 75, k.height() / 2 + 65),
+            k.anchor('center'),
+            k.z(103),
+        ]));
+        confirmBtn.onClick(() => {
+            resetProgress();
+            gameState = loadState();
+            hideConfirmDialog();
+            k.go('profile'); // Refresh the profile view
+        });
+        confirmBtn.onHover(() => confirmBtn.opacity = 0.8);
+        confirmBtn.onHoverEnd(() => confirmBtn.opacity = 1);
+    }
+
+    function hideConfirmDialog() {
+        if (!confirmVisible) return;
+        confirmVisible = false;
+        setTimeout(() => {
+            confirmElements.forEach(el => {
+                if (el.exists()) k.destroy(el);
+            });
+            confirmElements = [];
+        }, 50);
+    }
+
+    resetBtn.onClick(() => showConfirmDialog());
+
+    k.onKeyPress('escape', () => {
+        if (confirmVisible) hideConfirmDialog();
     });
 });
 
