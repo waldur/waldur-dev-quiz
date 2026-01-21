@@ -48,6 +48,9 @@ The project uses vanilla JS with global variables (no ES modules) for GitHub Pag
 **Questions** (`js/data/questions.js`):
 - Keyed by skill ID, then by level (1-5)
 - Format: `{ q: "question", options: ["a", "b", "c", "d"], correct: 0 }`
+- Optional fields for learning assistance:
+  - `explanation`: Text explaining why the answer is correct (shown after answering)
+  - `learnMore`: Object with `url` and `text` for a tutorial link
 - Helper functions: `getQuestionsForSkill()`, `getAvailableLevels()`, `hasQuestions()`
 - Minimum questions per level: L1-2: 3, L3: 4, L4: 4, L5: 5
 
@@ -80,6 +83,7 @@ The project uses vanilla JS with global variables (no ES modules) for GitHub Pag
 - Number badges (1-4) on each answer option
 - Keyboard hint footer: "Press 1-4 to answer • Space/Enter for next"
 - Answer with mouse click or keyboard 1-4
+- After answering, shows explanation (if available) with "Learn More" link to tutorials
 - Next question with Enter/Space or click Next button
 
 **Results Scene:**
@@ -96,15 +100,26 @@ The project uses vanilla JS with global variables (no ES modules) for GitHub Pag
 Add to `js/data/questions.js` under the appropriate skill ID and level:
 ```javascript
 'skill-id': {
-    1: [{ q: "...", options: [...], correct: 0 }],  // min 3 questions
-    2: [{ q: "...", options: [...], correct: 0 }],  // min 3 questions
-    3: [{ q: "...", options: [...], correct: 0 }],  // min 4 questions
-    4: [{ q: "...", options: [...], correct: 0 }],  // min 4 questions
-    5: [{ q: "...", options: [...], correct: 0 }],  // min 5 questions
+    1: [
+        {
+            q: "Your question text?",
+            options: ["Correct answer", "Wrong 1", "Wrong 2", "Wrong 3"],
+            correct: 0,
+            explanation: "Why the correct answer is right and/or why others are wrong.",
+            learnMore: {
+                url: "https://docs.example.com/topic",
+                text: "📚 Learn More"
+            }
+        }
+    ],  // min 3 questions per level 1-2
+    // ... levels 3-5 need min 4-5 questions
 }
 ```
 
-Higher levels should have harder questions. Each quiz pulls 5 random questions from the level.
+- `explanation` and `learnMore` are optional but highly recommended for learning
+- Use validated, stable URLs (official docs preferred over blog posts)
+- Higher levels should have harder questions
+- Each quiz pulls 5 random questions from the level
 
 ## Adding New Skills
 

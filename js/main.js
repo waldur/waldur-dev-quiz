@@ -1067,16 +1067,57 @@ k.scene('quiz', ({ skillId, level }) => {
     const feedbackText = k.add([
         k.text('', { size: 24, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(k.width() / 2, k.height() - 120),
+        k.pos(k.width() / 2, k.height() - 200),
         k.anchor('center'),
         k.opacity(0),
     ]);
+
+    // Explanation area (shown after answer)
+    const explanationBg = k.add([
+        k.rect(k.width() - 160, 80, { radius: 8 }),
+        k.color(k.rgb(30, 35, 60)),
+        k.pos(80, k.height() - 170),
+        k.outline(1, COLORS.primary),
+        k.opacity(0),
+    ]);
+
+    const explanationText = k.add([
+        k.text('', { size: 14, width: k.width() - 200, font: 'Inter' }),
+        k.color(COLORS.textMuted),
+        k.pos(100, k.height() - 160),
+        k.opacity(0),
+    ]);
+
+    // Learn More link (clickable)
+    const learnMoreBtn = k.add([
+        k.rect(180, 32, { radius: 6 }),
+        k.color(COLORS.secondary),
+        k.pos(k.width() - 190, k.height() - 110),
+        k.area(),
+        k.opacity(0),
+    ]);
+    const learnMoreText = k.add([
+        k.text('📚 Learn More →', { size: 14, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(k.width() - 100, k.height() - 94),
+        k.anchor('center'),
+        k.opacity(0),
+    ]);
+    let currentLearnMoreUrl = null;
+
+    learnMoreBtn.onClick(() => {
+        if (currentLearnMoreUrl) {
+            window.open(currentLearnMoreUrl, '_blank');
+        }
+    });
+    learnMoreBtn.onHover(() => { if (learnMoreBtn.opacity > 0) learnMoreBtn.color = k.rgb(20, 180, 255); });
+    learnMoreBtn.onHoverEnd(() => learnMoreBtn.color = COLORS.secondary);
 
     // Next button (hidden initially)
     const nextBtn = k.add([
         k.rect(200, 50, { radius: 8 }),
         k.color(COLORS.primary),
-        k.pos(k.width() / 2, k.height() - 60),
+        k.pos(k.width() / 2, k.height() - 50),
         k.anchor('center'),
         k.area(),
         k.opacity(0),
@@ -1084,7 +1125,7 @@ k.scene('quiz', ({ skillId, level }) => {
     const nextBtnText = k.add([
         k.text('Next', { size: 20, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(k.width() / 2, k.height() - 60),
+        k.pos(k.width() / 2, k.height() - 50),
         k.anchor('center'),
         k.opacity(0),
     ]);
@@ -1120,6 +1161,14 @@ k.scene('quiz', ({ skillId, level }) => {
         feedbackText.opacity = 0;
         nextBtn.opacity = 0;
         nextBtnText.opacity = 0;
+
+        // Hide explanation elements
+        explanationBg.opacity = 0;
+        explanationText.opacity = 0;
+        explanationText.text = '';
+        learnMoreBtn.opacity = 0;
+        learnMoreText.opacity = 0;
+        currentLearnMoreUrl = null;
     }
 
     function handleAnswer(btn) {
@@ -1164,6 +1213,21 @@ k.scene('quiz', ({ skillId, level }) => {
         feedbackText.opacity = 1;
         nextBtn.opacity = 1;
         nextBtnText.opacity = 1;
+
+        // Show explanation if available
+        if (q.explanation) {
+            explanationBg.opacity = 1;
+            explanationText.opacity = 1;
+            explanationText.text = q.explanation;
+        }
+
+        // Show Learn More link if available
+        if (q.learnMore && q.learnMore.url) {
+            learnMoreBtn.opacity = 1;
+            learnMoreText.opacity = 1;
+            learnMoreText.text = q.learnMore.text || '📚 Learn More →';
+            currentLearnMoreUrl = q.learnMore.url;
+        }
 
         if (currentQuestion >= quizQuestions.length - 1) {
             nextBtnText.text = 'See Results';
