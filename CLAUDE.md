@@ -38,6 +38,12 @@ The project uses vanilla JS with global variables (no ES modules) for GitHub Pag
 - Scene transitions via `k.go('sceneName', { data })`
 - Overlays (help, confirmations) use z-index layering with `k.z()`
 
+**Text Escaping Rule:**
+KAPLAY uses `[` and `]` for styled text markup. Any dynamic text or text containing square brackets must be escaped to avoid "unclosed tags" errors:
+- Use the `escapeText()` helper function for dynamic content (questions, explanations, user input)
+- For static text, use parentheses instead: `(1) Start Quest` not `[1] Start Quest`
+- The helper escapes brackets: `str.replace(/\[/g, '\\[').replace(/\]/g, '\\]')`
+
 ### Data Model
 
 **Skills** (`js/data/skills.js`):

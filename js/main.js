@@ -114,20 +114,20 @@ k.scene('menu', () => {
         k.anchor('center'),
     ]);
 
-    // Menu buttons
+    // Menu buttons with keyboard shortcuts
     const buttonY = 420;
     const buttonSpacing = 70;
 
-    createButton('Start Quest', k.width() / 2, buttonY, () => {
+    // Actions for keyboard shortcuts
+    function startQuest() {
         k.go('skillTree');
-    });
+    }
 
-    createButton('My Profile', k.width() / 2, buttonY + buttonSpacing, () => {
+    function openProfile() {
         k.go('profile');
-    });
+    }
 
-    createButton('Quick Challenge', k.width() / 2, buttonY + buttonSpacing * 2, () => {
-        // Random skill with questions
+    function quickChallenge() {
         const skillsWithQuestions = skills.filter(s => hasQuestions(s.id));
         if (skillsWithQuestions.length > 0) {
             const randomSkill = skillsWithQuestions[Math.floor(Math.random() * skillsWithQuestions.length)];
@@ -135,9 +135,28 @@ k.scene('menu', () => {
             const randomLevel = levels[Math.floor(Math.random() * levels.length)];
             k.go('quiz', { skillId: randomSkill.id, level: randomLevel });
         }
-    });
+    }
 
-    // Player name (bottom)
+    // Buttons with shortcuts in label (use parentheses to avoid KAPLAY style tag parsing)
+    createButton('(1) Start Quest', k.width() / 2, buttonY, startQuest);
+    createButton('(2) My Profile', k.width() / 2, buttonY + buttonSpacing, openProfile);
+    createButton('(3) Quick Challenge', k.width() / 2, buttonY + buttonSpacing * 2, quickChallenge);
+
+    // Keyboard shortcuts
+    k.onKeyPress('1', startQuest);
+    k.onKeyPress('2', openProfile);
+    k.onKeyPress('3', quickChallenge);
+
+    // Keyboard hint footer
+    k.add([
+        k.text('Press 1-3 to navigate  •  H for help', { size: 14, font: 'Inter' }),
+        k.color(COLORS.textMuted),
+        k.pos(k.width() / 2, k.height() - 50),
+        k.anchor('center'),
+        k.opacity(0.7),
+    ]);
+
+    // Player name (bottom left)
     k.add([
         k.text(`Player: ${gameState.playerName}`, { size: 16, font: 'Inter' }),
         k.color(COLORS.textMuted),
@@ -336,6 +355,10 @@ k.scene('menu', () => {
 
     helpBtn.onClick(showHelp);
 
+    // Keyboard shortcuts for help
+    k.onKeyPress('/', () => showHelp());  // ? key (shift+/)
+    k.onKeyPress('h', () => showHelp());  // Alternative: H for help
+
     // ESC to close help
     k.onKeyPress('escape', () => {
         if (helpVisible) hideHelp();
@@ -470,6 +493,10 @@ k.scene('skillTree', () => {
         k.anchor('center'),
     ]);
     backBtn.onClick(() => k.go('menu'));
+
+    // Keyboard shortcut for back
+    k.onKeyPress('escape', () => k.go('menu'));
+    k.onKeyPress('b', () => k.go('menu'));
 
     // === RIGHT PANEL: T-Shape Progress ===
     const panelX = k.width() - 280;
@@ -834,6 +861,10 @@ k.scene('skillDetail', ({ skillId }) => {
     ]);
     backBtn.onClick(() => k.go('skillTree'));
 
+    // Keyboard shortcut for back
+    k.onKeyPress('escape', () => k.go('skillTree'));
+    k.onKeyPress('b', () => k.go('skillTree'));
+
     // Skill name
     k.add([
         k.text(skill.name, { size: 36, font: 'Inter' }),
@@ -981,6 +1012,9 @@ k.scene('quiz', ({ skillId, level }) => {
     exitBtn.onHover(() => exitBtn.opacity = 1);
     exitBtn.onHoverEnd(() => exitBtn.opacity = 0.9);
     exitBtn.onClick(() => k.go('skillTree'));
+
+    // ESC to exit quiz
+    k.onKeyPress('escape', () => k.go('skillTree'));
 
     k.add([
         k.text(`${skill.name} - Level ${level}`, { size: 24, font: 'Inter' }),
@@ -1779,7 +1813,14 @@ k.scene('profile', () => {
     resetBtn.onClick(() => showConfirmDialog());
 
     k.onKeyPress('escape', () => {
-        if (confirmVisible) hideConfirmDialog();
+        if (confirmVisible) {
+            hideConfirmDialog();
+        } else {
+            k.go('menu');
+        }
+    });
+    k.onKeyPress('b', () => {
+        if (!confirmVisible) k.go('menu');
     });
 });
 
