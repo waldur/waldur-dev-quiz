@@ -615,6 +615,37 @@ k.scene('skillTree', () => {
     ]);
 
     const recommendations = getRecommendations();
+
+    // Random recommendation function
+    function pickRandomRecommendation() {
+        if (recommendations.length > 0) {
+            const randomRec = recommendations[Math.floor(Math.random() * recommendations.length)];
+            k.go('skillDetail', { skillId: randomRec.skill.id });
+        }
+    }
+
+    // Random button (if there are recommendations)
+    if (recommendations.length > 0) {
+        const randomBtn = k.add([
+            k.rect(70, 24, { radius: 4 }),
+            k.color(COLORS.bgLight),
+            k.pos(panelX + panelWidth - 85, 407),
+            k.area(),
+            k.outline(1, COLORS.gold),
+        ]);
+        k.add([
+            k.text('(R) Random', { size: 10, font: 'Inter' }),
+            k.color(COLORS.gold),
+            k.pos(panelX + panelWidth - 50, 419),
+            k.anchor('center'),
+        ]);
+        randomBtn.onClick(pickRandomRecommendation);
+        randomBtn.onHover(() => randomBtn.color = COLORS.gold);
+        randomBtn.onHoverEnd(() => randomBtn.color = COLORS.bgLight);
+    }
+
+    // Keyboard shortcut for random recommendation
+    k.onKeyPress('r', pickRandomRecommendation);
     recommendations.forEach((rec, i) => {
         const recY = 440 + i * 70;
         const priorityColor = rec.priority === 'high' ? COLORS.warning :
@@ -821,6 +852,15 @@ k.scene('skillTree', () => {
 
     // Initial render
     renderSkills();
+
+    // Keyboard hint footer
+    k.add([
+        k.text('ESC/B: Back  •  R: Random recommendation', { size: 13, font: 'Inter' }),
+        k.color(COLORS.textMuted),
+        k.pos(k.width() / 2 - 120, k.height() - 20),
+        k.anchor('center'),
+        k.opacity(0.7),
+    ]);
 });
 
 // ============================================================================
@@ -952,14 +992,18 @@ k.scene('skillDetail', ({ skillId }) => {
     ]);
 
     // Start button for next level
-    if (currentLevel < Math.max(...levels)) {
-        const nextLevel = currentLevel + 1;
-        if (levels.includes(nextLevel)) {
-            createButton(`Start Level ${nextLevel}`, k.width() / 2, 550, () => {
-                k.go('quiz', { skillId, level: nextLevel });
-            }, COLORS.success);
-        }
-    } else {
+    const nextLevel = currentLevel + 1;
+    const canStartNext = currentLevel < Math.max(...levels) && levels.includes(nextLevel);
+
+    if (canStartNext) {
+        createButton(`Start Level ${nextLevel}`, k.width() / 2, 550, () => {
+            k.go('quiz', { skillId, level: nextLevel });
+        }, COLORS.success);
+
+        // Keyboard shortcuts to start
+        k.onKeyPress('space', () => k.go('quiz', { skillId, level: nextLevel }));
+        k.onKeyPress('enter', () => k.go('quiz', { skillId, level: nextLevel }));
+    } else if (currentLevel >= Math.max(...levels)) {
         k.add([
             k.text('✓ All levels completed!', { size: 20, font: 'Inter' }),
             k.color(COLORS.success),
@@ -967,6 +1011,16 @@ k.scene('skillDetail', ({ skillId }) => {
             k.anchor('center'),
         ]);
     }
+
+    // Keyboard hint footer
+    const hintText = canStartNext ? 'ESC/B: Back  •  Space/Enter: Start' : 'ESC/B: Back';
+    k.add([
+        k.text(hintText, { size: 13, font: 'Inter' }),
+        k.color(COLORS.textMuted),
+        k.pos(k.width() / 2, k.height() - 30),
+        k.anchor('center'),
+        k.opacity(0.7),
+    ]);
 });
 
 // ============================================================================
