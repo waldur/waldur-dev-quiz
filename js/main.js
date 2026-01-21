@@ -1,14 +1,14 @@
 // Waldur Quest - Main Entry Point
 // Uses global variables from skills.js, questions.js, and storage.js
 
-// Initialize KAPLAY with better rendering
+// Initialize KAPLAY with sharp text rendering
 const k = kaplay({
     width: 1280,
     height: 720,
     background: [15, 15, 35],
-    crisp: false,
     letterbox: true,
-    pixelDensity: window.devicePixelRatio || 1,
+    stretch: true,
+    pixelDensity: 2,
 });
 
 // Load custom font
@@ -16,6 +16,12 @@ k.loadFont('Inter', 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQ
 
 // Global game state
 let gameState = loadState();
+
+// Helper to escape text for KAPLAY (prevents styled text parsing errors)
+function escapeText(str) {
+    if (!str) return str;
+    return str.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+}
 
 // Color palette
 const COLORS = {
@@ -1000,19 +1006,19 @@ k.scene('quiz', ({ skillId, level }) => {
 
     // Question area
     const questionText = k.add([
-        k.text('', { size: 22, width: k.width() - 100, font: 'Inter' }),
+        k.text('', { size: 20, width: k.width() - 100, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(k.width() / 2, 150),
+        k.pos(k.width() / 2, 140),
         k.anchor('center'),
     ]);
 
-    // Options
+    // Options (compact layout to leave room for explanation panel)
     const optionButtons = [];
     const optionTexts = [];
     const optionNumbers = [];
-    const optionY = 250;
-    const optionHeight = 60;
-    const optionSpacing = 12;
+    const optionY = 220;
+    const optionHeight = 55;
+    const optionSpacing = 8;
     const optionWidth = k.width() - 200;
 
     for (let i = 0; i < 4; i++) {
@@ -1063,43 +1069,47 @@ k.scene('quiz', ({ skillId, level }) => {
         k.opacity(0.7),
     ]);
 
-    // Feedback text
+    // Feedback text (appears in header area, right side)
     const feedbackText = k.add([
-        k.text('', { size: 24, font: 'Inter' }),
+        k.text('', { size: 22, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(k.width() / 2, k.height() - 200),
+        k.pos(k.width() / 2, 55),
         k.anchor('center'),
         k.opacity(0),
     ]);
 
-    // Explanation area (shown after answer)
+    // Bottom panel for explanation (shown after answer)
+    const bottomPanelY = 540;
+    const bottomPanelHeight = 120;
+
     const explanationBg = k.add([
-        k.rect(k.width() - 160, 80, { radius: 8 }),
-        k.color(k.rgb(30, 35, 60)),
-        k.pos(80, k.height() - 170),
+        k.rect(k.width() - 100, bottomPanelHeight, { radius: 8 }),
+        k.color(k.rgb(25, 30, 50)),
+        k.pos(50, bottomPanelY),
         k.outline(1, COLORS.primary),
         k.opacity(0),
     ]);
 
     const explanationText = k.add([
-        k.text('', { size: 14, width: k.width() - 200, font: 'Inter' }),
+        k.text('', { size: 14, width: k.width() - 350, font: 'Inter' }),
         k.color(COLORS.textMuted),
-        k.pos(100, k.height() - 160),
+        k.pos(70, bottomPanelY + 15),
         k.opacity(0),
     ]);
 
-    // Learn More link (clickable)
+    // Learn More button (inside bottom panel, right side)
     const learnMoreBtn = k.add([
-        k.rect(180, 32, { radius: 6 }),
+        k.rect(160, 36, { radius: 6 }),
         k.color(COLORS.secondary),
-        k.pos(k.width() - 190, k.height() - 110),
+        k.pos(k.width() - 130, bottomPanelY + bottomPanelHeight / 2),
+        k.anchor('center'),
         k.area(),
         k.opacity(0),
     ]);
     const learnMoreText = k.add([
-        k.text('📚 Learn More →', { size: 14, font: 'Inter' }),
+        k.text('📚 Learn More →', { size: 13, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(k.width() - 100, k.height() - 94),
+        k.pos(k.width() - 130, bottomPanelY + bottomPanelHeight / 2),
         k.anchor('center'),
         k.opacity(0),
     ]);
@@ -1141,7 +1151,7 @@ k.scene('quiz', ({ skillId, level }) => {
         answered = false;
         selectedOption = -1;
 
-        questionText.text = q.q;
+        questionText.text = escapeText(q.q);
         progressText.text = `Question ${currentQuestion + 1}/${quizQuestions.length}`;
 
         // Shuffle options for display (Fisher-Yates shuffle)
@@ -1154,7 +1164,7 @@ k.scene('quiz', ({ skillId, level }) => {
         shuffledOptions.forEach((opt, i) => {
             optionButtons[i].color = COLORS.bgLight;
             optionButtons[i].opacity = 1;
-            optionTexts[i].text = opt.text;
+            optionTexts[i].text = escapeText(opt.text);
             optionButtons[i].optionIndex = opt.originalIndex;
         });
 
@@ -1218,14 +1228,14 @@ k.scene('quiz', ({ skillId, level }) => {
         if (q.explanation) {
             explanationBg.opacity = 1;
             explanationText.opacity = 1;
-            explanationText.text = q.explanation;
+            explanationText.text = escapeText(q.explanation);
         }
 
         // Show Learn More link if available
         if (q.learnMore && q.learnMore.url) {
             learnMoreBtn.opacity = 1;
             learnMoreText.opacity = 1;
-            learnMoreText.text = q.learnMore.text || '📚 Learn More →';
+            learnMoreText.text = escapeText(q.learnMore.text) || '📚 Learn More →';
             currentLearnMoreUrl = q.learnMore.url;
         }
 
@@ -1293,6 +1303,9 @@ k.scene('results', ({ skillId, level, score, total, streak }) => {
     // Refresh game state
     gameState = loadState();
 
+    // Get random reaction
+    const reaction = getResultReaction(passed, perfect);
+
     // Background
     k.add([
         k.rect(k.width(), k.height()),
@@ -1317,11 +1330,76 @@ k.scene('results', ({ skillId, level, score, total, streak }) => {
         k.anchor('center'),
     ]);
 
+    // === REACTION IMAGE PANEL (right side) ===
+    const reactionPanelX = k.width() - 320;
+    const reactionPanelY = 170;
+    const reactionPanelWidth = 300;
+    const reactionPanelHeight = 340;
+    const maxImageWidth = 260;
+    const maxImageHeight = 200;
+
+    // Panel background
+    k.add([
+        k.rect(reactionPanelWidth, reactionPanelHeight, { radius: 12 }),
+        k.color(COLORS.bgLight),
+        k.pos(reactionPanelX, reactionPanelY),
+        k.outline(2, headerColor),
+    ]);
+
+    const imageCenterX = reactionPanelX + reactionPanelWidth / 2;
+    const imageCenterY = reactionPanelY + 120;
+
+    // Display reaction based on type
+    if (reaction.type === 'emoji') {
+        // Large emoji display
+        k.add([
+            k.text(reaction.emoji, { size: 100 }),
+            k.pos(imageCenterX, imageCenterY),
+            k.anchor('center'),
+        ]);
+    } else if (reaction.type === 'image') {
+        // Load and display GIF/image with proper scaling
+        const imageKey = 'reaction_' + Date.now();
+        k.loadSprite(imageKey, reaction.url).then(() => {
+            const sprite = k.add([
+                k.sprite(imageKey),
+                k.pos(imageCenterX, imageCenterY),
+                k.anchor('center'),
+            ]);
+
+            // Calculate scale to fit within bounds
+            const imgWidth = sprite.width;
+            const imgHeight = sprite.height;
+            const scaleX = maxImageWidth / imgWidth;
+            const scaleY = maxImageHeight / imgHeight;
+            const finalScale = Math.min(scaleX, scaleY, 1); // Don't upscale
+            sprite.scale = k.vec2(finalScale, finalScale);
+        }).catch(() => {
+            // Fallback to emoji if image fails to load
+            k.add([
+                k.text(passed ? '🎉' : '😅', { size: 100 }),
+                k.pos(imageCenterX, imageCenterY),
+                k.anchor('center'),
+            ]);
+        });
+    }
+
+    // Reaction caption
+    k.add([
+        k.text(reaction.caption, { size: 18, font: 'Inter', width: reactionPanelWidth - 30 }),
+        k.color(COLORS.text),
+        k.pos(imageCenterX, reactionPanelY + reactionPanelHeight - 60),
+        k.anchor('center'),
+    ]);
+
+    // === LEFT SIDE: Stats ===
+    const leftCenterX = (k.width() - reactionPanelWidth - 40) / 2;
+
     // Skill info
     k.add([
         k.text(`${skill.name} - Level ${level}`, { size: 24, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(k.width() / 2, 200),
+        k.pos(leftCenterX, 200),
         k.anchor('center'),
     ]);
 
@@ -1329,32 +1407,32 @@ k.scene('results', ({ skillId, level, score, total, streak }) => {
     k.add([
         k.text(`Score: ${score}/${total}`, { size: 36, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(k.width() / 2, 280),
+        k.pos(leftCenterX, 270),
         k.anchor('center'),
     ]);
 
     // Stats
-    const statsY = 350;
-    const statsSpacing = 35;
+    const statsY = 330;
+    const statsSpacing = 32;
 
     k.add([
-        k.text(`Correct Answers: ${score}`, { size: 20, font: 'Inter' }),
+        k.text(`Correct Answers: ${score}`, { size: 18, font: 'Inter' }),
         k.color(COLORS.textMuted),
-        k.pos(k.width() / 2, statsY),
+        k.pos(leftCenterX, statsY),
         k.anchor('center'),
     ]);
 
     k.add([
-        k.text(`Best Streak: ${streak}`, { size: 20, font: 'Inter' }),
+        k.text(`Best Streak: ${streak}`, { size: 18, font: 'Inter' }),
         k.color(COLORS.textMuted),
-        k.pos(k.width() / 2, statsY + statsSpacing),
+        k.pos(leftCenterX, statsY + statsSpacing),
         k.anchor('center'),
     ]);
 
     k.add([
-        k.text(`XP Earned: +${xpGained}`, { size: 24, font: 'Inter' }),
+        k.text(`XP Earned: +${xpGained}`, { size: 22, font: 'Inter' }),
         k.color(COLORS.gold),
-        k.pos(k.width() / 2, statsY + statsSpacing * 2),
+        k.pos(leftCenterX, statsY + statsSpacing * 2),
         k.anchor('center'),
     ]);
 
@@ -1362,43 +1440,43 @@ k.scene('results', ({ skillId, level, score, total, streak }) => {
     if (passed) {
         const newProgress = getSkillProgress(skillId);
         k.add([
-            k.text(`Skill Level: ${newProgress.level}`, { size: 20, font: 'Inter' }),
+            k.text(`Skill Level: ${newProgress.level}`, { size: 18, font: 'Inter' }),
             k.color(COLORS.success),
-            k.pos(k.width() / 2, statsY + statsSpacing * 3),
+            k.pos(leftCenterX, statsY + statsSpacing * 3),
             k.anchor('center'),
         ]);
     }
 
     // Buttons
-    const buttonY = 550;
+    const buttonY = 520;
     const hasNextLevel = level < 5;
 
     if (!passed) {
         // Failed: Try Again + Skill Tree
-        createButton('Try Again', k.width() / 2 - 120, buttonY, () => {
+        createButton('Try Again', leftCenterX - 120, buttonY, () => {
             k.go('quiz', { skillId, level });
         }, COLORS.warning);
 
-        createButton('Skill Tree', k.width() / 2 + 120, buttonY, () => {
+        createButton('Skill Tree', leftCenterX + 120, buttonY, () => {
             k.go('skillTree');
         });
     } else if (hasNextLevel) {
         // Passed with next level available: Next Level + Skill Tree
-        createButton('Next Level →', k.width() / 2 - 120, buttonY, () => {
+        createButton('Next Level →', leftCenterX - 120, buttonY, () => {
             k.go('quiz', { skillId, level: level + 1 });
         }, COLORS.success);
 
-        createButton('Skill Tree', k.width() / 2 + 120, buttonY, () => {
+        createButton('Skill Tree', leftCenterX + 120, buttonY, () => {
             k.go('skillTree');
         });
     } else {
         // Passed at max level: just Skill Tree centered
-        createButton('Skill Tree', k.width() / 2, buttonY, () => {
+        createButton('Skill Tree', leftCenterX, buttonY, () => {
             k.go('skillTree');
         });
     }
 
-    createButton('Main Menu', k.width() / 2, buttonY + 60, () => {
+    createButton('Main Menu', leftCenterX, buttonY + 60, () => {
         k.go('menu');
     }, COLORS.bgLight);
 });
