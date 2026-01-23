@@ -1036,6 +1036,9 @@ k.scene('quiz', ({ skillId, level }) => {
     let answered = false;
     let selectedOption = -1;
 
+    // Track answers for review navigation
+    const answersHistory = []; // { selectedIndex, wasCorrect, shuffledOptions }
+
     // Background
     k.add([
         k.rect(k.width(), k.height()),
@@ -1066,6 +1069,85 @@ k.scene('quiz', ({ skillId, level }) => {
     exitBtn.onHover(() => exitBtn.opacity = 1);
     exitBtn.onHoverEnd(() => exitBtn.opacity = 0.9);
     exitBtn.onClick(() => k.go('skillTree'));
+
+    // Previous button (hidden initially, shown after first answer)
+    const prevBtn = k.add([
+        k.rect(70, 36, { radius: 6 }),
+        k.color(COLORS.bgLight),
+        k.pos(110, 22),
+        k.area(),
+        k.opacity(0),
+    ]);
+    const prevBtnText = k.add([
+        k.text('← Prev', { size: 14, font: 'Inter' }),
+        k.color(COLORS.textMuted),
+        k.pos(145, 40),
+        k.anchor('center'),
+        k.opacity(0),
+    ]);
+    prevBtn.onHover(() => { if (prevBtn.opacity > 0) prevBtn.opacity = 1; });
+    prevBtn.onHoverEnd(() => { if (prevBtn.opacity > 0) prevBtn.opacity = 0.9; });
+    prevBtn.onClick(() => {
+        if (currentQuestion > 0 && answersHistory.length > 0) {
+            currentQuestion--;
+            showQuestion();
+        }
+    });
+
+    // Question indicator dots
+    const dotStartX = k.width() / 2 - (quizQuestions.length * 24) / 2;
+    const dotY = 100;
+    const questionDots = [];
+    for (let i = 0; i < quizQuestions.length; i++) {
+        const dot = k.add([
+            k.circle(8),
+            k.color(COLORS.bgLight),
+            k.pos(dotStartX + i * 24, dotY),
+            k.anchor('center'),
+            k.area(),
+            k.outline(1, COLORS.textMuted),
+            { questionIndex: i },
+            'questionDot',
+        ]);
+        dot.onClick(() => {
+            // Only allow clicking on answered questions or current
+            if (i < answersHistory.length || i === currentQuestion) {
+                currentQuestion = i;
+                showQuestion();
+            }
+        });
+        dot.onHover(() => {
+            if (i < answersHistory.length || i === currentQuestion) {
+                dot.outline.width = 2;
+                dot.outline.color = COLORS.primary;
+            }
+        });
+        dot.onHoverEnd(() => {
+            updateDotAppearance(dot, i);
+        });
+        questionDots.push(dot);
+    }
+
+    function updateDotAppearance(dot, index) {
+        if (index === currentQuestion) {
+            dot.color = COLORS.primary;
+            dot.outline.color = COLORS.primary;
+            dot.outline.width = 2;
+        } else if (index < answersHistory.length) {
+            const history = answersHistory[index];
+            dot.color = history.wasCorrect ? COLORS.success : COLORS.danger;
+            dot.outline.color = history.wasCorrect ? COLORS.success : COLORS.danger;
+            dot.outline.width = 1;
+        } else {
+            dot.color = COLORS.bgLight;
+            dot.outline.color = COLORS.textMuted;
+            dot.outline.width = 1;
+        }
+    }
+
+    function updateAllDots() {
+        questionDots.forEach((dot, i) => updateDotAppearance(dot, i));
+    }
 
     // ESC to exit quiz
     k.onKeyPress('escape', () => k.go('skillTree'));
@@ -1150,7 +1232,7 @@ k.scene('quiz', ({ skillId, level }) => {
 
     // Keyboard hint at the bottom
     k.add([
-        k.text('Press 1-4 to answer  •  Space/Enter for next', { size: 14, font: 'Inter' }),
+        k.text('1-4: Answer  •  ←/→: Navigate  •  Space/Enter: Next', { size: 14, font: 'Inter' }),
         k.color(COLORS.textMuted),
         k.pos(k.width() / 2, k.height() - 15),
         k.anchor('center'),
@@ -1236,38 +1318,132 @@ k.scene('quiz', ({ skillId, level }) => {
         }
 
         const q = quizQuestions[currentQuestion];
-        answered = false;
-        selectedOption = -1;
+        const isReviewMode = currentQuestion < answersHistory.length;
+        const history = isReviewMode ? answersHistory[currentQuestion] : null;
+
+        answered = isReviewMode;
+        selectedOption = isReviewMode ? history.selectedIndex : -1;
 
         questionText.text = escapeText(q.q);
         progressText.text = `Question ${currentQuestion + 1}/${quizQuestions.length}`;
 
-        // Shuffle options for display (Fisher-Yates shuffle)
-        const shuffledOptions = q.options.map((opt, i) => ({ text: opt, originalIndex: i }));
-        for (let i = shuffledOptions.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+        // Use stored shuffle for review, or create new shuffle
+        let shuffledOptions;
+        if (isReviewMode) {
+            shuffledOptions = history.shuffledOptions;
+        } else {
+            // Shuffle options for display (Fisher-Yates shuffle)
+            shuffledOptions = q.options.map((opt, i) => ({ text: opt, originalIndex: i }));
+            for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+            }
         }
 
         shuffledOptions.forEach((opt, i) => {
-            optionButtons[i].color = COLORS.bgLight;
-            optionButtons[i].opacity = 1;
             optionTexts[i].text = escapeText(opt.text);
             optionButtons[i].optionIndex = opt.originalIndex;
+
+            if (isReviewMode) {
+                // In review mode, show the answer state
+                const isCorrectOption = opt.originalIndex === q.correct;
+                const wasSelected = i === history.selectedDisplayIndex;
+
+                if (isCorrectOption) {
+                    optionButtons[i].color = COLORS.success;
+                    optionButtons[i].opacity = 1;
+                } else if (wasSelected) {
+                    optionButtons[i].color = COLORS.danger;
+                    optionButtons[i].opacity = 1;
+                } else {
+                    optionButtons[i].color = COLORS.bgLight;
+                    optionButtons[i].opacity = 0.5;
+                }
+            } else {
+                optionButtons[i].color = COLORS.bgLight;
+                optionButtons[i].opacity = 1;
+            }
         });
 
-        feedbackText.opacity = 0;
-        nextBtn.opacity = 0;
-        nextBtnText.opacity = 0;
+        // Update previous button visibility
+        if (currentQuestion > 0) {
+            prevBtn.opacity = 0.9;
+            prevBtnText.opacity = 1;
+        } else {
+            prevBtn.opacity = 0;
+            prevBtnText.opacity = 0;
+        }
 
-        // Hide explanation elements
-        explanationBg.opacity = 0;
-        explanationText.opacity = 0;
-        explanationText.text = '';
-        learnMoreBtn.opacity = 0;
-        learnMoreText.opacity = 0;
-        currentLearnMoreUrl = null;
+        // Update question dots
+        updateAllDots();
+
+        if (isReviewMode) {
+            // Show feedback for reviewed question
+            if (history.wasCorrect) {
+                feedbackText.text = '✓ Correct';
+                feedbackText.color = COLORS.success;
+            } else {
+                feedbackText.text = '✗ Incorrect';
+                feedbackText.color = COLORS.danger;
+            }
+            feedbackText.opacity = 1;
+
+            // Show explanation if available
+            if (q.explanation) {
+                explanationBg.opacity = 1;
+                explanationText.opacity = 1;
+                explanationText.text = escapeText(q.explanation);
+            } else {
+                explanationBg.opacity = 0;
+                explanationText.opacity = 0;
+                explanationText.text = '';
+            }
+
+            // Show Learn More link if available
+            if (q.learnMore && q.learnMore.url) {
+                learnMoreBtn.opacity = 1;
+                learnMoreText.opacity = 1;
+                learnMoreText.text = escapeText(q.learnMore.text) || '📚 Learn More →';
+                currentLearnMoreUrl = q.learnMore.url;
+            } else {
+                learnMoreBtn.opacity = 0;
+                learnMoreText.opacity = 0;
+                currentLearnMoreUrl = null;
+            }
+
+            // Show next button (or "Continue" if more questions ahead)
+            nextBtn.opacity = 1;
+            nextBtnText.opacity = 1;
+            if (currentQuestion === answersHistory.length - 1 && currentQuestion < quizQuestions.length - 1) {
+                nextBtnText.text = 'Continue →';
+            } else if (currentQuestion >= quizQuestions.length - 1) {
+                nextBtnText.text = 'See Results';
+            } else {
+                nextBtnText.text = 'Next →';
+            }
+        } else {
+            feedbackText.opacity = 0;
+            nextBtn.opacity = 0;
+            nextBtnText.opacity = 0;
+
+            // Hide explanation elements
+            explanationBg.opacity = 0;
+            explanationText.opacity = 0;
+            explanationText.text = '';
+            learnMoreBtn.opacity = 0;
+            learnMoreText.opacity = 0;
+            currentLearnMoreUrl = null;
+        }
+
+        // Store shuffled options for potential review later (for new questions)
+        if (!isReviewMode) {
+            // Will be stored when answer is selected
+            currentShuffledOptions = shuffledOptions;
+        }
     }
+
+    // Track current shuffled options for storing in history
+    let currentShuffledOptions = null;
 
     function handleAnswer(btn) {
         if (answered) return;
@@ -1275,6 +1451,17 @@ k.scene('quiz', ({ skillId, level }) => {
 
         const q = quizQuestions[currentQuestion];
         const isCorrect = btn.optionIndex === q.correct;
+
+        // Find display index of selected button
+        const selectedDisplayIndex = optionButtons.indexOf(btn);
+
+        // Store answer in history
+        answersHistory[currentQuestion] = {
+            selectedIndex: btn.optionIndex,
+            selectedDisplayIndex: selectedDisplayIndex,
+            wasCorrect: isCorrect,
+            shuffledOptions: currentShuffledOptions,
+        };
 
         if (isCorrect) {
             score++;
@@ -1312,6 +1499,9 @@ k.scene('quiz', ({ skillId, level }) => {
         nextBtn.opacity = 1;
         nextBtnText.opacity = 1;
 
+        // Update dots to show answer result
+        updateAllDots();
+
         // Show explanation if available
         if (q.explanation) {
             explanationBg.opacity = 1;
@@ -1329,6 +1519,8 @@ k.scene('quiz', ({ skillId, level }) => {
 
         if (currentQuestion >= quizQuestions.length - 1) {
             nextBtnText.text = 'See Results';
+        } else {
+            nextBtnText.text = 'Next →';
         }
     }
 
@@ -1360,6 +1552,20 @@ k.scene('quiz', ({ skillId, level }) => {
     k.onKeyPress('4', () => !answered && handleAnswer(optionButtons[3]));
     k.onKeyPress('enter', () => answered && nextBtn.opacity > 0 && (currentQuestion++, showQuestion()));
     k.onKeyPress('space', () => answered && nextBtn.opacity > 0 && (currentQuestion++, showQuestion()));
+
+    // Navigation shortcuts
+    k.onKeyPress('left', () => {
+        if (currentQuestion > 0 && answersHistory.length > 0) {
+            currentQuestion--;
+            showQuestion();
+        }
+    });
+    k.onKeyPress('right', () => {
+        if (answered && currentQuestion < answersHistory.length) {
+            currentQuestion++;
+            showQuestion();
+        }
+    });
 
     // Start quiz
     if (quizQuestions.length === 0) {
