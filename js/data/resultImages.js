@@ -185,6 +185,44 @@ const RESULT_REACTIONS = {
     ]
 };
 
+// Streak milestone reactions (shown during quiz)
+const STREAK_REACTIONS = {
+    3: [
+        { emoji: '🔥', caption: "On fire!", sound: 'streak' },
+        { emoji: '⚡', caption: "Lightning fast!", sound: 'streak' },
+        { emoji: '💥', caption: "Boom!", sound: 'streak' },
+    ],
+    5: [
+        { emoji: '🌟', caption: "Superstar!", sound: 'streak_big' },
+        { emoji: '🚀', caption: "Unstoppable!", sound: 'streak_big' },
+        { emoji: '💪', caption: "Beast mode!", sound: 'streak_big' },
+        { emoji: '🎯', caption: "Sharpshooter!", sound: 'streak_big' },
+    ],
+    10: [
+        { emoji: '👑', caption: "LEGENDARY!", sound: 'streak_epic' },
+        { emoji: '🏆', caption: "CHAMPION!", sound: 'streak_epic' },
+        { emoji: '🦸', caption: "SUPERHERO!", sound: 'streak_epic' },
+        { emoji: '🔱', caption: "GODLIKE!", sound: 'streak_epic' },
+    ]
+};
+
+// Get streak milestone if applicable
+function getStreakMilestone(streak) {
+    if (streak >= 10 && streak % 5 === 0) return 10; // Every 5 after 10
+    if (streak === 10) return 10;
+    if (streak === 5) return 5;
+    if (streak === 3) return 3;
+    return null;
+}
+
+// Get a random streak reaction for a milestone
+function getStreakReaction(streak) {
+    const milestone = getStreakMilestone(streak);
+    if (!milestone) return null;
+    const pool = STREAK_REACTIONS[milestone] || STREAK_REACTIONS[10];
+    return { ...pool[Math.floor(Math.random() * pool.length)], streak };
+}
+
 // Get a random reaction based on result
 function getResultReaction(passed, perfect) {
     let pool;

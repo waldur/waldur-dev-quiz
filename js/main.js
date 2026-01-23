@@ -47,6 +47,140 @@ const TIER_COLORS = {
 };
 
 // ============================================================================
+// SOUND SYSTEM
+// ============================================================================
+const SoundSystem = {
+    audioContext: null,
+    enabled: true,
+
+    init() {
+        if (this.audioContext) return;
+        try {
+            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+            console.warn('Web Audio API not supported');
+            this.enabled = false;
+        }
+    },
+
+    // Resume audio context (needed after user interaction)
+    resume() {
+        if (this.audioContext && this.audioContext.state === 'suspended') {
+            this.audioContext.resume();
+        }
+    },
+
+    // Play a tone with given frequency and duration
+    playTone(frequency, duration, type = 'sine', volume = 0.3) {
+        if (!this.enabled || !this.audioContext) return;
+        this.resume();
+
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+
+        oscillator.frequency.value = frequency;
+        oscillator.type = type;
+
+        gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + duration);
+    },
+
+    // Play multiple tones in sequence (for melodies)
+    playMelody(notes, baseVolume = 0.3) {
+        if (!this.enabled || !this.audioContext) return;
+        this.resume();
+
+        let time = this.audioContext.currentTime;
+        notes.forEach(note => {
+            const oscillator = this.audioContext.createOscillator();
+            const gainNode = this.audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(this.audioContext.destination);
+
+            oscillator.frequency.value = note.freq;
+            oscillator.type = note.type || 'sine';
+
+            gainNode.gain.setValueAtTime(baseVolume, time);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, time + note.dur);
+
+            oscillator.start(time);
+            oscillator.stop(time + note.dur);
+
+            time += note.dur * 0.9; // Slight overlap for smoother sound
+        });
+    },
+
+    // Predefined sounds
+    correct() {
+        this.playMelody([
+            { freq: 523.25, dur: 0.1 },  // C5
+            { freq: 659.25, dur: 0.15 }, // E5
+        ], 0.25);
+    },
+
+    incorrect() {
+        this.playMelody([
+            { freq: 311.13, dur: 0.15, type: 'triangle' }, // Eb4
+            { freq: 277.18, dur: 0.2, type: 'triangle' },  // Db4
+        ], 0.2);
+    },
+
+    streak() {
+        // 3-streak: quick ascending
+        this.playMelody([
+            { freq: 523.25, dur: 0.08 }, // C5
+            { freq: 659.25, dur: 0.08 }, // E5
+            { freq: 783.99, dur: 0.12 }, // G5
+        ], 0.25);
+    },
+
+    streakBig() {
+        // 5-streak: triumphant fanfare
+        this.playMelody([
+            { freq: 523.25, dur: 0.1 },  // C5
+            { freq: 659.25, dur: 0.1 },  // E5
+            { freq: 783.99, dur: 0.1 },  // G5
+            { freq: 1046.5, dur: 0.2 },  // C6
+        ], 0.3);
+    },
+
+    streakEpic() {
+        // 10-streak: epic fanfare
+        this.playMelody([
+            { freq: 392.00, dur: 0.1 },  // G4
+            { freq: 523.25, dur: 0.1 },  // C5
+            { freq: 659.25, dur: 0.1 },  // E5
+            { freq: 783.99, dur: 0.1 },  // G5
+            { freq: 1046.5, dur: 0.25 }, // C6
+            { freq: 1318.5, dur: 0.3 },  // E6
+        ], 0.35);
+    },
+
+    click() {
+        this.playTone(800, 0.05, 'sine', 0.15);
+    },
+
+    quizComplete() {
+        this.playMelody([
+            { freq: 523.25, dur: 0.15 }, // C5
+            { freq: 659.25, dur: 0.15 }, // E5
+            { freq: 783.99, dur: 0.15 }, // G5
+            { freq: 1046.5, dur: 0.3 },  // C6
+        ], 0.3);
+    }
+};
+
+// Initialize sound system
+SoundSystem.init();
+
+// ============================================================================
 // SCENE: Menu
 // ============================================================================
 k.scene('menu', () => {
@@ -1313,6 +1447,7 @@ k.scene('quiz', ({ skillId, level }) => {
     function showQuestion() {
         if (currentQuestion >= quizQuestions.length) {
             // Quiz complete
+            SoundSystem.quizComplete();
             k.go('results', { skillId, level, score, total: quizQuestions.length, streak });
             return;
         }
@@ -1445,6 +1580,124 @@ k.scene('quiz', ({ skillId, level }) => {
     // Track current shuffled options for storing in history
     let currentShuffledOptions = null;
 
+    // Streak celebration with particles and emoji
+    function showStreakCelebration(reaction) {
+        const centerX = k.width() / 2;
+        const centerY = k.height() / 2 - 50;
+
+        // Big emoji burst
+        const emoji = k.add([
+            k.text(reaction.emoji, { size: 120 }),
+            k.pos(centerX, centerY),
+            k.anchor('center'),
+            k.scale(0.1),
+            k.opacity(1),
+            k.z(200),
+            'celebration',
+        ]);
+
+        // Caption below emoji
+        const caption = k.add([
+            k.text(reaction.caption, { size: 32, font: 'Inter' }),
+            k.color(COLORS.gold),
+            k.pos(centerX, centerY + 90),
+            k.anchor('center'),
+            k.opacity(0),
+            k.z(200),
+            'celebration',
+        ]);
+
+        // Streak count
+        const streakText = k.add([
+            k.text(`${reaction.streak} STREAK!`, { size: 24, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(centerX, centerY + 130),
+            k.anchor('center'),
+            k.opacity(0),
+            k.z(200),
+            'celebration',
+        ]);
+
+        // Animate emoji pop-in
+        let elapsed = 0;
+        const popDuration = 0.3;
+        const holdDuration = 1.2;
+        const fadeDuration = 0.4;
+
+        emoji.onUpdate(() => {
+            elapsed += k.dt();
+
+            if (elapsed < popDuration) {
+                // Pop in with overshoot
+                const t = elapsed / popDuration;
+                const easeOut = 1 - Math.pow(1 - t, 3);
+                const overshoot = Math.sin(t * Math.PI) * 0.3;
+                emoji.scale = k.vec2(easeOut + overshoot);
+                caption.opacity = t;
+                streakText.opacity = t;
+            } else if (elapsed < popDuration + holdDuration) {
+                // Hold with slight pulse
+                const pulseT = (elapsed - popDuration) / holdDuration;
+                const pulse = 1 + Math.sin(pulseT * Math.PI * 4) * 0.05;
+                emoji.scale = k.vec2(pulse);
+            } else if (elapsed < popDuration + holdDuration + fadeDuration) {
+                // Fade out
+                const t = (elapsed - popDuration - holdDuration) / fadeDuration;
+                emoji.opacity = 1 - t;
+                emoji.scale = k.vec2(1 + t * 0.5);
+                caption.opacity = 1 - t;
+                streakText.opacity = 1 - t;
+            } else {
+                // Clean up
+                k.destroy(emoji);
+                k.destroy(caption);
+                k.destroy(streakText);
+            }
+        });
+
+        // Spawn confetti particles
+        const particleCount = reaction.streak >= 10 ? 40 : (reaction.streak >= 5 ? 25 : 15);
+        const colors = [COLORS.gold, COLORS.success, COLORS.primary, COLORS.secondary, k.rgb(255, 100, 150)];
+
+        for (let i = 0; i < particleCount; i++) {
+            const angle = (Math.PI * 2 * i) / particleCount + k.rand(-0.3, 0.3);
+            const speed = k.rand(200, 400);
+            const size = k.rand(4, 10);
+            const color = colors[Math.floor(k.rand(0, colors.length))];
+
+            const particle = k.add([
+                k.rect(size, size, { radius: 2 }),
+                k.color(color),
+                k.pos(centerX, centerY),
+                k.anchor('center'),
+                k.rotate(k.rand(0, 360)),
+                k.opacity(1),
+                k.z(199),
+                {
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 100,
+                    rotSpeed: k.rand(-360, 360),
+                    life: 0,
+                    maxLife: k.rand(0.8, 1.5),
+                },
+                'celebration',
+            ]);
+
+            particle.onUpdate(() => {
+                particle.life += k.dt();
+                particle.pos.x += particle.vx * k.dt();
+                particle.pos.y += particle.vy * k.dt();
+                particle.vy += 400 * k.dt(); // gravity
+                particle.angle += particle.rotSpeed * k.dt();
+                particle.opacity = 1 - (particle.life / particle.maxLife);
+
+                if (particle.life >= particle.maxLife) {
+                    k.destroy(particle);
+                }
+            });
+        }
+    }
+
     function handleAnswer(btn) {
         if (answered) return;
         answered = true;
@@ -1469,6 +1722,23 @@ k.scene('quiz', ({ skillId, level }) => {
             btn.color = COLORS.success;
             feedbackText.text = streak > 1 ? `✓ Correct! Streak: ${streak}` : '✓ Correct!';
             feedbackText.color = COLORS.success;
+
+            // Play sound and check for streak milestone
+            const streakReaction = getStreakReaction(streak);
+            if (streakReaction) {
+                // Play streak sound
+                if (streakReaction.sound === 'streak_epic') {
+                    SoundSystem.streakEpic();
+                } else if (streakReaction.sound === 'streak_big') {
+                    SoundSystem.streakBig();
+                } else {
+                    SoundSystem.streak();
+                }
+                // Show streak celebration
+                showStreakCelebration(streakReaction);
+            } else {
+                SoundSystem.correct();
+            }
         } else {
             streak = 0;
             btn.color = COLORS.danger;
@@ -1480,6 +1750,7 @@ k.scene('quiz', ({ skillId, level }) => {
             });
             feedbackText.text = '✗ Incorrect';
             feedbackText.color = COLORS.danger;
+            SoundSystem.incorrect();
         }
 
         recordAnswer(isCorrect);
