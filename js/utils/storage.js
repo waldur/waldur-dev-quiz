@@ -17,7 +17,8 @@ const defaultState = {
     lastPlayed: null,
     settings: {
         soundEnabled: true,
-        musicEnabled: true
+        musicEnabled: true,
+        idkfa: false // Unlock all skills and levels
     }
 };
 

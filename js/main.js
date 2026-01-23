@@ -46,6 +46,25 @@ const TIER_COLORS = {
     specialization: k.rgb(245, 158, 11),
 };
 
+// Funny override phrases for locked skills
+const SKILL_OVERRIDE_PHRASES = [
+    "I've been doing this since before Docker was cool",
+    "Trust me, I read the docs... once",
+    "I learned this from Stack Overflow's finest",
+    "My rubber duck explained it perfectly",
+    "I watched a 10-minute YouTube tutorial",
+    "I know a guy who knows a guy",
+    "Works on my machine™",
+    "I can copy-paste with the best of them",
+    "ChatGPT said I'm basically an expert",
+    "I've seen this error before... probably",
+    "I have opinions about tabs vs spaces",
+    "I once fixed a bug by accident",
+    "My code compiles, therefore I am",
+    "I've deployed to production on Friday",
+    "I know what YAML stands for... mostly",
+];
+
 // ============================================================================
 // SOUND SYSTEM
 // ============================================================================
@@ -877,7 +896,7 @@ k.scene('skillTree', () => {
         k.get('skillNode').forEach(n => k.destroy(n));
         k.get('skillText').forEach(n => k.destroy(n));
 
-        const tierSkills = getSkillsByTier(selectedTier).filter(s => hasQuestions(s.id));
+        const tierSkills = getSkillsByTier(selectedTier);
         const cols = 3;
         const nodeWidth = (skillsAreaWidth - 80) / cols;
         const nodeHeight = 80;
@@ -895,34 +914,43 @@ k.scene('skillTree', () => {
             // Skip if outside visible area
             if (y < 150 || y > k.height() - 50) return;
 
+            const hasQ = hasQuestions(skill.id);
             const progress = getSkillProgress(skill.id);
             const levels = getAvailableLevels(skill.id);
-            const maxLevel = levels.length > 0 ? Math.max(...levels) : 1;
+            const maxLevel = levels.length > 0 ? Math.max(...levels) : 5;
 
             // Node background
             const node = k.add([
                 k.rect(nodeWidth, nodeHeight, { radius: 8 }),
-                k.color(progress.level > 0 ? TIER_COLORS[selectedTier] : COLORS.bgLight),
+                k.color(hasQ ? (progress.level > 0 ? TIER_COLORS[selectedTier] : COLORS.bgLight) : k.rgb(25, 25, 45)),
                 k.pos(x, y),
                 k.area(),
-                k.opacity(progress.level > 0 ? 0.9 : 0.6),
-                { skillId: skill.id },
+                k.opacity(hasQ ? (progress.level > 0 ? 0.9 : 0.6) : 0.4),
+                { skillId: skill.id, hasQuestions: hasQ },
                 'skillNode',
             ]);
 
             // Skill name
             k.add([
                 k.text(skill.name, { size: 13, width: nodeWidth - 20, font: 'Inter' }),
-                k.color(COLORS.text),
+                k.color(hasQ ? COLORS.text : COLORS.textMuted),
                 k.pos(x + 10, y + 10),
                 'skillText',
             ]);
 
-            // Level indicator
-            const levelText = progress.level > 0 ? `Lv.${progress.level}/${maxLevel}` : 'Not Started';
+            // Level indicator or Locked
+            let levelText;
+            let levelColor;
+            if (!hasQ) {
+                levelText = '🔒 Coming Soon';
+                levelColor = COLORS.textMuted;
+            } else {
+                levelText = progress.level > 0 ? `Lv.${progress.level}/${maxLevel}` : 'Not Started';
+                levelColor = progress.level > 0 ? COLORS.gold : COLORS.textMuted;
+            }
             k.add([
                 k.text(levelText, { size: 11, font: 'Inter' }),
-                k.color(progress.level > 0 ? COLORS.gold : COLORS.textMuted),
+                k.color(levelColor),
                 k.pos(x + 10, y + 35),
                 'skillText',
             ]);
@@ -937,28 +965,173 @@ k.scene('skillTree', () => {
                 'skillText',
             ]);
 
-            const fillWidth = (progress.level / maxLevel) * barWidth;
-            if (fillWidth > 0) {
-                k.add([
-                    k.rect(fillWidth, barHeight, { radius: 4 }),
-                    k.color(COLORS.success),
-                    k.pos(x + 10, y + nodeHeight - 18),
-                    'skillText',
-                ]);
+            if (hasQ) {
+                const fillWidth = (progress.level / maxLevel) * barWidth;
+                if (fillWidth > 0) {
+                    k.add([
+                        k.rect(fillWidth, barHeight, { radius: 4 }),
+                        k.color(COLORS.success),
+                        k.pos(x + 10, y + nodeHeight - 18),
+                        'skillText',
+                    ]);
+                }
             }
 
-            // Click handler
+            // Click handler - all skills are clickable now
             node.onClick(() => {
-                k.go('skillDetail', { skillId: skill.id });
+                if (hasQ) {
+                    k.go('skillDetail', { skillId: skill.id });
+                } else {
+                    showLockedSkillPopup(skill);
+                }
             });
 
             // Hover effect
             node.onHover(() => {
-                node.opacity = 1;
+                node.opacity = hasQ ? 1 : 0.6;
             });
             node.onHoverEnd(() => {
-                node.opacity = progress.level > 0 ? 0.9 : 0.6;
+                node.opacity = hasQ ? (progress.level > 0 ? 0.9 : 0.6) : 0.4;
             });
+        });
+    }
+
+    // Popup for locked skills
+    function showLockedSkillPopup(skill) {
+        // Destroy any existing popup
+        k.get('lockedPopup').forEach(p => k.destroy(p));
+
+        const popupWidth = 450;
+        const popupHeight = 280;
+        const popupX = k.width() / 2 - popupWidth / 2;
+        const popupY = k.height() / 2 - popupHeight / 2;
+
+        // Backdrop
+        const backdrop = k.add([
+            k.rect(k.width(), k.height()),
+            k.color(0, 0, 0),
+            k.opacity(0.7),
+            k.pos(0, 0),
+            k.area(),
+            k.z(100),
+            'lockedPopup',
+        ]);
+
+        // Popup panel
+        k.add([
+            k.rect(popupWidth, popupHeight, { radius: 12 }),
+            k.color(COLORS.bgLight),
+            k.pos(popupX, popupY),
+            k.outline(2, COLORS.warning),
+            k.z(101),
+            'lockedPopup',
+        ]);
+
+        // Title
+        k.add([
+            k.text(`🔒 ${skill.name}`, { size: 24, font: 'Inter' }),
+            k.color(COLORS.warning),
+            k.pos(k.width() / 2, popupY + 35),
+            k.anchor('center'),
+            k.z(102),
+            'lockedPopup',
+        ]);
+
+        // Message
+        k.add([
+            k.text('Questions for this skill are being prepared.\nCheck back soon!', { size: 16, font: 'Inter', align: 'center' }),
+            k.color(COLORS.textMuted),
+            k.pos(k.width() / 2, popupY + 85),
+            k.anchor('center'),
+            k.z(102),
+            'lockedPopup',
+        ]);
+
+        // Divider
+        k.add([
+            k.text('— or —', { size: 14, font: 'Inter' }),
+            k.color(COLORS.textMuted),
+            k.pos(k.width() / 2, popupY + 135),
+            k.anchor('center'),
+            k.z(102),
+            'lockedPopup',
+        ]);
+
+        // Override button
+        const overrideBtn = k.add([
+            k.rect(300, 50, { radius: 8 }),
+            k.color(COLORS.primary),
+            k.pos(k.width() / 2 - 150, popupY + 160),
+            k.area(),
+            k.z(102),
+            'lockedPopup',
+        ]);
+
+        k.add([
+            k.text("I already know this stuff!", { size: 16, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(k.width() / 2, popupY + 185),
+            k.anchor('center'),
+            k.z(103),
+            'lockedPopup',
+        ]);
+
+        overrideBtn.onHover(() => overrideBtn.color = k.rgb(120, 120, 255));
+        overrideBtn.onHoverEnd(() => overrideBtn.color = COLORS.primary);
+        overrideBtn.onClick(() => {
+            // Show funny phrase and go to skill detail
+            const phrase = SKILL_OVERRIDE_PHRASES[Math.floor(Math.random() * SKILL_OVERRIDE_PHRASES.length)];
+            k.get('lockedPopup').forEach(p => k.destroy(p));
+
+            // Show the phrase briefly
+            const msg = k.add([
+                k.text(`"${phrase}"`, { size: 20, font: 'Inter', width: 500 }),
+                k.color(COLORS.gold),
+                k.pos(k.width() / 2, k.height() / 2),
+                k.anchor('center'),
+                k.z(200),
+            ]);
+
+            k.wait(1.5, () => {
+                k.destroy(msg);
+                k.go('skillDetail', { skillId: skill.id });
+            });
+        });
+
+        // Close button
+        const closeBtn = k.add([
+            k.rect(100, 36, { radius: 6 }),
+            k.color(COLORS.bg),
+            k.pos(k.width() / 2 - 50, popupY + 225),
+            k.area(),
+            k.z(102),
+            'lockedPopup',
+        ]);
+
+        k.add([
+            k.text('Close', { size: 14, font: 'Inter' }),
+            k.color(COLORS.textMuted),
+            k.pos(k.width() / 2, popupY + 243),
+            k.anchor('center'),
+            k.z(103),
+            'lockedPopup',
+        ]);
+
+        closeBtn.onHover(() => closeBtn.color = COLORS.bgLight);
+        closeBtn.onHoverEnd(() => closeBtn.color = COLORS.bg);
+        closeBtn.onClick(() => {
+            k.get('lockedPopup').forEach(p => k.destroy(p));
+        });
+
+        // Close on backdrop click
+        backdrop.onClick(() => {
+            k.get('lockedPopup').forEach(p => k.destroy(p));
+        });
+
+        // ESC to close popup
+        const escHandler = k.onKeyPress('escape', () => {
+            k.get('lockedPopup').forEach(p => k.destroy(p));
+            escHandler.cancel();
         });
     }
 
@@ -978,7 +1151,7 @@ k.scene('skillTree', () => {
 
     // Scroll handling
     k.onScroll((delta) => {
-        const tierSkills = getSkillsByTier(selectedTier).filter(s => hasQuestions(s.id));
+        const tierSkills = getSkillsByTier(selectedTier);
         const maxScroll = Math.max(0, Math.ceil(tierSkills.length / 3) * 95 - 400);
         scrollOffset = Math.max(0, Math.min(maxScroll, scrollOffset + delta.y * 30));
         renderSkills();
@@ -1003,6 +1176,7 @@ k.scene('skillTree', () => {
 k.scene('skillDetail', ({ skillId }) => {
     const skill = skills.find(s => s.id === skillId);
     const progress = getSkillProgress(skillId);
+    // Only show levels that actually have questions
     const levels = getAvailableLevels(skillId);
     const tierInfo = getTierInfo(skill.tier);
 
@@ -1063,91 +1237,107 @@ k.scene('skillDetail', ({ skillId }) => {
         k.anchor('center'),
     ]);
 
-    // Current progress
-    k.add([
-        k.text('Your Progress', { size: 24, font: 'Inter' }),
-        k.color(COLORS.text),
-        k.pos(k.width() / 2, 220),
-        k.anchor('center'),
-    ]);
-
     const currentLevel = progress.level || 0;
-    k.add([
-        k.text(`Level ${currentLevel} / ${Math.max(...levels, 5)}`, { size: 32, font: 'Inter' }),
-        k.color(COLORS.gold),
-        k.pos(k.width() / 2, 260),
-        k.anchor('center'),
-    ]);
+    const maxLevel = levels.length > 0 ? Math.max(...levels) : 0;
 
-    // Level buttons
-    k.add([
-        k.text('Choose Level to Attempt:', { size: 20, font: 'Inter' }),
-        k.color(COLORS.text),
-        k.pos(k.width() / 2, 330),
-        k.anchor('center'),
-    ]);
-
-    const buttonStartX = k.width() / 2 - (levels.length * 70) / 2;
-    levels.forEach((level, i) => {
-        const isUnlocked = level <= currentLevel + 1;
-        const isPassed = level <= currentLevel;
-
-        const btn = k.add([
-            k.rect(60, 60, { radius: 8 }),
-            k.color(isPassed ? COLORS.success : (isUnlocked ? COLORS.primary : COLORS.bgLight)),
-            k.pos(buttonStartX + i * 70, 380),
-            k.area(),
-            k.opacity(isUnlocked ? 1 : 0.5),
-        ]);
-
+    // Level buttons or "No questions" message
+    if (levels.length === 0) {
         k.add([
-            k.text(level.toString(), { size: 24, font: 'Inter' }),
+            k.text('📭 No Questions Yet', { size: 28, font: 'Inter' }),
+            k.color(COLORS.textMuted),
+            k.pos(k.width() / 2, 250),
+            k.anchor('center'),
+        ]);
+        k.add([
+            k.text('Questions for this skill are being prepared.', { size: 16, font: 'Inter' }),
+            k.color(COLORS.textMuted),
+            k.pos(k.width() / 2, 290),
+            k.anchor('center'),
+        ]);
+    } else {
+        // Current progress
+        k.add([
+            k.text('Your Progress', { size: 24, font: 'Inter' }),
             k.color(COLORS.text),
-            k.pos(buttonStartX + i * 70 + 30, 410),
+            k.pos(k.width() / 2, 220),
             k.anchor('center'),
         ]);
-
-        if (isUnlocked) {
-            btn.onClick(() => {
-                k.go('quiz', { skillId, level });
-            });
-
-            btn.onHover(() => btn.opacity = 0.8);
-            btn.onHoverEnd(() => btn.opacity = 1);
-        }
-    });
-
-    // Stats
-    k.add([
-        k.text(`Attempts: ${progress.attempts || 0} | XP Earned: ${progress.xp || 0}`, { size: 16, font: 'Inter' }),
-        k.color(COLORS.textMuted),
-        k.pos(k.width() / 2, 480),
-        k.anchor('center'),
-    ]);
-
-    // Start button for next level
-    const nextLevel = currentLevel + 1;
-    const canStartNext = currentLevel < Math.max(...levels) && levels.includes(nextLevel);
-
-    if (canStartNext) {
-        createButton(`Start Level ${nextLevel}`, k.width() / 2, 550, () => {
-            k.go('quiz', { skillId, level: nextLevel });
-        }, COLORS.success);
-
-        // Keyboard shortcuts to start
-        k.onKeyPress('space', () => k.go('quiz', { skillId, level: nextLevel }));
-        k.onKeyPress('enter', () => k.go('quiz', { skillId, level: nextLevel }));
-    } else if (currentLevel >= Math.max(...levels)) {
         k.add([
-            k.text('✓ All levels completed!', { size: 20, font: 'Inter' }),
-            k.color(COLORS.success),
-            k.pos(k.width() / 2, 550),
+            k.text(`Level ${currentLevel} / ${maxLevel}`, { size: 32, font: 'Inter' }),
+            k.color(COLORS.gold),
+            k.pos(k.width() / 2, 260),
             k.anchor('center'),
         ]);
+        k.add([
+            k.text('Choose Level to Attempt:', { size: 20, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(k.width() / 2, 330),
+            k.anchor('center'),
+        ]);
+
+        const buttonStartX = k.width() / 2 - (levels.length * 70) / 2;
+        levels.forEach((level, i) => {
+            const isUnlocked = level <= currentLevel + 1;
+            const isPassed = level <= currentLevel;
+
+            const btn = k.add([
+                k.rect(60, 60, { radius: 8 }),
+                k.color(isPassed ? COLORS.success : (isUnlocked ? COLORS.primary : COLORS.bgLight)),
+                k.pos(buttonStartX + i * 70, 380),
+                k.area(),
+                k.opacity(isUnlocked ? 1 : 0.5),
+            ]);
+
+            k.add([
+                k.text(level.toString(), { size: 24, font: 'Inter' }),
+                k.color(COLORS.text),
+                k.pos(buttonStartX + i * 70 + 30, 410),
+                k.anchor('center'),
+            ]);
+
+            if (isUnlocked) {
+                btn.onClick(() => {
+                    k.go('quiz', { skillId, level });
+                });
+
+                btn.onHover(() => btn.opacity = 0.8);
+                btn.onHoverEnd(() => btn.opacity = 1);
+            }
+        });
+    }
+
+    // Stats and actions (only if skill has questions)
+    if (levels.length > 0) {
+        k.add([
+            k.text(`Attempts: ${progress.attempts || 0} | XP Earned: ${progress.xp || 0}`, { size: 16, font: 'Inter' }),
+            k.color(COLORS.textMuted),
+            k.pos(k.width() / 2, 480),
+            k.anchor('center'),
+        ]);
+        const nextLevel = currentLevel + 1;
+        const canStartNext = currentLevel < maxLevel && levels.includes(nextLevel);
+
+        if (canStartNext) {
+            createButton(`Start Level ${nextLevel}`, k.width() / 2, 550, () => {
+                k.go('quiz', { skillId, level: nextLevel });
+            }, COLORS.success);
+
+            // Keyboard shortcuts to start
+            k.onKeyPress('space', () => k.go('quiz', { skillId, level: nextLevel }));
+            k.onKeyPress('enter', () => k.go('quiz', { skillId, level: nextLevel }));
+        } else if (currentLevel >= maxLevel) {
+            k.add([
+                k.text('✓ All levels completed!', { size: 20, font: 'Inter' }),
+                k.color(COLORS.success),
+                k.pos(k.width() / 2, 550),
+                k.anchor('center'),
+            ]);
+        }
     }
 
     // Keyboard hint footer
-    const hintText = canStartNext ? 'ESC/B: Back  •  Space/Enter: Start' : 'ESC/B: Back';
+    const canStart = levels.length > 0 && currentLevel < maxLevel && levels.includes(currentLevel + 1);
+    const hintText = canStart ? 'ESC/B: Back  •  Space/Enter: Start' : 'ESC/B: Back';
     k.add([
         k.text(hintText, { size: 13, font: 'Inter' }),
         k.color(COLORS.textMuted),
@@ -1289,7 +1479,7 @@ k.scene('quiz', ({ skillId, level }) => {
     k.add([
         k.text(`${skill.name} - Level ${level}`, { size: 24, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(115, 25),
+        k.pos(190, 25),
     ]);
 
     // Progress indicator
@@ -1841,6 +2031,10 @@ k.scene('quiz', ({ skillId, level }) => {
     // Start quiz
     if (quizQuestions.length === 0) {
         questionText.text = 'No questions available for this skill level yet!';
+        // Hide all option buttons when no questions
+        optionButtons.forEach(btn => btn.hidden = true);
+        optionTexts.forEach(txt => txt.hidden = true);
+        optionNumbers.forEach(n => { n.badge.hidden = true; n.text.hidden = true; });
         createButton('Back to Skill Tree', k.width() / 2, 400, () => k.go('skillTree'));
     } else {
         showQuestion();

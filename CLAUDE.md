@@ -109,7 +109,7 @@ Add to `js/data/questions.js` under the appropriate skill ID and level:
     1: [
         {
             q: "Your question text?",
-            options: ["Correct answer", "Wrong 1", "Wrong 2", "Wrong 3"],
+            options: ["Correct answer", "Plausible wrong 1", "Plausible wrong 2", "Plausible wrong 3"],
             correct: 0,
             explanation: "Why the correct answer is right and/or why others are wrong.",
             learnMore: {
@@ -122,10 +122,48 @@ Add to `js/data/questions.js` under the appropriate skill ID and level:
 }
 ```
 
+### Question Writing Rules
+
+**CRITICAL: All answer options must be plausible and similar in style:**
+- All 4 options should be similar in length (don't make wrong answers obviously shorter)
+- Most wrong answers should be believable - things a learner might actually think
+- Occasional joke/absurd answers are fine for fun, but use sparingly (max 1 per question)
+- The correct answer should NOT be obvious just by being longer or more detailed
+
+**Good example:**
+```javascript
+{
+    q: "What does 'docker ps' show?",
+    options: [
+        "List of currently running containers",
+        "List of all available Docker images",
+        "Docker process and memory statistics",
+        "List of Docker networks and volumes"
+    ],
+    correct: 0
+}
+```
+
+**Bad example (wrong answers too short/obvious):**
+```javascript
+{
+    q: "What does 'docker ps' show?",
+    options: [
+        "Running containers",
+        "Images",           // Too short
+        "Nothing",          // Absurd
+        "Errors"            // Too vague
+    ],
+    correct: 0
+}
+```
+
+**Other guidelines:**
 - `explanation` and `learnMore` are optional but highly recommended for learning
 - Use validated, stable URLs (official docs preferred over blog posts)
 - Higher levels should have harder questions
 - Each quiz pulls 5 random questions from the level
+- Vary which position (0-3) the correct answer is in
 
 ## Adding New Skills
 
