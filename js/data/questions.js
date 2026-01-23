@@ -665,7 +665,7 @@ const questions = {
         2: [
             {
                 q: "What's the difference between a list and a tuple?",
-                options: ["Lists are mutable, tuples are immutable", "No difference", "Tuples are faster", "Lists store strings only"],
+                options: ["Lists are mutable, tuples are immutable", "Lists use more memory than tuples always", "Tuples can only hold two elements", "Lists are ordered, tuples are unordered"],
                 correct: 0,
                 explanation: "Lists can be modified after creation (mutable), tuples cannot (immutable). Use tuples for fixed data, lists for dynamic collections.",
                 learnMore: { url: "https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences", text: "📚 Tuples vs Lists" }
@@ -732,14 +732,14 @@ const questions = {
             },
             {
                 q: "What's the difference between a generator and a list?",
-                options: ["Generator yields items lazily, uses less memory", "Same thing", "List is lazy", "Generator stores all items"],
+                options: ["Generator yields items lazily, uses less memory", "Generators can be indexed, lists cannot", "Lists can only iterate once, generators multiple times", "Generators store all items in memory upfront"],
                 correct: 0,
                 explanation: "Generators produce values on-demand with 'yield'. Memory efficient for large sequences. Can only iterate once. Use (x for x in items) for generator expressions.",
                 learnMore: { url: "https://docs.python.org/3/howto/functional.html#generators", text: "📚 Python Generators" }
             },
             {
                 q: "What does 'with open()' do differently than just 'open()'?",
-                options: ["Automatically closes file, handles exceptions", "Opens faster", "Reads entire file", "No difference"],
+                options: ["Automatically closes file, handles exceptions", "Opens file in binary mode by default", "Allows multiple files to be opened at once", "Provides buffered reading for better performance"],
                 correct: 0,
                 explanation: "'with' is a context manager that ensures cleanup (file.close()) even if exceptions occur. Always use 'with' for files, locks, connections.",
                 learnMore: { url: "https://docs.python.org/3/reference/compound_stmts.html#with", text: "📚 Context Managers" }
@@ -769,7 +769,7 @@ const questions = {
             },
             {
                 q: "What's the difference between @staticmethod and @classmethod?",
-                options: ["staticmethod has no self/cls, classmethod receives class", "Same thing", "staticmethod is faster", "classmethod is deprecated"],
+                options: ["staticmethod has no self/cls, classmethod receives class", "classmethod can only be called on instances", "staticmethod can access instance attributes", "classmethod is used for private methods only"],
                 correct: 0,
                 explanation: "@staticmethod: no automatic first argument (like plain function). @classmethod: receives class as first arg (cls), useful for alternative constructors.",
                 learnMore: { url: "https://docs.python.org/3/library/functions.html#classmethod", text: "📚 classmethod/staticmethod" }
@@ -788,7 +788,7 @@ const questions = {
         1: [
             {
                 q: "What is Django?",
-                options: ["Python web framework", "JavaScript library", "Database", "Server software"],
+                options: ["Python web framework with batteries included", "Standalone Python ORM for databases", "Python template engine for HTML generation", "Python package manager and build tool"],
                 correct: 0,
                 explanation: "Django is a high-level Python web framework with 'batteries included': ORM, admin, auth, forms. Follows MTV (Model-Template-View) pattern.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/intro/overview/", text: "📚 Django Overview" }
@@ -802,7 +802,7 @@ const questions = {
             },
             {
                 q: "What is a Django model?",
-                options: ["Python class representing a database table", "HTML template", "URL pattern", "View function"],
+                options: ["Python class representing a database table", "Configuration for URL routing and dispatch", "Function that handles HTTP requests", "File containing HTML with template tags"],
                 correct: 0,
                 explanation: "Models define database schema as Python classes. Each model class = one table. Attributes = columns. Django generates SQL from models automatically.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/db/models/", text: "📚 Django Models" }
@@ -841,7 +841,7 @@ const questions = {
             },
             {
                 q: "What does a Django view do?",
-                options: ["Handles HTTP request and returns response", "Displays HTML", "Stores data", "Routes URLs"],
+                options: ["Handles HTTP request and returns response", "Defines database schema as Python class", "Renders HTML with dynamic content", "Maps URL patterns to handlers"],
                 correct: 0,
                 explanation: "Views receive HTTP requests, process data (query DB, validate forms), and return HTTP responses. The 'controller' in MVC terms.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/http/views/", text: "📚 Django Views" }
@@ -864,21 +864,21 @@ const questions = {
         4: [
             {
                 q: "What's the difference between ForeignKey and ManyToManyField?",
-                options: ["FK is one-to-many, M2M is many-to-many relationship", "No difference", "FK is faster", "M2M creates one table"],
+                options: ["FK is one-to-many, M2M is many-to-many relationship", "FK requires through table, M2M doesn't", "M2M can only link to same model type", "FK is for optional fields, M2M for required"],
                 correct: 0,
                 explanation: "ForeignKey: one object links to one (many-to-one). ManyToManyField: many objects link to many (creates join table automatically).",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/db/examples/many_to_many/", text: "📚 M2M Relationships" }
             },
             {
                 q: "What are Django signals used for?",
-                options: ["Notify when certain actions occur", "Network communication", "User alerts", "Error logging"],
+                options: ["Notify when certain actions occur in framework", "Send real-time updates to frontend clients", "Handle asynchronous background tasks", "Implement inter-process communication"],
                 correct: 0,
                 explanation: "Signals allow decoupled apps to react to events (pre_save, post_save, etc.). Use sparingly - they can make code hard to follow. Consider overriding save() instead.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/signals/", text: "📚 Django Signals" }
             },
             {
                 q: "What's middleware in Django?",
-                options: ["Hooks into request/response processing", "Database layer", "Template engine", "Static files"],
+                options: ["Hooks into request/response processing globally", "ORM layer that connects models to database", "Background task queue for async operations", "Caching layer for template rendering"],
                 correct: 0,
                 explanation: "Middleware processes requests/responses globally. Runs before views (request) and after (response). Used for: auth, sessions, CSRF, compression.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/http/middleware/", text: "📚 Django Middleware" }
@@ -901,7 +901,7 @@ const questions = {
             },
             {
                 q: "What's the difference between select_related and prefetch_related?",
-                options: ["select_related uses JOIN, prefetch_related uses separate query", "Same thing", "prefetch uses JOIN", "select is for M2M"],
+                options: ["select_related uses JOIN, prefetch_related uses separate query", "select_related is for M2M, prefetch_related for FK", "prefetch_related uses SQL JOIN for efficiency", "select_related works with reverse foreign keys"],
                 correct: 0,
                 explanation: "select_related: SQL JOIN, good for ForeignKey/OneToOne (single-valued). prefetch_related: separate query + Python merge, required for M2M/reverse FK.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/ref/models/querysets/#prefetch-related", text: "📚 prefetch_related" }
@@ -934,21 +934,21 @@ const questions = {
         1: [
             {
                 q: "What is a React component?",
-                options: ["Reusable UI building block", "CSS file", "Database model", "Server route"],
+                options: ["Reusable UI building block that returns JSX", "A hook that manages application state", "A function that fetches data from APIs", "A module that handles browser routing"],
                 correct: 0,
                 explanation: "Components are independent, reusable pieces of UI. They accept props and return React elements (JSX). Can be functions or classes (functions preferred).",
                 learnMore: { url: "https://react.dev/learn/your-first-component", text: "📚 React Components" }
             },
             {
                 q: "What is JSX?",
-                options: ["JavaScript syntax extension for writing HTML-like code", "JSON extension", "Java syntax", "CSS preprocessor"],
+                options: ["JavaScript syntax extension for writing HTML-like code", "A separate templating language compiled at runtime", "React's replacement for HTML in the browser", "A way to embed CSS directly in JavaScript"],
                 correct: 0,
                 explanation: "JSX lets you write HTML-like markup in JavaScript. It's compiled to React.createElement() calls. Not required but makes code more readable.",
                 learnMore: { url: "https://react.dev/learn/writing-markup-with-jsx", text: "📚 JSX Guide" }
             },
             {
                 q: "How do you pass data to a child component?",
-                options: ["Using props", "Using state", "Using context only", "Using imports"],
+                options: ["Using props", "Using useState in the child", "Using global variables", "Using event emitters"],
                 correct: 0,
                 explanation: "Props (properties) pass data from parent to child. They're read-only in the child. Like function arguments for components.",
                 learnMore: { url: "https://react.dev/learn/passing-props-to-a-component", text: "📚 Passing Props" }
@@ -957,21 +957,21 @@ const questions = {
         2: [
             {
                 q: "What is useState hook for?",
-                options: ["Managing component state", "Fetching data", "Routing", "Styling"],
+                options: ["Managing component state that triggers re-renders", "Subscribing to external data sources", "Caching expensive computations", "Accessing DOM elements directly"],
                 correct: 0,
                 explanation: "useState adds state to functional components. Returns [value, setValue]. When state changes, component re-renders. Initial value passed as argument.",
                 learnMore: { url: "https://react.dev/reference/react/useState", text: "📚 useState Hook" }
             },
             {
                 q: "When does useEffect run?",
-                options: ["After render, when dependencies change", "Before render", "Only on mount", "Never automatically"],
+                options: ["After render, when dependencies change", "Before the component renders", "Only during the initial mount", "Synchronously during render"],
                 correct: 0,
                 explanation: "useEffect runs after render. Dependencies array controls when: [] = mount only, [dep] = when dep changes, no array = every render. Return cleanup function.",
                 learnMore: { url: "https://react.dev/reference/react/useEffect", text: "📚 useEffect Hook" }
             },
             {
                 q: "What causes a React component to re-render?",
-                options: ["State or props change", "Time passes", "User scrolls", "Browser resize only"],
+                options: ["State or props change", "Any variable in the component changes", "A setTimeout callback fires", "The component's functions are called"],
                 correct: 0,
                 explanation: "Components re-render when: their state changes, their props change, or their parent re-renders. React batches updates for performance.",
                 learnMore: { url: "https://react.dev/learn/render-and-commit", text: "📚 Render & Commit" }
@@ -980,28 +980,28 @@ const questions = {
         3: [
             {
                 q: "What's the purpose of the key prop in lists?",
-                options: ["Helps React track which items changed", "Styling", "Accessibility", "SEO"],
+                options: ["Helps React track which items changed", "Required for list items to render", "Improves accessibility for screen readers", "Enables CSS animations on list items"],
                 correct: 0,
                 explanation: "Keys help React identify which items changed/added/removed. Use stable, unique IDs (not array index). Without keys, React re-renders entire list.",
                 learnMore: { url: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key", text: "📚 List Keys" }
             },
             {
                 q: "What is prop drilling?",
-                options: ["Passing props through many component levels", "Database query", "API call pattern", "CSS technique"],
+                options: ["Passing props through many component levels", "Validating props with PropTypes", "Destructuring props in function parameters", "Setting default values for props"],
                 correct: 0,
                 explanation: "Prop drilling: passing props through intermediate components that don't use them. Makes code hard to maintain. Context or state management libraries solve this.",
                 learnMore: { url: "https://react.dev/learn/passing-data-deeply-with-context", text: "📚 Context API" }
             },
             {
                 q: "What does useContext solve?",
-                options: ["Avoids prop drilling by sharing state", "API calls", "Routing", "Styling"],
+                options: ["Avoids prop drilling by sharing state globally", "Manages local component state", "Handles side effects like data fetching", "Memoizes expensive calculations"],
                 correct: 0,
                 explanation: "Context provides a way to pass data through the component tree without prop drilling. Create with createContext(), provide value at top, consume with useContext.",
                 learnMore: { url: "https://react.dev/reference/react/useContext", text: "📚 useContext Hook" }
             },
             {
                 q: "What's the difference between state and props?",
-                options: ["State is internal and mutable, props come from parent", "Same thing", "Props are mutable", "State comes from parent"],
+                options: ["State is internal and mutable, props come from parent", "State is for strings, props for objects", "Props trigger re-renders, state doesn't", "State is shared between components, props are local"],
                 correct: 0,
                 explanation: "Props: external, passed from parent, read-only. State: internal, managed by component, triggers re-render when changed. Both cause re-renders.",
                 learnMore: { url: "https://react.dev/learn/state-a-components-memory", text: "📚 State vs Props" }
@@ -1010,28 +1010,28 @@ const questions = {
         4: [
             {
                 q: "When would you use useCallback?",
-                options: ["Memoize functions to prevent unnecessary re-renders", "Make API calls", "Handle forms", "Route navigation"],
+                options: ["Memoize functions to prevent unnecessary re-renders", "Execute callbacks after state updates", "Handle async operations in effects", "Create event handlers for DOM elements"],
                 correct: 0,
                 explanation: "useCallback memoizes functions so they don't change reference on every render. Useful when passing callbacks to memoized children (React.memo).",
                 learnMore: { url: "https://react.dev/reference/react/useCallback", text: "📚 useCallback Hook" }
             },
             {
                 q: "What's the difference between controlled and uncontrolled components?",
-                options: ["Controlled: React manages state; Uncontrolled: DOM manages state", "No difference", "Controlled is faster", "Uncontrolled is newer"],
+                options: ["Controlled: React manages state; Uncontrolled: DOM manages state", "Controlled components use hooks, uncontrolled use classes", "Controlled are functional, uncontrolled are class-based", "Controlled use refs, uncontrolled use state"],
                 correct: 0,
                 explanation: "Controlled: form value in React state, onChange updates it. Uncontrolled: DOM holds the value, use ref to read it. Controlled is usually preferred.",
                 learnMore: { url: "https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components", text: "📚 Controlled Components" }
             },
             {
                 q: "What does useMemo do?",
-                options: ["Memoizes computed values", "Stores in memory", "Creates memos", "Memory management"],
+                options: ["Caches computed values between re-renders", "Memoizes callback functions for child components", "Stores values that persist without causing re-renders", "Creates a memoized version of a component"],
                 correct: 0,
                 explanation: "useMemo caches expensive calculations between re-renders. Only recalculates when dependencies change. Don't overuse - has its own cost.",
                 learnMore: { url: "https://react.dev/reference/react/useMemo", text: "📚 useMemo Hook" }
             },
             {
                 q: "What's useRef used for?",
-                options: ["Persist values without re-render, access DOM", "Create references", "Reference components", "Ref counting"],
+                options: ["Persist values without re-render, access DOM elements", "Create references to child component state", "Store previous props for comparison", "Reference external modules dynamically"],
                 correct: 0,
                 explanation: "useRef returns mutable object persisting across renders. .current doesn't trigger re-render when changed. Used for: DOM refs, storing previous values, timers.",
                 learnMore: { url: "https://react.dev/reference/react/useRef", text: "📚 useRef Hook" }
@@ -1040,35 +1040,35 @@ const questions = {
         5: [
             {
                 q: "How does React's reconciliation algorithm work?",
-                options: ["Compares virtual DOM trees using heuristics", "Full DOM replacement", "No comparison", "Server-side only"],
+                options: ["Compares virtual DOM trees and updates only changed nodes", "Replaces the entire DOM on every state change", "Uses Web Workers to diff in background threads", "Batches all updates until browser idle time"],
                 correct: 0,
                 explanation: "React compares old and new virtual DOM trees (diffing). Uses heuristics: different types = replace subtree, same type = update props, keys help list diffing.",
                 learnMore: { url: "https://react.dev/learn/preserving-and-resetting-state", text: "📚 Reconciliation" }
             },
             {
                 q: "What's React.lazy used for?",
-                options: ["Code splitting and lazy loading components", "Lazy evaluation", "Deferred rendering", "Slow components"],
+                options: ["Code splitting to load components on demand", "Deferring component rendering until visible", "Delaying state updates for performance", "Creating components with delayed initialization"],
                 correct: 0,
                 explanation: "React.lazy enables code splitting - load components only when needed. Use with Suspense for loading states. Reduces initial bundle size.",
                 learnMore: { url: "https://react.dev/reference/react/lazy", text: "📚 React.lazy" }
             },
             {
                 q: "What are React error boundaries?",
-                options: ["Components that catch JS errors in children", "Form validation", "Network errors", "Type errors"],
+                options: ["Components that catch JS errors in child tree", "Validation layers for props and state", "Try-catch wrappers for async operations", "Middleware for handling API errors"],
                 correct: 0,
                 explanation: "Error boundaries catch JavaScript errors in child component tree, log them, and display fallback UI. Must be class components with componentDidCatch/getDerivedStateFromError.",
                 learnMore: { url: "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary", text: "📚 Error Boundaries" }
             },
             {
                 q: "How does useReducer differ from useState?",
-                options: ["Better for complex state logic with actions", "Same thing", "Simpler than useState", "Only for forms"],
+                options: ["Better for complex state logic with action dispatching", "Automatically persists state to localStorage", "Provides built-in undo/redo functionality", "Enables state sharing between components"],
                 correct: 0,
                 explanation: "useReducer is like useState but uses reducer function (state, action) => newState. Better for complex state logic, multiple sub-values, or when next state depends on previous.",
                 learnMore: { url: "https://react.dev/reference/react/useReducer", text: "📚 useReducer Hook" }
             },
             {
                 q: "What's the purpose of React.memo?",
-                options: ["Memoize component to prevent unnecessary re-renders", "Create memos", "Memory optimization", "Component notes"],
+                options: ["Skip re-renders when props haven't changed", "Cache component instances in memory", "Store computed values across renders", "Memoize event handlers automatically"],
                 correct: 0,
                 explanation: "React.memo is a HOC that memoizes component output. Skips re-render if props haven't changed (shallow comparison). Use for expensive components with same props.",
                 learnMore: { url: "https://react.dev/reference/react/memo", text: "📚 React.memo" }
@@ -1114,14 +1114,14 @@ const questions = {
             },
             {
                 q: "What is a resource in Waldur context?",
-                options: ["Provisioned cloud asset (VM, storage, etc.)", "JSON file", "API endpoint", "User account"],
+                options: ["Provisioned cloud asset (VM, storage, etc.)", "User role and permission definition", "Configuration template for deployments", "Billing rate and pricing structure"],
                 correct: 0,
                 explanation: "A resource is any provisioned asset: virtual machines, volumes, networks, or services. Resources are tracked throughout their lifecycle with usage and billing data.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/resources/", text: "📚 Resources Guide" }
             },
             {
                 q: "What is an organization (customer) in Waldur?",
-                options: ["Top-level entity that owns projects", "Individual user", "Server cluster", "API key"],
+                options: ["Top-level entity that owns projects and billing", "Group of resources with shared configuration", "Collection of users with same permissions", "Service provider offering cloud resources"],
                 correct: 0,
                 explanation: "Organization is the top-level entity representing a company/institution. It contains projects, users with roles, and handles billing. Also called 'customer' in the API.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/identities/organizations/", text: "📚 Organizations" }
@@ -1130,28 +1130,28 @@ const questions = {
         3: [
             {
                 q: "What's the hierarchy: Organization > Project > ?",
-                options: ["Resource", "User", "Team", "Offering"],
+                options: ["Resource", "Offering", "Provider", "Category"],
                 correct: 0,
                 explanation: "The hierarchy is Organization → Project → Resource. Organizations own projects, projects contain resources. Users are assigned to orgs/projects with specific roles.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/projects/", text: "📚 Projects Guide" }
             },
             {
                 q: "What role does a Provider play in Waldur?",
-                options: ["Backend that fulfills resource requests", "End user", "Administrator", "Billing system"],
+                options: ["Backend that fulfills resource requests", "Organization that consumes cloud resources", "User with administrative permissions", "System that tracks resource usage"],
                 correct: 0,
                 explanation: "Providers (service providers) offer resources through the marketplace. They define offerings, handle provisioning, and may be external clouds or internal infrastructure.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/providers/", text: "📚 Providers Guide" }
             },
             {
                 q: "What is a Project in Waldur?",
-                options: ["Container for resources with its own budget/team", "Code repository", "Single VM", "Billing period"],
+                options: ["Container for resources with its own budget/team", "Template for provisioning similar resources", "Marketplace category for organizing offerings", "Backend integration with cloud provider"],
                 correct: 0,
                 explanation: "Projects group resources for a specific purpose, team, or budget. They have their own members, quotas, and billing. One org can have multiple projects.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/projects/", text: "📚 Projects Guide" }
             },
             {
                 q: "What's an Offering in Waldur marketplace?",
-                options: ["Template defining what can be provisioned", "Sales discount", "User interface", "Report type"],
+                options: ["Template defining what can be provisioned", "Active resource instance running in cloud", "Request to create or modify a resource", "Category for grouping similar services"],
                 correct: 0,
                 explanation: "Offerings define what can be ordered: the resource type, configuration options, pricing, and which backend provisions it. Think of it as a product template.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/marketplace/offerings/", text: "📚 Offerings Guide" }
@@ -1271,9 +1271,9 @@ const questions = {
             },
             {
                 q: "What's the main advantage of a linked list over an array?",
-                options: ["Efficient insertion/deletion in middle", "Faster access", "Less memory", "Simpler code"],
+                options: ["No element shifting needed", "Faster access", "Less memory", "Simpler code"],
                 correct: 0,
-                explanation: "Linked lists allow O(1) insertion/deletion anywhere (if you have the node). No shifting needed. Trade-off: O(n) access, more memory per element (pointers).",
+                explanation: "Linked lists don't require shifting elements on insert/delete - just update pointers. Note: finding the position is still O(n). Trade-off: O(n) access, more memory per element (pointers).",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Linked_list", text: "📚 Linked List" }
             },
         ],
@@ -1380,21 +1380,21 @@ const questions = {
         1: [
             {
                 q: "What is a design pattern?",
-                options: ["Reusable solution to common problem", "Code library", "Framework", "Programming language"],
+                options: ["Reusable solution to common problem", "A code library you import into projects", "A specific programming language feature", "A testing methodology for software"],
                 correct: 0,
                 explanation: "Design patterns are proven solutions to recurring design problems. They provide templates, not code. Named by Gang of Four (GoF) book in 1994.",
                 learnMore: { url: "https://refactoring.guru/design-patterns", text: "📚 Design Patterns" }
             },
             {
                 q: "Why use design patterns?",
-                options: ["Proven solutions, common vocabulary", "Faster code", "Smaller files", "Required by languages"],
+                options: ["Proven solutions, common vocabulary", "They make code run faster automatically", "Required for object-oriented programming", "They reduce the amount of code needed"],
                 correct: 0,
                 explanation: "Patterns provide tested solutions and shared vocabulary. 'Let's use Observer here' communicates clearly. But don't force patterns - use when they fit.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/why-learn-patterns", text: "📚 Why Patterns?" }
             },
             {
                 q: "What's the Singleton pattern?",
-                options: ["Ensures only one instance of a class", "Creates many instances", "Destroys instances", "Copies instances"],
+                options: ["Ensures only one instance of a class exists", "Creates a new instance for each request", "Provides multiple implementations of an interface", "Wraps objects to add new functionality"],
                 correct: 0,
                 explanation: "Singleton ensures single instance with global access point. Use sparingly - can make testing difficult. Common for: loggers, config, connection pools.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/singleton", text: "📚 Singleton Pattern" }
@@ -1403,21 +1403,21 @@ const questions = {
         2: [
             {
                 q: "What does the Factory pattern do?",
-                options: ["Creates objects without specifying exact class", "Destroys objects", "Copies objects", "Validates objects"],
+                options: ["Creates objects without specifying exact class", "Ensures only one instance exists globally", "Adds functionality to objects dynamically", "Defines an interface for creating families of objects"],
                 correct: 0,
                 explanation: "Factory encapsulates object creation. Client requests object by type/config, factory returns appropriate subclass. Decouples creation from use.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/factory-method", text: "📚 Factory Pattern" }
             },
             {
                 q: "What is a Mixin in Python/Django?",
-                options: ["Class providing methods for other classes to inherit", "Database table", "Template", "Test fixture"],
+                options: ["Class providing methods for other classes to inherit", "A decorator that modifies function behavior", "Abstract base class requiring implementation", "Interface defining method signatures only"],
                 correct: 0,
                 explanation: "Mixins add reusable functionality via multiple inheritance. In Django: LoginRequiredMixin, PermissionRequiredMixin. Keep mixins focused on one concern.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/class-based-views/mixins/", text: "📚 Django Mixins" }
             },
             {
                 q: "What's the Builder pattern used for?",
-                options: ["Construct complex objects step by step", "Destroy objects", "Simple object creation", "Object validation"],
+                options: ["Construct complex objects step by step", "Create objects through inheritance hierarchy", "Clone existing objects to create new ones", "Create objects using a central registry"],
                 correct: 0,
                 explanation: "Builder constructs complex objects step-by-step. Separates construction from representation. Useful when objects have many optional parameters.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/builder", text: "📚 Builder Pattern" }
@@ -1426,7 +1426,7 @@ const questions = {
         3: [
             {
                 q: "When would you use the Strategy pattern?",
-                options: ["Swap algorithms at runtime", "Create objects", "Structure data", "Handle errors"],
+                options: ["Swap algorithms at runtime without changing client", "Ensure only one instance of a service exists", "Construct complex objects with many options", "Notify multiple objects when state changes"],
                 correct: 0,
                 explanation: "Strategy defines interchangeable algorithms. Context holds a strategy and delegates to it. Change behavior without changing context. Example: payment methods.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/strategy", text: "📚 Strategy Pattern" }
@@ -1440,14 +1440,14 @@ const questions = {
             },
             {
                 q: "What does the Template Method pattern do?",
-                options: ["Define algorithm skeleton, let subclasses override steps", "Create templates", "Generate code", "Validate templates"],
+                options: ["Define algorithm skeleton, let subclasses override steps", "Generate objects from configuration templates", "Provide simplified interface to complex subsystem", "Allow object behavior to change based on state"],
                 correct: 0,
                 explanation: "Template Method defines algorithm structure in base class, subclasses override specific steps. Django's class-based views use this extensively.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/template-method", text: "📚 Template Method" }
             },
             {
                 q: "What's the Iterator pattern?",
-                options: ["Access collection elements without exposing structure", "Create collections", "Sort collections", "Merge collections"],
+                options: ["Access collection elements without exposing structure", "Transform each element in a collection", "Filter elements based on a condition", "Combine multiple collections into one"],
                 correct: 0,
                 explanation: "Iterator provides sequential access to elements without exposing underlying representation. Python's for loops use iterators. __iter__ and __next__ methods.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/iterator", text: "📚 Iterator Pattern" }
@@ -1456,28 +1456,28 @@ const questions = {
         4: [
             {
                 q: "How does the Adapter pattern help?",
-                options: ["Makes incompatible interfaces work together", "Creates new interfaces", "Removes interfaces", "Copies interfaces"],
+                options: ["Makes incompatible interfaces work together", "Adds new behavior to objects dynamically", "Provides a simplified API to complex systems", "Controls access to another object"],
                 correct: 0,
                 explanation: "Adapter wraps an object to provide different interface. Like power adapters for different outlets. Use to integrate legacy code or third-party libraries.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/adapter", text: "📚 Adapter Pattern" }
             },
             {
                 q: "What's the Facade pattern?",
-                options: ["Simple interface to complex subsystem", "Complex interface", "No interface", "Multiple interfaces"],
+                options: ["Simple interface to complex subsystem", "Converts one interface to another expected by client", "Wraps objects to add additional responsibilities", "Separates abstraction from implementation"],
                 correct: 0,
                 explanation: "Facade provides simplified interface to complex system. Hides complexity from clients. Django's ORM is a facade over SQL. Makes systems easier to use.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/facade", text: "📚 Facade Pattern" }
             },
             {
                 q: "When would you use the Command pattern?",
-                options: ["Encapsulate requests as objects for undo/queue", "Direct execution", "Avoid objects", "Simpler code"],
+                options: ["Encapsulate requests as objects for undo/queue", "When you need to notify multiple listeners", "To provide a simplified interface to subsystems", "When object creation needs to be delegated"],
                 correct: 0,
                 explanation: "Command encapsulates action as object. Enables: undo/redo, queuing, logging, transactions. Celery tasks are command objects sent to workers.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/command", text: "📚 Command Pattern" }
             },
             {
                 q: "What's the Repository pattern used for?",
-                options: ["Abstract data access layer", "Store files", "Version control", "Cache data"],
+                options: ["Abstract data access with collection-like interface", "Store configuration settings centrally", "Manage object lifecycle and dependencies", "Provide undo/redo functionality for operations"],
                 correct: 0,
                 explanation: "Repository abstracts data storage, providing collection-like interface. Domain code doesn't know about database. Enables switching storage implementations.",
                 learnMore: { url: "https://martinfowler.com/eaaCatalog/repository.html", text: "📚 Repository Pattern" }
@@ -1486,35 +1486,35 @@ const questions = {
         5: [
             {
                 q: "What's the difference between Proxy and Decorator patterns?",
-                options: ["Proxy controls access, Decorator adds behavior", "Same thing", "Proxy is simpler", "Decorator controls access"],
+                options: ["Proxy controls access, Decorator adds behavior", "Proxy is for remote objects, Decorator for local", "Decorator manages lifecycle, Proxy adds features", "Proxy creates new objects, Decorator modifies existing"],
                 correct: 0,
                 explanation: "Proxy controls access (lazy loading, security, caching). Decorator adds behavior (logging, timing). Both wrap objects but with different intent.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/proxy", text: "📚 Proxy vs Decorator" }
             },
             {
                 q: "What's the Chain of Responsibility pattern?",
-                options: ["Pass request through handler chain", "Single handler", "Parallel handling", "No handling"],
+                options: ["Pass request through handler chain until processed", "Distribute request to all handlers simultaneously", "Route request to a specific handler based on type", "Queue requests for batch processing later"],
                 correct: 0,
                 explanation: "Chain of Responsibility passes request through handlers until one handles it. Django middleware uses this. Decouples sender from receivers.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/chain-of-responsibility", text: "📚 Chain of Responsibility" }
             },
             {
                 q: "When is the State pattern appropriate?",
-                options: ["Object behavior changes based on internal state", "Stateless objects", "Simple flags", "No state needed"],
+                options: ["Object behavior changes based on internal state", "When you need to swap algorithms at runtime", "When objects need to observe other objects", "When creating families of related objects"],
                 correct: 0,
                 explanation: "State pattern lets object alter behavior when state changes. Each state is a class. Cleaner than big if/switch on state flag. Waldur resource states could use this.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/state", text: "📚 State Pattern" }
             },
             {
                 q: "What's the Mediator pattern?",
-                options: ["Centralize complex communications", "Direct object communication", "Remove communication", "Broadcast pattern"],
+                options: ["Centralize complex communications between objects", "Enable publish-subscribe event notification", "Pass requests through a chain of handlers", "Provide a unified interface to a subsystem"],
                 correct: 0,
                 explanation: "Mediator centralizes complex communications between objects. Objects don't reference each other directly. Reduces coupling in complex UIs or workflows.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/mediator", text: "📚 Mediator Pattern" }
             },
             {
                 q: "What's the difference between Abstract Factory and Factory Method?",
-                options: ["Abstract Factory creates families, Factory Method single product", "Same thing", "Factory Method creates families", "No difference"],
+                options: ["Abstract Factory creates families, Factory Method single product", "Factory Method uses inheritance, Abstract Factory uses composition only", "Abstract Factory is simpler and more commonly used", "Factory Method requires interfaces, Abstract Factory doesn't"],
                 correct: 0,
                 explanation: "Factory Method: one method creating one product. Abstract Factory: interface for creating families of related products (e.g., UI themes with buttons, scrollbars, etc.).",
                 learnMore: { url: "https://refactoring.guru/design-patterns/abstract-factory", text: "📚 Abstract Factory" }
@@ -1556,7 +1556,7 @@ const questions = {
             },
             {
                 q: "What's the difference between PUT and PATCH?",
-                options: ["PUT replaces entire resource, PATCH updates partially", "Same thing", "PATCH replaces", "PUT is partial"],
+                options: ["PUT replaces entire resource, PATCH updates partially", "PUT creates resources, PATCH deletes them", "PATCH must be idempotent, PUT is not", "PUT is for collections, PATCH for single items"],
                 correct: 0,
                 explanation: "PUT replaces entire resource (send complete object). PATCH modifies specific fields (send only changes). PATCH is more bandwidth-efficient for updates.",
                 learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH", text: "📚 PUT vs PATCH" }
@@ -1579,14 +1579,14 @@ const questions = {
             },
             {
                 q: "Which HTTP methods should be idempotent?",
-                options: ["GET, PUT, DELETE", "POST only", "All methods", "None"],
+                options: ["GET, PUT, DELETE", "POST, PUT, PATCH", "Only safe methods like GET and HEAD", "Methods that modify data: POST, PUT, DELETE"],
                 correct: 0,
                 explanation: "GET (read), PUT (replace), DELETE (remove) should be idempotent. POST creates new resources, so multiple calls create multiple resources (not idempotent).",
                 learnMore: { url: "https://developer.mozilla.org/en-US/docs/Glossary/Idempotent", text: "📚 Idempotent Methods" }
             },
             {
                 q: "What's the purpose of HTTP status code 204?",
-                options: ["Success with no content to return", "Created", "Error", "Redirect"],
+                options: ["Success with no content to return", "Resource was created successfully", "Request accepted for async processing", "Resource moved permanently"],
                 correct: 0,
                 explanation: "204 No Content: success, but no response body. Common for DELETE (deleted successfully, nothing to return) or PUT when not returning updated resource.",
                 learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204", text: "📚 HTTP 204" }
@@ -1609,7 +1609,7 @@ const questions = {
             },
             {
                 q: "What are the benefits of pagination in APIs?",
-                options: ["Reduce response size, improve performance", "No benefits", "More data returned", "Simpler client code"],
+                options: ["Reduce response size, improve performance", "Allows sorting data on the server", "Enables filtering by date ranges", "Required for authentication to work"],
                 correct: 0,
                 explanation: "Pagination prevents huge responses: limit memory, network, processing. Common patterns: offset/limit, cursor-based, page number. Include total count and next/prev links.",
                 learnMore: { url: "https://www.django-rest-framework.org/api-guide/pagination/", text: "📚 DRF Pagination" }
@@ -1623,7 +1623,7 @@ const questions = {
             },
             {
                 q: "What's the difference between 401 and 403?",
-                options: ["401 = not authenticated, 403 = not authorized", "Same thing", "403 = not authenticated", "401 = not authorized"],
+                options: ["401 = not authenticated, 403 = not authorized", "401 = server error, 403 = client error", "403 = resource not found, 401 = method not allowed", "401 = temporary, 403 = permanent denial"],
                 correct: 0,
                 explanation: "401 Unauthorized: 'Who are you?' (no/invalid credentials). 403 Forbidden: 'I know who you are, but you can't do this' (insufficient permissions).",
                 learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401", text: "📚 401 vs 403" }
@@ -1632,35 +1632,35 @@ const questions = {
         5: [
             {
                 q: "How should API versioning be handled?",
-                options: ["URL path, header, or query param with deprecation policy", "Never version", "Break clients", "New domain"],
+                options: ["URL path, header, or query param with deprecation policy", "Use different HTTP methods for different versions", "Embed version in resource IDs", "Change port numbers for each version"],
                 correct: 0,
                 explanation: "Version in URL (/v1/), header (Accept: application/vnd.api+json;version=1), or query param. Announce deprecations, provide migration time, support old versions.",
                 learnMore: { url: "https://restfulapi.net/versioning/", text: "📚 API Versioning" }
             },
             {
                 q: "What's the Richardson Maturity Model?",
-                options: ["Levels of REST API maturity (0-3)", "Security model", "Performance benchmark", "Testing framework"],
+                options: ["Levels of REST API maturity (0-3)", "HTTP authentication standard with four levels", "API documentation completeness rating", "Client-server compatibility measurement"],
                 correct: 0,
                 explanation: "Level 0: HTTP as tunnel. Level 1: Resources. Level 2: HTTP methods. Level 3: HATEOAS. Most APIs are Level 2. Level 3 enables discoverable APIs.",
                 learnMore: { url: "https://martinfowler.com/articles/richardsonMaturityModel.html", text: "📚 Richardson Model" }
             },
             {
                 q: "When should you use GraphQL over REST?",
-                options: ["Client needs flexible queries, multiple resources in one request", "Always", "Never", "Simple CRUD only"],
+                options: ["Client needs flexible queries, multiple resources in one request", "When you need caching support out of the box", "For simple APIs with predictable data needs", "When browser compatibility is the main concern"],
                 correct: 0,
                 explanation: "GraphQL shines when: clients need different data shapes, mobile needs minimal data, reducing round trips matters. REST is simpler for standard CRUD.",
                 learnMore: { url: "https://graphql.org/learn/", text: "📚 GraphQL Introduction" }
             },
             {
                 q: "What's an API gateway used for?",
-                options: ["Route requests, handle auth, rate limiting", "Store data", "Generate docs", "Test APIs"],
+                options: ["Route requests, handle auth, rate limiting", "Store session data between microservices", "Compile API specifications into code", "Manage database connections for services"],
                 correct: 0,
                 explanation: "API gateway is single entry point for clients. Handles: routing, auth, rate limiting, logging, SSL termination. Examples: Kong, AWS API Gateway, nginx.",
                 learnMore: { url: "https://microservices.io/patterns/apigateway.html", text: "📚 API Gateway Pattern" }
             },
             {
                 q: "How do you handle breaking changes in APIs?",
-                options: ["Version, deprecation warnings, migration guides", "Just change it", "Never change", "Email users"],
+                options: ["Version, deprecation warnings, migration guides", "Return different status codes for old vs new clients", "Use feature flags in request headers", "Automatically transform old requests to new format"],
                 correct: 0,
                 explanation: "Avoid breaking changes when possible (additive changes). When necessary: version API, deprecation headers, sunset dates, migration docs, support both versions temporarily.",
                 learnMore: { url: "https://apisyouwonthate.com/blog/api-evolution-for-rest-http-apis/", text: "📚 API Evolution" }
@@ -1683,14 +1683,14 @@ const questions = {
             },
             {
                 q: "What does 'assert' do in tests?",
-                options: ["Verifies a condition is true", "Prints output", "Creates data", "Connects to database"],
+                options: ["Verifies a condition is true", "Logs test execution progress", "Sets up test fixtures", "Catches exceptions silently"],
                 correct: 0,
                 explanation: "Assert verifies expected conditions. 'assert x == 5' fails if x isn't 5. pytest provides detailed failure messages showing actual vs expected.",
                 learnMore: { url: "https://docs.pytest.org/en/stable/how-to/assert.html", text: "📚 pytest Assertions" }
             },
             {
                 q: "Why write automated tests?",
-                options: ["Catch bugs early, enable safe refactoring", "Slower development", "More code to maintain", "Required by law"],
+                options: ["Catch bugs early, enable safe refactoring", "Replace the need for code reviews", "Eliminate all bugs before production", "Generate documentation automatically"],
                 correct: 0,
                 explanation: "Tests catch bugs before production, document expected behavior, and enable confident refactoring. Investment pays off in fewer bugs.",
                 learnMore: { url: "https://docs.pytest.org/en/stable/", text: "📚 pytest Documentation" }
@@ -1699,7 +1699,7 @@ const questions = {
         2: [
             {
                 q: "What's the purpose of test fixtures?",
-                options: ["Set up test data and state", "Run tests faster", "Skip tests", "Generate reports"],
+                options: ["Set up test data and state before tests run", "Define assertions to verify test results", "Measure code coverage during execution", "Mark tests for conditional execution"],
                 correct: 0,
                 explanation: "Fixtures provide test context: database records, mock objects, temp files. pytest fixtures use @pytest.fixture decorator with function/class/module scope.",
                 learnMore: { url: "https://docs.pytest.org/en/stable/how-to/fixtures.html", text: "📚 pytest Fixtures" }
@@ -1713,7 +1713,7 @@ const questions = {
             },
             {
                 q: "What's the Arrange-Act-Assert pattern?",
-                options: ["Setup, execute, verify - test structure", "Random testing", "Performance testing", "Security testing"],
+                options: ["Setup, execute, verify - test structure", "How tests are discovered and collected", "Pattern for organizing test files", "Method for parallel test execution"],
                 correct: 0,
                 explanation: "AAA structures tests: Arrange (setup), Act (execute code under test), Assert (verify results). Also called Given-When-Then. Makes tests readable.",
                 learnMore: { url: "https://martinfowler.com/bliki/GivenWhenThen.html", text: "📚 AAA Pattern" }
@@ -1722,28 +1722,28 @@ const questions = {
         3: [
             {
                 q: "What's the difference between mocking and stubbing?",
-                options: ["Mocks verify behavior, stubs provide canned responses", "Same thing", "Stubs verify", "Mocks are simpler"],
+                options: ["Mocks verify behavior, stubs provide canned responses", "Stubs are for classes, mocks for functions", "Mocks are used in unit tests, stubs in integration", "Stubs replace the system, mocks extend it"],
                 correct: 0,
                 explanation: "Stub: provides predetermined responses. Mock: also verifies interactions (was method called with correct args?). Mocks are stubs with verification.",
                 learnMore: { url: "https://martinfowler.com/articles/mocksArentStubs.html", text: "📚 Mocks vs Stubs" }
             },
             {
                 q: "What is test coverage?",
-                options: ["Percentage of code executed by tests", "Number of tests", "Test speed", "Bug count"],
+                options: ["Percentage of code executed by tests", "Number of assertions per test function", "Ratio of passing to failing tests", "Time taken to run the test suite"],
                 correct: 0,
                 explanation: "Coverage measures what code runs during tests. 100% coverage doesn't mean bug-free - only that lines executed, not all scenarios tested.",
                 learnMore: { url: "https://coverage.readthedocs.io/", text: "📚 Coverage.py" }
             },
             {
                 q: "What's a test double?",
-                options: ["Generic term for mock, stub, fake, spy", "Duplicate test", "Two tests", "Test comparison"],
+                options: ["Generic term for mock, stub, fake, spy", "Running same test twice for reliability", "Pair programming during test writing", "Second assertion in a test case"],
                 correct: 0,
                 explanation: "Test double is an umbrella term: Stub (canned answers), Mock (verifies calls), Fake (working implementation), Spy (records calls).",
                 learnMore: { url: "https://martinfowler.com/bliki/TestDouble.html", text: "📚 Test Doubles" }
             },
             {
                 q: "What's regression testing?",
-                options: ["Ensure changes don't break existing functionality", "Test new features only", "Performance testing", "Security testing"],
+                options: ["Ensure changes don't break existing functionality", "Testing code by reverting to previous versions", "Analyzing test results to find patterns", "Testing backward compatibility only"],
                 correct: 0,
                 explanation: "Regression tests verify existing features still work after code changes. Run full test suite before merging. CI/CD automates this.",
                 learnMore: { url: "https://martinfowler.com/bliki/SelfTestingCode.html", text: "📚 Regression Testing" }
@@ -1752,28 +1752,28 @@ const questions = {
         4: [
             {
                 q: "When should you use integration tests vs unit tests?",
-                options: ["Integration for component interactions, unit for isolation", "Always unit", "Always integration", "Never both"],
+                options: ["Integration for component interactions, unit for isolation", "Unit for slow operations, integration for fast ones", "Integration before deployment, unit after", "Unit for frontend, integration for backend only"],
                 correct: 0,
                 explanation: "Unit tests: isolated logic, fast, many. Integration tests: component interactions (API + DB), slower, fewer. Both are valuable at different levels.",
                 learnMore: { url: "https://martinfowler.com/bliki/IntegrationTest.html", text: "📚 Integration Testing" }
             },
             {
                 q: "What's test-driven development (TDD)?",
-                options: ["Write tests before implementation", "Test after coding", "No testing", "Manual testing"],
+                options: ["Write tests before implementation code", "Write implementation then comprehensive tests", "Focus testing effort on drivers and utilities", "Development process driven by QA team"],
                 correct: 0,
                 explanation: "TDD cycle: Red (failing test) → Green (minimal code to pass) → Refactor. Forces thinking about API/design first. Results in testable, focused code.",
                 learnMore: { url: "https://martinfowler.com/bliki/TestDrivenDevelopment.html", text: "📚 TDD" }
             },
             {
                 q: "What's a flaky test?",
-                options: ["Test that sometimes passes, sometimes fails", "Fast test", "Slow test", "Skipped test"],
+                options: ["Test that sometimes passes, sometimes fails randomly", "Test that checks multiple conditions at once", "Test with weak assertions that pass too easily", "Test that depends on external services"],
                 correct: 0,
                 explanation: "Flaky tests fail intermittently due to: race conditions, time dependencies, shared state, network issues. Erode trust in test suite. Fix or quarantine.",
                 learnMore: { url: "https://testing.googleblog.com/2020/12/test-flakiness-one-of-main-challenges.html", text: "📚 Flaky Tests" }
             },
             {
                 q: "When is 100% code coverage a bad goal?",
-                options: ["Can lead to meaningless tests, diminishing returns", "Always good", "Never bad", "Required for quality"],
+                options: ["Can lead to meaningless tests, diminishing returns", "When working on legacy code with no tests", "If the project has strict deadlines", "When the team is inexperienced with testing"],
                 correct: 0,
                 explanation: "Chasing 100% can lead to testing trivial code (getters), testing implementation vs behavior, or meaningless assertions. Focus on critical paths.",
                 learnMore: { url: "https://martinfowler.com/bliki/TestCoverage.html", text: "📚 Test Coverage" }
@@ -1782,35 +1782,35 @@ const questions = {
         5: [
             {
                 q: "What's property-based testing?",
-                options: ["Generate random inputs to find edge cases", "Test object properties", "Test CSS", "Performance testing"],
+                options: ["Generate random inputs to verify invariants hold", "Test that object attributes have correct types", "Verify properties files are loaded correctly", "Check that setters and getters work properly"],
                 correct: 0,
                 explanation: "Property-based testing generates random inputs and checks invariants (e.g., sort(sort(x)) == sort(x)). Finds edge cases you didn't think of. See Hypothesis.",
                 learnMore: { url: "https://hypothesis.readthedocs.io/", text: "📚 Hypothesis" }
             },
             {
                 q: "What's mutation testing?",
-                options: ["Modify code to check if tests catch changes", "Test mutations", "Random testing", "Performance testing"],
+                options: ["Modify code to check if tests catch changes", "Test how code handles data transformations", "Verify database schema migrations work", "Test code behavior under changing conditions"],
                 correct: 0,
                 explanation: "Mutation testing introduces bugs (mutations) and checks if tests fail. If tests pass with buggy code, they're not testing effectively.",
                 learnMore: { url: "https://mutmut.readthedocs.io/", text: "📚 mutmut" }
             },
             {
                 q: "What's contract testing?",
-                options: ["Verify API contracts between services", "Legal testing", "Business testing", "Manual testing"],
+                options: ["Verify API contracts between services", "Ensure code complies with coding standards", "Test third-party library integrations", "Validate configuration against schema"],
                 correct: 0,
                 explanation: "Contract tests verify service interfaces match expectations. Consumer writes contract, provider verifies. Pact is popular tool. Catches integration issues early.",
                 learnMore: { url: "https://docs.pact.io/", text: "📚 Pact Contract Testing" }
             },
             {
                 q: "What's the test pyramid?",
-                options: ["More unit tests, fewer integration, fewest E2E", "Equal distribution", "More E2E tests", "No structure"],
+                options: ["More unit tests, fewer integration, fewest E2E", "Equal number of tests at each level", "E2E tests at base, unit tests at top", "Focus on integration tests as the foundation"],
                 correct: 0,
                 explanation: "Pyramid: many fast unit tests at base, fewer integration in middle, few slow E2E at top. Unit tests are cheap, E2E are expensive to maintain.",
                 learnMore: { url: "https://martinfowler.com/bliki/TestPyramid.html", text: "📚 Test Pyramid" }
             },
             {
                 q: "When is end-to-end testing most valuable?",
-                options: ["Critical user journeys, integration verification", "Everything", "Nothing", "Unit test replacement"],
+                options: ["Critical user journeys, integration verification", "As the primary testing strategy for all features", "For testing individual functions and methods", "When unit tests are too difficult to write"],
                 correct: 0,
                 explanation: "E2E tests verify complete user flows. Slow and brittle, so use sparingly for critical paths. Unit/integration tests should be foundation.",
                 learnMore: { url: "https://martinfowler.com/bliki/BroadStackTest.html", text: "📚 E2E Testing" }
