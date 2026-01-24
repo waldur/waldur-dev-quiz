@@ -102,7 +102,9 @@ const skillLevels = [
     { level: 2, name: 'Competent', color: '#10b981', xpRequired: 300 },
     { level: 3, name: 'Proficient', color: '#eab308', xpRequired: 600 },
     { level: 4, name: 'Advanced', color: '#f97316', xpRequired: 1000 },
-    { level: 5, name: 'Expert', color: '#a855f7', xpRequired: 1500 }
+    { level: 5, name: 'Expert', color: '#a855f7', xpRequired: 1500 },
+    { level: 6, name: 'Master', color: '#ec4899', xpRequired: 2100 },      // Pink
+    { level: 7, name: 'Grandmaster', color: '#14b8a6', xpRequired: 2800 }  // Teal
 ];
 
 // Weapon profiles based on skill shape

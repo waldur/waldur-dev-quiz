@@ -52,13 +52,28 @@ KAPLAY uses `[` and `]` for styled text markup. Any dynamic text or text contain
 - Weapon profiles (dagger → trident) based on T-shape progress
 
 **Questions** (`js/data/questions.js`):
-- Keyed by skill ID, then by level (1-5)
+- Keyed by skill ID, then by level (1-7)
 - Format: `{ q: "question", options: ["a", "b", "c", "d"], correct: 0 }`
 - Optional fields for learning assistance:
   - `explanation`: Text explaining why the answer is correct (shown after answering)
   - `learnMore`: Object with `url` and `text` for a tutorial link
 - Helper functions: `getQuestionsForSkill()`, `getAvailableLevels()`, `hasQuestions()`
-- Minimum questions per level: L1-2: 3, L3: 4, L4: 4, L5: 5
+- Minimum questions per level: L1-2: 3, L3-4: 4, L5: 5, L6-7: 6
+
+**Skill Levels** (`js/data/skills.js`):
+- Level 1: Aware (blue) - 100 XP
+- Level 2: Competent (green) - 300 XP
+- Level 3: Proficient (yellow) - 600 XP
+- Level 4: Advanced (orange) - 1000 XP
+- Level 5: Expert (purple) - 1500 XP
+- Level 6: Master (pink) - 2100 XP ⭐ Advanced
+- Level 7: Grandmaster (teal) - 2800 XP ⭐ Advanced
+
+**Advanced Levels (6-7):**
+- Available only for selected foundation skills and all specialization skills
+- Visual indicators: Star badge (⭐) on skills with advanced levels in skill tree
+- Pink/teal button colors for level 6-7 in skill detail scene
+- Topics cover latest features and advanced concepts (2025-2026 documentation)
 
 **State** (`js/utils/storage.js`):
 - Stored in localStorage under key `waldur-quest`
@@ -83,6 +98,7 @@ KAPLAY uses `[` and `]` for styled text markup. Any dynamic text or text contain
 - Visual T-shape indicator grows based on progress
 - "Recommended Next" section suggests skills to improve T-shape
 - Recommendations prioritize: literacy gaps → foundation gaps → specialization depth → level up existing
+- Skills with advanced levels (6-7) show a pink ⭐ badge in the upper right corner
 
 **Quiz Scene:**
 - Exit button (✕) to return to skill tree without finishing
@@ -93,7 +109,8 @@ KAPLAY uses `[` and `]` for styled text markup. Any dynamic text or text contain
 - Next question with Enter/Space or click Next button
 
 **Results Scene:**
-- "Next Level →" button appears when quiz passed (60%+) and not at max level
+- "Next Level →" button appears when quiz passed (60%+) and not at max level for that skill
+- Max level is dynamic per skill (5 for most skills, 6-7 for skills with advanced levels)
 - "Try Again" button appears when quiz failed
 - Always shows "Skill Tree" and "Main Menu" options
 
@@ -118,9 +135,14 @@ Add to `js/data/questions.js` under the appropriate skill ID and level:
             }
         }
     ],  // min 3 questions per level 1-2
-    // ... levels 3-5 need min 4-5 questions
+    // ... levels 3-4: min 4 questions, level 5: min 5 questions
+    // ... levels 6-7 (advanced): min 6 questions each
 }
 ```
+
+**Skills with Advanced Levels (6-7):**
+- Foundation: f-docker, f-git, f-ci-cd, f-linux, f-sql, f-testing
+- Specialization: All 8 skills (s-kubernetes, s-ansible, s-openstack, s-azure, s-slurm, s-oidc, s-monitoring, s-gitlab-cicd)
 
 ### Question Writing Rules
 

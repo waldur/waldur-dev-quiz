@@ -955,6 +955,24 @@ k.scene('skillTree', () => {
                 'skillText',
             ]);
 
+            // Advanced skill star badge (for skills with level 6-7)
+            if (hasQ && maxLevel > 5) {
+                // Star badge in upper right corner
+                k.add([
+                    k.rect(24, 18, { radius: 4 }),
+                    k.color(k.rgb(236, 72, 153)), // Pink #ec4899
+                    k.pos(x + nodeWidth - 28, y + 4),
+                    k.opacity(0.9),
+                    'skillText',
+                ]);
+                k.add([
+                    k.text('⭐', { size: 11, font: 'Inter' }),
+                    k.pos(x + nodeWidth - 16, y + 13),
+                    k.anchor('center'),
+                    'skillText',
+                ]);
+            }
+
             // Progress bar
             const barWidth = nodeWidth - 20;
             const barHeight = 8;
@@ -1276,17 +1294,54 @@ k.scene('skillDetail', ({ skillId }) => {
         ]);
 
         const buttonStartX = k.width() / 2 - (levels.length * 70) / 2;
+
+        // Add "Advanced Levels" indicator if skill has level 6-7
+        const hasAdvancedLevels = levels.some(l => l > 5);
+        if (hasAdvancedLevels) {
+            k.add([
+                k.text('⭐ Advanced Path Available', { size: 14, font: 'Inter' }),
+                k.color(k.rgb(236, 72, 153)), // Pink
+                k.pos(k.width() / 2, 355),
+                k.anchor('center'),
+            ]);
+        }
+
         levels.forEach((level, i) => {
             const isUnlocked = level <= currentLevel + 1;
             const isPassed = level <= currentLevel;
+            const isAdvanced = level > 5;
+
+            // Determine button color based on level type and state
+            let btnColor;
+            if (isPassed) {
+                btnColor = COLORS.success;
+            } else if (!isUnlocked) {
+                btnColor = COLORS.bgLight;
+            } else if (level === 6) {
+                btnColor = k.rgb(236, 72, 153); // Pink for Master
+            } else if (level === 7) {
+                btnColor = k.rgb(20, 184, 166); // Teal for Grandmaster
+            } else {
+                btnColor = COLORS.primary;
+            }
 
             const btn = k.add([
                 k.rect(60, 60, { radius: 8 }),
-                k.color(isPassed ? COLORS.success : (isUnlocked ? COLORS.primary : COLORS.bgLight)),
+                k.color(btnColor),
                 k.pos(buttonStartX + i * 70, 380),
                 k.area(),
                 k.opacity(isUnlocked ? 1 : 0.5),
             ]);
+
+            // Add star above advanced level buttons
+            if (isAdvanced) {
+                k.add([
+                    k.text('⭐', { size: 12, font: 'Inter' }),
+                    k.pos(buttonStartX + i * 70 + 30, 370),
+                    k.anchor('center'),
+                    k.opacity(isUnlocked ? 1 : 0.5),
+                ]);
+            }
 
             k.add([
                 k.text(level.toString(), { size: 24, font: 'Inter' }),
@@ -2208,7 +2263,9 @@ k.scene('results', ({ skillId, level, score, total, streak }) => {
 
     // Buttons
     const buttonY = 520;
-    const hasNextLevel = level < 5;
+    const availableLevels = getAvailableLevels(skillId);
+    const maxAvailableLevel = availableLevels.length > 0 ? Math.max(...availableLevels) : 5;
+    const hasNextLevel = level < maxAvailableLevel && availableLevels.includes(level + 1);
 
     if (!passed) {
         // Failed: Try Again + Skill Tree
