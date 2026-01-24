@@ -67,7 +67,7 @@ const questions = {
             },
             {
                 q: "What does the pipe operator '|' do?",
-                options: ["Passes output to another command", "Redirects to file", "Creates a new process", "Copies files"],
+                options: ["Passes output to another command", "Redirects output to a file", "Creates a background process", "Copies files to directory"],
                 correct: 0,
                 explanation: "Pipes connect commands by sending stdout of one command to stdin of the next, enabling powerful command chains.",
                 learnMore: { url: "https://www.gnu.org/software/bash/manual/html_node/Pipelines.html", text: "📚 Bash Pipelines" }
@@ -97,14 +97,14 @@ const questions = {
             },
             {
                 q: "What does 'tail -f logfile' do?",
-                options: ["Follow log updates in real-time", "Show first lines", "Count lines", "Delete old entries"],
+                options: ["Follow log updates in real-time", "Show first lines of file", "Count total line numbers", "Delete old log entries"],
                 correct: 0,
                 explanation: "The '-f' flag follows the file, displaying new lines as they're appended. Essential for monitoring live logs. Use Ctrl+C to stop.",
                 learnMore: { url: "https://www.gnu.org/software/coreutils/manual/html_node/tail-invocation.html", text: "📚 GNU tail Manual" }
             },
             {
                 q: "What does 'chmod 755 file' do?",
-                options: ["Sets read/write/execute permissions", "Changes file owner", "Moves file", "Compresses file"],
+                options: ["Sets read/write/execute permissions", "Changes the file owner to root", "Moves file to new location", "Compresses file with gzip"],
                 correct: 0,
                 explanation: "755 = rwxr-xr-x (owner: full access, group/others: read+execute). Each digit is owner/group/others. 7=rwx, 5=r-x, 4=r--.",
                 learnMore: { url: "https://www.gnu.org/software/coreutils/manual/html_node/chmod-invocation.html", text: "📚 GNU chmod Manual" }
@@ -120,28 +120,28 @@ const questions = {
         4: [
             {
                 q: "What does 'xargs' do in a pipeline?",
-                options: ["Converts stdin to arguments", "Executes in parallel", "Filters output", "Sorts results"],
+                options: ["Converts stdin to arguments", "Executes commands parallel", "Filters matching output", "Sorts output results"],
                 correct: 0,
                 explanation: "'xargs' builds and executes commands from stdin. Example: find . -name '*.log' | xargs rm. Use -I{} for placeholders.",
                 learnMore: { url: "https://www.gnu.org/software/findutils/manual/html_node/xargs-invocation.html", text: "📚 GNU xargs Manual" }
             },
             {
                 q: "How do you run a command in background?",
-                options: ["Append &", "Prefix bg", "Use nohup only", "Ctrl+Z"],
+                options: ["Append & to command", "Prefix with bg cmd", "Use nohup command", "Press Ctrl+Z keys"],
                 correct: 0,
                 explanation: "Appending '&' runs the command in background immediately. Ctrl+Z suspends a running process, then 'bg' resumes it in background.",
                 learnMore: { url: "https://www.gnu.org/software/bash/manual/html_node/Job-Control.html", text: "📚 Bash Job Control" }
             },
             {
                 q: "What does 'ps aux' show?",
-                options: ["All running processes", "Disk usage", "Network connections", "Memory info"],
+                options: ["All running processes", "Current disk usage", "Active network ports", "System memory info"],
                 correct: 0,
                 explanation: "'ps aux' shows all processes: a=all users, u=user-oriented format, x=processes without terminal. Commonly piped to grep.",
                 learnMore: { url: "https://man7.org/linux/man-pages/man1/ps.1.html", text: "📚 ps Manual" }
             },
             {
                 q: "How do you find which process is using a port?",
-                options: ["lsof -i :port or netstat", "ps port", "find port", "grep port"],
+                options: ["lsof -i :port or ss -tlnp", "ps --port <number>", "find /proc -port", "grep port /proc"],
                 correct: 0,
                 explanation: "'lsof -i :8080' shows processes using port 8080. 'netstat -tlnp' or 'ss -tlnp' also work. Useful for debugging port conflicts.",
                 learnMore: { url: "https://man7.org/linux/man-pages/man8/lsof.8.html", text: "📚 lsof Manual" }
@@ -164,21 +164,21 @@ const questions = {
             },
             {
                 q: "What does 'nohup' do?",
-                options: ["Keeps process running after logout", "Stops a process", "Pauses execution", "Changes priority"],
+                options: ["Keeps process running after logout", "Stops a running process now", "Pauses process execution", "Changes process priority"],
                 correct: 0,
                 explanation: "'nohup' (no hangup) ignores SIGHUP signal sent when terminal closes. Output goes to nohup.out. Combine with & for background.",
                 learnMore: { url: "https://www.gnu.org/software/coreutils/manual/html_node/nohup-invocation.html", text: "📚 GNU nohup Manual" }
             },
             {
                 q: "How do you set an environment variable for all sessions?",
-                options: ["Add to ~/.bashrc or ~/.profile", "export VAR only", "set VAR", "env VAR"],
+                options: ["Add to ~/.bashrc or ~/.profile", "Run export VAR=value once", "Use set VAR=value syntax", "Run env VAR=value once"],
                 correct: 0,
                 explanation: "~/.bashrc runs for interactive shells, ~/.profile for login shells. 'export VAR=value' only affects the current session.",
                 learnMore: { url: "https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html", text: "📚 Bash Startup Files" }
             },
             {
                 q: "What does 'awk '{print $1}'' do?",
-                options: ["Prints first column of each line", "Prints first line", "Counts words", "Searches text"],
+                options: ["Prints first column of each line", "Prints the first line only", "Counts total word count", "Searches for text match"],
                 correct: 0,
                 explanation: "AWK processes text line by line. $1 is the first field (column), $2 the second, etc. $0 is the entire line. Powerful for data extraction.",
                 learnMore: { url: "https://www.gnu.org/software/gawk/manual/gawk.html", text: "📚 GNU AWK Manual" }
@@ -197,7 +197,7 @@ const questions = {
             },
             {
                 q: "What does 'git status' show?",
-                options: ["Changed files and staging area", "Commit history", "Remote branches", "Config settings"],
+                options: ["Changed files and staging area", "Full commit history log", "All remote branch list", "Repository config file"],
                 correct: 0,
                 explanation: "'git status' shows the working tree status: staged changes, unstaged modifications, and untracked files.",
                 learnMore: { url: "https://git-scm.com/docs/git-status", text: "📚 Git Status Docs" }
@@ -211,7 +211,7 @@ const questions = {
             },
             {
                 q: "What does 'git init' do?",
-                options: ["Creates a new Git repository", "Downloads a repo", "Commits changes", "Creates a branch"],
+                options: ["Creates a new Git repository", "Downloads remote repo", "Commits all changes", "Creates a new branch"],
                 correct: 0,
                 explanation: "'git init' creates a new .git directory, initializing an empty Git repository. Use this to start version control in a project.",
                 learnMore: { url: "https://git-scm.com/docs/git-init", text: "📚 Git Init Docs" }
@@ -220,7 +220,7 @@ const questions = {
         2: [
             {
                 q: "What's the difference between 'git pull' and 'git fetch'?",
-                options: ["Pull also merges, fetch only downloads", "They're the same", "Fetch is faster", "Pull is local only"],
+                options: ["Pull also merges, fetch only downloads", "They do exactly the same thing", "Fetch is faster than pull", "Pull only works locally"],
                 correct: 0,
                 explanation: "'git fetch' downloads changes without modifying your working directory. 'git pull' = fetch + merge. Use fetch when you want to review changes first.",
                 learnMore: { url: "https://www.atlassian.com/git/tutorials/syncing/git-fetch", text: "📚 Fetch vs Pull Guide" }
@@ -250,14 +250,14 @@ const questions = {
         3: [
             {
                 q: "How do you undo the last commit but keep changes?",
-                options: ["git reset --soft HEAD~1", "git revert HEAD", "git undo", "git rollback"],
+                options: ["git reset --soft HEAD~1", "git revert HEAD commit", "git undo last commit", "git rollback previous"],
                 correct: 0,
                 explanation: "'--soft' keeps changes staged, '--mixed' (default) unstages them, '--hard' discards them. 'revert' creates a new commit that undoes changes.",
                 learnMore: { url: "https://git-scm.com/docs/git-reset", text: "📚 Git Reset Docs" }
             },
             {
                 q: "What's a pull request / merge request for?",
-                options: ["Request code review before merging", "Pull from remote", "Request access", "Merge immediately"],
+                options: ["Request code review before merging", "Pull changes from remote", "Request repository access", "Merge branches directly"],
                 correct: 0,
                 explanation: "PRs/MRs enable code review, discussion, and CI checks before merging. They're central to collaborative Git workflows like GitHub Flow.",
                 learnMore: { url: "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests", text: "📚 GitHub PR Guide" }
@@ -271,7 +271,7 @@ const questions = {
             },
             {
                 q: "What does 'git diff' show?",
-                options: ["Changes between commits or working directory", "Different branches", "Remote differences", "Config differences"],
+                options: ["Changes between commits or working tree", "List of different branches", "Remote server differences", "Config file differences"],
                 correct: 0,
                 explanation: "'git diff' shows unstaged changes. 'git diff --staged' shows staged changes. 'git diff branch1..branch2' compares branches.",
                 learnMore: { url: "https://git-scm.com/docs/git-diff", text: "📚 Git Diff Docs" }
@@ -280,21 +280,21 @@ const questions = {
         4: [
             {
                 q: "When should you use 'git rebase' vs 'git merge'?",
-                options: ["Rebase for clean history, merge preserves context", "Always rebase", "Always merge", "They're identical"],
+                options: ["Rebase for clean history, merge keeps context", "Always use rebase for everything", "Always use merge for everything", "They produce identical results"],
                 correct: 0,
                 explanation: "Rebase rewrites history for a linear timeline - use for local/feature branches. Merge preserves history - use for shared branches. Never rebase public branches!",
                 learnMore: { url: "https://www.atlassian.com/git/tutorials/merging-vs-rebasing", text: "📚 Merge vs Rebase Guide" }
             },
             {
                 q: "How do you resolve a merge conflict?",
-                options: ["Edit files, remove markers, stage and commit", "git resolve", "Delete conflicting files", "Reset to remote"],
+                options: ["Edit files, remove markers, stage and commit", "Run git resolve --auto command", "Delete the conflicting files entirely", "Reset branch back to remote"],
                 correct: 0,
                 explanation: "Conflicts show <<<<<<<, =======, >>>>>>> markers. Edit to keep desired code, remove markers, 'git add' the file, then commit.",
                 learnMore: { url: "https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts", text: "📚 Merge Conflicts Guide" }
             },
             {
                 q: "What does 'git stash' do?",
-                options: ["Temporarily saves uncommitted changes", "Deletes changes", "Commits changes", "Pushes changes"],
+                options: ["Temporarily saves uncommitted changes", "Deletes all local changes", "Commits current changes", "Pushes to remote repo"],
                 correct: 0,
                 explanation: "Stash saves work-in-progress without committing. 'git stash pop' restores and removes from stash. 'git stash list' shows all stashes.",
                 learnMore: { url: "https://git-scm.com/docs/git-stash", text: "📚 Git Stash Docs" }
@@ -310,28 +310,28 @@ const questions = {
         5: [
             {
                 q: "What does 'git bisect' help you do?",
-                options: ["Find commit that introduced a bug", "Split commits", "Divide repository", "Create branches"],
+                options: ["Find commit that introduced a bug", "Split commits into smaller ones", "Divide repo into submodules", "Create multiple branches"],
                 correct: 0,
                 explanation: "Bisect performs binary search through commits. Mark commits as 'good' or 'bad', and Git finds the first bad commit efficiently.",
                 learnMore: { url: "https://git-scm.com/docs/git-bisect", text: "📚 Git Bisect Docs" }
             },
             {
                 q: "How do you squash multiple commits?",
-                options: ["git rebase -i with squash", "git squash", "git merge --squash only", "git combine"],
+                options: ["git rebase -i with squash", "git squash <commits>", "git merge --squash only", "git combine <commits>"],
                 correct: 0,
                 explanation: "Interactive rebase (-i) lets you squash, edit, reorder, or drop commits. Change 'pick' to 'squash' or 's' to combine with previous commit.",
                 learnMore: { url: "https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History", text: "📚 Rewriting History" }
             },
             {
                 q: "What does 'git reflog' show?",
-                options: ["All ref changes including 'lost' commits", "Reference log only", "Remote log", "Error log"],
+                options: ["All ref changes including lost commits", "Only branch reference logs", "Remote server activity log", "Git error and debug log"],
                 correct: 0,
                 explanation: "Reflog tracks all HEAD movements locally - even 'lost' commits after reset. Essential for recovering from mistakes. Entries expire after 90 days.",
                 learnMore: { url: "https://git-scm.com/docs/git-reflog", text: "📚 Git Reflog Docs" }
             },
             {
                 q: "How do you cherry-pick a commit?",
-                options: ["git cherry-pick <commit-hash>", "git pick <commit>", "git copy <commit>", "git select <commit>"],
+                options: ["git cherry-pick <hash>", "git pick <hash>", "git copy <hash>", "git select <hash>"],
                 correct: 0,
                 explanation: "Cherry-pick applies a specific commit to current branch. Useful for backporting fixes. Creates a new commit with the same changes.",
                 learnMore: { url: "https://git-scm.com/docs/git-cherry-pick", text: "📚 Git Cherry-pick Docs" }
@@ -688,28 +688,28 @@ const questions = {
         3: [
             {
                 q: "What is a list comprehension?",
-                options: ["[x for x in items] - concise list creation", "A list description", "List documentation", "List comparison"],
+                options: ["[x for x in items] - concise list creation", "A detailed list description document", "Documentation for list methods", "Comparison between two lists"],
                 correct: 0,
                 explanation: "List comprehensions are concise syntax for creating lists: [expr for item in iterable if condition]. More readable and often faster than loops.",
                 learnMore: { url: "https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions", text: "📚 List Comprehensions" }
             },
             {
                 q: "What's a virtual environment for?",
-                options: ["Isolated Python dependencies per project", "Faster execution", "Virtual machine", "Testing only"],
+                options: ["Isolated Python dependencies per project", "Making Python run faster overall", "Running Python in a virtual machine", "Testing code in isolation only"],
                 correct: 0,
                 explanation: "Virtual environments isolate project dependencies. Each project can have its own package versions. Create with 'python -m venv myenv', activate before use.",
                 learnMore: { url: "https://docs.python.org/3/tutorial/venv.html", text: "📚 Python venv Tutorial" }
             },
             {
                 q: "What does 'if __name__ == \"__main__\":' do?",
-                options: ["Only runs code when script is executed directly", "Checks file name", "Imports module", "Defines main function"],
+                options: ["Only runs code when executed directly", "Checks the current file name", "Imports the main module", "Defines the main function"],
                 correct: 0,
                 explanation: "__name__ is '__main__' when the script is run directly, but the module name when imported. This pattern prevents code from running on import.",
                 learnMore: { url: "https://docs.python.org/3/library/__main__.html", text: "📚 Python __main__" }
             },
             {
                 q: "What's a dictionary in Python?",
-                options: ["Key-value data structure", "Word definitions", "Ordered list", "Function collection"],
+                options: ["Key-value data structure", "Word definitions store", "Ordered list of items", "Function collection type"],
                 correct: 0,
                 explanation: "Dicts map keys to values with O(1) average lookup. Keys must be hashable (immutable). Since Python 3.7, dicts maintain insertion order.",
                 learnMore: { url: "https://docs.python.org/3/tutorial/datastructures.html#dictionaries", text: "📚 Python Dictionaries" }
@@ -718,14 +718,14 @@ const questions = {
         4: [
             {
                 q: "What are *args and **kwargs?",
-                options: ["Variable positional and keyword arguments", "Pointer arguments", "Required arguments", "Global arguments"],
+                options: ["Variable positional and keyword arguments", "Pointer arguments to memory address", "Required arguments for all functions", "Global arguments shared by modules"],
                 correct: 0,
                 explanation: "*args collects extra positional args as tuple. **kwargs collects extra keyword args as dict. Names are convention - * and ** are the operators.",
                 learnMore: { url: "https://docs.python.org/3/tutorial/controlflow.html#arbitrary-argument-lists", text: "📚 *args and **kwargs" }
             },
             {
                 q: "What's a decorator in Python?",
-                options: ["Function that modifies another function", "Class attribute", "Import statement", "Comment type"],
+                options: ["Function that modifies another function", "Class attribute for styling output", "Import statement for packages", "Comment type for documentation"],
                 correct: 0,
                 explanation: "Decorators wrap functions to add behavior. @decorator is syntactic sugar for func = decorator(func). Common uses: logging, caching, auth checks.",
                 learnMore: { url: "https://realpython.com/primer-on-python-decorators/", text: "📚 Decorators Guide" }
@@ -748,7 +748,7 @@ const questions = {
         5: [
             {
                 q: "What's the Global Interpreter Lock (GIL)?",
-                options: ["Mutex preventing true multi-threading for CPU tasks", "Security feature", "Memory manager", "Import lock"],
+                options: ["Mutex preventing true multi-threading for CPU tasks", "Security feature preventing unauthorized code execution", "Memory manager handling garbage collection", "Import lock preventing circular dependencies"],
                 correct: 0,
                 explanation: "The GIL ensures only one thread executes Python bytecode at a time. Threads still help with I/O-bound tasks. For CPU-bound parallelism, use multiprocessing.",
                 learnMore: { url: "https://realpython.com/python-gil/", text: "📚 Understanding the GIL" }
@@ -1822,21 +1822,21 @@ const questions = {
         1: [
             {
                 q: "What is a branch in Git?",
-                options: ["Pointer to a commit, allows parallel development", "Copy of repository", "Backup", "Server connection"],
+                options: ["Pointer to commit, enables parallel work", "Full copy of the repository", "Backup of repository state", "Connection to remote server"],
                 correct: 0,
                 explanation: "Branches are lightweight pointers to commits. Creating a branch is cheap (41-byte file). Enables parallel work on features/fixes without affecting main.",
                 learnMore: { url: "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell", text: "📚 Git Branching" }
             },
             {
                 q: "What's a commit in Git?",
-                options: ["Snapshot of changes with message", "Branch", "File copy", "Server sync"],
+                options: ["Snapshot of changes with message", "A type of branch reference", "Copy of files in directory", "Sync with remote server"],
                 correct: 0,
                 explanation: "Commits are snapshots of your project at a point in time, with metadata (author, date, message, parent commits). They're immutable once created.",
                 learnMore: { url: "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository", text: "📚 Git Commits" }
             },
             {
                 q: "What's a remote in Git?",
-                options: ["Connection to repository on server", "Local copy", "Branch type", "Commit type"],
+                options: ["Connection to repository on server", "Copy of repo on your machine", "A specific type of branch", "A specific type of commit"],
                 correct: 0,
                 explanation: "Remotes are references to repositories on servers (GitHub, GitLab). 'origin' is the default remote. Use 'git remote -v' to list remotes.",
                 learnMore: { url: "https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes", text: "📚 Git Remotes" }
@@ -1845,21 +1845,21 @@ const questions = {
         2: [
             {
                 q: "What does 'git stash' do?",
-                options: ["Temporarily saves uncommitted changes", "Deletes changes", "Commits changes", "Pushes changes"],
+                options: ["Temporarily saves uncommitted changes", "Permanently deletes all changes", "Creates a new commit with changes", "Pushes changes to the remote"],
                 correct: 0,
                 explanation: "Stash saves work-in-progress without committing. Useful when switching branches. 'git stash pop' restores. 'git stash list' shows all stashes.",
                 learnMore: { url: "https://git-scm.com/docs/git-stash", text: "📚 Git Stash" }
             },
             {
                 q: "What's HEAD in Git?",
-                options: ["Pointer to current commit/branch", "First commit", "Last commit", "Remote branch"],
+                options: ["Pointer to current commit/branch", "The very first commit in repo", "The most recent commit in repo", "A branch on the remote server"],
                 correct: 0,
                 explanation: "HEAD points to the current commit you're on (usually via branch reference). Moving HEAD changes what you see in your working directory.",
                 learnMore: { url: "https://git-scm.com/book/en/v2/Git-Internals-Git-References", text: "📚 Git HEAD" }
             },
             {
                 q: "What does 'git branch -d' do?",
-                options: ["Deletes a branch", "Creates branch", "Lists branches", "Renames branch"],
+                options: ["Deletes a merged branch", "Creates a new branch", "Lists all branches", "Renames a branch"],
                 correct: 0,
                 explanation: "'-d' deletes a merged branch safely. Use '-D' to force delete unmerged branches. Only deletes the pointer, commits remain in history.",
                 learnMore: { url: "https://git-scm.com/docs/git-branch", text: "📚 Git Branch" }
@@ -1868,28 +1868,28 @@ const questions = {
         3: [
             {
                 q: "When should you rebase instead of merge?",
-                options: ["Clean linear history for feature branches", "Always", "Never", "Only on main branch"],
+                options: ["Clean linear history for feature branches", "Always use rebase in every case", "Never use rebase for anything", "Only on the main/master branch"],
                 correct: 0,
                 explanation: "Rebase for local/feature branches to get clean history. Never rebase shared branches (rewrites history). Merge preserves context of when integration happened.",
                 learnMore: { url: "https://www.atlassian.com/git/tutorials/merging-vs-rebasing", text: "📚 Rebase vs Merge" }
             },
             {
                 q: "What's a fast-forward merge?",
-                options: ["Moving branch pointer when no divergence", "Quick merge", "Forced merge", "Automatic merge"],
+                options: ["Moving branch pointer when no divergence", "A merge that runs very quickly", "A merge that is forced through", "A merge that runs automatically"],
                 correct: 0,
                 explanation: "Fast-forward happens when target branch hasn't diverged - Git just moves the pointer. No merge commit created. Use '--no-ff' to force merge commit.",
                 learnMore: { url: "https://git-scm.com/docs/git-merge#_fast_forward_merge", text: "📚 Fast-forward Merge" }
             },
             {
                 q: "What does 'git reset --hard' do?",
-                options: ["Discard all changes and reset to commit", "Soft reset", "Keep changes", "Create backup"],
+                options: ["Discard all changes and reset to commit", "Perform a soft reset keeping staged", "Keep changes in working directory", "Create backup before resetting"],
                 correct: 0,
                 explanation: "'--hard' discards all changes (staged and working directory). Dangerous! '--soft' keeps changes staged, '--mixed' (default) keeps changes unstaged.",
                 learnMore: { url: "https://git-scm.com/docs/git-reset", text: "📚 Git Reset" }
             },
             {
                 q: "What's the difference between 'git reset' and 'git revert'?",
-                options: ["Reset moves HEAD, revert creates new commit undoing changes", "Same thing", "Revert moves HEAD", "Reset creates commit"],
+                options: ["Reset moves HEAD, revert creates undo commit", "They do exactly the same thing", "Revert moves HEAD to another commit", "Reset creates a new undo commit"],
                 correct: 0,
                 explanation: "Reset: moves HEAD, potentially losing commits (don't use on shared branches). Revert: creates new commit that undoes changes (safe for shared branches).",
                 learnMore: { url: "https://www.atlassian.com/git/tutorials/undoing-changes", text: "📚 Undoing Changes" }
@@ -1898,28 +1898,28 @@ const questions = {
         4: [
             {
                 q: "What does 'git cherry-pick' do?",
-                options: ["Apply a specific commit to current branch", "Select best commits", "Delete commits", "Rename commits"],
+                options: ["Apply a specific commit to current branch", "Automatically select best commits", "Delete commits from history", "Rename commits in history"],
                 correct: 0,
                 explanation: "Cherry-pick copies a commit to current branch. Useful for backporting fixes. Creates new commit with same changes but different hash.",
                 learnMore: { url: "https://git-scm.com/docs/git-cherry-pick", text: "📚 Git Cherry-pick" }
             },
             {
                 q: "What's an interactive rebase used for?",
-                options: ["Edit, squash, reorder commits", "Automatic rebase", "Simple merge", "Branch creation"],
+                options: ["Edit, squash, reorder commits", "Automatically rebase branches", "Perform a simple merge", "Create a new branch"],
                 correct: 0,
                 explanation: "'git rebase -i' lets you: squash commits, edit messages, reorder, drop commits. Powerful for cleaning up history before merging.",
                 learnMore: { url: "https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History", text: "📚 Interactive Rebase" }
             },
             {
                 q: "What's a Git tag used for?",
-                options: ["Mark specific points like releases", "Branch marker", "Comment", "Temporary save"],
+                options: ["Mark specific points like releases", "Create a marker for branches", "Add comments to commits", "Temporarily save changes"],
                 correct: 0,
                 explanation: "Tags mark important points (releases, versions). Lightweight tags are just pointers. Annotated tags store metadata (tagger, date, message).",
                 learnMore: { url: "https://git-scm.com/book/en/v2/Git-Basics-Tagging", text: "📚 Git Tags" }
             },
             {
                 q: "What does 'git blame' show?",
-                options: ["Who changed each line and when", "Errors in code", "Merge conflicts", "Branch history"],
+                options: ["Who changed each line and when", "List of errors in the code", "Unresolved merge conflicts", "Complete branch history"],
                 correct: 0,
                 explanation: "'git blame' shows last commit that modified each line. Useful for finding when/why code changed. Use '-L' to limit to line range.",
                 learnMore: { url: "https://git-scm.com/docs/git-blame", text: "📚 Git Blame" }
@@ -1928,35 +1928,35 @@ const questions = {
         5: [
             {
                 q: "How does 'git reflog' help in recovery?",
-                options: ["Shows all ref changes including 'lost' commits", "Log of references", "Remote log", "Error log"],
+                options: ["Shows all ref changes including lost commits", "Just shows a log of branch references", "Displays remote repository activity", "Shows error and exception logs"],
                 correct: 0,
                 explanation: "Reflog records HEAD movements locally. Find 'lost' commits after reset/rebase. 'git checkout HEAD@{2}' to recover. Entries expire after 90 days.",
                 learnMore: { url: "https://git-scm.com/docs/git-reflog", text: "📚 Git Reflog" }
             },
             {
                 q: "What's git worktree?",
-                options: ["Multiple working directories for same repo", "Tree structure", "File tree", "Branch tree"],
+                options: ["Multiple working directories for same repo", "Visual tree structure of commits", "Tree view of repository files", "Branching tree visualization"],
                 correct: 0,
                 explanation: "Worktree lets you check out multiple branches simultaneously in different directories. Useful for comparing branches or working on multiple features.",
                 learnMore: { url: "https://git-scm.com/docs/git-worktree", text: "📚 Git Worktree" }
             },
             {
                 q: "How do you recover a deleted branch?",
-                options: ["Find commit in reflog, recreate branch", "Cannot recover", "Automatic recovery", "Contact admin"],
+                options: ["Find commit in reflog, recreate branch", "Deleted branches cannot be recovered", "Git automatically recovers branches", "Contact your Git administrator"],
                 correct: 0,
                 explanation: "Find the commit hash in reflog ('git reflog'), then 'git branch branch-name hash'. Branch is just a pointer - commits aren't deleted immediately.",
                 learnMore: { url: "https://git-scm.com/book/en/v2/Git-Internals-Maintenance-and-Data-Recovery", text: "📚 Recovery" }
             },
             {
                 q: "What's a detached HEAD state?",
-                options: ["HEAD points to commit, not branch", "Broken repository", "Deleted HEAD", "No commits"],
+                options: ["HEAD points to commit, not branch", "Repository is broken/corrupted", "HEAD reference was deleted", "Repository has no commits"],
                 correct: 0,
                 explanation: "Detached HEAD: checked out a commit directly, not a branch. New commits won't belong to any branch. Create a branch to keep them: 'git checkout -b new-branch'.",
                 learnMore: { url: "https://git-scm.com/docs/git-checkout#_detached_head", text: "📚 Detached HEAD" }
             },
             {
                 q: "What's git bisect used for?",
-                options: ["Binary search to find bug-introducing commit", "Split repository", "Merge branches", "Create tags"],
+                options: ["Binary search to find bug-introducing commit", "Split repository into multiple repos", "Merge multiple branches together", "Create annotated release tags"],
                 correct: 0,
                 explanation: "Bisect does binary search through history. Mark commits 'good' or 'bad', Git narrows down to the first bad commit efficiently. Great for debugging.",
                 learnMore: { url: "https://git-scm.com/docs/git-bisect", text: "📚 Git Bisect" }
@@ -1968,7 +1968,7 @@ const questions = {
         1: [
             {
                 q: "What is a Dockerfile?",
-                options: ["Instructions to build a Docker image", "Running container", "Docker configuration", "Container log"],
+                options: ["Instructions to build a Docker image", "A currently running container", "Docker daemon configuration", "Container log output file"],
                 correct: 0,
                 explanation: "Dockerfile contains instructions (FROM, RUN, COPY, etc.) to build an image layer by layer. Each instruction creates a cached layer.",
                 learnMore: { url: "https://docs.docker.com/engine/reference/builder/", text: "📚 Dockerfile Reference" }
@@ -1991,21 +1991,21 @@ const questions = {
         2: [
             {
                 q: "What does 'docker-compose up' do?",
-                options: ["Starts all services defined in docker-compose.yml", "Updates Docker", "Uploads images", "Shows status"],
+                options: ["Starts all services in docker-compose.yml", "Updates the Docker engine", "Uploads images to registry", "Shows container status"],
                 correct: 0,
                 explanation: "'docker-compose up' creates and starts all services defined in compose file. Add '-d' for detached mode. '--build' rebuilds images.",
                 learnMore: { url: "https://docs.docker.com/compose/reference/up/", text: "📚 Compose Up" }
             },
             {
                 q: "What's the purpose of exposing a port in Docker?",
-                options: ["Allow external access to container service", "Increase security", "Reduce memory", "Speed up container"],
+                options: ["Allow external access to container", "Increase container security", "Reduce memory usage", "Speed up container startup"],
                 correct: 0,
                 explanation: "EXPOSE documents which ports the container listens on. '-p host:container' actually publishes the port. Without -p, EXPOSE does nothing for external access.",
                 learnMore: { url: "https://docs.docker.com/engine/reference/builder/#expose", text: "📚 Docker Ports" }
             },
             {
                 q: "What does 'docker ps' show?",
-                options: ["Running containers", "All images", "Docker processes", "Port mappings"],
+                options: ["Currently running containers", "All available images", "Docker daemon processes", "Port mapping settings"],
                 correct: 0,
                 explanation: "'docker ps' lists running containers. Add '-a' for all containers (including stopped). Shows: ID, image, command, status, ports, names.",
                 learnMore: { url: "https://docs.docker.com/engine/reference/commandline/ps/", text: "📚 Docker PS" }
@@ -2014,28 +2014,28 @@ const questions = {
         3: [
             {
                 q: "What's the difference between COPY and ADD in Dockerfile?",
-                options: ["ADD can extract archives and fetch URLs", "Same thing", "COPY is newer", "ADD is deprecated"],
+                options: ["ADD can extract archives and URLs", "They do exactly the same thing", "COPY is the newer command", "ADD is now deprecated"],
                 correct: 0,
                 explanation: "COPY is straightforward file copy. ADD can extract tar archives and fetch URLs. Prefer COPY for simplicity; use ADD only when you need its features.",
                 learnMore: { url: "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#add-or-copy", text: "📚 COPY vs ADD" }
             },
             {
                 q: "Why use .dockerignore?",
-                options: ["Exclude files from build context", "Ignore errors", "Skip layers", "Disable caching"],
+                options: ["Exclude files from build context", "Ignore build error messages", "Skip certain image layers", "Disable the build cache"],
                 correct: 0,
                 explanation: ".dockerignore excludes files from build context sent to daemon. Speeds up builds, reduces image size, prevents secrets from being included.",
                 learnMore: { url: "https://docs.docker.com/engine/reference/builder/#dockerignore-file", text: "📚 .dockerignore" }
             },
             {
                 q: "What's a Docker layer?",
-                options: ["Cached filesystem change from Dockerfile instruction", "Container level", "Security layer", "Network layer"],
+                options: ["Cached filesystem change from instruction", "Container isolation level", "Security permission layer", "Virtual network layer"],
                 correct: 0,
                 explanation: "Each Dockerfile instruction creates a layer. Layers are cached and reused if instruction and previous layers unchanged. Optimize by ordering least→most changing.",
                 learnMore: { url: "https://docs.docker.com/storage/storagedriver/", text: "📚 Docker Layers" }
             },
             {
                 q: "What does 'docker pull' do?",
-                options: ["Downloads image from registry", "Pushes image", "Removes image", "Lists images"],
+                options: ["Downloads image from registry", "Pushes image to registry", "Removes image locally", "Lists available images"],
                 correct: 0,
                 explanation: "'docker pull' downloads image from registry (Docker Hub by default). Specify registry: 'registry.example.com/image:tag'. Layers already present are skipped.",
                 learnMore: { url: "https://docs.docker.com/engine/reference/commandline/pull/", text: "📚 Docker Pull" }
@@ -2044,28 +2044,28 @@ const questions = {
         4: [
             {
                 q: "How do multi-stage builds reduce image size?",
-                options: ["Only final stage artifacts included in image", "Compress files", "Remove layers", "Use smaller base"],
+                options: ["Only final stage artifacts included", "Files are compressed smaller", "Layers are automatically removed", "Base image is made smaller"],
                 correct: 0,
                 explanation: "Multi-stage builds use multiple FROM statements. Build tools stay in early stages; COPY only needed artifacts to final stage. Dramatically smaller production images.",
                 learnMore: { url: "https://docs.docker.com/build/building/multi-stage/", text: "📚 Multi-stage Builds" }
             },
             {
                 q: "What's the difference between docker-compose and Docker Swarm?",
-                options: ["Compose for dev/single host, Swarm for production clusters", "Same thing", "Swarm is for dev", "Compose is for clusters"],
+                options: ["Compose for dev, Swarm for production clusters", "They do exactly the same thing", "Swarm is for development only", "Compose is for production clusters"],
                 correct: 0,
                 explanation: "Compose: define multi-container apps, great for development, single host. Swarm: orchestration for production clusters, multi-node, service discovery, scaling.",
                 learnMore: { url: "https://docs.docker.com/engine/swarm/", text: "📚 Docker Swarm" }
             },
             {
                 q: "Why use alpine-based images?",
-                options: ["Smaller image size, faster downloads", "More features", "Better security", "Required by Docker"],
+                options: ["Smaller image size, faster downloads", "More features and packages", "Better default security", "Required by Docker daemon"],
                 correct: 0,
                 explanation: "Alpine Linux is ~5MB vs ~80MB+ for Debian. Smaller attack surface. But: uses musl libc (compatibility issues sometimes), less tooling. Good for production.",
                 learnMore: { url: "https://hub.docker.com/_/alpine", text: "📚 Alpine Image" }
             },
             {
                 q: "What's a Docker registry?",
-                options: ["Storage and distribution for Docker images", "Container registry", "Log storage", "Config storage"],
+                options: ["Storage and distribution for images", "Running container database", "Container log storage", "Configuration file storage"],
                 correct: 0,
                 explanation: "Registry stores and distributes images. Docker Hub is default public registry. Private options: Harbor, GitLab Registry, AWS ECR, etc.",
                 learnMore: { url: "https://docs.docker.com/registry/", text: "📚 Docker Registry" }
@@ -2074,35 +2074,35 @@ const questions = {
         5: [
             {
                 q: "What's the difference between CMD and ENTRYPOINT?",
-                options: ["CMD is overridable, ENTRYPOINT defines executable", "Same", "CMD is newer", "ENTRYPOINT is deprecated"],
+                options: ["CMD is overridable, ENTRYPOINT is fixed", "They work exactly the same", "CMD is the newer instruction", "ENTRYPOINT is deprecated now"],
                 correct: 0,
                 explanation: "ENTRYPOINT: the executable (hard to override). CMD: default arguments (easy to override). Best practice: ENTRYPOINT for command, CMD for default args.",
                 learnMore: { url: "https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact", text: "📚 CMD vs ENTRYPOINT" }
             },
             {
                 q: "How do you optimize Docker build cache?",
-                options: ["Order instructions from least to most changing", "Random order", "No optimization possible", "Always rebuild"],
+                options: ["Order instructions least to most changing", "Use completely random order", "Cache optimization is not possible", "Always rebuild from scratch"],
                 correct: 0,
                 explanation: "Cache invalidates when instruction or previous layer changes. Order: base image → dependencies → code. Copy package.json before code to cache npm install.",
                 learnMore: { url: "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#leverage-build-cache", text: "📚 Build Cache" }
             },
             {
                 q: "What's a Docker secret?",
-                options: ["Sensitive data management for Swarm", "Hidden container", "Private image", "Encrypted volume"],
+                options: ["Sensitive data management for Swarm", "Hidden container from listing", "Private image in registry", "Encrypted storage volume"],
                 correct: 0,
                 explanation: "Swarm secrets store sensitive data (passwords, keys) encrypted. Mounted as files in containers. Better than environment variables (visible in ps/logs).",
                 learnMore: { url: "https://docs.docker.com/engine/swarm/secrets/", text: "📚 Docker Secrets" }
             },
             {
                 q: "What's the purpose of Docker health checks?",
-                options: ["Monitor container application health", "Check disk", "Verify network", "Test security"],
+                options: ["Monitor container application health", "Check available disk space", "Verify network connectivity", "Test security configuration"],
                 correct: 0,
                 explanation: "HEALTHCHECK tests if app inside is working (not just process running). Returns: healthy, unhealthy, starting. Orchestrators can restart unhealthy containers.",
                 learnMore: { url: "https://docs.docker.com/engine/reference/builder/#healthcheck", text: "📚 HEALTHCHECK" }
             },
             {
                 q: "How do you reduce Docker image attack surface?",
-                options: ["Minimal base image, non-root user, no unnecessary tools", "Add more tools", "Run as root", "Use large images"],
+                options: ["Minimal base, non-root user, few tools", "Add more debugging tools", "Always run as root user", "Use larger base images"],
                 correct: 0,
                 explanation: "Use minimal base (alpine, distroless), non-root USER, remove shells/tools if not needed, scan for vulnerabilities (Trivy, Snyk), update regularly.",
                 learnMore: { url: "https://docs.docker.com/develop/security-best-practices/", text: "📚 Security Best Practices" }
@@ -2121,14 +2121,14 @@ const questions = {
             },
             {
                 q: "What does CD stand for (in CI/CD)?",
-                options: ["Continuous Delivery/Deployment", "Code Delivery", "Continuous Development", "Code Distribution"],
+                options: ["Continuous Delivery/Deployment", "Code Delivery system", "Continuous Development", "Code Distribution network"],
                 correct: 0,
                 explanation: "CD can mean Continuous Delivery (automatically prepare releases for deployment) or Continuous Deployment (automatically deploy every change that passes tests).",
                 learnMore: { url: "https://www.atlassian.com/continuous-delivery/principles/continuous-integration-vs-delivery-vs-deployment", text: "📚 CI vs CD vs CD" }
             },
             {
                 q: "What's the main goal of CI?",
-                options: ["Detect integration issues early", "Deploy faster", "Write less code", "Reduce testing"],
+                options: ["Detect integration issues early", "Deploy code to production faster", "Write less code overall", "Reduce testing requirements"],
                 correct: 0,
                 explanation: "CI's main goal is to detect integration problems early by automatically building and testing code changes frequently, reducing integration pain.",
                 learnMore: { url: "https://martinfowler.com/articles/continuousIntegration.html", text: "📚 Martin Fowler on CI" }
@@ -2137,21 +2137,21 @@ const questions = {
         2: [
             {
                 q: "What triggers a CI pipeline typically?",
-                options: ["Code push or merge request", "Manual button only", "Scheduled time only", "Production deployment"],
+                options: ["Code push or merge request", "Manual button click only", "Scheduled time trigger only", "Production deployment event"],
                 correct: 0,
                 explanation: "CI pipelines are typically triggered by code pushes, merge/pull requests, or branch updates. This ensures every change is verified automatically.",
                 learnMore: { url: "https://docs.gitlab.com/ee/ci/pipelines/", text: "📚 GitLab Pipelines" }
             },
             {
                 q: "What's a pipeline stage?",
-                options: ["Group of jobs that run together", "Single command", "Branch name", "Server"],
+                options: ["Group of jobs that run together", "A single shell command to run", "The name of a Git branch", "A server running the jobs"],
                 correct: 0,
                 explanation: "A pipeline stage is a logical grouping of jobs that run together. Common stages include build, test, and deploy. Jobs in a stage run in parallel by default.",
                 learnMore: { url: "https://docs.gitlab.com/ee/ci/yaml/#stages", text: "📚 GitLab Pipeline Stages" }
             },
             {
                 q: "What should happen if CI tests fail?",
-                options: ["Block merge until fixed", "Merge anyway", "Ignore", "Delete branch"],
+                options: ["Block merge until tests are fixed", "Proceed with merge regardless", "Ignore the test failures", "Delete the feature branch"],
                 correct: 0,
                 explanation: "Failed CI tests should block the merge to protect the main branch. This enforces quality gates and ensures only passing code enters the codebase.",
                 learnMore: { url: "https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html", text: "📚 Pipeline-Gated Merges" }
@@ -2160,28 +2160,28 @@ const questions = {
         3: [
             {
                 q: "What's the difference between Continuous Delivery and Deployment?",
-                options: ["Delivery requires manual approval, Deployment is automatic", "Same thing", "Delivery is automatic", "Deployment needs approval"],
+                options: ["Delivery needs manual approval, Deployment is automatic", "They are exactly the same thing", "Delivery is fully automatic", "Deployment requires manual approval"],
                 correct: 0,
                 explanation: "Continuous Delivery means code is always ready to deploy but requires manual approval. Continuous Deployment automatically deploys every passing change to production.",
                 learnMore: { url: "https://www.atlassian.com/continuous-delivery/principles/continuous-integration-vs-delivery-vs-deployment", text: "📚 Delivery vs Deployment" }
             },
             {
                 q: "What's a build artifact?",
-                options: ["Output from build process (binary, package)", "Source code", "Test results only", "Log files"],
+                options: ["Output from build process (binary, package)", "The original source code files", "Just the test result reports", "Server configuration log files"],
                 correct: 0,
                 explanation: "Build artifacts are files produced by the build process: compiled binaries, packages, container images, or bundles that can be deployed or passed to other stages.",
                 learnMore: { url: "https://docs.gitlab.com/ee/ci/jobs/job_artifacts.html", text: "📚 GitLab Job Artifacts" }
             },
             {
                 q: "What's pipeline caching used for?",
-                options: ["Speed up builds by reusing dependencies", "Store logs", "Save test results", "Backup code"],
+                options: ["Speed up builds by reusing dependencies", "Store pipeline execution logs", "Save test results for review", "Backup source code regularly"],
                 correct: 0,
                 explanation: "Pipeline caching stores and reuses dependencies (node_modules, pip packages) between pipeline runs, significantly speeding up build times.",
                 learnMore: { url: "https://docs.gitlab.com/ee/ci/caching/", text: "📚 GitLab Caching" }
             },
             {
                 q: "What's a deployment environment?",
-                options: ["Target system (dev, staging, prod)", "IDE", "Build server", "Git branch"],
+                options: ["Target system (dev, staging, prod)", "Your local development IDE", "The CI/CD build server", "A Git branch in the repo"],
                 correct: 0,
                 explanation: "Deployment environments are target systems where code runs: development, staging, production, etc. Each may have different configurations and access controls.",
                 learnMore: { url: "https://docs.gitlab.com/ee/ci/environments/", text: "📚 GitLab Environments" }
@@ -2190,28 +2190,28 @@ const questions = {
         4: [
             {
                 q: "What are pipeline artifacts used for?",
-                options: ["Pass build outputs between stages/jobs", "Store secrets", "Log errors", "Cache dependencies"],
+                options: ["Pass build outputs between stages/jobs", "Store sensitive secrets securely", "Log errors to monitoring systems", "Cache dependencies between runs"],
                 correct: 0,
                 explanation: "Pipeline artifacts pass outputs between jobs/stages (e.g., compiled code from build to test stage). Unlike caches, artifacts are job-specific outputs.",
                 learnMore: { url: "https://docs.gitlab.com/ee/ci/jobs/job_artifacts.html", text: "📚 Job Artifacts" }
             },
             {
                 q: "What's a rollback strategy?",
-                options: ["Plan to revert failed deployment", "Remove old code", "Backup database", "Clear cache"],
+                options: ["Plan to revert failed deployments", "Process to remove old code files", "Procedure to backup databases", "Method to clear system caches"],
                 correct: 0,
                 explanation: "A rollback strategy is a plan to quickly revert to a previous working version when a deployment fails. Can use previous artifacts, git reverts, or blue-green switching.",
                 learnMore: { url: "https://docs.gitlab.com/ee/ci/environments/#environment-rollback", text: "📚 Environment Rollback" }
             },
             {
                 q: "What's canary deployment?",
-                options: ["Gradual rollout to subset of users", "Full deployment", "Immediate rollback", "Test deployment"],
+                options: ["Gradual rollout to subset of users", "Full deployment to all servers", "Immediate rollback on any error", "Test deployment to dev server"],
                 correct: 0,
                 explanation: "Canary deployment gradually rolls out changes to a small subset of users first. If issues arise, only a small percentage is affected before full rollout.",
                 learnMore: { url: "https://martinfowler.com/bliki/CanaryRelease.html", text: "📚 Canary Releases" }
             },
             {
                 q: "What's infrastructure as code in CI/CD?",
-                options: ["Define infrastructure in version-controlled files", "Manual setup", "GUI configuration", "External tools"],
+                options: ["Define infrastructure in version-controlled files", "Set up servers with manual commands", "Configure resources through web UI", "Use external provisioning tools only"],
                 correct: 0,
                 explanation: "Infrastructure as Code (IaC) defines infrastructure using version-controlled files (Terraform, Ansible), enabling reproducible, auditable infrastructure changes through CI/CD.",
                 learnMore: { url: "https://www.terraform.io/intro", text: "📚 Terraform Introduction" }
@@ -2220,35 +2220,35 @@ const questions = {
         5: [
             {
                 q: "How do you implement blue-green deployments?",
-                options: ["Two identical environments, switch traffic after verification", "Single environment", "Gradual rollout", "A/B testing"],
+                options: ["Two identical environments, switch traffic", "Single environment with in-place updates", "Gradual rollout to percentage of users", "A/B testing with feature toggles"],
                 correct: 0,
                 explanation: "Blue-green deployment uses two identical environments. Deploy to inactive one (green), verify it works, then switch traffic from active (blue) to green. Instant rollback possible.",
                 learnMore: { url: "https://martinfowler.com/bliki/BlueGreenDeployment.html", text: "📚 Blue-Green Deployment" }
             },
             {
                 q: "What's GitOps?",
-                options: ["Use Git as source of truth for infrastructure", "Git operations", "GitHub features", "Git automation"],
+                options: ["Use Git as source of truth for infra", "Standard Git operations and commands", "GitHub-specific platform features", "Generic Git automation scripts"],
                 correct: 0,
                 explanation: "GitOps uses Git as the single source of truth for infrastructure and applications. Changes are made via PRs, and automated processes sync Git state to actual infrastructure.",
                 learnMore: { url: "https://www.gitops.tech/", text: "📚 GitOps Principles" }
             },
             {
                 q: "What's feature flag deployment?",
-                options: ["Toggle features without deployment", "Feature branches", "Flag variables", "Deployment flags"],
+                options: ["Toggle features without deployment", "Git branches for each feature", "Boolean variables in config files", "Command-line deployment flags"],
                 correct: 0,
                 explanation: "Feature flags (toggles) allow enabling/disabling features at runtime without deployment. Enables gradual rollouts, A/B testing, and quick disabling of problematic features.",
                 learnMore: { url: "https://martinfowler.com/articles/feature-toggles.html", text: "📚 Feature Toggles" }
             },
             {
                 q: "What's a deployment pipeline pattern?",
-                options: ["Stages: build, test, deploy with gates", "Single step", "Manual process", "No pattern"],
+                options: ["Stages: build, test, deploy with gates", "Single step deployment process", "Fully manual deployment process", "No defined deployment pattern"],
                 correct: 0,
                 explanation: "A deployment pipeline pattern structures CI/CD into stages (build → test → staging → production) with quality gates between each stage ensuring only verified code advances.",
                 learnMore: { url: "https://martinfowler.com/bliki/DeploymentPipeline.html", text: "📚 Deployment Pipeline" }
             },
             {
                 q: "How do you handle database migrations in CI/CD?",
-                options: ["Versioned migrations, backward compatible, tested", "Manual changes", "No migrations", "Drop and recreate"],
+                options: ["Versioned migrations, backward compatible", "Make direct manual database changes", "Skip migrations in CI/CD pipelines", "Drop and recreate all tables"],
                 correct: 0,
                 explanation: "Database migrations should be versioned, backward compatible (for rollback), and tested. Run migrations as separate pipeline step before deployment. Avoid destructive changes.",
                 learnMore: { url: "https://docs.djangoproject.com/en/4.2/topics/migrations/", text: "📚 Django Migrations" }
@@ -4746,21 +4746,21 @@ const questions = {
         1: [
             {
                 q: "What's Waldur's backend framework?",
-                options: ["Django REST Framework", "Flask", "FastAPI", "Express"],
+                options: ["Django REST Framework", "Flask web framework", "FastAPI framework", "Express.js framework"],
                 correct: 0,
                 explanation: "Waldur's backend (waldur-mastermind) is built on Django REST Framework, providing a powerful REST API with serializers, viewsets, and authentication.",
                 learnMore: { url: "https://docs.waldur.com/", text: "📚 Waldur Documentation" }
             },
             {
                 q: "What's Waldur's frontend framework?",
-                options: ["React", "Angular", "Vue", "jQuery"],
+                options: ["React with Redux", "Angular framework", "Vue.js framework", "jQuery library"],
                 correct: 0,
                 explanation: "Waldur's frontend (waldur-homeport) uses React with Redux for state management, providing a modern single-page application experience.",
                 learnMore: { url: "https://github.com/waldur/waldur-homeport", text: "📚 Waldur Homeport" }
             },
             {
                 q: "What database does Waldur primarily use?",
-                options: ["PostgreSQL", "MySQL", "MongoDB", "SQLite"],
+                options: ["PostgreSQL relational DB", "MySQL relational DB", "MongoDB document DB", "SQLite embedded DB"],
                 correct: 0,
                 explanation: "Waldur uses PostgreSQL as its primary database, leveraging its robust features like JSON fields, full-text search, and transactional integrity.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/deployment/", text: "📚 Waldur Deployment" }
@@ -4769,21 +4769,21 @@ const questions = {
         2: [
             {
                 q: "What are Structure Apps in Waldur?",
-                options: ["Pluggable modules for different resource types", "Mobile apps", "Database structures", "API endpoints"],
+                options: ["Pluggable modules for resource types", "Mobile applications for users", "Database table structures", "REST API endpoint definitions"],
                 correct: 0,
                 explanation: "Structure Apps are Waldur plugins that define new resource types (e.g., OpenStack, SLURM). Each provides models, serializers, views, and backend logic.",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/plugins/", text: "📚 Waldur Plugins" }
             },
             {
                 q: "What's Celery used for in Waldur?",
-                options: ["Async task processing", "Web serving", "Database access", "Frontend rendering"],
+                options: ["Async task processing", "HTTP web serving", "Database connections", "Frontend rendering"],
                 correct: 0,
                 explanation: "Celery handles asynchronous tasks in Waldur: resource provisioning, periodic sync with backends, sending notifications, generating reports, and other background jobs.",
                 learnMore: { url: "https://docs.celeryq.dev/en/stable/", text: "📚 Celery Documentation" }
             },
             {
                 q: "What message broker does Waldur use with Celery?",
-                options: ["Redis or RabbitMQ", "Kafka", "SQS", "Direct"],
+                options: ["Redis or RabbitMQ", "Apache Kafka", "Amazon SQS", "Direct in-process"],
                 correct: 0,
                 explanation: "Waldur uses Redis (default) or RabbitMQ as Celery's message broker. Redis is simpler to deploy; RabbitMQ offers more advanced features for larger installations.",
                 learnMore: { url: "https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/", text: "📚 Celery Brokers" }
@@ -4792,28 +4792,28 @@ const questions = {
         3: [
             {
                 q: "How does Waldur's plugin system work?",
-                options: ["Django apps registered via settings, providing new resource types", "npm packages", "Docker containers", "Microservices"],
+                options: ["Django apps registered via settings", "npm packages from registry", "Docker containers as plugins", "Independent microservices"],
                 correct: 0,
                 explanation: "Waldur plugins are Django apps registered in INSTALLED_APPS. They hook into core via extensions registry, providing new resource types, views, and background tasks.",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/", text: "📚 Developer Guide" }
             },
             {
                 q: "What's the purpose of waldur-mastermind?",
-                options: ["Main Waldur backend containing core and plugins", "Frontend app", "Mobile app", "Documentation"],
+                options: ["Main backend with core and plugins", "Frontend web application", "Mobile application code", "Documentation website"],
                 correct: 0,
                 explanation: "waldur-mastermind is the main backend repository containing waldur-core and all official plugins. It's the single deployable backend component.",
                 learnMore: { url: "https://github.com/waldur/waldur-mastermind", text: "📚 Waldur Mastermind" }
             },
             {
                 q: "How are Waldur API endpoints structured?",
-                options: ["DRF ViewSets with routers", "Flask routes", "Raw Django views", "GraphQL"],
+                options: ["DRF ViewSets with routers", "Flask route decorators", "Raw Django view functions", "GraphQL resolvers only"],
                 correct: 0,
                 explanation: "Waldur uses DRF ViewSets registered with routers. ViewSets provide CRUD operations automatically. Custom actions are added with @action decorator.",
                 learnMore: { url: "https://www.django-rest-framework.org/api-guide/viewsets/", text: "📚 DRF ViewSets" }
             },
             {
                 q: "What serializers does Waldur use?",
-                options: ["DRF serializers for API input/output", "JSON only", "XML only", "Custom format"],
+                options: ["DRF serializers for API I/O", "JSON format only", "XML format only", "Custom binary format"],
                 correct: 0,
                 explanation: "Waldur uses DRF serializers for validation, parsing input, and formatting output. HyperlinkedModelSerializer provides URL-based relationships between resources.",
                 learnMore: { url: "https://www.django-rest-framework.org/api-guide/serializers/", text: "📚 DRF Serializers" }
@@ -4822,28 +4822,28 @@ const questions = {
         4: [
             {
                 q: "What's the role of waldur-core vs plugins?",
-                options: ["Core provides base, plugins add specific integrations", "Core is optional", "Plugins are core", "No difference"],
+                options: ["Core provides base, plugins add integrations", "Core is an optional component", "Plugins are part of core", "There is no difference"],
                 correct: 0,
                 explanation: "waldur-core provides base models (Customer, Project), permissions, marketplace, and infrastructure. Plugins add specific provider integrations (OpenStack, Azure, etc.).",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/structure/", text: "📚 Waldur Structure" }
             },
             {
                 q: "How does Waldur handle background jobs?",
-                options: ["Celery tasks with periodic scheduling", "Cron jobs", "Threads", "No background jobs"],
+                options: ["Celery tasks with periodic scheduling", "System cron job entries", "Python threads directly", "No background job support"],
                 correct: 0,
                 explanation: "Waldur uses Celery for background jobs. Celery Beat schedules periodic tasks (sync, cleanup). Tasks are defined with @shared_task decorator and can be chained.",
                 learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html", text: "📚 Periodic Tasks" }
             },
             {
                 q: "What's the structure of a Waldur plugin?",
-                options: ["Django app with models, views, serializers, tasks", "Single file", "Configuration only", "Frontend only"],
+                options: ["Django app with models, views, tasks", "Single Python file module", "Configuration files only", "Frontend components only"],
                 correct: 0,
                 explanation: "A Waldur plugin is a Django app with: models.py (resources), serializers.py (API format), views.py (viewsets), tasks.py (Celery tasks), and extension.py (registration).",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/plugins/", text: "📚 Plugin Development" }
             },
             {
                 q: "How does Waldur manage database migrations?",
-                options: ["Django migrations per app", "Raw SQL", "Manual schema", "No migrations"],
+                options: ["Django migrations per app", "Raw SQL scripts only", "Manual schema changes", "No migration support"],
                 correct: 0,
                 explanation: "Waldur uses Django migrations. Each app has its own migrations folder. Run makemigrations when models change, then migrate to apply. Migrations are version-controlled.",
                 learnMore: { url: "https://docs.djangoproject.com/en/4.2/topics/migrations/", text: "📚 Django Migrations" }
@@ -4852,35 +4852,35 @@ const questions = {
         5: [
             {
                 q: "How do you extend Waldur with custom resource types?",
-                options: ["Create structure app with models, serializers, views, and register", "Modify core code", "Use configuration", "External API"],
+                options: ["Create structure app with models and views", "Directly modify the core code", "Use configuration files only", "Build external API bridge"],
                 correct: 0,
                 explanation: "Create a new Django app with: Resource model inheriting from marketplace.Resource, serializers, viewsets, processor for order handling, and register via extension.py.",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/plugins/", text: "📚 Custom Plugins" }
             },
             {
                 q: "How does Waldur handle multi-tenancy at database level?",
-                options: ["Shared database with organization/project filtering", "Separate databases", "Schemas", "No multi-tenancy"],
+                options: ["Shared database with filtering", "Separate database per tenant", "PostgreSQL schemas per tenant", "No multi-tenancy support"],
                 correct: 0,
                 explanation: "Waldur uses shared database with Customer (organization) and Project models. QuerySets are filtered by user permissions. No tenant isolation at DB level - it's application-level.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/organizations/", text: "📚 Organizations" }
             },
             {
                 q: "What's the Waldur executor pattern?",
-                options: ["Backend-specific logic for provisioning resources", "User executor", "Task runner", "Query executor"],
+                options: ["Backend-specific provisioning logic", "User permission executor", "Celery task runner pattern", "Database query executor"],
                 correct: 0,
                 explanation: "Executors contain backend-specific provisioning logic. They implement create/update/delete for resources, communicating with external APIs (OpenStack, SLURM, etc.).",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/", text: "📚 Developer Guide" }
             },
             {
                 q: "How does Waldur handle service provider backends?",
-                options: ["Backend classes implementing common interface", "Direct API calls", "Hardcoded logic", "Configuration files"],
+                options: ["Backend classes with common interface", "Direct API calls everywhere", "Hardcoded provider logic", "External configuration files"],
                 correct: 0,
                 explanation: "Each provider has a Backend class implementing common interface (create_resource, delete_resource). ServiceSettings stores credentials. Allows multiple instances per provider type.",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/backends/", text: "📚 Backend Development" }
             },
             {
                 q: "What's the role of waldur-homeport?",
-                options: ["React frontend application", "Backend service", "Database", "Load balancer"],
+                options: ["React frontend application", "Django backend service", "PostgreSQL database", "Nginx load balancer"],
                 correct: 0,
                 explanation: "waldur-homeport is the React-based frontend SPA. It communicates with waldur-mastermind via REST API. Uses Redux for state, React Router for navigation.",
                 learnMore: { url: "https://github.com/waldur/waldur-homeport", text: "📚 Homeport Repository" }
@@ -4922,14 +4922,14 @@ const questions = {
             },
             {
                 q: "What is an Order in Waldur?",
-                options: ["Request to create/modify/terminate a resource", "Shopping cart", "Invoice", "Report"],
+                options: ["Request to create/modify/terminate a resource", "Shopping cart for saved offerings", "Invoice for consumed resources", "Report of usage statistics"],
                 correct: 0,
                 explanation: "An Order is a request to perform an action on a resource: create, update, or terminate. Orders go through approval workflow and are processed by backend executors.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/orders/", text: "📚 Order Management" }
             },
             {
                 q: "What's an offering component?",
-                options: ["Measurable unit like CPU cores or RAM", "UI component", "Plugin", "Category"],
+                options: ["Measurable unit like CPU cores or RAM", "UI component for rendering forms", "Plugin for extending functionality", "Category for grouping offerings"],
                 correct: 0,
                 explanation: "Components define measurable, billable units of an offering: CPU cores, RAM GB, storage TB, etc. Each component has a measurement unit and can have a price.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/offerings/", text: "📚 Offering Components" }
@@ -4975,7 +4975,7 @@ const questions = {
             },
             {
                 q: "What's offering attributes used for?",
-                options: ["Custom configuration options for resources", "Styling", "Categories", "Permissions"],
+                options: ["Custom configuration options for resources", "Styling the offering display page", "Grouping offerings in categories", "Setting user access permissions"],
                 correct: 0,
                 explanation: "Offering attributes define user-configurable options when ordering: dropdown selections, text inputs, checkboxes. They customize what users can request.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/offerings/", text: "📚 Offering Attributes" }
@@ -5005,14 +5005,14 @@ const questions = {
             },
             {
                 q: "How does the marketplace handle billing?",
-                options: ["Generate invoices based on component usage and prices", "No billing", "External only", "Manual"],
+                options: ["Generate invoices based on component usage and prices", "Billing is not supported in marketplace", "Only external billing systems work", "Manual invoice creation only"],
                 correct: 0,
                 explanation: "Waldur generates invoices periodically based on resource usage and plan prices. Supports fixed and usage-based billing. Integrates with payment systems.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/billing/", text: "📚 Billing System" }
             },
             {
                 q: "What's offering secret options for?",
-                options: ["Provider-only configuration not visible to users", "User secrets", "API keys", "Passwords"],
+                options: ["Provider-only configuration not visible to users", "Storing user secrets and credentials", "Managing API keys for users", "Encrypted password storage"],
                 correct: 0,
                 explanation: "Secret options store provider-side configuration hidden from users: backend credentials, internal settings. Only provider staff can view/edit these.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/offerings/", text: "📚 Secret Options" }
@@ -5061,21 +5061,21 @@ const questions = {
         2: [
             {
                 q: "What's a role in Waldur's permission system?",
-                options: ["Set of permissions assignable to users", "User type", "Organization", "Resource"],
+                options: ["Set of permissions assignable to users", "Type of user account in system", "Organization configuration setting", "Resource allocation limit"],
                 correct: 0,
                 explanation: "A role is a named set of permissions (e.g., owner, manager, member). Assigning a role to a user grants all permissions defined in that role.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/roles/", text: "📚 Roles" }
             },
             {
                 q: "At what levels can permissions be assigned in Waldur?",
-                options: ["Customer/Organization, Project, Resource", "User only", "Global only", "Resource only"],
+                options: ["Customer/Organization, Project, Resource", "User account level only", "Global system level only", "Resource level only"],
                 correct: 0,
                 explanation: "Permissions can be assigned at: Customer (organization) level, Project level, or specific resource level. Each level has its own set of applicable roles.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/permissions/", text: "📚 Permission Levels" }
             },
             {
                 q: "What's the 'owner' role in an organization?",
-                options: ["Full administrative access to organization", "Read only", "Project access only", "Billing only"],
+                options: ["Full administrative access to organization", "Read-only access to resources", "Access to projects only", "Access to billing only"],
                 correct: 0,
                 explanation: "Organization owner has full admin access: create/delete projects, manage members, view billing, configure settings. It's the highest role within an organization.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/organizations/", text: "📚 Organization Owners" }
@@ -6712,21 +6712,21 @@ const questions = {
         1: [
             {
                 q: "What is OpenStack?",
-                options: ["Open source cloud computing platform", "Operating system", "Database", "Container runtime"],
+                options: ["Open source cloud computing platform", "Linux-based operating system kernel", "Relational database management system", "Container runtime environment"],
                 correct: 0,
                 explanation: "OpenStack is an open source cloud computing platform that controls pools of compute, storage, and networking resources, enabling private and public cloud deployments.",
                 learnMore: { url: "https://www.openstack.org/software/", text: "📚 OpenStack Overview" }
             },
             {
                 q: "What's the relationship between OpenStack and IaaS?",
-                options: ["OpenStack provides Infrastructure as a Service", "OpenStack is PaaS", "OpenStack is SaaS", "No relationship"],
+                options: ["OpenStack provides Infrastructure as a Service", "OpenStack is a Platform as a Service", "OpenStack is a Software as a Service", "OpenStack has no cloud service model"],
                 correct: 0,
                 explanation: "OpenStack provides IaaS (Infrastructure as a Service): on-demand compute, storage, and networking resources. Users get virtual infrastructure without managing physical hardware.",
                 learnMore: { url: "https://docs.openstack.org/", text: "📚 OpenStack Docs" }
             },
             {
                 q: "Is OpenStack a single application or collection of services?",
-                options: ["Collection of interconnected services", "Single application", "Operating system", "Database"],
+                options: ["Collection of interconnected services", "Single monolithic application binary", "Linux operating system distribution", "Relational database management tool"],
                 correct: 0,
                 explanation: "OpenStack is a collection of services (Nova, Neutron, Cinder, etc.) that work together. Each service handles a specific function and communicates via APIs.",
                 learnMore: { url: "https://www.openstack.org/software/project-navigator/", text: "📚 OpenStack Projects" }
@@ -6735,21 +6735,21 @@ const questions = {
         2: [
             {
                 q: "What OpenStack component manages compute (VMs)?",
-                options: ["Nova", "Neutron", "Cinder", "Swift"],
+                options: ["Nova - the compute service", "Neutron - the networking layer", "Cinder - the block storage", "Swift - the object store"],
                 correct: 0,
                 explanation: "Nova is the compute service managing virtual machines. It handles VM lifecycle (create, resize, migrate, delete), scheduling, and hypervisor interaction.",
                 learnMore: { url: "https://docs.openstack.org/nova/latest/", text: "📚 Nova Documentation" }
             },
             {
                 q: "What does Keystone provide in OpenStack?",
-                options: ["Identity and authentication service", "Storage", "Networking", "Compute"],
+                options: ["Identity and authentication service", "Block storage volume management", "Virtual networking capabilities", "Compute instance scheduling"],
                 correct: 0,
                 explanation: "Keystone is the identity service providing authentication (who you are) and authorization (what you can do). It manages users, projects, roles, and service catalog.",
                 learnMore: { url: "https://docs.openstack.org/keystone/latest/", text: "📚 Keystone Documentation" }
             },
             {
                 q: "What's Glance used for in OpenStack?",
-                options: ["Image service for VM images", "Monitoring", "Networking", "Storage"],
+                options: ["Image service for VM disk images", "Cluster monitoring and alerting", "Virtual network configuration", "Block storage volume service"],
                 correct: 0,
                 explanation: "Glance is the image service storing and retrieving VM disk images. It supports multiple formats (qcow2, raw, vmdk) and backends (file, Swift, Ceph).",
                 learnMore: { url: "https://docs.openstack.org/glance/latest/", text: "📚 Glance Documentation" }
@@ -6758,28 +6758,28 @@ const questions = {
         3: [
             {
                 q: "What's the role of Neutron?",
-                options: ["Network connectivity as a service", "Block storage", "Object storage", "Orchestration"],
+                options: ["Network connectivity as a service", "Block storage volume management", "Object storage for file backups", "Infrastructure stack orchestration"],
                 correct: 0,
                 explanation: "Neutron provides networking as a service: virtual networks, subnets, routers, firewalls, VPNs, and load balancers. Supports multiple backends (OVS, OVN, etc.).",
                 learnMore: { url: "https://docs.openstack.org/neutron/latest/", text: "📚 Neutron Documentation" }
             },
             {
                 q: "What does Cinder provide?",
-                options: ["Block storage volumes", "Object storage", "Networking", "Identity"],
+                options: ["Block storage volumes for VMs", "Object storage for backups", "Virtual network configuration", "User identity management"],
                 correct: 0,
                 explanation: "Cinder provides block storage volumes that attach to VMs like virtual disks. Supports multiple backends (LVM, Ceph, NetApp) and features like snapshots and backups.",
                 learnMore: { url: "https://docs.openstack.org/cinder/latest/", text: "📚 Cinder Documentation" }
             },
             {
                 q: "What's Swift in OpenStack?",
-                options: ["Object storage service", "Block storage", "Networking", "Compute"],
+                options: ["Object storage service for files", "Block storage volume service", "Virtual network configuration", "Compute instance management"],
                 correct: 0,
                 explanation: "Swift is object storage for unstructured data (files, images, backups). Highly scalable and redundant. Access via REST API, not mounted like block storage.",
                 learnMore: { url: "https://docs.openstack.org/swift/latest/", text: "📚 Swift Documentation" }
             },
             {
                 q: "What's Heat used for?",
-                options: ["Orchestration with templates", "Monitoring", "Networking", "Storage"],
+                options: ["Orchestration with YAML templates", "System monitoring and metrics", "Virtual network configuration", "Block storage volume service"],
                 correct: 0,
                 explanation: "Heat is the orchestration service using templates (HOT format) to define infrastructure stacks: VMs, networks, volumes, etc. Enables infrastructure as code.",
                 learnMore: { url: "https://docs.openstack.org/heat/latest/", text: "📚 Heat Documentation" }
@@ -6788,28 +6788,28 @@ const questions = {
         4: [
             {
                 q: "How does Waldur integrate with OpenStack?",
-                options: ["Via OpenStack APIs to provision and manage resources", "Direct database access", "SSH only", "Manual sync"],
+                options: ["Via OpenStack APIs to provision resources", "Through direct database table access", "Using SSH commands to hypervisors", "Through manual data synchronization"],
                 correct: 0,
                 explanation: "Waldur integrates via OpenStack APIs (python-openstackclient libraries). It creates VMs, networks, volumes on behalf of users, syncs state, and reports usage.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/providers/openstack/", text: "📚 Waldur OpenStack" }
             },
             {
                 q: "What's a Nova flavor?",
-                options: ["VM size specification (CPU, RAM, disk)", "Network type", "Storage type", "User role"],
+                options: ["VM size specification (CPU, RAM, disk)", "Virtual network configuration type", "Block storage volume class type", "User role and permission set"],
                 correct: 0,
                 explanation: "A flavor defines VM size: vCPUs, RAM, root disk, ephemeral disk. Admins create flavors (m1.small, m1.large). Users select flavor when launching VMs.",
                 learnMore: { url: "https://docs.openstack.org/nova/latest/user/flavors.html", text: "📚 Nova Flavors" }
             },
             {
                 q: "What's a security group in OpenStack?",
-                options: ["Firewall rules for instances", "User group", "Storage group", "Network group"],
+                options: ["Firewall rules for VM instances", "Collection of user accounts", "Pool of storage volumes", "Set of virtual network subnets"],
                 correct: 0,
                 explanation: "Security groups are virtual firewalls defining ingress/egress rules for instances. Rules specify protocol, port range, and source/destination CIDR or group.",
                 learnMore: { url: "https://docs.openstack.org/neutron/latest/admin/intro-os-networking.html#security-groups", text: "📚 Security Groups" }
             },
             {
                 q: "What's floating IP used for?",
-                options: ["Public IP that can move between instances", "Private IP", "DNS name", "Load balancer"],
+                options: ["Public IP that moves between instances", "Private IP for internal network", "DNS name for service discovery", "Load balancer virtual address"],
                 correct: 0,
                 explanation: "Floating IPs are public IPs that can be associated with instances for external access. They can be moved between instances, enabling failover and maintenance.",
                 learnMore: { url: "https://docs.openstack.org/neutron/latest/admin/intro-os-networking.html#floating-ips", text: "📚 Floating IPs" }
@@ -6818,35 +6818,35 @@ const questions = {
         5: [
             {
                 q: "What's a Keystone domain used for?",
-                options: ["Namespace for projects and users for multi-tenancy", "DNS resolution", "Network isolation", "Storage pools"],
+                options: ["Namespace for projects and users", "DNS resolution for services", "Network isolation between VMs", "Storage pool for volumes"],
                 correct: 0,
                 explanation: "Domains are top-level containers for projects and users, enabling multi-tenancy. Each domain has independent users, projects, and roles. Useful for resellers.",
                 learnMore: { url: "https://docs.openstack.org/keystone/latest/admin/identity-concepts.html", text: "📚 Identity Concepts" }
             },
             {
                 q: "How does OpenStack handle multi-region deployments?",
-                options: ["Multiple regions with shared Keystone", "Single region only", "Automatic replication", "External tools"],
+                options: ["Multiple regions with shared Keystone", "Only single region is supported", "Automatic cross-region replication", "External third-party tools only"],
                 correct: 0,
                 explanation: "Multi-region deployments share a central Keystone for identity but have independent Nova, Neutron, etc. per region. Regions appear in service catalog.",
                 learnMore: { url: "https://docs.openstack.org/keystone/latest/admin/identity-concepts.html#regions", text: "📚 OpenStack Regions" }
             },
             {
                 q: "What's Ceph integration with OpenStack?",
-                options: ["Distributed storage backend for Cinder/Glance", "Compute service", "Network service", "Identity service"],
+                options: ["Distributed storage backend for services", "Alternative compute service to Nova", "Alternative network service to Neutron", "Alternative identity service to Keystone"],
                 correct: 0,
                 explanation: "Ceph provides distributed storage backend for Cinder (block), Glance (images), and Nova (ephemeral disks). Offers scalability, replication, and snapshots.",
                 learnMore: { url: "https://docs.ceph.com/en/latest/rbd/rbd-openstack/", text: "📚 Ceph with OpenStack" }
             },
             {
                 q: "What's the relationship between Nova and Placement?",
-                options: ["Placement tracks resource inventory for Nova scheduling", "Same service", "Placement replaced Nova", "No relationship"],
+                options: ["Placement tracks resources for Nova scheduling", "They are the exact same service", "Placement fully replaced Nova compute", "There is no relationship between them"],
                 correct: 0,
                 explanation: "Placement tracks resource inventory (CPUs, RAM, disk) and allocation. Nova scheduler queries Placement to find hosts with available capacity for new VMs.",
                 learnMore: { url: "https://docs.openstack.org/placement/latest/", text: "📚 Placement Service" }
             },
             {
                 q: "How do you troubleshoot Nova instance launch failures?",
-                options: ["Check nova-compute logs, placement, scheduler", "Restart OpenStack", "Reinstall", "Contact support"],
+                options: ["Check nova-compute logs and placement", "Simply restart all OpenStack services", "Reinstall OpenStack from scratch", "Contact vendor support immediately"],
                 correct: 0,
                 explanation: "Check: nova-scheduler logs (host selection), nova-compute logs (VM creation), Placement (resource availability), Neutron (network), Glance (image). Use 'openstack server show --diagnostics'.",
                 learnMore: { url: "https://docs.openstack.org/nova/latest/admin/troubleshooting.html", text: "📚 Nova Troubleshooting" }
@@ -6872,7 +6872,7 @@ const questions = {
             },
             {
                 q: "What's a Kubernetes cluster?",
-                options: ["Set of nodes running containerized applications", "Single container", "Network", "Storage"],
+                options: ["Set of nodes running containerized applications", "Single container running in isolation", "Virtual network between services", "Persistent storage volume pool"],
                 correct: 0,
                 explanation: "A cluster is a set of machines (nodes) running Kubernetes. It has a control plane (managing the cluster) and worker nodes (running workloads in pods).",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/overview/components/", text: "📚 Cluster Components" }
@@ -6881,21 +6881,21 @@ const questions = {
         2: [
             {
                 q: "What is a Helm chart?",
-                options: ["Package of Kubernetes resources", "Monitoring dashboard", "Network diagram", "Storage class"],
+                options: ["Package of Kubernetes resources", "Monitoring dashboard for metrics", "Network diagram of cluster", "Storage class configuration"],
                 correct: 0,
                 explanation: "Helm charts package Kubernetes manifests with templating. They define applications (deployments, services, configmaps) with configurable values for easy deployment.",
                 learnMore: { url: "https://helm.sh/docs/topics/charts/", text: "📚 Helm Charts" }
             },
             {
                 q: "What's a Kubernetes node?",
-                options: ["Machine (physical/virtual) running pods", "Container", "Network", "Storage"],
+                options: ["Machine (physical/virtual) running pods", "Container running application code", "Network connection between pods", "Storage volume for data"],
                 correct: 0,
                 explanation: "A node is a worker machine (physical or VM) in the cluster. Each node runs kubelet (agent), container runtime, and kube-proxy. Nodes host pods.",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/architecture/nodes/", text: "📚 Nodes" }
             },
             {
                 q: "What's the control plane in Kubernetes?",
-                options: ["Components that manage cluster state", "Worker nodes", "Containers", "Storage"],
+                options: ["Components that manage cluster state", "Worker nodes running applications", "Containers inside the pods", "Storage backend for volumes"],
                 correct: 0,
                 explanation: "Control plane components manage cluster state: API server (entry point), etcd (state store), scheduler (pod placement), controller manager (reconciliation loops).",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/overview/components/#control-plane-components", text: "📚 Control Plane" }
@@ -6918,16 +6918,16 @@ const questions = {
             },
             {
                 q: "What's an Ingress in Kubernetes?",
-                options: ["HTTP/HTTPS routing to services", "Internal network", "Storage", "Compute"],
+                options: ["HTTP/HTTPS routing to services", "Internal network between pods", "Persistent storage volume", "Compute resource quota"],
                 correct: 0,
                 explanation: "Ingress manages external HTTP/HTTPS access to services. It provides routing rules, TLS termination, and load balancing. Requires an Ingress controller (nginx, traefik).",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/services-networking/ingress/", text: "📚 Ingress" }
             },
             {
                 q: "What's a ServiceAccount used for?",
-                options: ["Identity for pods to access API", "User account", "Billing account", "Storage account"],
+                options: ["Non-human identity for API authentication", "User account for cluster developers", "Billing account for resource costs", "Storage account for persistent data"],
                 correct: 0,
-                explanation: "ServiceAccounts provide identity for pods. Pods use them to authenticate to the API server. Combined with RBAC, they control what pods can do in the cluster.",
+                explanation: "ServiceAccounts provide identity for non-human processes (pods, CI/CD, monitoring tools) to authenticate to the Kubernetes API. Combined with RBAC, they control what actions are permitted.",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/security/service-accounts/", text: "📚 Service Accounts" }
             },
         ],
@@ -7004,7 +7004,7 @@ const questions = {
         1: [
             {
                 q: "What is SLURM?",
-                options: ["HPC workload manager and job scheduler", "Programming language", "Storage system", "Network protocol"],
+                options: ["HPC workload manager and job scheduler", "Scientific programming language", "Distributed storage system", "Network routing protocol"],
                 correct: 0,
                 explanation: "SLURM (Simple Linux Utility for Resource Management) is a workload manager for HPC clusters. It schedules jobs, allocates resources, and manages compute nodes.",
                 learnMore: { url: "https://slurm.schedmd.com/overview.html", text: "📚 SLURM Overview" }
@@ -7018,7 +7018,7 @@ const questions = {
             },
             {
                 q: "What environments typically use SLURM?",
-                options: ["HPC clusters, supercomputers, research computing", "Web servers", "Mobile apps", "Desktop applications"],
+                options: ["HPC clusters and supercomputers", "Web application servers", "Mobile app backends", "Desktop applications"],
                 correct: 0,
                 explanation: "SLURM is used in HPC (High Performance Computing) environments: research clusters, supercomputers, and scientific computing centers where batch job scheduling is essential.",
                 learnMore: { url: "https://slurm.schedmd.com/quickstart.html", text: "📚 SLURM Quickstart" }
@@ -7027,21 +7027,21 @@ const questions = {
         2: [
             {
                 q: "What's a SLURM partition?",
-                options: ["Group of nodes with shared properties", "Disk partition", "Network segment", "User group"],
+                options: ["Group of nodes with shared properties", "Filesystem disk partition", "Virtual network segment", "User permission group"],
                 correct: 0,
                 explanation: "A partition (queue) is a group of nodes with common properties (GPU nodes, high-memory, etc.). Jobs are submitted to partitions based on requirements.",
                 learnMore: { url: "https://slurm.schedmd.com/quickstart.html#partitions", text: "📚 SLURM Partitions" }
             },
             {
                 q: "What command submits a job to SLURM?",
-                options: ["sbatch", "slurm-submit", "qsub", "run-job"],
+                options: ["sbatch command", "slurm-submit", "qsub command", "run-job tool"],
                 correct: 0,
                 explanation: "sbatch submits batch job scripts to SLURM. The script contains #SBATCH directives for resource requests and the commands to run.",
                 learnMore: { url: "https://slurm.schedmd.com/sbatch.html", text: "📚 sbatch Command" }
             },
             {
                 q: "What's the difference between sbatch and srun?",
-                options: ["sbatch submits batch script, srun runs interactive/parallel", "Same command", "srun is deprecated", "sbatch is interactive"],
+                options: ["sbatch is batch, srun is interactive", "They are the same command", "srun is now deprecated", "sbatch is interactive mode"],
                 correct: 0,
                 explanation: "sbatch submits a batch script for later execution. srun runs commands directly (interactive or within a batch job for parallel execution across nodes).",
                 learnMore: { url: "https://slurm.schedmd.com/srun.html", text: "📚 srun Command" }
@@ -7050,28 +7050,28 @@ const questions = {
         3: [
             {
                 q: "What does squeue show?",
-                options: ["Current job queue status", "Storage quota", "User permissions", "Node hardware"],
+                options: ["Current job queue status", "Disk storage quota", "User permissions list", "Node hardware specs"],
                 correct: 0,
                 explanation: "squeue displays the job queue: pending and running jobs, their states, resources, time limits, and which nodes they're running on.",
                 learnMore: { url: "https://slurm.schedmd.com/squeue.html", text: "📚 squeue Command" }
             },
             {
                 q: "What's a job array in SLURM?",
-                options: ["Multiple similar jobs submitted as one", "Array of nodes", "Data structure", "Storage array"],
+                options: ["Multiple similar jobs as one submission", "Array of compute nodes", "Programming data structure", "Storage disk array"],
                 correct: 0,
                 explanation: "Job arrays submit many similar jobs with one command (--array=0-100). Each array task gets unique SLURM_ARRAY_TASK_ID for parameter sweeps.",
                 learnMore: { url: "https://slurm.schedmd.com/job_array.html", text: "📚 Job Arrays" }
             },
             {
                 q: "What does scancel do?",
-                options: ["Cancel pending or running jobs", "Scan for errors", "Cancel users", "Scan nodes"],
+                options: ["Cancel pending or running jobs", "Scan cluster for errors", "Cancel user accounts", "Scan nodes for issues"],
                 correct: 0,
                 explanation: "scancel cancels jobs by ID, name, user, or other criteria. Can cancel pending jobs (removes from queue) or running jobs (terminates processes).",
                 learnMore: { url: "https://slurm.schedmd.com/scancel.html", text: "📚 scancel Command" }
             },
             {
                 q: "What's a SLURM reservation?",
-                options: ["Reserved resources for specific users/jobs", "Hotel booking", "Disk reservation", "Memory reservation"],
+                options: ["Reserved resources for specific users", "Online booking system", "Disk space reservation", "Memory limit reservation"],
                 correct: 0,
                 explanation: "Reservations pre-allocate nodes/resources for specific users, accounts, or maintenance windows. Jobs matching reservation criteria can use reserved resources.",
                 learnMore: { url: "https://slurm.schedmd.com/reservations.html", text: "📚 Reservations" }
@@ -7080,28 +7080,28 @@ const questions = {
         4: [
             {
                 q: "How does SLURM accounting work?",
-                options: ["Tracks resource usage per user/project for fairshare", "Simple logging", "No tracking", "External only"],
+                options: ["Tracks resource usage for fairshare", "Simple text file logging", "No usage tracking at all", "External tools only"],
                 correct: 0,
                 explanation: "SLURM accounting tracks CPU-hours, memory, GPU usage per user/account. Data feeds into fairshare scheduling and usage reports. Uses slurmdbd daemon.",
                 learnMore: { url: "https://slurm.schedmd.com/accounting.html", text: "📚 SLURM Accounting" }
             },
             {
                 q: "What's sacct used for?",
-                options: ["View accounting data for completed jobs", "Account management", "Access control", "System accounts"],
+                options: ["View accounting data for jobs", "Manage user accounts", "Set access control rules", "List system accounts"],
                 correct: 0,
                 explanation: "sacct queries the accounting database for job history: runtime, resources used, exit status. Essential for analyzing completed jobs and usage patterns.",
                 learnMore: { url: "https://slurm.schedmd.com/sacct.html", text: "📚 sacct Command" }
             },
             {
                 q: "What's a QOS (Quality of Service) in SLURM?",
-                options: ["Priority and resource limits for job classes", "Network quality", "Service level", "Support tier"],
+                options: ["Priority and resource limits for jobs", "Network quality metrics", "Customer service level", "Technical support tier"],
                 correct: 0,
                 explanation: "QOS defines job class properties: priority, max resources, preemption rights. Users/accounts can be assigned QOS (normal, high-priority, debug) for differentiated service.",
                 learnMore: { url: "https://slurm.schedmd.com/qos.html", text: "📚 Quality of Service" }
             },
             {
                 q: "How do you request specific resources in sbatch?",
-                options: ["#SBATCH directives like --nodes, --cpus-per-task", "Command line only", "Config file", "Cannot specify"],
+                options: ["#SBATCH directives like --nodes", "Command line arguments only", "External config file only", "Cannot specify resources"],
                 correct: 0,
                 explanation: "#SBATCH directives in job scripts specify resources: --nodes, --ntasks, --cpus-per-task, --mem, --time, --gres=gpu:2, --partition, etc.",
                 learnMore: { url: "https://slurm.schedmd.com/sbatch.html#SECTION_OPTIONS", text: "📚 sbatch Options" }
@@ -7110,35 +7110,35 @@ const questions = {
         5: [
             {
                 q: "What's fairshare scheduling in SLURM?",
-                options: ["Priority based on historical usage vs allocation", "Equal time", "First come first served", "Random"],
+                options: ["Priority based on usage vs allocation", "Equal time for all users", "First come first served order", "Random job scheduling"],
                 correct: 0,
                 explanation: "Fairshare adjusts job priority based on historical usage vs allocated share. Heavy users get lower priority; underutilized accounts get higher priority.",
                 learnMore: { url: "https://slurm.schedmd.com/fair_tree.html", text: "📚 Fair Tree Scheduling" }
             },
             {
                 q: "How does Waldur integrate with SLURM?",
-                options: ["Track allocations, submit jobs, report usage", "No integration", "Direct database", "SSH only"],
+                options: ["Track allocations and report usage", "No SLURM integration exists", "Direct database connections", "SSH commands only"],
                 correct: 0,
                 explanation: "Waldur's SLURM plugin creates allocations (accounts), syncs usage data from sacct, and can manage resource limits. Enables self-service HPC access through Waldur.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/providers/slurm/", text: "📚 Waldur SLURM" }
             },
             {
                 q: "What's a SLURM federation?",
-                options: ["Multiple clusters managed together", "Single cluster", "User group", "Network"],
+                options: ["Multiple clusters managed together", "Single standalone cluster", "User permission group", "Virtual network setup"],
                 correct: 0,
                 explanation: "Federation connects multiple SLURM clusters. Users can submit jobs that run on any cluster in the federation. Enables unified access to distributed resources.",
                 learnMore: { url: "https://slurm.schedmd.com/federation.html", text: "📚 SLURM Federation" }
             },
             {
                 q: "What's job dependency in SLURM?",
-                options: ["Jobs that wait for other jobs to complete", "Code dependency", "Package dependency", "No dependencies"],
+                options: ["Jobs that wait for other jobs", "Code library dependency", "Package dependency manager", "No dependency support"],
                 correct: 0,
                 explanation: "Job dependencies (--dependency) make jobs wait for other jobs: afterok (run if previous succeeded), afterany (run regardless), afternotok (run if failed).",
                 learnMore: { url: "https://slurm.schedmd.com/sbatch.html#OPT_dependency", text: "📚 Job Dependencies" }
             },
             {
                 q: "How do you troubleshoot job failures in SLURM?",
-                options: ["Check job output, scontrol show job, sacct", "Restart cluster", "Contact admin only", "Cannot troubleshoot"],
+                options: ["Check job output, scontrol, sacct", "Simply restart the cluster", "Contact admin only option", "Cannot troubleshoot jobs"],
                 correct: 0,
                 explanation: "Check: job output/error files, 'scontrol show job <id>' for state/reason, 'sacct -j <id>' for resources/exit code, node logs for system issues.",
                 learnMore: { url: "https://slurm.schedmd.com/troubleshoot.html", text: "📚 Troubleshooting" }
@@ -7157,14 +7157,14 @@ const questions = {
             },
             {
                 q: "What problem does OIDC solve?",
-                options: ["Federated authentication and identity", "Data storage", "Network routing", "File sharing"],
+                options: ["Federated authentication across multiple apps", "Distributed data storage and replication", "Network routing between data centers", "Secure file sharing between users"],
                 correct: 0,
                 explanation: "OIDC provides federated authentication: users log in once with an identity provider (Google, Microsoft, institutional IdP) and access multiple applications without separate passwords.",
                 learnMore: { url: "https://openid.net/developers/how-connect-works/", text: "📚 How OIDC Works" }
             },
             {
                 q: "Is OIDC related to OAuth?",
-                options: ["Yes, OIDC is built on top of OAuth 2.0", "No relationship", "OIDC replaces OAuth", "OAuth is newer"],
+                options: ["Yes, OIDC is built on top of OAuth 2.0", "No, they are completely separate protocols", "OIDC is the older protocol that OAuth replaced", "OAuth 2.0 is built on top of OIDC"],
                 correct: 0,
                 explanation: "OIDC extends OAuth 2.0 with identity layer. OAuth handles authorization (what you can access), OIDC adds authentication (who you are) via ID tokens.",
                 learnMore: { url: "https://oauth.net/articles/authentication/", text: "📚 OAuth vs OIDC" }
@@ -7173,21 +7173,21 @@ const questions = {
         2: [
             {
                 q: "What's the relationship between OIDC and OAuth 2.0?",
-                options: ["OIDC is identity layer on top of OAuth 2.0", "Completely separate", "OAuth replaces OIDC", "Same protocol"],
+                options: ["OIDC adds identity layer on top of OAuth 2.0", "They are completely separate specifications", "OAuth 2.0 is replacing OIDC gradually", "They are the same protocol with different names"],
                 correct: 0,
                 explanation: "OIDC uses OAuth 2.0 flows for authorization but adds ID tokens for authentication. OAuth alone doesn't verify identity; OIDC does.",
                 learnMore: { url: "https://auth0.com/docs/authenticate/protocols/openid-connect-protocol", text: "📚 OIDC Protocol" }
             },
             {
                 q: "What is an ID token?",
-                options: ["JWT containing user identity claims", "Session cookie", "Password hash", "API key"],
+                options: ["JWT containing user identity claims", "Encrypted session cookie for browsers", "Hashed password stored in database", "API key for service authentication"],
                 correct: 0,
                 explanation: "ID token is a JWT (JSON Web Token) containing claims about the user: subject (sub), name, email, issuer (iss), audience (aud), expiration (exp).",
                 learnMore: { url: "https://openid.net/specs/openid-connect-core-1_0.html#IDToken", text: "📚 ID Token Spec" }
             },
             {
                 q: "What's an access token used for?",
-                options: ["Authorize API requests", "User identification", "Password reset", "Session management"],
+                options: ["Authorize requests to protected APIs", "Identify user in client application", "Reset forgotten user passwords", "Manage active user sessions"],
                 correct: 0,
                 explanation: "Access tokens authorize API requests. They're sent in Authorization header (Bearer token) to access protected resources. Unlike ID tokens, they're not for user identity.",
                 learnMore: { url: "https://auth0.com/docs/secure/tokens/access-tokens", text: "📚 Access Tokens" }
@@ -7196,28 +7196,28 @@ const questions = {
         3: [
             {
                 q: "What's the authorization code flow?",
-                options: ["Server-side flow where code is exchanged for tokens", "Direct token issuance", "Password flow", "Device flow"],
+                options: ["Server exchanges authorization code for tokens", "Tokens are issued directly to the browser", "User sends password directly to the app", "Device polls server for authorization"],
                 correct: 0,
                 explanation: "Authorization code flow: redirect to IdP → user authenticates → redirect back with code → backend exchanges code for tokens. Secure for server-side apps.",
                 learnMore: { url: "https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow", text: "📚 Auth Code Flow" }
             },
             {
                 q: "What is PKCE used for?",
-                options: ["Protect authorization code flow for public clients", "Encryption", "Password storage", "Session management"],
+                options: ["Protect auth code flow for public clients", "Encrypt tokens stored in the browser", "Hash passwords before transmission", "Manage distributed user sessions"],
                 correct: 0,
                 explanation: "PKCE (Proof Key for Code Exchange) protects auth code flow for public clients (mobile, SPA). Uses code_verifier and code_challenge to prevent code interception attacks.",
                 learnMore: { url: "https://oauth.net/2/pkce/", text: "📚 PKCE" }
             },
             {
                 q: "What's the difference between ID token and access token?",
-                options: ["ID token identifies user, access token authorizes API access", "Same thing", "Access token identifies", "ID token authorizes"],
+                options: ["ID token identifies user, access token calls APIs", "They are the same thing with different names", "Access token identifies, ID token authorizes", "ID token calls APIs, access token identifies"],
                 correct: 0,
                 explanation: "ID token: proves user identity (for your app). Access token: authorizes API access (for resource servers). Don't use ID tokens to call APIs.",
                 learnMore: { url: "https://auth0.com/blog/id-token-access-token-what-is-the-difference/", text: "📚 ID vs Access Token" }
             },
             {
                 q: "What's a refresh token?",
-                options: ["Token to get new access tokens without re-authentication", "Password refresh", "Session refresh", "Cache refresh"],
+                options: ["Gets new access tokens without re-login", "Resets user password on expiration", "Refreshes the browser session cookie", "Clears the application token cache"],
                 correct: 0,
                 explanation: "Refresh tokens get new access tokens when they expire, without re-prompting user login. They're long-lived and must be stored securely.",
                 learnMore: { url: "https://auth0.com/docs/secure/tokens/refresh-tokens", text: "📚 Refresh Tokens" }
@@ -7226,28 +7226,28 @@ const questions = {
         4: [
             {
                 q: "What are OIDC scopes?",
-                options: ["Define what user information is accessible", "Security boundaries", "Network segments", "Rate limits"],
+                options: ["Define what user information is accessible", "Define security boundaries between services", "Define network segments for isolation", "Define API rate limits per client"],
                 correct: 0,
                 explanation: "Scopes define what claims (user info) are accessible: openid (required), profile (name), email, address, phone. Users consent to requested scopes.",
                 learnMore: { url: "https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims", text: "📚 OIDC Scopes" }
             },
             {
                 q: "What's the 'openid' scope required for?",
-                options: ["Indicates OIDC request, returns ID token", "API access", "Admin access", "Optional scope"],
+                options: ["Indicates OIDC request and returns ID token", "Grants full API access to the application", "Provides administrator access to the IdP", "It's optional and can be omitted safely"],
                 correct: 0,
                 explanation: "The 'openid' scope is required for OIDC requests. It tells the authorization server to return an ID token (not just access token like plain OAuth).",
                 learnMore: { url: "https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest", text: "📚 Auth Request" }
             },
             {
                 q: "What claims are in the 'profile' scope?",
-                options: ["name, family_name, given_name, picture, etc.", "Email only", "Phone only", "Address only"],
+                options: ["name, family_name, given_name, picture, etc.", "Only the user's email address is included", "Only the user's phone number is included", "Only the user's street address is included"],
                 correct: 0,
                 explanation: "Profile scope includes: name, family_name, given_name, middle_name, nickname, picture, website, gender, birthdate, zoneinfo, locale, updated_at.",
                 learnMore: { url: "https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims", text: "📚 Profile Claims" }
             },
             {
                 q: "What's the userinfo endpoint?",
-                options: ["Returns claims about authenticated user", "Login endpoint", "Logout endpoint", "Token endpoint"],
+                options: ["Returns claims about the authenticated user", "Handles user login and authentication", "Handles user logout and session end", "Exchanges authorization code for tokens"],
                 correct: 0,
                 explanation: "The userinfo endpoint returns claims about the authenticated user when called with a valid access token. Alternative to getting all claims from ID token.",
                 learnMore: { url: "https://openid.net/specs/openid-connect-core-1_0.html#UserInfo", text: "📚 UserInfo Endpoint" }
@@ -7256,35 +7256,35 @@ const questions = {
         5: [
             {
                 q: "How do you validate an ID token?",
-                options: ["Verify signature, issuer, audience, expiration", "Check database", "Trust always", "Hash comparison"],
+                options: ["Verify signature, issuer, audience, expiration", "Query the database for token existence", "Always trust tokens without verification", "Compare hash values in local storage"],
                 correct: 0,
                 explanation: "Validate ID token: verify JWT signature (using provider's keys), check iss (issuer), aud (audience = your client_id), exp (not expired), iat (issued time).",
                 learnMore: { url: "https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation", text: "📚 Token Validation" }
             },
             {
                 q: "What's the discovery document (.well-known/openid-configuration)?",
-                options: ["Metadata about OIDC provider endpoints and capabilities", "User directory", "Configuration file", "Log file"],
+                options: ["Metadata about provider endpoints and capabilities", "Directory listing of all registered users", "Application-specific configuration settings", "Server access log file in JSON format"],
                 correct: 0,
                 explanation: "Discovery document provides provider metadata: authorization/token/userinfo endpoints, supported scopes, signing algorithms, JWKS URI for token verification.",
                 learnMore: { url: "https://openid.net/specs/openid-connect-discovery-1_0.html", text: "📚 OIDC Discovery" }
             },
             {
                 q: "How does Waldur use OIDC?",
-                options: ["Authenticate users via external identity providers", "Internal auth only", "No OIDC support", "API authentication"],
+                options: ["Authenticate users via external identity providers", "Internal password authentication only", "Waldur does not support OIDC protocol", "Only for API service-to-service auth"],
                 correct: 0,
                 explanation: "Waldur supports OIDC for SSO: users authenticate via institutional IdP (eduGAIN, GÉANT, Google). Waldur creates/updates users based on ID token claims.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/authentication/", text: "📚 Waldur Authentication" }
             },
             {
                 q: "What's token introspection?",
-                options: ["Validate and get info about token from authorization server", "View token contents", "Refresh token", "Revoke token"],
+                options: ["Validate token via authorization server query", "Decode and view the token's raw contents", "Request a new token using refresh token", "Invalidate and revoke an active token"],
                 correct: 0,
                 explanation: "Token introspection queries the authorization server to validate a token and get its metadata (active, scope, expiration). Used by resource servers.",
                 learnMore: { url: "https://oauth.net/2/token-introspection/", text: "📚 Token Introspection" }
             },
             {
                 q: "What's the implicit flow and why is it discouraged?",
-                options: ["Tokens in URL fragment, security risks", "Most secure", "Recommended flow", "Server-side flow"],
+                options: ["Tokens in URL fragment expose security risks", "It's actually the most secure flow available", "It's the recommended flow for all apps", "It's a server-side flow for backends"],
                 correct: 0,
                 explanation: "Implicit flow returns tokens directly in URL fragment (no code exchange). Discouraged: tokens exposed in browser history, logs. Use auth code + PKCE instead.",
                 learnMore: { url: "https://oauth.net/2/grant-types/implicit/", text: "📚 Implicit Flow" }
@@ -7296,21 +7296,21 @@ const questions = {
         1: [
             {
                 q: "What is Ansible used for?",
-                options: ["IT automation and configuration management", "Container runtime", "Programming language", "Database"],
+                options: ["IT automation and configuration management", "Container runtime environment", "General programming language", "Relational database system"],
                 correct: 0,
                 explanation: "Ansible automates IT tasks: configuration management, application deployment, cloud provisioning, and orchestration. It uses simple YAML playbooks.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/index.html", text: "📚 Ansible Documentation" }
             },
             {
                 q: "Is Ansible agentless?",
-                options: ["Yes, uses SSH for communication", "No, requires agent", "Sometimes", "Depends on OS"],
+                options: ["Yes, uses SSH for communication", "No, requires agent on targets", "Only sometimes agentless", "Depends on the target OS"],
                 correct: 0,
                 explanation: "Ansible is agentless: it connects to managed hosts via SSH (or WinRM for Windows). No agent software needs to be installed on target machines.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/getting_started/index.html", text: "📚 Getting Started" }
             },
             {
                 q: "What language are Ansible playbooks written in?",
-                options: ["YAML", "JSON", "Python", "XML"],
+                options: ["YAML markup language", "JSON data format", "Python programming", "XML markup format"],
                 correct: 0,
                 explanation: "Ansible playbooks are written in YAML (Yet Another Markup Language). YAML is human-readable and defines tasks, variables, and conditions declaratively.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html", text: "📚 Playbook Intro" }
@@ -7319,21 +7319,21 @@ const questions = {
         2: [
             {
                 q: "What is an Ansible playbook?",
-                options: ["YAML file defining automation tasks", "Python script", "Shell script", "Config file"],
+                options: ["YAML file defining automation tasks", "Python script for automation", "Shell script for deployment", "Config file for settings"],
                 correct: 0,
                 explanation: "A playbook is a YAML file containing plays. Each play targets hosts and defines tasks to execute. Playbooks are the core of Ansible automation.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html", text: "📚 Intro to Playbooks" }
             },
             {
                 q: "What's an Ansible inventory?",
-                options: ["List of managed hosts", "Storage of variables", "Task queue", "Role collection"],
+                options: ["List of managed hosts and groups", "Storage of playbook variables", "Queue for pending tasks", "Collection of reusable roles"],
                 correct: 0,
                 explanation: "Inventory defines managed hosts and groups. Can be static (INI/YAML file) or dynamic (script querying cloud provider). Hosts can have group_vars and host_vars.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html", text: "📚 Inventory" }
             },
             {
                 q: "What's an Ansible task?",
-                options: ["Single action to execute (module call)", "Collection of playbooks", "Inventory entry", "Variable"],
+                options: ["Single action to execute (module call)", "Collection of multiple playbooks", "Entry in the inventory file", "Variable defined in playbook"],
                 correct: 0,
                 explanation: "A task is a single action calling an Ansible module (apt, copy, service, template, etc.). Tasks have names, module arguments, and optional conditions.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html#tasks-list", text: "📚 Tasks" }
@@ -7342,28 +7342,28 @@ const questions = {
         3: [
             {
                 q: "What's the difference between a role and a playbook?",
-                options: ["Role is reusable component, playbook orchestrates roles", "Same thing", "Role is larger", "Playbook is reusable"],
+                options: ["Role is reusable component, playbook orchestrates", "They are exactly the same thing", "Role is larger than playbook", "Playbook is the reusable one"],
                 correct: 0,
                 explanation: "Roles are reusable units with structured directories (tasks, handlers, vars, templates). Playbooks orchestrate roles and standalone tasks for specific scenarios.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html", text: "📚 Roles" }
             },
             {
                 q: "What does 'ansible-playbook -i inventory playbook.yml' do?",
-                options: ["Runs playbook against hosts in inventory", "Creates inventory", "Validates playbook", "Generates docs"],
+                options: ["Runs playbook against hosts in inventory", "Creates a new inventory file", "Validates playbook syntax only", "Generates documentation files"],
                 correct: 0,
                 explanation: "This command runs playbook.yml against hosts defined in the inventory file. -i specifies inventory; playbook defines what tasks to execute.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html", text: "📚 ansible-playbook CLI" }
             },
             {
                 q: "What's an Ansible module?",
-                options: ["Unit of code that performs specific action", "Configuration file", "Log file", "Template"],
+                options: ["Unit of code that performs specific action", "Configuration file for settings", "Log file for task output", "Template file for rendering"],
                 correct: 0,
                 explanation: "Modules are units of code Ansible runs on managed nodes. Examples: apt (packages), copy (files), service (daemons), template (Jinja2), command (shell).",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/module_plugin_guide/modules_intro.html", text: "📚 Modules" }
             },
             {
                 q: "What's a handler in Ansible?",
-                options: ["Task triggered by notification from other tasks", "Error handler", "Event handler", "File handler"],
+                options: ["Task triggered by notification from others", "Handler for catching task errors", "Handler for system events", "Handler for file operations"],
                 correct: 0,
                 explanation: "Handlers are tasks triggered by 'notify' from other tasks. Common use: restart service after config change. Handlers run once at end of play, even if notified multiple times.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html", text: "📚 Handlers" }
@@ -7372,28 +7372,28 @@ const questions = {
         4: [
             {
                 q: "What is Ansible AWX/Tower?",
-                options: ["Web UI and API for Ansible automation", "Cloud provider", "Database", "Monitoring tool"],
+                options: ["Web UI and API for Ansible automation", "Cloud provider for hosting Ansible", "Database for storing playbooks", "Monitoring tool for Ansible"],
                 correct: 0,
                 explanation: "AWX (open source) / Tower (enterprise) provides web UI, REST API, RBAC, job scheduling, and credentials management for Ansible. Enables team collaboration.",
                 learnMore: { url: "https://github.com/ansible/awx", text: "📚 AWX Project" }
             },
             {
                 q: "What's Ansible Galaxy?",
-                options: ["Repository for sharing roles and collections", "Cloud service", "IDE", "Testing tool"],
+                options: ["Repository for sharing roles and collections", "Cloud service for running Ansible", "IDE for writing playbooks", "Testing tool for playbooks"],
                 correct: 0,
                 explanation: "Ansible Galaxy is a hub for sharing roles and collections. Use 'ansible-galaxy install' to download community roles. Organizations can host private Galaxy servers.",
                 learnMore: { url: "https://galaxy.ansible.com/", text: "📚 Ansible Galaxy" }
             },
             {
                 q: "What are Ansible facts?",
-                options: ["System information gathered from managed hosts", "User facts", "Network facts", "Storage facts"],
+                options: ["System info gathered from managed hosts", "User-defined facts only", "Network topology facts only", "Storage capacity facts only"],
                 correct: 0,
                 explanation: "Facts are variables automatically discovered from hosts: OS, IP, CPU, memory, mounts, etc. Access via ansible_facts or gather_facts module. Use in conditionals and templates.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_vars_facts.html", text: "📚 Facts" }
             },
             {
                 q: "What's idempotency in Ansible context?",
-                options: ["Running playbook multiple times produces same result", "Running once", "Random execution", "No guarantee"],
+                options: ["Running playbook multiple times = same result", "Running the playbook only once", "Random execution order each time", "No guarantee of consistency"],
                 correct: 0,
                 explanation: "Idempotent tasks check current state before acting. Running playbook repeatedly yields same result: package already installed → no action. Design tasks to be idempotent.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/reference_appendices/glossary.html#term-Idempotency", text: "📚 Idempotency" }
@@ -7402,35 +7402,35 @@ const questions = {
         5: [
             {
                 q: "How do you handle secrets in Ansible?",
-                options: ["Ansible Vault for encrypted variables", "Plain text", "Environment only", "Cannot handle secrets"],
+                options: ["Ansible Vault for encrypted variables", "Store secrets in plain text files", "Use environment variables only", "Ansible cannot handle secrets"],
                 correct: 0,
                 explanation: "Ansible Vault encrypts sensitive data (passwords, keys) in files. Use 'ansible-vault create/edit/encrypt/decrypt'. Pass --ask-vault-pass or vault password file at runtime.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/vault_guide/index.html", text: "📚 Ansible Vault" }
             },
             {
                 q: "What's an Ansible collection?",
-                options: ["Distribution format for roles, modules, plugins", "File collection", "Log collection", "User collection"],
+                options: ["Distribution format for roles, modules, plugins", "Collection of files on disk", "Collection of execution logs", "Collection of user accounts"],
                 correct: 0,
                 explanation: "Collections bundle roles, modules, plugins, and playbooks in a standard format. Namespace.collection format (e.g., community.general). Install from Galaxy or Automation Hub.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/collections_guide/index.html", text: "📚 Collections" }
             },
             {
                 q: "How do you test Ansible playbooks?",
-                options: ["Molecule for testing, --check for dry run", "No testing", "Manual only", "External tools only"],
+                options: ["Molecule for testing, --check for dry run", "No testing is possible", "Manual testing only is supported", "External tools only, not Ansible"],
                 correct: 0,
                 explanation: "Molecule tests roles in containers/VMs (create, converge, verify, destroy). --check does dry run. --diff shows changes. ansible-lint checks best practices.",
                 learnMore: { url: "https://ansible.readthedocs.io/projects/molecule/", text: "📚 Molecule" }
             },
             {
                 q: "What's Ansible callback plugins?",
-                options: ["Customize output and behavior of playbook runs", "Network callbacks", "User callbacks", "Storage callbacks"],
+                options: ["Customize output and behavior of runs", "Callbacks for network operations", "Callbacks for user interactions", "Callbacks for storage events"],
                 correct: 0,
                 explanation: "Callback plugins customize output format and behavior: JSON output, profiling, notifications to Slack/Teams. Configure in ansible.cfg or ANSIBLE_CALLBACKS_ENABLED.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/plugins/callback.html", text: "📚 Callback Plugins" }
             },
             {
                 q: "How does Ansible handle failed tasks?",
-                options: ["Stop by default, can use ignore_errors or block/rescue", "Continue always", "Retry automatically", "Cannot handle"],
+                options: ["Stop by default, ignore_errors or block/rescue", "Continue always without stopping", "Retry automatically three times", "Cannot handle failures at all"],
                 correct: 0,
                 explanation: "Ansible stops on failure by default. Use ignore_errors: yes to continue. block/rescue/always provides try/catch semantics. failed_when customizes failure conditions.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_error_handling.html", text: "📚 Error Handling" }
@@ -7442,21 +7442,21 @@ const questions = {
         1: [
             {
                 q: "What is Prometheus?",
-                options: ["Time-series monitoring system", "Log aggregator", "APM tool", "Tracing system"],
+                options: ["Time-series monitoring system", "Log aggregation platform", "Application performance tool", "Distributed tracing system"],
                 correct: 0,
                 explanation: "Prometheus is an open-source time-series monitoring system. It collects metrics via HTTP pull, stores them locally, and supports powerful queries and alerting.",
                 learnMore: { url: "https://prometheus.io/docs/introduction/overview/", text: "📚 Prometheus Overview" }
             },
             {
                 q: "What's the pull vs push model in monitoring?",
-                options: ["Pull: monitor fetches metrics; Push: targets send metrics", "Same thing", "Pull is deprecated", "Push is deprecated"],
+                options: ["Pull: monitor fetches; Push: targets send", "They are exactly the same thing", "Pull model is now deprecated", "Push model is now deprecated"],
                 correct: 0,
                 explanation: "Pull: monitoring system fetches metrics from targets (Prometheus style). Push: targets send metrics to collector (Graphite, InfluxDB style). Each has trade-offs.",
                 learnMore: { url: "https://prometheus.io/docs/introduction/faq/#why-do-you-pull-rather-than-push", text: "📚 Pull vs Push" }
             },
             {
                 q: "What type of data does Prometheus store?",
-                options: ["Time-series metrics", "Logs only", "Traces only", "Events only"],
+                options: ["Time-series numeric metrics", "Application log entries", "Distributed trace spans", "System event records"],
                 correct: 0,
                 explanation: "Prometheus stores time-series data: numeric values with timestamps and labels. It's not for logs (use Loki) or traces (use Jaeger/Tempo).",
                 learnMore: { url: "https://prometheus.io/docs/concepts/data_model/", text: "📚 Data Model" }
@@ -7465,21 +7465,21 @@ const questions = {
         2: [
             {
                 q: "What is Grafana used for?",
-                options: ["Visualization and dashboards", "Data collection", "Alerting only", "Log storage"],
+                options: ["Visualization and dashboards", "Collecting metrics from targets", "Alerting functionality only", "Long-term log storage"],
                 correct: 0,
                 explanation: "Grafana is a visualization platform for creating dashboards. It queries data from Prometheus, InfluxDB, Elasticsearch, and many other sources.",
                 learnMore: { url: "https://grafana.com/docs/grafana/latest/", text: "📚 Grafana Docs" }
             },
             {
                 q: "What's a Prometheus metric type 'counter'?",
-                options: ["Cumulative value that only increases", "Current value", "Distribution", "Boolean"],
+                options: ["Cumulative value that only increases", "Current instantaneous value", "Statistical distribution bucket", "Boolean true/false value"],
                 correct: 0,
                 explanation: "Counter is cumulative: only increases (or resets to zero). Use for requests_total, errors_total. Query with rate() to get per-second increase.",
                 learnMore: { url: "https://prometheus.io/docs/concepts/metric_types/#counter", text: "📚 Counter Metrics" }
             },
             {
                 q: "What's a Prometheus metric type 'gauge'?",
-                options: ["Value that can go up and down", "Only increases", "Histogram", "Summary"],
+                options: ["Value that can go up and down", "Value that only increases", "Histogram with buckets", "Summary with quantiles"],
                 correct: 0,
                 explanation: "Gauge represents a value that can increase or decrease: temperature, memory usage, queue size. Snapshot of current state.",
                 learnMore: { url: "https://prometheus.io/docs/concepts/metric_types/#gauge", text: "📚 Gauge Metrics" }
@@ -7488,28 +7488,28 @@ const questions = {
         3: [
             {
                 q: "What is PromQL?",
-                options: ["Prometheus Query Language", "Postgres extension", "Python library", "Queue system"],
+                options: ["Prometheus Query Language", "PostgreSQL extension module", "Python monitoring library", "Queue management system"],
                 correct: 0,
                 explanation: "PromQL (Prometheus Query Language) queries time-series data. Supports filtering, aggregation, functions (rate, sum, avg), and time ranges.",
                 learnMore: { url: "https://prometheus.io/docs/prometheus/latest/querying/basics/", text: "📚 PromQL Basics" }
             },
             {
                 q: "What's the ELK stack?",
-                options: ["Elasticsearch, Logstash, Kibana", "Error Logging Kit", "Event Log Keeper", "Elastic Load Keeper"],
+                options: ["Elasticsearch, Logstash, Kibana", "Error Logging Kit framework", "Event Log Keeper system", "Elastic Load Keeper service"],
                 correct: 0,
                 explanation: "ELK: Elasticsearch (search/storage), Logstash (log processing/ingestion), Kibana (visualization). Popular for centralized logging. Now often includes Beats.",
                 learnMore: { url: "https://www.elastic.co/elastic-stack", text: "📚 Elastic Stack" }
             },
             {
                 q: "What's an exporter in Prometheus?",
-                options: ["Service exposing metrics in Prometheus format", "Data export tool", "Log exporter", "Report generator"],
+                options: ["Service exposing metrics in Prometheus format", "Tool for exporting data to files", "Log exporter to external systems", "Report generator for dashboards"],
                 correct: 0,
                 explanation: "Exporters expose metrics in Prometheus format. Examples: node_exporter (system metrics), mysqld_exporter (MySQL), blackbox_exporter (probing endpoints).",
                 learnMore: { url: "https://prometheus.io/docs/instrumenting/exporters/", text: "📚 Exporters" }
             },
             {
                 q: "What's a service discovery in Prometheus?",
-                options: ["Automatically find targets to monitor", "DNS service", "Network discovery", "User discovery"],
+                options: ["Automatically find targets to monitor", "DNS service resolution system", "Network device discovery tool", "User account discovery scan"],
                 correct: 0,
                 explanation: "Service discovery automatically finds scrape targets: Kubernetes pods, EC2 instances, Consul services. Eliminates manual target configuration.",
                 learnMore: { url: "https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config", text: "📚 Service Discovery" }
@@ -7518,28 +7518,28 @@ const questions = {
         4: [
             {
                 q: "What's the difference between metrics and logs?",
-                options: ["Metrics are numeric measurements, logs are event records", "Same thing", "Logs are numeric", "Metrics are events"],
+                options: ["Metrics are numeric, logs are event records", "They are exactly the same thing", "Logs are numeric measurements", "Metrics are event records"],
                 correct: 0,
                 explanation: "Metrics: numeric measurements over time (request rate, error percentage). Logs: textual event records with details. Metrics for alerting/trends, logs for debugging.",
                 learnMore: { url: "https://grafana.com/blog/2016/01/05/logs-and-metrics-and-graphs-oh-my/", text: "📚 Logs vs Metrics" }
             },
             {
                 q: "What's distributed tracing?",
-                options: ["Track requests across multiple services", "Trace files", "Network tracing", "User tracking"],
+                options: ["Track requests across multiple services", "Trace log files on disk", "Network packet tracing tool", "User behavior tracking system"],
                 correct: 0,
                 explanation: "Distributed tracing tracks requests across microservices. Each service adds spans to a trace. Tools: Jaeger, Zipkin, Tempo. Shows where latency occurs.",
                 learnMore: { url: "https://opentelemetry.io/docs/concepts/observability-primer/#distributed-traces", text: "📚 Distributed Tracing" }
             },
             {
                 q: "What's Alertmanager in Prometheus ecosystem?",
-                options: ["Handles alerts from Prometheus, routes notifications", "Generates alerts", "Stores alerts", "Views alerts"],
+                options: ["Handles alerts and routes notifications", "Generates alerts from metrics", "Stores alert history long-term", "Views alerts in dashboards"],
                 correct: 0,
                 explanation: "Alertmanager receives alerts from Prometheus, deduplicates, groups, and routes them to receivers (email, Slack, PagerDuty). Handles silencing and inhibition.",
                 learnMore: { url: "https://prometheus.io/docs/alerting/latest/alertmanager/", text: "📚 Alertmanager" }
             },
             {
                 q: "What are labels in Prometheus?",
-                options: ["Key-value pairs for metric identification", "Display labels", "Category labels", "User labels"],
+                options: ["Key-value pairs for metric identification", "Display labels for dashboards", "Category labels for grouping", "User labels for permissions"],
                 correct: 0,
                 explanation: "Labels are key-value pairs that identify metric dimensions: instance, job, method, status_code. Enable filtering and aggregation in PromQL queries.",
                 learnMore: { url: "https://prometheus.io/docs/practices/naming/#labels", text: "📚 Labels" }
@@ -7548,35 +7548,35 @@ const questions = {
         5: [
             {
                 q: "How do you implement effective alerting?",
-                options: ["Alert on symptoms, use severity levels, avoid alert fatigue", "Alert on everything", "No alerts", "Email only"],
+                options: ["Alert on symptoms, avoid alert fatigue", "Alert on every possible metric", "Disable all alerting entirely", "Use email notifications only"],
                 correct: 0,
                 explanation: "Effective alerting: alert on user-impacting symptoms (not causes), use severity levels, have clear runbooks, avoid alert fatigue by eliminating noisy alerts.",
                 learnMore: { url: "https://sre.google/sre-book/monitoring-distributed-systems/", text: "📚 SRE Monitoring" }
             },
             {
                 q: "What's cardinality in monitoring context?",
-                options: ["Number of unique label combinations for a metric", "Data size", "Query speed", "Storage format"],
+                options: ["Number of unique label combinations", "Total size of stored data", "Speed of query execution", "Format of stored metrics"],
                 correct: 0,
                 explanation: "Cardinality is the number of unique time series (label combinations). High cardinality (user_id as label) causes memory/storage issues. Keep cardinality bounded.",
                 learnMore: { url: "https://prometheus.io/docs/practices/naming/#labels", text: "📚 Cardinality" }
             },
             {
                 q: "What's the difference between blackbox and whitebox monitoring?",
-                options: ["Blackbox: external probing; Whitebox: internal metrics", "Same approach", "Blackbox is internal", "Whitebox is external"],
+                options: ["Blackbox: external; Whitebox: internal", "They use the same approach", "Blackbox monitors internally", "Whitebox monitors externally"],
                 correct: 0,
                 explanation: "Blackbox: probe from outside (HTTP checks, ping) - what users see. Whitebox: internal metrics from inside the system - why problems occur. Use both.",
                 learnMore: { url: "https://sre.google/sre-book/monitoring-distributed-systems/#xref_monitoring_black-box-monitoring", text: "📚 Monitoring Types" }
             },
             {
                 q: "What are the four golden signals of monitoring?",
-                options: ["Latency, traffic, errors, saturation", "CPU, memory, disk, network", "Requests, responses, errors, time", "Users, sessions, pages, clicks"],
+                options: ["Latency, traffic, errors, saturation", "CPU, memory, disk, network only", "Requests, responses, errors, time", "Users, sessions, pages, clicks"],
                 correct: 0,
                 explanation: "Four Golden Signals (Google SRE): Latency (response time), Traffic (demand), Errors (failure rate), Saturation (how full/overloaded). Focus monitoring on these.",
                 learnMore: { url: "https://sre.google/sre-book/monitoring-distributed-systems/#xref_monitoring_golden-signals", text: "📚 Golden Signals" }
             },
             {
                 q: "How do you handle high-cardinality metrics?",
-                options: ["Limit labels, aggregate, use recording rules", "Store everything", "Ignore cardinality", "Cannot handle"],
+                options: ["Limit labels, aggregate, use recording rules", "Store all possible combinations", "Ignore cardinality completely", "High cardinality cannot be handled"],
                 correct: 0,
                 explanation: "Handle high cardinality: avoid unbounded labels (user IDs), pre-aggregate with recording rules, use exemplars for sampling, consider specialized systems for high-cardinality.",
                 learnMore: { url: "https://prometheus.io/docs/practices/instrumentation/#do-not-overuse-labels", text: "📚 Label Best Practices" }
