@@ -241,8 +241,8 @@ const questions = {
             },
             {
                 q: "How do you switch to an existing branch?",
-                options: ["Both A and B work", "git checkout branchname", "git branch branchname", "git switch branchname"],
-                correct: 0,
+                options: ["git checkout branchname", "git branch branchname", "git switch branchname", "Both 'git checkout' and 'git switch' work"],
+                correct: 3,
                 explanation: "Both 'git checkout' and 'git switch' can change branches. 'git switch' (introduced in Git 2.23) is more intuitive for branch operations.",
                 learnMore: { url: "https://git-scm.com/docs/git-switch", text: "📚 Git Switch Docs" }
             },
