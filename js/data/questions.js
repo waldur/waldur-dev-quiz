@@ -4450,21 +4450,21 @@ const questions = {
         1: [
             {
                 q: "What's GitHub Copilot?",
-                options: ["AI coding assistant suggesting code completions", "GitHub's copilot for navigation", "GitHub's code review automation", "Pilot program for new GitHub features"],
+                options: ["AI pair programmer that suggests code as you type", "GitHub's automated code review service", "Pilot program for new GitHub features", "GitHub's built-in code navigation tool"],
                 correct: 0,
                 explanation: "GitHub Copilot is an AI pair programmer that suggests code completions as you type. Trained on public code. Integrates with VS Code, JetBrains, and other editors.",
                 learnMore: { url: "https://github.com/features/copilot", text: "📚 GitHub Copilot" }
             },
             {
                 q: "What's inline code completion?",
-                options: ["Auto-completing inline comments", "Completing inline CSS styles", "AI suggesting code as you type", "Inlining function calls in code"],
+                options: ["Auto-completing inline comments", "Inlining function calls automatically", "AI suggesting code as you type", "Completing inline CSS style rules"],
                 correct: 2,
                 explanation: "Inline completion shows AI suggestions as you type, often as ghost text. Accept with Tab. Suggestions based on current file context, cursor position, and prompt.",
                 learnMore: { url: "https://code.visualstudio.com/docs/copilot/overview", text: "📚 VS Code Copilot" }
             },
             {
                 q: "How do comments help AI code generation?",
-                options: ["Describe intent for AI to generate code", "Comments slow down AI generation", "Comments are ignored by AI", "Only special AI comments work"],
+                options: ["They describe intent for AI to generate code", "They slow down AI generation speed", "They are ignored by AI completions", "Only special AI comment tags work"],
                 correct: 0,
                 explanation: "Comments describing what you want help AI generate appropriate code. '// Function to validate email format' followed by newline often generates the function.",
                 learnMore: { url: "https://github.blog/2022-09-14-8-things-you-didnt-know-you-could-do-with-github-copilot/", text: "📚 Copilot Tips" }
@@ -4473,21 +4473,21 @@ const questions = {
         2: [
             {
                 q: "What's Cursor?",
-                options: ["Cursor-based programming language", "Mouse cursor customization tool", "AI-native code editor with built-in AI features", "Code navigation cursor system"],
+                options: ["A cursor-based programming language", "A mouse cursor customization tool", "An AI-native code editor built on VS Code", "A code navigation and cursor system"],
                 correct: 2,
                 explanation: "Cursor is an AI-native code editor built on VS Code. Features: AI chat, code generation, codebase understanding, multi-file editing. Designed for AI-assisted development.",
                 learnMore: { url: "https://cursor.sh/", text: "📚 Cursor" }
             },
             {
                 q: "What's Claude Code?",
-                options: ["Claude's coding assistant bot", "Special code language for Claude", "Anthropic's CLI tool for coding with Claude", "Code name for Claude AI project"],
+                options: ["Claude's web-based coding assistant", "A special code language for Claude", "Anthropic's agentic CLI coding tool", "The internal code name for Claude"],
                 correct: 2,
                 explanation: "Claude Code is Anthropic's official CLI for coding with Claude. Agentic coding with file editing, terminal commands, and multi-step task execution.",
                 learnMore: { url: "https://claude.ai/code", text: "📚 Claude Code" }
             },
             {
                 q: "What should you verify in AI-generated code?",
-                options: ["Only check if it runs without errors", "Correctness, security, and fit with codebase", "AI code is always correct", "Just verify syntax is valid"],
+                options: ["Only check if it runs without errors", "Correctness, security, and codebase fit", "AI code is always correct by design", "Just verify that the syntax is valid"],
                 correct: 1,
                 explanation: "Always verify AI code: correctness (does it do what you want?), security (no vulnerabilities?), style (fits codebase?), edge cases (handles errors?). Trust but verify.",
                 learnMore: { url: "https://docs.github.com/en/copilot/using-github-copilot/best-practices-for-using-github-copilot", text: "📚 Copilot Best Practices" }
@@ -4496,28 +4496,28 @@ const questions = {
         3: [
             {
                 q: "What's chat-based code assistance?",
-                options: ["Chat room for developers only", "Chatbot that writes all code", "Conversational AI interface for coding help", "Code comments written as chat"],
+                options: ["A shared chat room for developers", "A chatbot that writes all your code", "A conversational AI coding interface", "Code comments formatted as chat"],
                 correct: 2,
                 explanation: "Chat interfaces let you ask coding questions, request explanations, generate code through conversation. More flexible than inline completion. Can discuss context and alternatives.",
                 learnMore: { url: "https://docs.github.com/en/copilot/github-copilot-chat", text: "📚 Copilot Chat" }
             },
             {
                 q: "What's codebase context in AI coding?",
-                options: ["Base code that AI modifies", "Context menu in code editors", "Contextual comments in code", "AI understanding your entire project"],
+                options: ["The base code that AI modifies first", "The context menu in code editors", "Contextual comments added to code", "AI understanding your whole project"],
                 correct: 3,
                 explanation: "Codebase context means AI understands your project structure, existing code, patterns, and dependencies. Better context leads to more relevant suggestions. Some tools index whole codebases.",
                 learnMore: { url: "https://cursor.sh/features", text: "📚 Cursor Features" }
             },
             {
                 q: "When is AI code generation most useful?",
-                options: ["Boilerplate, tests, well-defined patterns", "Novel algorithms requiring research", "All code should be AI-generated", "Security-critical code sections"],
+                options: ["Boilerplate, tests, and common patterns", "Novel algorithms requiring research", "All code should be AI-generated always", "Security-critical authentication code"],
                 correct: 0,
                 explanation: "AI excels at: boilerplate, repetitive patterns, tests, documentation, common tasks. Less suitable for: novel algorithms, security-critical code, complex business logic requiring domain expertise.",
                 learnMore: { url: "https://github.blog/2022-09-14-8-things-you-didnt-know-you-could-do-with-github-copilot/", text: "📚 Copilot Use Cases" }
             },
             {
                 q: "What's agentic coding?",
-                options: ["Agent-based modeling in code", "AI autonomously performing multi-step coding tasks", "Coding for AI agents specifically", "Agents that review code quality"],
+                options: ["Agent-based modeling in code", "AI performing multi-step tasks autonomously", "Writing code for AI agents specifically", "Agents that review code quality"],
                 correct: 1,
                 explanation: "Agentic coding lets AI autonomously perform multi-step tasks: create files, run tests, fix errors, iterate. More autonomous than simple completion. Claude Code operates this way.",
                 learnMore: { url: "https://www.anthropic.com/claude/code", text: "📚 Claude Code" }
@@ -4526,28 +4526,28 @@ const questions = {
         4: [
             {
                 q: "How do you provide good context to AI coding tools?",
-                options: ["Open relevant files, write clear comments, explain intent", "Context doesn't matter for AI", "Maximum context is always best", "Only current file matters for context"],
+                options: ["Open relevant files and explain intent clearly", "Context doesn't matter much for AI tools", "Always provide maximum context possible", "Only the current open file matters at all"],
                 correct: 0,
                 explanation: "Good context: open related files, write descriptive comments/docstrings, explain the goal. Reference existing patterns. Clear intent helps AI generate appropriate code.",
                 learnMore: { url: "https://docs.github.com/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot", text: "📚 Prompt Engineering" }
             },
             {
                 q: "What's the role of tests in AI-assisted coding?",
-                options: ["AI can't understand test code", "Only manual testing works", "Tests are unnecessary with AI coding", "Verify AI code works, guide generation, enable iteration"],
+                options: ["AI tools can't understand test code", "Only manual testing works with AI code", "Tests are unnecessary with AI coding", "Verify AI output and guide generation"],
                 correct: 3,
                 explanation: "Tests verify AI-generated code works correctly. Test-driven: write tests first, AI generates implementation. Tests enable confident iteration and catch AI errors.",
                 learnMore: { url: "https://github.blog/2023-01-17-github-copilot-for-unit-tests/", text: "📚 Copilot for Tests" }
             },
             {
                 q: "How do you handle AI code that's almost right?",
-                options: ["Accept it as-is always", "Edit manually, or iterate with more specific instructions", "AI code can't be modified", "Reject and rewrite from scratch"],
+                options: ["Accept it as-is every time", "Edit or iterate with better instructions", "AI code can't be modified at all", "Reject and rewrite it from scratch"],
                 correct: 1,
                 explanation: "Iterate: edit small issues manually, regenerate with more specific instructions, use chat to refine. AI gets you 80% there; you refine the last 20%. Efficient workflow.",
                 learnMore: { url: "https://cursor.sh/features", text: "📚 Iterative Editing" }
             },
             {
                 q: "What are AI coding tool limitations?",
-                options: ["Limitations don't affect code quality", "Only works on certain languages", "AI has no limitations anymore", "May be outdated, incorrect, or insecure"],
+                options: ["Limitations don't affect code quality", "It only works on certain languages", "AI tools have no limitations anymore", "Output may be outdated or insecure"],
                 correct: 3,
                 explanation: "AI limitations: training data cutoff (may not know new APIs), can generate incorrect/insecure code, may not match your style, doesn't understand full business context.",
                 learnMore: { url: "https://docs.github.com/en/copilot/using-github-copilot/best-practices-for-using-github-copilot", text: "📚 Best Practices" }
@@ -4556,35 +4556,35 @@ const questions = {
         5: [
             {
                 q: "What's code generation with retrieval?",
-                options: ["Code generation backup retrieval", "Generating code to retrieve data", "AI retrieves relevant code examples to inform generation", "Retrieving previously generated code"],
+                options: ["A backup system for generated code", "Generating code to retrieve data", "AI retrieves relevant examples to inform output", "Retrieving previously generated code"],
                 correct: 2,
                 explanation: "Retrieval-augmented generation for code: AI retrieves relevant code snippets, documentation, or examples from codebase/web to inform better generation. Combines knowledge sources.",
                 learnMore: { url: "https://www.cursor.sh/", text: "📚 Cursor RAG" }
             },
             {
                 q: "How do you integrate AI coding into team workflow?",
-                options: ["Establish guidelines, review AI code, share prompts", "AI replaces code review process", "Everyone uses AI independently", "Ban AI coding in teams"],
+                options: ["Set guidelines, review code, share prompts", "Let AI replace the code review process", "Everyone uses AI tools independently", "Ban AI coding tools in team projects"],
                 correct: 0,
                 explanation: "Team integration: establish acceptable use guidelines, still require code review for AI code, share effective prompts/techniques, discuss security/legal implications.",
                 learnMore: { url: "https://resources.github.com/copilot-trust-center/", text: "📚 Copilot Trust Center" }
             },
             {
                 q: "What's multi-file AI editing?",
-                options: ["Multiple AI models editing same file", "AI modifies multiple related files coherently", "Editing files in multiple editors", "Editing multiple copies of file"],
+                options: ["Multiple AI models editing same file", "AI modifying related files coherently", "Editing files in multiple editors at once", "Editing multiple backup copies of a file"],
                 correct: 1,
                 explanation: "Multi-file editing lets AI make coordinated changes across files: rename across codebase, refactor touching multiple files, implement feature spanning files. Maintains consistency.",
                 learnMore: { url: "https://cursor.sh/features", text: "📚 Multi-File Editing" }
             },
             {
                 q: "What's the future of AI-assisted development?",
-                options: ["AI will replace all developers soon", "More autonomous agents, better context, human oversight", "AI coding is just a passing trend", "No significant changes expected"],
+                options: ["AI will replace all developers soon", "More autonomous agents with human oversight", "AI coding tools are just a passing trend", "No significant changes are expected"],
                 correct: 1,
                 explanation: "Trends: more autonomous agents handling complex tasks, better codebase understanding, natural language as interface. Human oversight remains essential for quality and correctness.",
                 learnMore: { url: "https://www.anthropic.com/research", text: "📚 AI Research" }
             },
             {
                 q: "How do you measure AI coding tool effectiveness?",
-                options: ["No metrics needed for AI tools", "Only count lines generated per day", "Acceptance rate, time saved, code quality metrics", "Measure only by cost savings"],
+                options: ["No metrics are needed for AI tools", "Only count lines generated per day", "Acceptance rate, time saved, code quality", "Measure effectiveness only by cost savings"],
                 correct: 2,
                 explanation: "Measure: suggestion acceptance rate, time saved, code quality (bugs, reviews), developer satisfaction. Balance speed vs quality. Track both productivity and code health.",
                 learnMore: { url: "https://github.blog/2022-09-07-research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/", text: "📚 Copilot Impact Research" }
