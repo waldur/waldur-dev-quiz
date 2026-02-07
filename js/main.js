@@ -1363,17 +1363,28 @@ k.scene('skillDetail', ({ skillId }) => {
 
     // Stats and actions (only if skill has questions)
     if (levels.length > 0) {
+        // Placement test: visible when below level 3 and level 3 questions exist
+        const showPlacementTest = currentLevel < 3 && levels.includes(3);
+        const placementOffset = showPlacementTest ? 60 : 0;
+
         k.add([
             k.text(`Attempts: ${progress.attempts || 0} | XP Earned: ${progress.xp || 0}`, { size: 16, font: 'Inter' }),
             k.color(COLORS.textMuted),
             k.pos(k.width() / 2, 480),
             k.anchor('center'),
         ]);
+
+        if (showPlacementTest) {
+            createButton('⚡ Placement Test — Skip to Level 3', k.width() / 2, 530, () => {
+                k.go('quiz', { skillId, level: 3 });
+            }, COLORS.warning);
+        }
+
         const nextLevel = currentLevel + 1;
         const canStartNext = currentLevel < maxLevel && levels.includes(nextLevel);
 
         if (canStartNext) {
-            createButton(`Start Level ${nextLevel}`, k.width() / 2, 550, () => {
+            createButton(`Start Level ${nextLevel}`, k.width() / 2, 550 + placementOffset, () => {
                 k.go('quiz', { skillId, level: nextLevel });
             }, COLORS.success);
 
@@ -1384,7 +1395,7 @@ k.scene('skillDetail', ({ skillId }) => {
             k.add([
                 k.text('✓ All levels completed!', { size: 20, font: 'Inter' }),
                 k.color(COLORS.success),
-                k.pos(k.width() / 2, 550),
+                k.pos(k.width() / 2, 550 + placementOffset),
                 k.anchor('center'),
             ]);
         }

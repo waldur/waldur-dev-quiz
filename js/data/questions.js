@@ -864,7 +864,7 @@ const questions = {
         4: [
             {
                 q: "What's the difference between ForeignKey and ManyToManyField?",
-                options: ["FK requires through table, M2M doesn't", "FK is one-to-many, M2M is many-to-many relationship", "M2M can only link to same model type", "FK is for optional fields, M2M for required"],
+                options: ["FK requires through table, M2M doesn't", "FK is many-to-one, M2M is many-to-many relationship", "M2M can only link to same model type", "FK is for optional fields, M2M for required"],
                 correct: 1,
                 explanation: "ForeignKey: one object links to one (many-to-one). ManyToManyField: many objects link to many (creates join table automatically).",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/db/examples/many_to_many/", text: "📚 M2M Relationships" }
@@ -2074,7 +2074,7 @@ const questions = {
         5: [
             {
                 q: "What's the difference between CMD and ENTRYPOINT?",
-                options: ["ENTRYPOINT is deprecated now", "CMD is overridable, ENTRYPOINT is fixed", "They work exactly the same", "CMD is the newer instruction"],
+                options: ["ENTRYPOINT is deprecated now", "CMD provides default args; ENTRYPOINT sets the main command", "They work exactly the same", "CMD is the newer instruction"],
                 correct: 1,
                 explanation: "ENTRYPOINT: the executable (hard to override). CMD: default arguments (easy to override). Best practice: ENTRYPOINT for command, CMD for default args.",
                 learnMore: { url: "https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact", text: "📚 CMD vs ENTRYPOINT" }
@@ -2591,7 +2591,7 @@ const questions = {
                 q: "When should you use threading vs asyncio?",
                 options: ["Always use threading for everything", "Asyncio only works on Linux systems", "Threading is deprecated in Python", "Asyncio for I/O-bound; threading for blocking libraries"],
                 correct: 3,
-                explanation: "Use asyncio for I/O-bound tasks with async libraries. Use threading when calling blocking/synchronous libraries or for CPU-bound tasks with GIL workarounds.",
+                explanation: "Use asyncio for I/O-bound tasks with async libraries. Use threading when calling blocking/synchronous libraries. For CPU-bound tasks, use multiprocessing to bypass the GIL.",
                 learnMore: { url: "https://realpython.com/python-concurrency/#when-to-use-which", text: "📚 Concurrency Guide" }
             },
         ],
@@ -2922,7 +2922,7 @@ const questions = {
                 q: "What's structural typing vs nominal typing?",
                 options: ["Nominal is newer and always better", "Structural is for structures, nominal for classes", "Structural: compatible if same shape; Nominal: must be same named type", "They're the same thing with different names"],
                 correct: 2,
-                explanation: "Structural typing (TypeScript, Go) checks shape/structure. Nominal typing (Java, C#) requires explicit type declaration. {name: string} compatible with any matching shape in TS.",
+                explanation: "Structural typing (TypeScript, Go interfaces) checks shape/structure. Nominal typing (Java, C#) requires explicit type declaration. {name: string} compatible with any matching shape in TS.",
                 learnMore: { url: "https://www.typescriptlang.org/docs/handbook/type-compatibility.html", text: "📚 Type Compatibility" }
             },
             {
@@ -4785,7 +4785,7 @@ const questions = {
                 q: "What message broker does Waldur use with Celery?",
                 options: ["Redis or RabbitMQ", "Amazon SQS", "Apache Kafka", "Direct in-process"],
                 correct: 0,
-                explanation: "Waldur uses Redis (default) or RabbitMQ as Celery's message broker. Redis is simpler to deploy; RabbitMQ offers more advanced features for larger installations.",
+                explanation: "Waldur uses RabbitMQ as Celery's message broker for task queuing and result storage. RabbitMQ handles background processing for provisioning, billing, and other async operations.",
                 learnMore: { url: "https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/", text: "📚 Celery Brokers" }
             },
         ],
@@ -6105,9 +6105,9 @@ const questions = {
             },
             {
                 q: "How does routing work in Waldur UI?",
-                options: ["URL routing via Redux", "React Router for client-side routing", "No routing - single page", "Server-side routing only"],
+                options: ["URL routing via Redux", "UI-Router for state-based client-side routing", "No routing - single page", "Server-side routing only"],
                 correct: 1,
-                explanation: "React Router handles client-side routing. URL maps to components. Navigation without full page reload. Nested routes for hierarchy."
+                explanation: "UI-Router for React handles state-based client-side routing. Routes defined in module-specific routes.ts files. Navigation without full page reload. Hierarchical states."
             },
         ],
         3: [
@@ -6115,7 +6115,7 @@ const questions = {
                 q: "How does Waldur UI handle API calls?",
                 options: ["Redux actions with async middleware", "No API calls from frontend", "Server-side API only", "Direct fetch in components"],
                 correct: 0,
-                explanation: "API calls via Redux actions. Async middleware (redux-thunk) handles promises. Results stored in Redux state. Components read from state."
+                explanation: "Legacy API calls via Redux actions with redux-saga for side effects. Modern Waldur UI uses React Query (TanStack) with custom hooks for data fetching and caching."
             },
             {
                 q: "What's lazy loading in Waldur UI?",
@@ -6131,9 +6131,9 @@ const questions = {
             },
             {
                 q: "What's the Waldur translation system?",
-                options: ["Browser auto-translation", "No translation support", "react-intl for internationalization", "Server-side translation only"],
+                options: ["Browser auto-translation", "No translation support", "Custom translate function with locale files", "Server-side translation only"],
                 correct: 2,
-                explanation: "Internationalization via react-intl. Message catalogs per language. Formatters for dates, numbers. Add translations in locale files."
+                explanation: "Internationalization via custom translate/formatJsx helpers. Locale files managed in repository. Local-first approach without external translation services."
             },
         ],
         4: [
@@ -7310,9 +7310,9 @@ const questions = {
             },
             {
                 q: "What language are Ansible playbooks written in?",
-                options: ["Python programming", "YAML markup language", "JSON data format", "XML markup format"],
+                options: ["Python programming", "YAML data serialization format", "JSON data format", "XML markup format"],
                 correct: 1,
-                explanation: "Ansible playbooks are written in YAML (Yet Another Markup Language). YAML is human-readable and defines tasks, variables, and conditions declaratively.",
+                explanation: "Ansible playbooks are written in YAML (YAML Ain't Markup Language). YAML is human-readable and defines tasks, variables, and conditions declaratively.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html", text: "📚 Playbook Intro" }
             },
         ],
@@ -7613,10 +7613,10 @@ const questions = {
                 explanation: "Azure VMs provide IaaS compute: choose OS, size, storage. Full control over OS. Scale sets for auto-scaling."
             },
             {
-                q: "What's Azure Active Directory?",
+                q: "What's Microsoft Entra ID (formerly Azure AD)?",
                 options: ["Directory of Azure services", "Active user tracking tool", "File directory in cloud", "Identity and access management service"],
                 correct: 3,
-                explanation: "Azure AD (now Entra ID) provides identity management: authentication, SSO, MFA, conditional access. Integrates with Office 365, Azure resources."
+                explanation: "Microsoft Entra ID (renamed from Azure AD in 2023) provides identity management: authentication, SSO, MFA, conditional access. Integrates with Microsoft 365, Azure resources."
             },
             {
                 q: "What's Azure Storage?",
