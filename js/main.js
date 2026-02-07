@@ -984,7 +984,7 @@ k.scene('skillTree', () => {
             ]);
 
             if (hasQ) {
-                const fillWidth = (progress.level / maxLevel) * barWidth;
+                const fillWidth = Math.min((progress.level / maxLevel) * barWidth, barWidth);
                 if (fillWidth > 0) {
                     k.add([
                         k.rect(fillWidth, barHeight, { radius: 4 }),
@@ -1377,7 +1377,7 @@ k.scene('skillDetail', ({ skillId }) => {
         if (showPlacementTest) {
             createButton('⚡ Placement Test — Skip to Level 3', k.width() / 2, 530, () => {
                 k.go('quiz', { skillId, level: 3 });
-            }, COLORS.warning);
+            }, COLORS.warning, 380);
         }
 
         const nextLevel = currentLevel + 1;
@@ -2620,9 +2620,9 @@ k.scene('profile', () => {
 // ============================================================================
 // HELPER: Create Button
 // ============================================================================
-function createButton(text, x, y, onClick, color = COLORS.primary) {
+function createButton(text, x, y, onClick, color = COLORS.primary, width = 220) {
     const btn = k.add([
-        k.rect(220, 50, { radius: 8 }),
+        k.rect(width, 50, { radius: 8 }),
         k.color(color),
         k.pos(x, y),
         k.anchor('center'),
