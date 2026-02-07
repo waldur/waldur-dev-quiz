@@ -714,6 +714,14 @@ const questions = {
                 explanation: "Dicts map keys to values with O(1) average lookup. Keys must be hashable (immutable). Since Python 3.7, dicts maintain insertion order.",
                 learnMore: { url: "https://docs.python.org/3/tutorial/datastructures.html#dictionaries", text: "📚 Python Dictionaries" }
             },
+            {
+                q: "What does this list comprehension produce?",
+                code: "result = [x**2 for x in range(5) if x % 2 == 0]",
+                options: ["[0, 4, 16]", "[1, 9, 25]", "[0, 1, 4, 9, 16]", "[4, 16]"],
+                correct: 0,
+                explanation: "range(5) gives 0,1,2,3,4. The filter 'if x % 2 == 0' keeps even numbers: 0,2,4. Squaring gives [0, 4, 16].",
+                learnMore: { url: "https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions", text: "📚 List Comprehensions" }
+            },
         ],
         4: [
             {
@@ -743,6 +751,14 @@ const questions = {
                 correct: 3,
                 explanation: "'with' is a context manager that ensures cleanup (file.close()) even if exceptions occur. Always use 'with' for files, locks, connections.",
                 learnMore: { url: "https://docs.python.org/3/reference/compound_stmts.html#with", text: "📚 Context Managers" }
+            },
+            {
+                q: "What will this function return for get_data(1, 2, x=3, y=4)?",
+                code: "def get_data(*args, **kwargs):\n    return len(args), len(kwargs)",
+                options: ["(2, 2)", "(4, 0)", "(1, 3)", "(0, 4)"],
+                correct: 0,
+                explanation: "1 and 2 are positional args captured by *args (length 2). x=3 and y=4 are keyword args captured by **kwargs (length 2). Result: (2, 2).",
+                learnMore: { url: "https://docs.python.org/3/tutorial/controlflow.html#arbitrary-argument-lists", text: "📚 *args and **kwargs" }
             },
         ],
         5: [
@@ -1815,7 +1831,9 @@ const questions = {
                 explanation: "E2E tests verify complete user flows. Slow and brittle, so use sparingly for critical paths. Unit/integration tests should be foundation.",
                 learnMore: { url: "https://martinfowler.com/bliki/BroadStackTest.html", text: "📚 E2E Testing" }
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     'f-git': {
@@ -1894,6 +1912,14 @@ const questions = {
                 explanation: "Reset: moves HEAD, potentially losing commits (don't use on shared branches). Revert: creates new commit that undoes changes (safe for shared branches).",
                 learnMore: { url: "https://www.atlassian.com/git/tutorials/undoing-changes", text: "📚 Undoing Changes" }
             },
+            {
+                q: "What will happen after running these commands?",
+                code: "git checkout -b feature\ngit add .\ngit commit -m \"WIP\"\ngit checkout main\ngit merge feature",
+                options: ["A fast-forward merge of the feature branch into main", "A merge conflict will always occur", "The feature branch will be deleted", "Main will be reset to the previous commit"],
+                correct: 0,
+                explanation: "Since feature branched from main and main hasn't changed, Git can fast-forward main to the feature commit. No merge commit needed.",
+                learnMore: { url: "https://git-scm.com/docs/git-merge#_fast_forward_merge", text: "📚 Fast-forward Merge" }
+            },
         ],
         4: [
             {
@@ -1961,7 +1987,46 @@ const questions = {
                 explanation: "Bisect does binary search through history. Mark commits 'good' or 'bad', Git narrows down to the first bad commit efficiently. Great for debugging.",
                 learnMore: { url: "https://git-scm.com/docs/git-bisect", text: "📚 Git Bisect" }
             },
-        ]
+        ],
+        6: [
+            {
+                q: "What does 'git sparse-checkout' allow you to do?",
+                options: ["Check out only a subset of files from a repository", "Create sparse commits with partial staging", "Compress repository data for faster cloning", "Run garbage collection on sparse objects"],
+                correct: 0,
+                explanation: "Sparse checkout lets you work with only specific directories or files in a large repository. Combined with partial clone (--filter=blob:none), it's essential for monorepo workflows."
+            },
+            {
+                q: "Which command schedules automatic repository maintenance tasks like gc, commit-graph, and prefetch?",
+                options: ["git clean --scheduled", "git gc --auto-schedule", "git maintenance start", "git optimize --background"],
+                correct: 2,
+                explanation: "git maintenance start registers a cron/systemd schedule for background tasks: gc, commit-graph updates, prefetch from remotes, loose-objects cleanup, and incremental-repack."
+            },
+            {
+                q: "What is a git bundle used for?",
+                options: ["Packaging repository data for offline transfer between machines", "Bundling multiple repositories into a monorepo structure", "Compressing Git objects for smaller disk usage", "Creating a ZIP archive of the working directory"],
+                correct: 0,
+                explanation: "git bundle creates a single file containing Git objects and refs that can be transferred offline (USB, email) and used as a remote. Useful when network access is unavailable."
+            },
+            {
+                q: "How do git notes differ from commit messages?",
+                options: ["Notes are encrypted while commit messages are plain text", "Notes can be added or modified without changing commit hashes", "Notes are only visible in GitHub web interface", "Notes replace commit messages after a rebase operation"],
+                correct: 1,
+                explanation: "Git notes attach metadata to commits without altering the commit SHA. This lets you add code review comments, CI results, or annotations after the fact without rewriting history."
+            },
+            {
+                q: "What advantage does 'git subtree' have over 'git submodule' for including external repositories?",
+                options: ["Subtree requires less disk space than submodule", "Subtree merges code directly into the repo, requiring no extra commands for cloning", "Subtree automatically keeps dependencies at the latest version", "Subtree stores only references, making the repo lighter"],
+                correct: 1,
+                explanation: "git subtree merges external repo content directly into your tree. Contributors can clone and work normally without running 'git submodule init/update'. Trade-off: harder to push changes back upstream."
+            },
+            {
+                q: "In a monorepo strategy, what is the primary purpose of path-based CI filtering?",
+                options: ["Limiting developer access to specific directories based on team roles", "Running only the CI pipelines relevant to the changed directories", "Filtering file paths during git clone for smaller checkouts", "Sorting files by path for faster indexing in large repositories"],
+                correct: 1,
+                explanation: "Path-based CI filtering triggers only pipelines affected by changed files (e.g., changes in services/api/ run only API tests). This avoids running all pipelines on every commit, keeping CI fast in monorepos."
+            },
+        ],
+        7: []
     },
 
     'f-docker': {
@@ -2040,6 +2105,14 @@ const questions = {
                 explanation: "'docker pull' downloads image from registry (Docker Hub by default). Specify registry: 'registry.example.com/image:tag'. Layers already present are skipped.",
                 learnMore: { url: "https://docs.docker.com/engine/reference/commandline/pull/", text: "📚 Docker Pull" }
             },
+            {
+                q: "What will this Dockerfile produce?",
+                code: "FROM python:3.11-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install -r requirements.txt\nCOPY . .\nCMD [\"python\", \"app.py\"]",
+                options: ["A Python app image with dependencies installed first for caching", "An image that only copies requirements.txt", "A container running pip install on every start", "An image without any application code"],
+                correct: 0,
+                explanation: "This Dockerfile copies requirements.txt first and installs dependencies separately. This means the pip install layer is cached when only code changes. COPY . . then adds the app code.",
+                learnMore: { url: "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#leverage-build-cache", text: "📚 Build Cache" }
+            },
         ],
         4: [
             {
@@ -2107,7 +2180,54 @@ const questions = {
                 explanation: "Use minimal base (alpine, distroless), non-root USER, remove shells/tools if not needed, scan for vulnerabilities (Trivy, Snyk), update regularly.",
                 learnMore: { url: "https://docs.docker.com/develop/security-best-practices/", text: "📚 Security Best Practices" }
             },
-        ]
+            {
+                q: "What is the issue with this Dockerfile?",
+                code: "FROM node:18\nCOPY . .\nRUN npm install\nRUN npm run build\nEXPOSE 3000\nCMD [\"node\", \"dist/server.js\"]",
+                options: ["COPY before npm install breaks layer caching for dependencies", "EXPOSE is on wrong port number", "CMD syntax is incorrect here", "FROM tag is too old for use"],
+                correct: 0,
+                explanation: "COPY . . before npm install means any code change invalidates the npm install cache. Better: COPY package*.json first, npm install, then COPY the rest.",
+                learnMore: { url: "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/", text: "📚 Dockerfile Best Practices" }
+            },
+        ],
+        6: [
+            {
+                q: "What is the primary advantage of Docker BuildKit over the legacy build engine?",
+                options: ["BuildKit uses a different container runtime for execution", "BuildKit enables parallel build stages, better caching, and secret mounting", "BuildKit replaces Dockerfiles with a YAML-based configuration", "BuildKit only works with multi-architecture base images"],
+                correct: 1,
+                explanation: "BuildKit parallelizes independent stages, supports cache mounts (--mount=type=cache), secret mounts (--mount=type=secret), and SSH forwarding. It produces smaller build contexts and faster builds."
+            },
+            {
+                q: "Which tool is commonly used to scan Docker images for known CVEs and security vulnerabilities?",
+                options: ["docker inspect --security", "Docker Bench for Security", "Trivy or Docker Scout", "docker audit --vulnerabilities"],
+                correct: 2,
+                explanation: "Trivy and Docker Scout scan container images against vulnerability databases (CVE). They analyze OS packages and application dependencies, reporting severity levels and fix versions."
+            },
+            {
+                q: "What does Docker rootless mode achieve?",
+                options: ["It runs containers without any Linux user namespaces", "It allows the Docker daemon and containers to run without root privileges", "It automatically removes the root user inside every container", "It restricts containers to read-only filesystem access only"],
+                correct: 1,
+                explanation: "Rootless mode runs the Docker daemon as a non-root user, reducing the attack surface. Even if a container escape occurs, the attacker has only unprivileged user access on the host."
+            },
+            {
+                q: "In Docker Compose v2, how do you specify that a service should wait for a dependency to be healthy before starting?",
+                options: ["depends_on with condition: service_healthy and a healthcheck defined", "links directive with wait: true parameter set", "restart: on-failure with a retry count specified", "network_mode: wait-for-healthy on the dependent service"],
+                correct: 0,
+                explanation: "Compose v2 supports depends_on with condition: service_healthy. The dependency must define a healthcheck. This replaces third-party wait-for-it scripts for service readiness."
+            },
+            {
+                q: "How do you build a Docker image for multiple CPU architectures (e.g., amd64 and arm64) in a single command?",
+                options: ["Run 'docker build' twice with different --arch flags and tag each separately", "Use 'docker buildx build --platform linux/amd64,linux/arm64' with a builder instance", "Set the TARGETARCH variable in the Dockerfile and rebuild manually per platform", "Use 'docker manifest create' to merge pre-built single-arch images together"],
+                correct: 1,
+                explanation: "docker buildx with --platform builds for multiple architectures simultaneously using QEMU emulation or native builders. It pushes a manifest list so Docker automatically pulls the right arch."
+            },
+            {
+                q: "What does the 'docker init' command generate for an existing project?",
+                options: ["A Dockerfile, .dockerignore, and Compose file tailored to the project's language", "An initialization script that installs Docker on the host system", "A Docker volume with pre-populated project template files", "A new Git repository with Docker-specific branch protection rules"],
+                correct: 0,
+                explanation: "docker init detects the project language/framework and generates a Dockerfile, .dockerignore, and compose.yaml with best practices applied. It supports Python, Node, Go, Rust, and others."
+            },
+        ],
+        7: []
     },
 
     'f-ci-cd': {
@@ -2253,7 +2373,9 @@ const questions = {
                 explanation: "Database migrations should be versioned, backward compatible (for rollback), and tested. Run migrations as separate pipeline step before deployment. Avoid destructive changes.",
                 learnMore: { url: "https://docs.djangoproject.com/en/4.2/topics/migrations/", text: "📚 Django Migrations" }
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     'f-algorithms': {
@@ -4151,7 +4273,9 @@ const questions = {
                 explanation: "strace traces system calls and signals. Shows what a program is doing at OS level: file access, network, memory. Powerful debugging tool for mysterious issues.",
                 learnMore: { url: "https://strace.io/", text: "📚 strace" }
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     'f-sql': {
@@ -4297,7 +4421,9 @@ const questions = {
                 explanation: "ACID: Atomicity (all or nothing), Consistency (valid state to valid state), Isolation (concurrent transactions don't interfere), Durability (committed data persists).",
                 learnMore: { url: "https://www.postgresql.org/docs/current/transaction-iso.html", text: "📚 Transaction Isolation" }
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     'f-ai-prompting': {
@@ -6851,7 +6977,9 @@ const questions = {
                 explanation: "Check: nova-scheduler logs (host selection), nova-compute logs (VM creation), Placement (resource availability), Neutron (network), Glance (image). Use 'openstack server show --diagnostics'.",
                 learnMore: { url: "https://docs.openstack.org/nova/latest/admin/troubleshooting.html", text: "📚 Nova Troubleshooting" }
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     's-kubernetes': {
@@ -6997,7 +7125,9 @@ const questions = {
                 explanation: "RollingUpdate gradually replaces pods (no downtime). Recreate terminates all old pods before starting new ones (brief downtime but simpler, useful for incompatible versions).",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy", text: "📚 Deployment Strategies" }
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     's-slurm': {
@@ -7143,7 +7273,9 @@ const questions = {
                 explanation: "Check: job output/error files, 'scontrol show job <id>' for state/reason, 'sacct -j <id>' for resources/exit code, node logs for system issues.",
                 learnMore: { url: "https://slurm.schedmd.com/troubleshoot.html", text: "📚 Troubleshooting" }
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     's-oidc': {
@@ -7289,7 +7421,9 @@ const questions = {
                 explanation: "Implicit flow returns tokens directly in URL fragment (no code exchange). Discouraged: tokens exposed in browser history, logs. Use auth code + PKCE instead.",
                 learnMore: { url: "https://oauth.net/2/grant-types/implicit/", text: "📚 Implicit Flow" }
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     's-ansible': {
@@ -7435,7 +7569,9 @@ const questions = {
                 explanation: "Ansible stops on failure by default. Use ignore_errors: yes to continue. block/rescue/always provides try/catch semantics. failed_when customizes failure conditions.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_error_handling.html", text: "📚 Error Handling" }
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     's-monitoring': {
@@ -7581,7 +7717,9 @@ const questions = {
                 explanation: "Handle high cardinality: avoid unbounded labels (user IDs), pre-aggregate with recording rules, use exemplars for sampling, consider specialized systems for high-cardinality.",
                 learnMore: { url: "https://prometheus.io/docs/practices/instrumentation/#do-not-overuse-labels", text: "📚 Label Best Practices" }
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     's-azure': {
@@ -7708,7 +7846,9 @@ const questions = {
                 correct: 2,
                 explanation: "Azure DevOps provides: repos, pipelines, boards, artifacts. CI/CD for Azure deployments. Integrate with ARM templates, Terraform, Bicep."
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     's-gitlab-cicd': {
@@ -7835,7 +7975,9 @@ const questions = {
                 correct: 2,
                 explanation: "CI/CD Catalog: share reusable pipeline components. Include templates, jobs. Publish to catalog for organization use. DRY principle for CI/CD."
             },
-        ]
+        ],
+        6: [],
+        7: []
     },
 
     // ============================================================================
@@ -8606,7 +8748,15 @@ const questions = {
     }
 };
 
-// Get random questions for a skill and level
+// Get a compound key for a question (used for spaced repetition tracking)
+function getQuestionKey(skillId, level, question) {
+    const skillQuestions = questions[skillId];
+    if (!skillQuestions || !skillQuestions[level]) return null;
+    const index = skillQuestions[level].indexOf(question);
+    return `${skillId}:${level}:${index}`;
+}
+
+// Get random questions for a skill and level (with spaced repetition)
 function getQuestionsForSkill(skillId, level, count = 5) {
     const skillQuestions = questions[skillId];
     if (!skillQuestions) return [];
@@ -8614,9 +8764,46 @@ function getQuestionsForSkill(skillId, level, count = 5) {
     const levelQuestions = skillQuestions[level];
     if (!levelQuestions || levelQuestions.length === 0) return [];
 
-    // Shuffle and return requested count
-    const shuffled = [...levelQuestions].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, Math.min(count, shuffled.length));
+    // Load question history for spaced repetition
+    let history = {};
+    try {
+        const state = loadState();
+        history = state.questionHistory || {};
+    } catch (e) { /* loadState not available yet, fall back to random */ }
+
+    // Split into weak (more wrong than correct) and neutral
+    const weak = [];
+    const neutral = [];
+    levelQuestions.forEach((q, i) => {
+        const key = `${skillId}:${level}:${i}`;
+        const entry = history[key];
+        if (entry && entry.w > entry.c) {
+            weak.push(q);
+        } else {
+            neutral.push(q);
+        }
+    });
+
+    // Fill quiz: up to 60% weak questions, then neutral
+    const maxWeak = Math.ceil(count * 0.6);
+    const shuffledWeak = [...weak].sort(() => Math.random() - 0.5);
+    const shuffledNeutral = [...neutral].sort(() => Math.random() - 0.5);
+
+    const selected = [];
+    // Add weak questions first (up to 60% of count)
+    selected.push(...shuffledWeak.slice(0, Math.min(maxWeak, shuffledWeak.length)));
+    // Fill remainder with neutral
+    const remaining = count - selected.length;
+    selected.push(...shuffledNeutral.slice(0, Math.min(remaining, shuffledNeutral.length)));
+
+    // If we still need more (not enough neutral), backfill from unused weak
+    if (selected.length < count) {
+        const usedWeak = selected.filter(q => weak.includes(q)).length;
+        selected.push(...shuffledWeak.slice(usedWeak, usedWeak + (count - selected.length)));
+    }
+
+    // Final shuffle so weak questions aren't always first
+    return selected.slice(0, Math.min(count, selected.length)).sort(() => Math.random() - 0.5);
 }
 
 // Get all available levels for a skill (only levels with actual questions)

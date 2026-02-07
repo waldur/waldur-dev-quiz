@@ -11,8 +11,11 @@ const k = kaplay({
     pixelDensity: 2,
 });
 
-// Load custom font
+// Load custom fonts
 k.loadFont('Inter', 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2');
+k.loadFont('FiraCode', 'https://fonts.gstatic.com/s/firacode/v22/uU9NCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sJVD7MOzlojwUKQ.woff2').catch(() => {
+    console.warn('FiraCode font failed to load, code blocks will use Inter');
+});
 
 // Global game state
 let gameState = loadState();
@@ -35,6 +38,9 @@ const COLORS = {
     text: k.rgb(255, 255, 255),
     textMuted: k.rgb(156, 163, 175),
     gold: k.rgb(251, 191, 36),
+    codeBg: k.rgb(20, 20, 40),
+    codeText: k.rgb(180, 220, 180),
+    codeBorder: k.rgb(60, 70, 90),
 };
 
 // Tier colors
@@ -182,6 +188,16 @@ const SoundSystem = {
         ], 0.35);
     },
 
+    achievement() {
+        // 4-note ascending jingle
+        this.playMelody([
+            { freq: 523.25, dur: 0.1 },  // C5
+            { freq: 659.25, dur: 0.1 },  // E5
+            { freq: 783.99, dur: 0.1 },  // G5
+            { freq: 1046.5, dur: 0.2 },  // C6
+        ], 0.35);
+    },
+
     click() {
         this.playTone(800, 0.05, 'sine', 0.15);
     },
@@ -198,6 +214,114 @@ const SoundSystem = {
 
 // Initialize sound system
 SoundSystem.init();
+
+// ============================================================================
+// ACHIEVEMENT TOAST SYSTEM
+// ============================================================================
+const achievementToastQueue = [];
+let toastActive = false;
+
+function showAchievementToast(achievement) {
+    achievementToastQueue.push(achievement);
+    if (!toastActive) processToastQueue();
+}
+
+function processToastQueue() {
+    if (achievementToastQueue.length === 0) {
+        toastActive = false;
+        return;
+    }
+    toastActive = true;
+    const achievement = achievementToastQueue.shift();
+
+    SoundSystem.achievement();
+
+    // Toast container (slides in from right)
+    const toastWidth = 320;
+    const toastHeight = 70;
+    const startX = k.width() + toastWidth;
+    const targetX = k.width() - toastWidth - 20;
+    const toastY = 20;
+
+    const bg = k.add([
+        k.rect(toastWidth, toastHeight, { radius: 10 }),
+        k.color(k.rgb(40, 40, 80)),
+        k.pos(startX, toastY),
+        k.outline(2, COLORS.gold),
+        k.z(500),
+        'achievementToast',
+    ]);
+
+    const icon = k.add([
+        k.text(achievement.icon, { size: 32 }),
+        k.pos(startX + 20, toastY + toastHeight / 2),
+        k.anchor('left'),
+        k.z(501),
+        'achievementToast',
+    ]);
+
+    const title = k.add([
+        k.text('Achievement Unlocked!', { size: 11, font: 'Inter' }),
+        k.color(COLORS.gold),
+        k.pos(startX + 65, toastY + 16),
+        k.z(501),
+        'achievementToast',
+    ]);
+
+    const name = k.add([
+        k.text(escapeText(achievement.name), { size: 16, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(startX + 65, toastY + 34),
+        k.z(501),
+        'achievementToast',
+    ]);
+
+    const desc = k.add([
+        k.text(escapeText(achievement.description), { size: 11, font: 'Inter', width: toastWidth - 80 }),
+        k.color(COLORS.textMuted),
+        k.pos(startX + 65, toastY + 52),
+        k.z(501),
+        'achievementToast',
+    ]);
+
+    const elements = [bg, icon, title, name, desc];
+
+    // Slide-in animation
+    let elapsed = 0;
+    const slideInDur = 0.3;
+    const holdDur = 3.0;
+    const slideOutDur = 0.3;
+
+    bg.onUpdate(() => {
+        elapsed += k.dt();
+        let currentX;
+
+        if (elapsed < slideInDur) {
+            // Slide in
+            const t = elapsed / slideInDur;
+            const ease = 1 - Math.pow(1 - t, 3);
+            currentX = startX + (targetX - startX) * ease;
+        } else if (elapsed < slideInDur + holdDur) {
+            currentX = targetX;
+        } else if (elapsed < slideInDur + holdDur + slideOutDur) {
+            // Slide out
+            const t = (elapsed - slideInDur - holdDur) / slideOutDur;
+            currentX = targetX + (startX - targetX) * t * t;
+        } else {
+            // Clean up and process next
+            elements.forEach(el => { if (el.exists()) k.destroy(el); });
+            processToastQueue();
+            return;
+        }
+
+        // Update positions
+        bg.pos.x = currentX;
+        icon.pos.x = currentX + 20;
+        title.pos.x = currentX + 65;
+        name.pos.x = currentX + 65;
+        desc.pos.x = currentX + 65;
+    });
+}
 
 // ============================================================================
 // SCENE: Menu
@@ -261,7 +385,7 @@ k.scene('menu', () => {
     // Stats display
     const stats = getStats();
     k.add([
-        k.text(`XP: ${stats.totalXP} | Skills: ${stats.skillsPassed}/${skills.length} | Accuracy: ${stats.accuracy}%`, { size: 18, font: 'Inter' }),
+        k.text(`XP: ${stats.totalXP} | Skills: ${stats.skillsPassed}/${skills.length} | Accuracy: ${stats.accuracy}% | Achievements: ${stats.achievements}/${ACHIEVEMENTS.length}`, { size: 16, font: 'Inter' }),
         k.color(COLORS.textMuted),
         k.pos(k.width() / 2, 330),
         k.anchor('center'),
@@ -280,25 +404,77 @@ k.scene('menu', () => {
         k.go('profile');
     }
 
-    function quickChallenge() {
+    // Daily Challenge: deterministically pick skill+level from today's date
+    function getDailyChallenge() {
+        const today = new Date().toISOString().split('T')[0];
+        const seed = dateSeed(today);
         const skillsWithQuestions = skills.filter(s => hasQuestions(s.id));
-        if (skillsWithQuestions.length > 0) {
-            const randomSkill = skillsWithQuestions[Math.floor(Math.random() * skillsWithQuestions.length)];
-            const levels = getAvailableLevels(randomSkill.id);
-            const randomLevel = levels[Math.floor(Math.random() * levels.length)];
-            k.go('quiz', { skillId: randomSkill.id, level: randomLevel });
+        if (skillsWithQuestions.length === 0) return null;
+
+        const skillIndex = Math.floor(seededRandom(seed) * skillsWithQuestions.length);
+        const dailySkill = skillsWithQuestions[skillIndex];
+        const levels = getAvailableLevels(dailySkill.id);
+
+        // Cap level based on player XP
+        let maxLevel = 5;
+        if (gameState.totalXP < 500) maxLevel = 2;
+        else if (gameState.totalXP < 1500) maxLevel = 3;
+        else if (gameState.totalXP < 3000) maxLevel = 4;
+        const cappedLevels = levels.filter(l => l <= maxLevel);
+        const pool = cappedLevels.length > 0 ? cappedLevels : [levels[0]];
+
+        const levelIndex = Math.floor(seededRandom(seed + 1) * pool.length);
+        return { skillId: dailySkill.id, level: pool[levelIndex], skill: dailySkill };
+    }
+
+    const daily = getDailyChallenge();
+    const dailyCompleted = isDailyChallengeCompleted();
+    const dailyStreak = getDailyChallengeStreak();
+
+    function startDailyChallenge() {
+        if (daily && !dailyCompleted) {
+            k.go('quiz', { skillId: daily.skillId, level: daily.level, isDaily: true });
         }
     }
 
     // Buttons with shortcuts in label (use parentheses to avoid KAPLAY style tag parsing)
     createButton('(1) Start Quest', k.width() / 2, buttonY, startQuest);
     createButton('(2) My Profile', k.width() / 2, buttonY + buttonSpacing, openProfile);
-    createButton('(3) Quick Challenge', k.width() / 2, buttonY + buttonSpacing * 2, quickChallenge);
+
+    // Daily Challenge button (shows completion state)
+    const dailyLabel = dailyCompleted ? '(3) Daily Challenge  ✓' : '(3) Daily Challenge';
+    const dailyColor = dailyCompleted ? COLORS.bgLight : COLORS.warning;
+    createButton(dailyLabel, k.width() / 2, buttonY + buttonSpacing * 2, startDailyChallenge, dailyColor);
+
+    // Daily challenge hint text
+    if (daily) {
+        const hintText = dailyCompleted
+            ? `Today: ${daily.skill.name} L${daily.level} (completed)`
+            : `Today: ${daily.skill.name} L${daily.level}`;
+        k.add([
+            k.text(hintText, { size: 13, font: 'Inter' }),
+            k.color(COLORS.textMuted),
+            k.pos(k.width() / 2, buttonY + buttonSpacing * 2 + 35),
+            k.anchor('center'),
+            k.opacity(0.7),
+        ]);
+    }
+
+    // Daily streak display
+    if (dailyStreak > 0) {
+        k.add([
+            k.text(`Daily Streak: ${dailyStreak} day${dailyStreak > 1 ? 's' : ''}`, { size: 13, font: 'Inter' }),
+            k.color(COLORS.gold),
+            k.pos(k.width() / 2, buttonY + buttonSpacing * 2 + 55),
+            k.anchor('center'),
+            k.opacity(0.8),
+        ]);
+    }
 
     // Keyboard shortcuts
     k.onKeyPress('1', startQuest);
     k.onKeyPress('2', openProfile);
-    k.onKeyPress('3', quickChallenge);
+    k.onKeyPress('3', startDailyChallenge);
 
     // Keyboard hint footer
     k.add([
@@ -455,6 +631,7 @@ k.scene('menu', () => {
         addSection('💎', 'XP System', [
             '+20 per correct  •  +50 for passing',
             '+100 for perfect  •  +5 per streak',
+            'Daily Challenge: 50% bonus XP!',
         ], rightX, row2Y);
 
         addSection('🗡️', 'Your Rank', [
@@ -512,10 +689,186 @@ k.scene('menu', () => {
     k.onKeyPress('/', () => showHelp());  // ? key (shift+/)
     k.onKeyPress('h', () => showHelp());  // Alternative: H for help
 
-    // ESC to close help
+    // ESC to close help or welcome
     k.onKeyPress('escape', () => {
         if (helpVisible) hideHelp();
+        if (welcomeVisible) hideWelcome();
     });
+
+    // === WELCOME OVERLAY (first-time players) ===
+    let welcomeVisible = false;
+    let welcomeElements = [];
+
+    function showWelcome() {
+        if (welcomeVisible || helpVisible) return;
+        welcomeVisible = true;
+
+        const openedAt = Date.now();
+
+        // Overlay background
+        const overlayBg = k.add([
+            k.rect(k.width(), k.height()),
+            k.color(0, 0, 0),
+            k.opacity(0.9),
+            k.pos(0, 0),
+            k.z(100),
+            k.area(),
+            'welcomeOverlay',
+        ]);
+        overlayBg.onClick(() => {
+            if (Date.now() - openedAt < 100) return;
+            hideWelcome();
+        });
+        welcomeElements.push(overlayBg);
+
+        const panelWidth = 700;
+        const panelHeight = 520;
+        const panelX = k.width() / 2;
+        const panelY = k.height() / 2;
+
+        const panel = k.add([
+            k.rect(panelWidth, panelHeight, { radius: 12 }),
+            k.color(COLORS.bgLight),
+            k.pos(panelX, panelY),
+            k.anchor('center'),
+            k.outline(2, COLORS.gold),
+            k.z(101),
+            k.area(),
+            'welcomeOverlay',
+        ]);
+        panel.onClick(() => {});
+        welcomeElements.push(panel);
+
+        // Title
+        welcomeElements.push(k.add([
+            k.text('Welcome to Waldur Quest!', { size: 32, font: 'Inter' }),
+            k.color(COLORS.gold),
+            k.pos(panelX, panelY - 220),
+            k.anchor('center'),
+            k.z(102),
+            'welcomeOverlay',
+        ]));
+
+        // Steps
+        const steps = [
+            { icon: '1.', title: 'Pick a Skill', desc: 'Browse 5 tiers from Literacy to Specialization' },
+            { icon: '2.', title: 'Answer Questions', desc: 'Solve 5 questions per level (60% to pass)' },
+            { icon: '3.', title: 'Level Up', desc: 'Earn XP, unlock higher levels, evolve your rank' },
+        ];
+
+        steps.forEach((step, i) => {
+            const stepY = panelY - 150 + i * 75;
+
+            welcomeElements.push(k.add([
+                k.text(`${step.icon}  ${step.title}`, { size: 20, font: 'Inter' }),
+                k.color(COLORS.text),
+                k.pos(panelX - 260, stepY),
+                k.z(102),
+                'welcomeOverlay',
+            ]));
+
+            welcomeElements.push(k.add([
+                k.text(step.desc, { size: 15, font: 'Inter' }),
+                k.color(COLORS.textMuted),
+                k.pos(panelX - 260, stepY + 26),
+                k.z(102),
+                'welcomeOverlay',
+            ]));
+        });
+
+        // Tip
+        welcomeElements.push(k.add([
+            k.text('Tip: Build breadth first, then specialize — become a T-shaped developer!', { size: 13, font: 'Inter', width: panelWidth - 80 }),
+            k.color(COLORS.secondary),
+            k.pos(panelX, panelY + 100),
+            k.anchor('center'),
+            k.z(102),
+            'welcomeOverlay',
+        ]));
+
+        // Primary CTA: Start First Quest
+        const startBtn = k.add([
+            k.rect(280, 48, { radius: 8 }),
+            k.color(COLORS.success),
+            k.pos(panelX - 160, panelY + 155),
+            k.anchor('center'),
+            k.area(),
+            k.z(103),
+            'welcomeOverlay',
+        ]);
+        welcomeElements.push(startBtn);
+        welcomeElements.push(k.add([
+            k.text('Start Your First Quest', { size: 18, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(panelX - 160, panelY + 155),
+            k.anchor('center'),
+            k.z(104),
+            'welcomeOverlay',
+        ]));
+        startBtn.onClick(() => {
+            hideWelcome();
+            k.go('skillDetail', { skillId: 'l-cli' });
+        });
+        startBtn.onHover(() => startBtn.color = k.rgb(20, 200, 140));
+        startBtn.onHoverEnd(() => startBtn.color = COLORS.success);
+
+        // Secondary: Browse Skill Tree
+        const browseBtn = k.add([
+            k.rect(220, 48, { radius: 8 }),
+            k.color(COLORS.bgLight),
+            k.pos(panelX + 130, panelY + 155),
+            k.anchor('center'),
+            k.area(),
+            k.outline(2, COLORS.primary),
+            k.z(103),
+            'welcomeOverlay',
+        ]);
+        welcomeElements.push(browseBtn);
+        welcomeElements.push(k.add([
+            k.text('Browse Skill Tree', { size: 18, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(panelX + 130, panelY + 155),
+            k.anchor('center'),
+            k.z(104),
+            'welcomeOverlay',
+        ]));
+        browseBtn.onClick(() => {
+            hideWelcome();
+            k.go('skillTree');
+        });
+        browseBtn.onHover(() => browseBtn.color = COLORS.primary);
+        browseBtn.onHoverEnd(() => browseBtn.color = COLORS.bgLight);
+
+        // Dismiss text
+        welcomeElements.push(k.add([
+            k.text('Press ESC to skip', { size: 12, font: 'Inter' }),
+            k.color(COLORS.textMuted),
+            k.pos(panelX, panelY + 210),
+            k.anchor('center'),
+            k.z(102),
+            k.opacity(0.6),
+            'welcomeOverlay',
+        ]));
+    }
+
+    function hideWelcome() {
+        if (!welcomeVisible) return;
+        welcomeVisible = false;
+        // Mark onboarding as done
+        gameState.onboardingDone = true;
+        updateState({ onboardingDone: true });
+        setTimeout(() => {
+            welcomeElements.forEach(el => {
+                if (el.exists()) k.destroy(el);
+            });
+            welcomeElements = [];
+        }, 50);
+    }
+
+    // Show welcome for first-time players
+    if (gameState.gamesPlayed === 0 && !gameState.onboardingDone) {
+        showWelcome();
+    }
 });
 
 // ============================================================================
@@ -890,127 +1243,195 @@ k.scene('skillTree', () => {
         k.outline(2, COLORS.bgLight),
     ]);
 
+    // Group labels for tiers that have sub-groups
+    const SKILL_GROUP_LABELS = {
+        foundation: { cs: '🧪 CS Fundamentals', se: '🛠️ Software Engineering' },
+        core: { backend: '⚙️ Backend', frontend: '🎨 Frontend', infra: '🏗️ Infrastructure' },
+        specialization: {
+            'cloud-integrations': '☁️ Cloud Integrations',
+            'platform-ops': '🚀 Platform Operations',
+            'hpc-research': '🔬 HPC & Research',
+            'identity-security': '🔐 Identity & Security',
+        },
+    };
+
+    // Group skills by their category/package
+    function getSkillGroups(tier) {
+        const tierSkills = getSkillsByTier(tier);
+        const labels = SKILL_GROUP_LABELS[tier];
+        if (!labels) {
+            // No grouping — return as single unnamed group
+            return [{ label: null, skills: tierSkills }];
+        }
+        const groupKey = tier === 'specialization' ? 'package' : 'category';
+        const groups = [];
+        const seen = new Set();
+        tierSkills.forEach(skill => {
+            const key = skill[groupKey] || '_ungrouped';
+            if (!seen.has(key)) {
+                seen.add(key);
+                groups.push({
+                    label: labels[key] || null,
+                    skills: tierSkills.filter(s => (s[groupKey] || '_ungrouped') === key),
+                });
+            }
+        });
+        return groups;
+    }
+
     // Render skills for selected tier
     function renderSkills() {
         // Clear existing skill nodes
         k.get('skillNode').forEach(n => k.destroy(n));
         k.get('skillText').forEach(n => k.destroy(n));
 
-        const tierSkills = getSkillsByTier(selectedTier);
-        const cols = 3;
+        const groups = getSkillGroups(selectedTier);
+        const cols = 4;
         const nodeWidth = (skillsAreaWidth - 80) / cols;
-        const nodeHeight = 80;
+        const nodeHeight = 58;
         const startX = 40;
-        const startY = 190;
-        const gapX = 15;
-        const gapY = 15;
+        const startY = 178;
+        const gapX = 10;
+        const gapY = 4;
+        const headerHeight = 22;
 
-        tierSkills.forEach((skill, i) => {
-            const col = i % cols;
-            const row = Math.floor(i / cols);
-            const x = startX + col * (nodeWidth + gapX);
-            const y = startY + row * (nodeHeight + gapY) - scrollOffset;
+        let cursorY = startY; // Tracks vertical position
 
-            // Skip if outside visible area
-            if (y < 150 || y > k.height() - 50) return;
-
-            const hasQ = hasQuestions(skill.id);
-            const progress = getSkillProgress(skill.id);
-            const levels = getAvailableLevels(skill.id);
-            const maxLevel = levels.length > 0 ? Math.max(...levels) : 5;
-
-            // Node background
-            const node = k.add([
-                k.rect(nodeWidth, nodeHeight, { radius: 8 }),
-                k.color(hasQ ? (progress.level > 0 ? TIER_COLORS[selectedTier] : COLORS.bgLight) : k.rgb(25, 25, 45)),
-                k.pos(x, y),
-                k.area(),
-                k.opacity(hasQ ? (progress.level > 0 ? 0.9 : 0.6) : 0.4),
-                { skillId: skill.id, hasQuestions: hasQ },
-                'skillNode',
-            ]);
-
-            // Skill name
-            k.add([
-                k.text(skill.name, { size: 13, width: nodeWidth - 20, font: 'Inter' }),
-                k.color(hasQ ? COLORS.text : COLORS.textMuted),
-                k.pos(x + 10, y + 10),
-                'skillText',
-            ]);
-
-            // Level indicator or Locked
-            let levelText;
-            let levelColor;
-            if (!hasQ) {
-                levelText = '🔒 Coming Soon';
-                levelColor = COLORS.textMuted;
-            } else {
-                levelText = progress.level > 0 ? `Lv.${progress.level}/${maxLevel}` : 'Not Started';
-                levelColor = progress.level > 0 ? COLORS.gold : COLORS.textMuted;
-            }
-            k.add([
-                k.text(levelText, { size: 11, font: 'Inter' }),
-                k.color(levelColor),
-                k.pos(x + 10, y + 35),
-                'skillText',
-            ]);
-
-            // Advanced skill star badge (for skills with level 6-7)
-            if (hasQ && maxLevel > 5) {
-                // Star badge in upper right corner
-                k.add([
-                    k.rect(24, 18, { radius: 4 }),
-                    k.color(k.rgb(236, 72, 153)), // Pink #ec4899
-                    k.pos(x + nodeWidth - 28, y + 4),
-                    k.opacity(0.9),
-                    'skillText',
-                ]);
-                k.add([
-                    k.text('⭐', { size: 11, font: 'Inter' }),
-                    k.pos(x + nodeWidth - 16, y + 13),
-                    k.anchor('center'),
-                    'skillText',
-                ]);
-            }
-
-            // Progress bar
-            const barWidth = nodeWidth - 20;
-            const barHeight = 8;
-            k.add([
-                k.rect(barWidth, barHeight, { radius: 4 }),
-                k.color(k.rgb(40, 40, 70)),
-                k.pos(x + 10, y + nodeHeight - 18),
-                'skillText',
-            ]);
-
-            if (hasQ) {
-                const fillWidth = Math.min((progress.level / maxLevel) * barWidth, barWidth);
-                if (fillWidth > 0) {
+        groups.forEach((group) => {
+            // Render group header
+            if (group.label) {
+                const headerY = cursorY - scrollOffset;
+                if (headerY >= 150 && headerY < k.height() - 50) {
                     k.add([
-                        k.rect(fillWidth, barHeight, { radius: 4 }),
-                        k.color(COLORS.success),
-                        k.pos(x + 10, y + nodeHeight - 18),
+                        k.text(group.label, { size: 13, font: 'Inter' }),
+                        k.color(COLORS.gold),
+                        k.pos(startX, headerY),
+                        k.opacity(0.9),
+                        'skillText',
+                    ]);
+                    // Subtle divider line
+                    k.add([
+                        k.rect(skillsAreaWidth - 60, 1),
+                        k.color(COLORS.textMuted),
+                        k.pos(startX, headerY + 17),
+                        k.opacity(0.25),
                         'skillText',
                     ]);
                 }
+                cursorY += headerHeight;
             }
 
-            // Click handler - all skills are clickable now
-            node.onClick(() => {
-                if (hasQ) {
-                    k.go('skillDetail', { skillId: skill.id });
+            // Render skills in this group
+            group.skills.forEach((skill, i) => {
+                const col = i % cols;
+                const row = Math.floor(i / cols);
+                const x = startX + col * (nodeWidth + gapX);
+                const y = cursorY + row * (nodeHeight + gapY) - scrollOffset;
+
+                // Skip if outside visible area
+                if (y < 150 || y > k.height() - 50) return;
+
+                const hasQ = hasQuestions(skill.id);
+                const progress = getSkillProgress(skill.id);
+                const levels = getAvailableLevels(skill.id);
+                const maxLevel = levels.length > 0 ? Math.max(...levels) : 5;
+
+                // Node background
+                const node = k.add([
+                    k.rect(nodeWidth, nodeHeight, { radius: 8 }),
+                    k.color(hasQ ? (progress.level > 0 ? TIER_COLORS[selectedTier] : COLORS.bgLight) : k.rgb(25, 25, 45)),
+                    k.pos(x, y),
+                    k.area(),
+                    k.opacity(hasQ ? (progress.level > 0 ? 0.9 : 0.6) : 0.4),
+                    { skillId: skill.id, hasQuestions: hasQ },
+                    'skillNode',
+                ]);
+
+                // Skill name
+                k.add([
+                    k.text(skill.name, { size: 13, width: nodeWidth - 16, font: 'Inter' }),
+                    k.color(hasQ ? COLORS.text : COLORS.textMuted),
+                    k.pos(x + 8, y + 7),
+                    'skillText',
+                ]);
+
+                // Level indicator or Locked
+                let levelText;
+                let levelColor;
+                if (!hasQ) {
+                    levelText = '🔒 Soon';
+                    levelColor = COLORS.textMuted;
                 } else {
-                    showLockedSkillPopup(skill);
+                    levelText = progress.level > 0 ? `Lv.${progress.level}/${maxLevel}` : 'Not Started';
+                    levelColor = progress.level > 0 ? COLORS.gold : COLORS.textMuted;
                 }
+                k.add([
+                    k.text(levelText, { size: 11, font: 'Inter' }),
+                    k.color(levelColor),
+                    k.pos(x + 8, y + 27),
+                    'skillText',
+                ]);
+
+                // Advanced skill star badge (for skills with level 6-7)
+                if (hasQ && maxLevel > 5) {
+                    k.add([
+                        k.rect(22, 16, { radius: 3 }),
+                        k.color(k.rgb(236, 72, 153)),
+                        k.pos(x + nodeWidth - 26, y + 3),
+                        k.opacity(0.9),
+                        'skillText',
+                    ]);
+                    k.add([
+                        k.text('⭐', { size: 10, font: 'Inter' }),
+                        k.pos(x + nodeWidth - 15, y + 11),
+                        k.anchor('center'),
+                        'skillText',
+                    ]);
+                }
+
+                // Progress bar
+                const barWidth = nodeWidth - 16;
+                const barHeight = 6;
+                k.add([
+                    k.rect(barWidth, barHeight, { radius: 3 }),
+                    k.color(k.rgb(40, 40, 70)),
+                    k.pos(x + 8, y + nodeHeight - 13),
+                    'skillText',
+                ]);
+
+                if (hasQ) {
+                    const fillWidth = Math.min((progress.level / maxLevel) * barWidth, barWidth);
+                    if (fillWidth > 0) {
+                        k.add([
+                            k.rect(fillWidth, barHeight, { radius: 3 }),
+                            k.color(COLORS.success),
+                            k.pos(x + 8, y + nodeHeight - 13),
+                            'skillText',
+                        ]);
+                    }
+                }
+
+                // Click handler
+                node.onClick(() => {
+                    if (hasQ) {
+                        k.go('skillDetail', { skillId: skill.id });
+                    } else {
+                        showLockedSkillPopup(skill);
+                    }
+                });
+
+                // Hover effect
+                node.onHover(() => {
+                    node.opacity = hasQ ? 1 : 0.6;
+                });
+                node.onHoverEnd(() => {
+                    node.opacity = hasQ ? (progress.level > 0 ? 0.9 : 0.6) : 0.4;
+                });
             });
 
-            // Hover effect
-            node.onHover(() => {
-                node.opacity = hasQ ? 1 : 0.6;
-            });
-            node.onHoverEnd(() => {
-                node.opacity = hasQ ? (progress.level > 0 ? 0.9 : 0.6) : 0.4;
-            });
+            // Advance cursor past this group's rows
+            const groupRows = Math.ceil(group.skills.length / cols);
+            cursorY += groupRows * (nodeHeight + gapY);
         });
     }
 
@@ -1169,8 +1590,12 @@ k.scene('skillTree', () => {
 
     // Scroll handling
     k.onScroll((delta) => {
-        const tierSkills = getSkillsByTier(selectedTier);
-        const maxScroll = Math.max(0, Math.ceil(tierSkills.length / 3) * 95 - 400);
+        const groups = getSkillGroups(selectedTier);
+        const headerCount = groups.filter(g => g.label).length;
+        const totalSkills = groups.reduce((sum, g) => sum + g.skills.length, 0);
+        const totalRows = groups.reduce((sum, g) => sum + Math.ceil(g.skills.length / 3), 0);
+        const contentHeight = totalRows * 95 + headerCount * 30;
+        const maxScroll = Math.max(0, contentHeight - 400);
         scrollOffset = Math.max(0, Math.min(maxScroll, scrollOffset + delta.y * 30));
         renderSkills();
     });
@@ -1346,8 +1771,19 @@ k.scene('skillDetail', ({ skillId }) => {
             k.add([
                 k.text(level.toString(), { size: 24, font: 'Inter' }),
                 k.color(COLORS.text),
-                k.pos(buttonStartX + i * 70 + 30, 410),
+                k.pos(buttonStartX + i * 70 + 30, 405),
                 k.anchor('center'),
+            ]);
+
+            // Question count indicator
+            const levelQuestions = questions[skillId] && questions[skillId][level];
+            const qCount = levelQuestions ? levelQuestions.length : 0;
+            k.add([
+                k.text(`${qCount}q`, { size: 10, font: 'Inter' }),
+                k.color(COLORS.textMuted),
+                k.pos(buttonStartX + i * 70 + 30, 428),
+                k.anchor('center'),
+                k.opacity(0.7),
             ]);
 
             if (isUnlocked) {
@@ -1416,7 +1852,7 @@ k.scene('skillDetail', ({ skillId }) => {
 // ============================================================================
 // SCENE: Quiz
 // ============================================================================
-k.scene('quiz', ({ skillId, level }) => {
+k.scene('quiz', ({ skillId, level, isDaily = false }) => {
     const skill = skills.find(s => s.id === skillId);
     const quizQuestions = getQuestionsForSkill(skillId, level, 5);
 
@@ -1572,17 +2008,43 @@ k.scene('quiz', ({ skillId, level }) => {
         k.anchor('center'),
     ]);
 
+    // Code block elements (shown when question has code field)
+    const codeBlockBg = k.add([
+        k.rect(k.width() - 200, 10, { radius: 6 }),
+        k.color(COLORS.codeBg),
+        k.pos(100, 185),
+        k.outline(1, COLORS.codeBorder),
+        k.opacity(0),
+    ]);
+    const codeBlockText = k.add([
+        k.text('', { size: 14, font: 'Inter', width: k.width() - 240 }),
+        k.color(COLORS.codeText),
+        k.pos(120, 195),
+        k.opacity(0),
+    ]);
+
     // Options (compact layout to leave room for explanation panel)
     const optionButtons = [];
     const optionTexts = [];
     const optionNumbers = [];
-    const optionY = 220;
+    let optionBaseY = 220; // Will be adjusted for code blocks
     const optionHeight = 55;
     const optionSpacing = 8;
     const optionWidth = k.width() - 200;
 
+    function repositionOptions(baseY) {
+        optionBaseY = baseY;
+        for (let i = 0; i < 4; i++) {
+            const btnY = baseY + i * (optionHeight + optionSpacing);
+            optionButtons[i].pos.y = btnY;
+            optionNumbers[i].badge.pos.y = btnY + optionHeight / 2;
+            optionNumbers[i].text.pos.y = btnY + optionHeight / 2;
+            optionTexts[i].pos.y = btnY + optionHeight / 2;
+        }
+    }
+
     for (let i = 0; i < 4; i++) {
-        const btnY = optionY + i * (optionHeight + optionSpacing);
+        const btnY = optionBaseY + i * (optionHeight + optionSpacing);
         const btn = k.add([
             k.rect(optionWidth, optionHeight, { radius: 8 }),
             k.color(COLORS.bgLight),
@@ -1704,7 +2166,7 @@ k.scene('quiz', ({ skillId, level }) => {
         if (currentQuestion >= quizQuestions.length) {
             // Quiz complete
             SoundSystem.quizComplete();
-            k.go('results', { skillId, level, score, total: quizQuestions.length, streak });
+            k.go('results', { skillId, level, score, total: quizQuestions.length, streak, isDaily });
             return;
         }
 
@@ -1717,6 +2179,23 @@ k.scene('quiz', ({ skillId, level }) => {
 
         questionText.text = escapeText(q.q);
         progressText.text = `Question ${currentQuestion + 1}/${quizQuestions.length}`;
+
+        // Handle code block display
+        if (q.code) {
+            const codeLines = q.code.split('\n');
+            const codeHeight = Math.max(40, codeLines.length * 18 + 20);
+            codeBlockBg.opacity = 1;
+            codeBlockBg.height = codeHeight;
+            codeBlockText.opacity = 1;
+            codeBlockText.text = escapeText(q.code);
+            // Shift options down to accommodate code block
+            repositionOptions(195 + codeHeight + 10);
+        } else {
+            codeBlockBg.opacity = 0;
+            codeBlockText.opacity = 0;
+            codeBlockText.text = '';
+            repositionOptions(220);
+        }
 
         // Use stored shuffle for review, or create new shuffle
         let shuffledOptions;
@@ -2009,7 +2488,8 @@ k.scene('quiz', ({ skillId, level }) => {
             SoundSystem.incorrect();
         }
 
-        recordAnswer(isCorrect);
+        const questionKey = getQuestionKey(skillId, level, quizQuestions[currentQuestion]);
+        recordAnswer(isCorrect, questionKey);
         updateStreak(streak);
 
         scoreText.text = `Score: ${score} | Streak: ${streak}`;
@@ -2110,7 +2590,7 @@ k.scene('quiz', ({ skillId, level }) => {
 // ============================================================================
 // SCENE: Results
 // ============================================================================
-k.scene('results', ({ skillId, level, score, total, streak }) => {
+k.scene('results', ({ skillId, level, score, total, streak, isDaily = false }) => {
     const skill = skills.find(s => s.id === skillId);
     const passed = score >= Math.ceil(total * 0.6); // 60% to pass
     const perfect = score === total;
@@ -2123,10 +2603,22 @@ k.scene('results', ({ skillId, level, score, total, streak }) => {
 
     // Update progress
     updateSkillProgress(skillId, level, passed, xpGained);
+
+    // Daily challenge bonus
+    let dailyBonusInfo = null;
+    if (isDaily && passed) {
+        dailyBonusInfo = completeDailyChallenge(xpGained);
+    }
+
     calculateProfile();
 
     // Refresh game state
     gameState = loadState();
+
+    // Check achievements
+    const achievementContext = { perfect, passed, score, total, streak };
+    const newAchievements = checkAchievements(achievementContext);
+    newAchievements.forEach(a => showAchievementToast(a));
 
     // Get random reaction
     const reaction = getResultReaction(passed, perfect);
@@ -2261,6 +2753,24 @@ k.scene('results', ({ skillId, level, score, total, streak }) => {
         k.anchor('center'),
     ]);
 
+    // Daily challenge bonus display
+    if (dailyBonusInfo && dailyBonusInfo.totalBonus > 0) {
+        k.add([
+            k.text(`Daily Bonus: +${dailyBonusInfo.totalBonus} XP`, { size: 18, font: 'Inter' }),
+            k.color(COLORS.warning),
+            k.pos(leftCenterX, statsY + statsSpacing * 2 + 28),
+            k.anchor('center'),
+        ]);
+        if (dailyBonusInfo.streak > 1) {
+            k.add([
+                k.text(`(${dailyBonusInfo.streak}-day streak!)`, { size: 14, font: 'Inter' }),
+                k.color(COLORS.textMuted),
+                k.pos(leftCenterX, statsY + statsSpacing * 2 + 50),
+                k.anchor('center'),
+            ]);
+        }
+    }
+
     // Level up message
     if (passed) {
         const newProgress = getSkillProgress(skillId);
@@ -2268,6 +2778,16 @@ k.scene('results', ({ skillId, level, score, total, streak }) => {
             k.text(`Skill Level: ${newProgress.level}`, { size: 18, font: 'Inter' }),
             k.color(COLORS.success),
             k.pos(leftCenterX, statsY + statsSpacing * 3),
+            k.anchor('center'),
+        ]);
+    }
+
+    // First quiz celebration
+    if (gameState.gamesPlayed === 1 && passed) {
+        k.add([
+            k.text('🎉 First Quest Complete! Welcome to Waldur Quest!', { size: 16, font: 'Inter', width: 500 }),
+            k.color(COLORS.gold),
+            k.pos(leftCenterX, statsY + statsSpacing * 4 + 10),
             k.anchor('center'),
         ]);
     }
@@ -2462,6 +2982,231 @@ k.scene('profile', () => {
         ]);
     });
 
+    // Share & Export buttons
+    const shareBtn = k.add([
+        k.rect(160, 36, { radius: 8 }),
+        k.color(COLORS.secondary),
+        k.pos(k.width() / 2 - 90, k.height() - 140),
+        k.anchor('center'),
+        k.area(),
+    ]);
+    k.add([
+        k.text('Share Profile', { size: 14, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(k.width() / 2 - 90, k.height() - 140),
+        k.anchor('center'),
+    ]);
+    shareBtn.onHover(() => shareBtn.opacity = 0.8);
+    shareBtn.onHoverEnd(() => shareBtn.opacity = 1);
+
+    // Share feedback text
+    const shareFeedback = k.add([
+        k.text('', { size: 12, font: 'Inter' }),
+        k.color(COLORS.success),
+        k.pos(k.width() / 2, k.height() - 115),
+        k.anchor('center'),
+        k.opacity(0),
+    ]);
+
+    shareBtn.onClick(() => {
+        const card = generateProfileCard();
+        navigator.clipboard.writeText(card).then(() => {
+            shareFeedback.text = 'Profile card copied to clipboard!';
+            shareFeedback.opacity = 1;
+            k.wait(2, () => { shareFeedback.opacity = 0; });
+        }).catch(() => {
+            shareFeedback.text = 'Could not copy to clipboard';
+            shareFeedback.color = COLORS.danger;
+            shareFeedback.opacity = 1;
+            k.wait(2, () => { shareFeedback.opacity = 0; });
+        });
+    });
+
+    const exportBtn = k.add([
+        k.rect(160, 36, { radius: 8 }),
+        k.color(COLORS.bgLight),
+        k.pos(k.width() / 2 + 90, k.height() - 140),
+        k.anchor('center'),
+        k.area(),
+        k.outline(1, COLORS.secondary),
+    ]);
+    k.add([
+        k.text('Export JSON', { size: 14, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(k.width() / 2 + 90, k.height() - 140),
+        k.anchor('center'),
+    ]);
+    exportBtn.onHover(() => exportBtn.opacity = 0.8);
+    exportBtn.onHoverEnd(() => exportBtn.opacity = 1);
+    exportBtn.onClick(() => {
+        const json = exportState();
+        navigator.clipboard.writeText(json).then(() => {
+            shareFeedback.text = 'JSON exported to clipboard!';
+            shareFeedback.color = COLORS.success;
+            shareFeedback.opacity = 1;
+            k.wait(2, () => { shareFeedback.opacity = 0; });
+        }).catch(() => {
+            shareFeedback.text = 'Could not copy to clipboard';
+            shareFeedback.color = COLORS.danger;
+            shareFeedback.opacity = 1;
+            k.wait(2, () => { shareFeedback.opacity = 0; });
+        });
+    });
+
+    // Achievements button
+    const achieveBtn = k.add([
+        k.rect(200, 40, { radius: 8 }),
+        k.color(COLORS.primary),
+        k.pos(k.width() / 2, k.height() - 85),
+        k.anchor('center'),
+        k.area(),
+    ]);
+    k.add([
+        k.text(`Achievements (${stats.achievements}/${ACHIEVEMENTS.length})`, { size: 16, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(k.width() / 2, k.height() - 85),
+        k.anchor('center'),
+    ]);
+    achieveBtn.onHover(() => achieveBtn.opacity = 0.8);
+    achieveBtn.onHoverEnd(() => achieveBtn.opacity = 1);
+
+    // Achievement overlay state
+    let achieveOverlayVisible = false;
+    let achieveElements = [];
+
+    function showAchievementsOverlay() {
+        if (achieveOverlayVisible) return;
+        achieveOverlayVisible = true;
+        const openedAt = Date.now();
+
+        const overlayBg = k.add([
+            k.rect(k.width(), k.height()),
+            k.color(0, 0, 0),
+            k.opacity(0.85),
+            k.pos(0, 0),
+            k.z(100),
+            k.area(),
+            'achieveOverlay',
+        ]);
+        overlayBg.onClick(() => {
+            if (Date.now() - openedAt < 100) return;
+            hideAchievementsOverlay();
+        });
+        achieveElements.push(overlayBg);
+
+        const panelWidth = 800;
+        const panelHeight = 550;
+        const panelX = k.width() / 2;
+        const panelY = k.height() / 2;
+
+        const panel = k.add([
+            k.rect(panelWidth, panelHeight, { radius: 12 }),
+            k.color(COLORS.bgLight),
+            k.pos(panelX, panelY),
+            k.anchor('center'),
+            k.outline(2, COLORS.gold),
+            k.z(101),
+            k.area(),
+            'achieveOverlay',
+        ]);
+        panel.onClick(() => {});
+        achieveElements.push(panel);
+
+        // Title
+        achieveElements.push(k.add([
+            k.text('Achievements', { size: 30, font: 'Inter' }),
+            k.color(COLORS.gold),
+            k.pos(panelX, panelY - 240),
+            k.anchor('center'),
+            k.z(102),
+            'achieveOverlay',
+        ]));
+
+        const earned = gameState.achievements || [];
+        const cols = 5;
+        const cellW = 140;
+        const cellH = 80;
+        const startGridX = panelX - (cols * cellW) / 2 + cellW / 2;
+        const startGridY = panelY - 170;
+
+        ACHIEVEMENTS.forEach((achievement, i) => {
+            const col = i % cols;
+            const row = Math.floor(i / cols);
+            const cx = startGridX + col * cellW;
+            const cy = startGridY + row * cellH;
+            const isEarned = earned.includes(achievement.id);
+
+            // Cell background
+            achieveElements.push(k.add([
+                k.rect(cellW - 8, cellH - 8, { radius: 6 }),
+                k.color(isEarned ? k.rgb(40, 50, 80) : k.rgb(25, 25, 45)),
+                k.pos(cx, cy),
+                k.anchor('center'),
+                k.outline(1, isEarned ? COLORS.gold : k.rgb(50, 50, 70)),
+                k.opacity(isEarned ? 1 : 0.5),
+                k.z(102),
+                'achieveOverlay',
+            ]));
+
+            // Icon
+            achieveElements.push(k.add([
+                k.text(isEarned ? achievement.icon : '🔒', { size: 24 }),
+                k.pos(cx, cy - 12),
+                k.anchor('center'),
+                k.z(103),
+                k.opacity(isEarned ? 1 : 0.4),
+                'achieveOverlay',
+            ]));
+
+            // Name
+            achieveElements.push(k.add([
+                k.text(escapeText(achievement.name), { size: 10, font: 'Inter', width: cellW - 16 }),
+                k.color(isEarned ? COLORS.text : COLORS.textMuted),
+                k.pos(cx, cy + 18),
+                k.anchor('center'),
+                k.z(103),
+                k.opacity(isEarned ? 1 : 0.5),
+                'achieveOverlay',
+            ]));
+        });
+
+        // Close button
+        const closeBtn = k.add([
+            k.rect(120, 40, { radius: 8 }),
+            k.color(COLORS.primary),
+            k.pos(panelX, panelY + 240),
+            k.anchor('center'),
+            k.area(),
+            k.z(103),
+            'achieveOverlay',
+        ]);
+        achieveElements.push(closeBtn);
+        achieveElements.push(k.add([
+            k.text('Close', { size: 18, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(panelX, panelY + 240),
+            k.anchor('center'),
+            k.z(104),
+            'achieveOverlay',
+        ]));
+        closeBtn.onClick(() => hideAchievementsOverlay());
+        closeBtn.onHover(() => closeBtn.color = k.rgb(100, 120, 200));
+        closeBtn.onHoverEnd(() => closeBtn.color = COLORS.primary);
+    }
+
+    function hideAchievementsOverlay() {
+        if (!achieveOverlayVisible) return;
+        achieveOverlayVisible = false;
+        setTimeout(() => {
+            achieveElements.forEach(el => {
+                if (el.exists()) k.destroy(el);
+            });
+            achieveElements = [];
+        }, 50);
+    }
+
+    achieveBtn.onClick(() => showAchievementsOverlay());
+
     // Reset Progress button
     const resetBtn = k.add([
         k.rect(180, 40, { radius: 8 }),
@@ -2606,14 +3351,16 @@ k.scene('profile', () => {
     resetBtn.onClick(() => showConfirmDialog());
 
     k.onKeyPress('escape', () => {
-        if (confirmVisible) {
+        if (achieveOverlayVisible) {
+            hideAchievementsOverlay();
+        } else if (confirmVisible) {
             hideConfirmDialog();
         } else {
             k.go('menu');
         }
     });
     k.onKeyPress('b', () => {
-        if (!confirmVisible) k.go('menu');
+        if (!confirmVisible && !achieveOverlayVisible) k.go('menu');
     });
 });
 
@@ -2651,9 +3398,115 @@ function createButton(text, x, y, onClick, color = COLORS.primary, width = 220) 
 }
 
 // ============================================================================
+// SCENE: Shared Profile Viewer (read-only)
+// ============================================================================
+k.scene('sharedProfile', ({ profileData }) => {
+    // Background
+    k.add([
+        k.rect(k.width(), k.height()),
+        k.color(COLORS.bg),
+    ]);
+
+    k.add([
+        k.rect(k.width(), 100),
+        k.color(COLORS.primary),
+        k.opacity(0.3),
+    ]);
+
+    k.add([
+        k.text('Shared Profile', { size: 30, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(k.width() / 2, 35),
+        k.anchor('center'),
+    ]);
+
+    k.add([
+        k.text(escapeText(profileData.n || 'Adventurer'), { size: 24, font: 'Inter' }),
+        k.color(COLORS.gold),
+        k.pos(k.width() / 2, 75),
+        k.anchor('center'),
+    ]);
+
+    const profile = weaponProfiles.find(p => p.id === profileData.p) || weaponProfiles[0];
+    k.add([
+        k.text(profile.icon, { size: 80 }),
+        k.pos(k.width() / 2, 180),
+        k.anchor('center'),
+    ]);
+
+    k.add([
+        k.text(`${profile.name}  •  ${profileData.x || 0} XP`, { size: 22, font: 'Inter' }),
+        k.color(COLORS.text),
+        k.pos(k.width() / 2, 240),
+        k.anchor('center'),
+    ]);
+
+    // Skills
+    const skillEntries = Object.entries(profileData.s || {});
+    if (skillEntries.length > 0) {
+        k.add([
+            k.text('Skills', { size: 20, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(k.width() / 2, 300),
+            k.anchor('center'),
+        ]);
+
+        const cols = 4;
+        const cellW = 250;
+        const startX = k.width() / 2 - (cols * cellW) / 2 + cellW / 2;
+        skillEntries.forEach(([id, level], i) => {
+            const skill = skills.find(s => s.id === id);
+            const col = i % cols;
+            const row = Math.floor(i / cols);
+            if (row > 3) return; // Max 4 rows
+            k.add([
+                k.text(`${escapeText(skill ? skill.name : id)}: Lv.${level}`, { size: 14, font: 'Inter' }),
+                k.color(COLORS.textMuted),
+                k.pos(startX + col * cellW, 340 + row * 25),
+                k.anchor('center'),
+            ]);
+        });
+    }
+
+    // Achievements
+    const achievements = profileData.a || [];
+    if (achievements.length > 0) {
+        k.add([
+            k.text(`Achievements: ${achievements.map(id => { const a = getAchievementById(id); return a ? a.icon : ''; }).join(' ')}`, { size: 18, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(k.width() / 2, k.height() - 120),
+            k.anchor('center'),
+        ]);
+    }
+
+    createButton('Go to Waldur Quest', k.width() / 2, k.height() - 60, () => {
+        // Clear URL parameter
+        window.history.replaceState({}, '', window.location.pathname);
+        k.go('menu');
+    }, COLORS.success);
+
+    k.onKeyPress('escape', () => {
+        window.history.replaceState({}, '', window.location.pathname);
+        k.go('menu');
+    });
+});
+
+// ============================================================================
 // START GAME
 // ============================================================================
 // Wait for font to load before starting
 k.onLoad(() => {
+    // Check for shared profile URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const profileParam = urlParams.get('profile');
+    if (profileParam) {
+        try {
+            const profileData = JSON.parse(atob(profileParam));
+            k.go('sharedProfile', { profileData });
+            return;
+        } catch (e) {
+            console.warn('Invalid profile parameter');
+        }
+    }
     k.go('menu');
 });
