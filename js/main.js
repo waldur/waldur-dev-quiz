@@ -404,27 +404,63 @@ k.scene('menu', () => {
         k.go('profile');
     }
 
-    // Daily Challenge: deterministically pick skill+level from today's date
+    // Cross-Skill Daily Challenge: pick 1 skill per tier for breadth testing
     function getDailyChallenge() {
         const today = new Date().toISOString().split('T')[0];
         const seed = dateSeed(today);
         const skillsWithQuestions = skills.filter(s => hasQuestions(s.id));
         if (skillsWithQuestions.length === 0) return null;
 
-        const skillIndex = Math.floor(seededRandom(seed) * skillsWithQuestions.length);
-        const dailySkill = skillsWithQuestions[skillIndex];
-        const levels = getAvailableLevels(dailySkill.id);
+        // Group skills by tier
+        const byTier = {};
+        skillsWithQuestions.forEach(s => {
+            if (!byTier[s.tier]) byTier[s.tier] = [];
+            byTier[s.tier].push(s);
+        });
 
-        // Cap level based on player XP
+        // Level cap based on player XP
         let maxLevel = 5;
         if (gameState.totalXP < 500) maxLevel = 2;
         else if (gameState.totalXP < 1500) maxLevel = 3;
         else if (gameState.totalXP < 3000) maxLevel = 4;
-        const cappedLevels = levels.filter(l => l <= maxLevel);
-        const pool = cappedLevels.length > 0 ? cappedLevels : [levels[0]];
 
-        const levelIndex = Math.floor(seededRandom(seed + 1) * pool.length);
-        return { skillId: dailySkill.id, level: pool[levelIndex], skill: dailySkill };
+        // Seeded-shuffle the tier order
+        const tierIds = Object.keys(byTier);
+        for (let i = tierIds.length - 1; i > 0; i--) {
+            const j = Math.floor(seededRandom(seed + i) * (i + 1));
+            [tierIds[i], tierIds[j]] = [tierIds[j], tierIds[i]];
+        }
+
+        // Pick 1 skill per tier (up to 5)
+        const picks = [];
+        let seedOffset = 10;
+        for (const tierId of tierIds) {
+            if (picks.length >= 5) break;
+            const tierSkills = byTier[tierId];
+            const skillIdx = Math.floor(seededRandom(seed + seedOffset++) * tierSkills.length);
+            const skill = tierSkills[skillIdx];
+            const levels = getAvailableLevels(skill.id);
+            const cappedLevels = levels.filter(l => l <= maxLevel);
+            const pool = cappedLevels.length > 0 ? cappedLevels : [levels[0]];
+            const levelIdx = Math.floor(seededRandom(seed + seedOffset++) * pool.length);
+            picks.push({ skillId: skill.id, skill, level: pool[levelIdx] });
+        }
+
+        // Backfill if fewer than 5 tiers had questions
+        while (picks.length < 5 && picks.length < skillsWithQuestions.length) {
+            const usedIds = new Set(picks.map(p => p.skillId));
+            const remaining = skillsWithQuestions.filter(s => !usedIds.has(s.id));
+            if (remaining.length === 0) break;
+            const idx = Math.floor(seededRandom(seed + seedOffset++) * remaining.length);
+            const skill = remaining[idx];
+            const levels = getAvailableLevels(skill.id);
+            const cappedLevels = levels.filter(l => l <= maxLevel);
+            const pool = cappedLevels.length > 0 ? cappedLevels : [levels[0]];
+            const levelIdx = Math.floor(seededRandom(seed + seedOffset++) * pool.length);
+            picks.push({ skillId: skill.id, skill, level: pool[levelIdx] });
+        }
+
+        return { isCrossSkill: true, skills: picks };
     }
 
     const daily = getDailyChallenge();
@@ -433,7 +469,17 @@ k.scene('menu', () => {
 
     function startDailyChallenge() {
         if (daily && !dailyCompleted) {
-            k.go('quiz', { skillId: daily.skillId, level: daily.level, isDaily: true });
+            const today = new Date().toISOString().split('T')[0];
+            const seed = dateSeed(today);
+            // Build crossSkillData: 1 question per skill
+            const crossSkillData = daily.skills.map((entry, i) => {
+                const q = getOneQuestionForSkill(entry.skillId, entry.level, seed + 50 + i);
+                return { question: q, skillId: entry.skillId, skill: entry.skill, level: entry.level };
+            }).filter(d => d.question !== null);
+
+            if (crossSkillData.length > 0) {
+                k.go('quiz', { isDaily: true, crossSkillData });
+            }
         }
     }
 
@@ -448,9 +494,10 @@ k.scene('menu', () => {
 
     // Daily challenge hint text
     if (daily) {
+        const tierCount = new Set(daily.skills.map(s => s.skill.tier)).size;
         const hintText = dailyCompleted
-            ? `Today: ${daily.skill.name} L${daily.level} (completed)`
-            : `Today: ${daily.skill.name} L${daily.level}`;
+            ? `Today: 5 skills across ${tierCount} tiers (completed)`
+            : `Today: 5 skills across ${tierCount} tiers`;
         k.add([
             k.text(hintText, { size: 13, font: 'Inter' }),
             k.color(COLORS.textMuted),
@@ -631,7 +678,7 @@ k.scene('menu', () => {
         addSection('💎', 'XP System', [
             '+20 per correct  •  +50 for passing',
             '+100 for perfect  •  +5 per streak',
-            'Daily Challenge: 50% bonus XP!',
+            'Daily: Cross-skill + 50% XP bonus!',
         ], rightX, row2Y);
 
         addSection('🗡️', 'Your Rank', [
@@ -1852,9 +1899,19 @@ k.scene('skillDetail', ({ skillId }) => {
 // ============================================================================
 // SCENE: Quiz
 // ============================================================================
-k.scene('quiz', ({ skillId, level, isDaily = false }) => {
-    const skill = skills.find(s => s.id === skillId);
-    const quizQuestions = getQuestionsForSkill(skillId, level, 5);
+k.scene('quiz', ({ skillId, level, isDaily = false, crossSkillData = null }) => {
+    const isCrossSkill = !!crossSkillData;
+    const skill = isCrossSkill ? null : skills.find(s => s.id === skillId);
+
+    // Build questions array: cross-skill uses pre-selected questions, normal uses random
+    let quizQuestions;
+    let crossSkillMeta = null; // per-question { skillId, skill, level }
+    if (isCrossSkill) {
+        quizQuestions = crossSkillData.map(d => d.question);
+        crossSkillMeta = crossSkillData.map(d => ({ skillId: d.skillId, skill: d.skill, level: d.level }));
+    } else {
+        quizQuestions = getQuestionsForSkill(skillId, level, 5);
+    }
 
     let currentQuestion = 0;
     let score = 0;
@@ -1874,7 +1931,7 @@ k.scene('quiz', ({ skillId, level, isDaily = false }) => {
     // Header
     k.add([
         k.rect(k.width(), 80),
-        k.color(TIER_COLORS[skill.tier]),
+        k.color(isCrossSkill ? COLORS.warning : TIER_COLORS[skill.tier]),
         k.opacity(0.3),
     ]);
 
@@ -1894,7 +1951,7 @@ k.scene('quiz', ({ skillId, level, isDaily = false }) => {
     ]);
     exitBtn.onHover(() => exitBtn.opacity = 1);
     exitBtn.onHoverEnd(() => exitBtn.opacity = 0.9);
-    exitBtn.onClick(() => k.go('skillTree'));
+    exitBtn.onClick(() => k.go(isCrossSkill ? 'menu' : 'skillTree'));
 
     // Previous button (hidden initially, shown after first answer)
     const prevBtn = k.add([
@@ -1976,13 +2033,21 @@ k.scene('quiz', ({ skillId, level, isDaily = false }) => {
     }
 
     // ESC to exit quiz
-    k.onKeyPress('escape', () => k.go('skillTree'));
+    k.onKeyPress('escape', () => k.go(isCrossSkill ? 'menu' : 'skillTree'));
 
     k.add([
-        k.text(`${skill.name} - Level ${level}`, { size: 24, font: 'Inter' }),
+        k.text(isCrossSkill ? 'Cross-Skill Challenge' : `${skill.name} - Level ${level}`, { size: 24, font: 'Inter' }),
         k.color(COLORS.text),
         k.pos(190, 25),
     ]);
+
+    // Skill tag for cross-skill mode (shows current question's skill)
+    const skillTagText = isCrossSkill ? k.add([
+        k.text('', { size: 14, font: 'Inter' }),
+        k.color(COLORS.textMuted),
+        k.pos(190, 55),
+        k.opacity(0.9),
+    ]) : null;
 
     // Progress indicator
     const progressText = k.add([
@@ -2166,7 +2231,17 @@ k.scene('quiz', ({ skillId, level, isDaily = false }) => {
         if (currentQuestion >= quizQuestions.length) {
             // Quiz complete
             SoundSystem.quizComplete();
-            k.go('results', { skillId, level, score, total: quizQuestions.length, streak, isDaily });
+            if (isCrossSkill) {
+                const perQuestionResults = answersHistory.map((ah, i) => ({
+                    wasCorrect: ah.wasCorrect,
+                    skillId: crossSkillMeta[i].skillId,
+                    skill: crossSkillMeta[i].skill,
+                    level: crossSkillMeta[i].level,
+                }));
+                k.go('results', { score, total: quizQuestions.length, streak, isDaily, isCrossSkill: true, perQuestionResults });
+            } else {
+                k.go('results', { skillId, level, score, total: quizQuestions.length, streak, isDaily });
+            }
             return;
         }
 
@@ -2179,6 +2254,14 @@ k.scene('quiz', ({ skillId, level, isDaily = false }) => {
 
         questionText.text = escapeText(q.q);
         progressText.text = `Question ${currentQuestion + 1}/${quizQuestions.length}`;
+
+        // Update skill tag for cross-skill mode
+        if (isCrossSkill && skillTagText) {
+            const meta = crossSkillMeta[currentQuestion];
+            const tierInfo = skillTiers.find(t => t.id === meta.skill.tier);
+            const tierIcon = tierInfo ? tierInfo.icon : '';
+            skillTagText.text = escapeText(`${tierIcon} ${meta.skill.name} - L${meta.level}`);
+        }
 
         // Handle code block display
         if (q.code) {
@@ -2488,7 +2571,9 @@ k.scene('quiz', ({ skillId, level, isDaily = false }) => {
             SoundSystem.incorrect();
         }
 
-        const questionKey = getQuestionKey(skillId, level, quizQuestions[currentQuestion]);
+        const qSkillId = isCrossSkill ? crossSkillMeta[currentQuestion].skillId : skillId;
+        const qLevel = isCrossSkill ? crossSkillMeta[currentQuestion].level : level;
+        const questionKey = getQuestionKey(qSkillId, qLevel, quizQuestions[currentQuestion]);
         recordAnswer(isCorrect, questionKey);
         updateStreak(streak);
 
@@ -2581,7 +2666,7 @@ k.scene('quiz', ({ skillId, level, isDaily = false }) => {
         optionButtons.forEach(btn => btn.hidden = true);
         optionTexts.forEach(txt => txt.hidden = true);
         optionNumbers.forEach(n => { n.badge.hidden = true; n.text.hidden = true; });
-        createButton('Back to Skill Tree', k.width() / 2, 400, () => k.go('skillTree'));
+        createButton(isCrossSkill ? 'Back to Menu' : 'Back to Skill Tree', k.width() / 2, 400, () => k.go(isCrossSkill ? 'menu' : 'skillTree'));
     } else {
         showQuestion();
     }
@@ -2590,8 +2675,8 @@ k.scene('quiz', ({ skillId, level, isDaily = false }) => {
 // ============================================================================
 // SCENE: Results
 // ============================================================================
-k.scene('results', ({ skillId, level, score, total, streak, isDaily = false }) => {
-    const skill = skills.find(s => s.id === skillId);
+k.scene('results', ({ skillId, level, score, total, streak, isDaily = false, isCrossSkill = false, perQuestionResults = null }) => {
+    const skill = isCrossSkill ? null : skills.find(s => s.id === skillId);
     const passed = score >= Math.ceil(total * 0.6); // 60% to pass
     const perfect = score === total;
 
@@ -2602,7 +2687,24 @@ k.scene('results', ({ skillId, level, score, total, streak, isDaily = false }) =
     xpGained += streak * 5; // Streak bonus
 
     // Update progress
-    updateSkillProgress(skillId, level, passed, xpGained);
+    if (isCrossSkill && perQuestionResults) {
+        // Cross-skill: distribute XP per-skill in a single state cycle
+        const state = loadState();
+        perQuestionResults.forEach(r => {
+            const current = state.skillProgress[r.skillId] || { level: 0, xp: 0, attempts: 0, passed: false };
+            if (r.wasCorrect) {
+                current.xp += 20;
+                current.level = Math.max(current.level, r.level);
+                current.passed = true;
+            }
+            state.skillProgress[r.skillId] = current;
+        });
+        state.totalXP += xpGained;
+        state.gamesPlayed += 1;
+        saveState(state);
+    } else {
+        updateSkillProgress(skillId, level, passed, xpGained);
+    }
 
     // Daily challenge bonus
     let dailyBonusInfo = null;
@@ -2712,44 +2814,64 @@ k.scene('results', ({ skillId, level, score, total, streak, isDaily = false }) =
     // === LEFT SIDE: Stats ===
     const leftCenterX = (k.width() - reactionPanelWidth - 40) / 2;
 
-    // Skill info
-    k.add([
-        k.text(`${skill.name} - Level ${level}`, { size: 24, font: 'Inter' }),
-        k.color(COLORS.text),
-        k.pos(leftCenterX, 200),
-        k.anchor('center'),
-    ]);
+    // Skill info / Cross-skill title
+    if (isCrossSkill) {
+        k.add([
+            k.text('Cross-Skill Daily Challenge', { size: 22, font: 'Inter' }),
+            k.color(COLORS.warning),
+            k.pos(leftCenterX, 195),
+            k.anchor('center'),
+        ]);
+
+        // Per-skill breakdown
+        if (perQuestionResults) {
+            const breakdownY = 225;
+            perQuestionResults.forEach((r, i) => {
+                const tierInfo = skillTiers.find(t => t.id === r.skill.tier);
+                const tierIcon = tierInfo ? tierInfo.icon : '';
+                const mark = r.wasCorrect ? '✓' : '✗';
+                const color = r.wasCorrect ? COLORS.success : COLORS.danger;
+                k.add([
+                    k.text(`${mark} ${tierIcon} ${r.skill.name} (L${r.level})`, { size: 15, font: 'Inter', width: 350 }),
+                    k.color(color),
+                    k.pos(leftCenterX, breakdownY + i * 24),
+                    k.anchor('center'),
+                ]);
+            });
+        }
+    } else {
+        k.add([
+            k.text(`${skill.name} - Level ${level}`, { size: 24, font: 'Inter' }),
+            k.color(COLORS.text),
+            k.pos(leftCenterX, 200),
+            k.anchor('center'),
+        ]);
+    }
 
     // Score breakdown
+    const scoreY = isCrossSkill ? 365 : 270;
     k.add([
         k.text(`Score: ${score}/${total}`, { size: 36, font: 'Inter' }),
         k.color(COLORS.text),
-        k.pos(leftCenterX, 270),
+        k.pos(leftCenterX, scoreY),
         k.anchor('center'),
     ]);
 
     // Stats
-    const statsY = 330;
-    const statsSpacing = 32;
+    const statsY = isCrossSkill ? 410 : 330;
+    const statsSpacing = 28;
 
     k.add([
-        k.text(`Correct Answers: ${score}`, { size: 18, font: 'Inter' }),
+        k.text(`Best Streak: ${streak}`, { size: 18, font: 'Inter' }),
         k.color(COLORS.textMuted),
         k.pos(leftCenterX, statsY),
         k.anchor('center'),
     ]);
 
     k.add([
-        k.text(`Best Streak: ${streak}`, { size: 18, font: 'Inter' }),
-        k.color(COLORS.textMuted),
-        k.pos(leftCenterX, statsY + statsSpacing),
-        k.anchor('center'),
-    ]);
-
-    k.add([
         k.text(`XP Earned: +${xpGained}`, { size: 22, font: 'Inter' }),
         k.color(COLORS.gold),
-        k.pos(leftCenterX, statsY + statsSpacing * 2),
+        k.pos(leftCenterX, statsY + statsSpacing),
         k.anchor('center'),
     ]);
 
@@ -2758,21 +2880,21 @@ k.scene('results', ({ skillId, level, score, total, streak, isDaily = false }) =
         k.add([
             k.text(`Daily Bonus: +${dailyBonusInfo.totalBonus} XP`, { size: 18, font: 'Inter' }),
             k.color(COLORS.warning),
-            k.pos(leftCenterX, statsY + statsSpacing * 2 + 28),
+            k.pos(leftCenterX, statsY + statsSpacing * 2),
             k.anchor('center'),
         ]);
         if (dailyBonusInfo.streak > 1) {
             k.add([
                 k.text(`(${dailyBonusInfo.streak}-day streak!)`, { size: 14, font: 'Inter' }),
                 k.color(COLORS.textMuted),
-                k.pos(leftCenterX, statsY + statsSpacing * 2 + 50),
+                k.pos(leftCenterX, statsY + statsSpacing * 2 + 22),
                 k.anchor('center'),
             ]);
         }
     }
 
-    // Level up message
-    if (passed) {
+    // Level up message (normal mode only)
+    if (!isCrossSkill && passed) {
         const newProgress = getSkillProgress(skillId);
         k.add([
             k.text(`Skill Level: ${newProgress.level}`, { size: 18, font: 'Inter' }),
@@ -2793,39 +2915,59 @@ k.scene('results', ({ skillId, level, score, total, streak, isDaily = false }) =
     }
 
     // Buttons
-    const buttonY = 520;
-    const availableLevels = getAvailableLevels(skillId);
-    const maxAvailableLevel = availableLevels.length > 0 ? Math.max(...availableLevels) : 5;
-    const hasNextLevel = level < maxAvailableLevel && availableLevels.includes(level + 1);
+    const buttonY = isCrossSkill ? 510 : 520;
 
-    if (!passed) {
-        // Failed: Try Again + Skill Tree
-        createButton('Try Again', leftCenterX - 120, buttonY, () => {
-            k.go('quiz', { skillId, level });
-        }, COLORS.warning);
+    if (isCrossSkill) {
+        // Cross-skill mode buttons
+        if (!passed) {
+            createButton('Try Again', leftCenterX - 120, buttonY, () => {
+                k.go('menu');
+            }, COLORS.warning);
 
-        createButton('Skill Tree', leftCenterX + 120, buttonY, () => {
-            k.go('skillTree');
-        });
-    } else if (hasNextLevel) {
-        // Passed with next level available: Next Level + Skill Tree
-        createButton('Next Level →', leftCenterX - 120, buttonY, () => {
-            k.go('quiz', { skillId, level: level + 1 });
-        }, COLORS.success);
+            createButton('Skill Tree', leftCenterX + 120, buttonY, () => {
+                k.go('skillTree');
+            });
+        } else {
+            createButton('Skill Tree', leftCenterX - 120, buttonY, () => {
+                k.go('skillTree');
+            });
 
-        createButton('Skill Tree', leftCenterX + 120, buttonY, () => {
-            k.go('skillTree');
-        });
+            createButton('Main Menu', leftCenterX + 120, buttonY, () => {
+                k.go('menu');
+            }, COLORS.bgLight);
+        }
     } else {
-        // Passed at max level: just Skill Tree centered
-        createButton('Skill Tree', leftCenterX, buttonY, () => {
-            k.go('skillTree');
-        });
-    }
+        // Normal mode buttons
+        const availableLevels = getAvailableLevels(skillId);
+        const maxAvailableLevel = availableLevels.length > 0 ? Math.max(...availableLevels) : 5;
+        const hasNextLevel = level < maxAvailableLevel && availableLevels.includes(level + 1);
 
-    createButton('Main Menu', leftCenterX, buttonY + 60, () => {
-        k.go('menu');
-    }, COLORS.bgLight);
+        if (!passed) {
+            createButton('Try Again', leftCenterX - 120, buttonY, () => {
+                k.go('quiz', { skillId, level });
+            }, COLORS.warning);
+
+            createButton('Skill Tree', leftCenterX + 120, buttonY, () => {
+                k.go('skillTree');
+            });
+        } else if (hasNextLevel) {
+            createButton('Next Level →', leftCenterX - 120, buttonY, () => {
+                k.go('quiz', { skillId, level: level + 1 });
+            }, COLORS.success);
+
+            createButton('Skill Tree', leftCenterX + 120, buttonY, () => {
+                k.go('skillTree');
+            });
+        } else {
+            createButton('Skill Tree', leftCenterX, buttonY, () => {
+                k.go('skillTree');
+            });
+        }
+
+        createButton('Main Menu', leftCenterX, buttonY + 60, () => {
+            k.go('menu');
+        }, COLORS.bgLight);
+    }
 });
 
 // ============================================================================

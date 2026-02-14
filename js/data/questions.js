@@ -766,14 +766,14 @@ const questions = {
                 q: "What's the Global Interpreter Lock (GIL)?",
                 options: ["Security feature preventing unauthorized code execution", "Memory manager handling garbage collection", "Import lock preventing circular dependencies", "Mutex preventing true multi-threading for CPU tasks"],
                 correct: 3,
-                explanation: "The GIL ensures only one thread executes Python bytecode at a time. Threads still help with I/O-bound tasks. For CPU-bound parallelism, use multiprocessing.",
+                explanation: "The GIL ensures only one thread executes Python bytecode at a time in CPython. Threads still help with I/O-bound tasks. For CPU-bound parallelism, use multiprocessing or free-threaded Python (3.13+).",
                 learnMore: { url: "https://realpython.com/python-gil/", text: "📚 Understanding the GIL" }
             },
             {
                 q: "How do you achieve true parallelism in Python?",
-                options: ["async/await", "threading module", "generators", "multiprocessing module"],
+                options: ["async/await", "threading module", "generators", "multiprocessing or free-threaded mode"],
                 correct: 3,
-                explanation: "multiprocessing spawns separate processes (each with own GIL). Threading helps I/O-bound tasks. async/await is single-threaded concurrency for I/O.",
+                explanation: "multiprocessing spawns separate processes (each with own GIL). Free-threaded Python (3.13+) disables the GIL entirely. Threading helps I/O-bound tasks. async/await is single-threaded concurrency for I/O.",
                 learnMore: { url: "https://docs.python.org/3/library/multiprocessing.html", text: "📚 multiprocessing" }
             },
             {
@@ -1086,7 +1086,7 @@ const questions = {
                 q: "What's the purpose of React.memo?",
                 options: ["Memoize event handlers automatically", "Cache component instances in memory", "Skip re-renders when props haven't changed", "Store computed values across renders"],
                 correct: 2,
-                explanation: "React.memo is a HOC that memoizes component output. Skips re-render if props haven't changed (shallow comparison). Use for expensive components with same props.",
+                explanation: "React.memo is a HOC that memoizes component output. Skips re-render if props haven't changed (shallow comparison). Note: React 19's React Compiler can auto-memoize, reducing the need for manual React.memo.",
                 learnMore: { url: "https://react.dev/reference/react/memo", text: "📚 React.memo" }
             },
         ]
@@ -2055,10 +2055,10 @@ const questions = {
         ],
         2: [
             {
-                q: "What does 'docker-compose up' do?",
-                options: ["Uploads images to registry", "Starts all services in docker-compose.yml", "Shows container status", "Updates the Docker engine"],
+                q: "What does 'docker compose up' do?",
+                options: ["Uploads images to registry", "Starts all services in compose.yaml", "Shows container status", "Updates the Docker engine"],
                 correct: 1,
-                explanation: "'docker-compose up' creates and starts all services defined in compose file. Add '-d' for detached mode. '--build' rebuilds images.",
+                explanation: "'docker compose up' creates and starts all services defined in compose file. Add '-d' for detached mode. '--build' rebuilds images.",
                 learnMore: { url: "https://docs.docker.com/compose/reference/up/", text: "📚 Compose Up" }
             },
             {
@@ -2123,11 +2123,11 @@ const questions = {
                 learnMore: { url: "https://docs.docker.com/build/building/multi-stage/", text: "📚 Multi-stage Builds" }
             },
             {
-                q: "What's the difference between docker-compose and Docker Swarm?",
-                options: ["Swarm is for development only", "Compose for dev, Swarm for production clusters", "Compose is for production clusters", "They do exactly the same thing"],
+                q: "What's the difference between Docker Compose and Kubernetes?",
+                options: ["Kubernetes is for development only", "Compose for dev/simple, Kubernetes for production clusters", "Compose is for production clusters", "They do exactly the same thing"],
                 correct: 1,
-                explanation: "Compose: define multi-container apps, great for development, single host. Swarm: orchestration for production clusters, multi-node, service discovery, scaling.",
-                learnMore: { url: "https://docs.docker.com/engine/swarm/", text: "📚 Docker Swarm" }
+                explanation: "Compose: define multi-container apps, great for development and simple deployments, single host. Kubernetes: orchestration for production clusters, multi-node, service discovery, auto-scaling.",
+                learnMore: { url: "https://docs.docker.com/compose/", text: "📚 Docker Compose" }
             },
             {
                 q: "Why use alpine-based images?",
@@ -2371,7 +2371,7 @@ const questions = {
                 options: ["Versioned migrations, backward compatible", "Make direct manual database changes", "Skip migrations in CI/CD pipelines", "Drop and recreate all tables"],
                 correct: 0,
                 explanation: "Database migrations should be versioned, backward compatible (for rollback), and tested. Run migrations as separate pipeline step before deployment. Avoid destructive changes.",
-                learnMore: { url: "https://docs.djangoproject.com/en/4.2/topics/migrations/", text: "📚 Django Migrations" }
+                learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/migrations/", text: "📚 Django Migrations" }
             },
         ],
         6: [],
@@ -2550,18 +2550,18 @@ const questions = {
         ],
         2: [
             {
-                q: "What's django-fsm used for?",
+                q: "What's django-fsm-2 used for?",
                 options: ["Form state management only", "File system management in Django", "Fast serialization module for Django", "Add state machine behavior to Django models"],
                 correct: 3,
-                explanation: "django-fsm adds finite state machine behavior to Django models. Defines allowed transitions, guards, and transition callbacks on model fields.",
-                learnMore: { url: "https://github.com/viewflow/django-fsm", text: "📚 django-fsm" }
+                explanation: "django-fsm-2 adds finite state machine behavior to Django models. Defines allowed transitions, guards, and transition callbacks on model fields.",
+                learnMore: { url: "https://github.com/django-commons/django-fsm-2", text: "📚 django-fsm-2" }
             },
             {
                 q: "What's a transition guard?",
                 options: ["Security feature preventing unauthorized access", "Backup state before transition happens", "Condition that must be true for transition to occur", "Logging mechanism for transitions"],
                 correct: 2,
                 explanation: "A guard is a boolean condition checked before a transition. If false, the transition is not allowed. Example: can_approve() checks user has permission.",
-                learnMore: { url: "https://github.com/viewflow/django-fsm#transition-decorators", text: "📚 FSM Guards" }
+                learnMore: { url: "https://github.com/django-commons/django-fsm-2#transition-decorators", text: "📚 FSM Guards" }
             },
             {
                 q: "Why use state machines for workflow?",
@@ -2580,11 +2580,11 @@ const questions = {
                 learnMore: { url: "https://www.geeksforgeeks.org/difference-between-mealy-and-moore-machine/", text: "📚 Mealy vs Moore" }
             },
             {
-                q: "How does django-fsm define valid transitions?",
+                q: "How does django-fsm-2 define valid transitions?",
                 options: ["Database table storing all transitions", "XML configuration file for transitions", "@transition decorator specifying source and target states", "Comments describing allowed states"],
                 correct: 2,
-                explanation: "django-fsm uses @transition decorator on methods. Specifies source state(s), target state, and optional conditions. Method executes transition logic.",
-                learnMore: { url: "https://github.com/viewflow/django-fsm#usage", text: "📚 FSM Transitions" }
+                explanation: "django-fsm-2 uses @transition decorator on methods. Specifies source state(s), target state, and optional conditions. Method executes transition logic.",
+                learnMore: { url: "https://github.com/django-commons/django-fsm-2#usage", text: "📚 FSM Transitions" }
             },
             {
                 q: "What's a hierarchical state machine?",
@@ -2597,8 +2597,8 @@ const questions = {
                 q: "What happens when an invalid transition is attempted?",
                 options: ["Exception is raised preventing the transition", "All states reset to initial state", "State becomes undefined or null", "System silently ignores the request"],
                 correct: 0,
-                explanation: "Properly implemented FSM raises an exception for invalid transitions. django-fsm raises TransitionNotAllowed. This protects data integrity.",
-                learnMore: { url: "https://github.com/viewflow/django-fsm#exceptions", text: "📚 FSM Exceptions" }
+                explanation: "Properly implemented FSM raises an exception for invalid transitions. django-fsm-2 raises TransitionNotAllowed. This protects data integrity.",
+                learnMore: { url: "https://github.com/django-commons/django-fsm-2#exceptions", text: "📚 FSM Exceptions" }
             },
         ],
         4: [
@@ -2606,15 +2606,15 @@ const questions = {
                 q: "How do you handle side effects in state transitions?",
                 options: ["Side effects should never occur in FSM", "Callbacks or hooks executed during transition", "Run them in background thread only", "Store them in separate database table"],
                 correct: 1,
-                explanation: "Use pre/post transition callbacks. django-fsm supports @transition(on_enter=...) or signals. Callbacks handle notifications, logging, external API calls.",
-                learnMore: { url: "https://github.com/viewflow/django-fsm#signals", text: "📚 FSM Signals" }
+                explanation: "Use pre/post transition callbacks. django-fsm-2 supports @transition(on_enter=...) or signals. Callbacks handle notifications, logging, external API calls.",
+                learnMore: { url: "https://github.com/django-commons/django-fsm-2#signals", text: "📚 FSM Signals" }
             },
             {
                 q: "What's the actor pattern in state machines?",
                 options: ["Acting out states for debugging", "Tracking who performed each transition", "Running machines in parallel actors", "Animated state visualization"],
                 correct: 1,
-                explanation: "Actor pattern records who triggered each transition (user, system). Important for audit trails. django-fsm supports by='field' parameter on transitions.",
-                learnMore: { url: "https://github.com/viewflow/django-fsm#drawing-transitions", text: "📚 FSM Audit" }
+                explanation: "Actor pattern records who triggered each transition (user, system). Important for audit trails. django-fsm-2 supports by='field' parameter on transitions.",
+                learnMore: { url: "https://github.com/django-commons/django-fsm-2#drawing-transitions", text: "📚 FSM Audit" }
             },
             {
                 q: "How do you test state machine behavior?",
@@ -2651,7 +2651,7 @@ const questions = {
                 options: ["Just change the code and redeploy", "Delete all data and start fresh", "State machines can't be migrated", "Plan carefully: add states first, migrate data, then remove old"],
                 correct: 3,
                 explanation: "Migrate carefully: add new states/transitions, migrate existing data, remove old states. Ensure no data is in removed states. Test thoroughly.",
-                learnMore: { url: "https://docs.djangoproject.com/en/4.2/topics/migrations/", text: "📚 Data Migrations" }
+                learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/migrations/", text: "📚 Data Migrations" }
             },
             {
                 q: "What's the difference between internal and external transitions?",
@@ -2706,14 +2706,14 @@ const questions = {
                 q: "What's Python's Global Interpreter Lock (GIL)?",
                 options: ["Memory protection for interpreters", "License for using Python globally", "Mutex preventing true thread parallelism in CPython", "Security feature locking global variables"],
                 correct: 2,
-                explanation: "The GIL is a mutex in CPython that allows only one thread to execute Python bytecode at a time. Limits CPU-bound parallelism but I/O-bound works fine.",
+                explanation: "The GIL is a mutex in CPython that allows only one thread to execute Python bytecode at a time. Limits CPU-bound parallelism but I/O-bound works fine. Python 3.13+ offers a free-threaded build without the GIL.",
                 learnMore: { url: "https://realpython.com/python-gil/", text: "📚 Python GIL" }
             },
             {
                 q: "When should you use threading vs asyncio?",
                 options: ["Always use threading for everything", "Asyncio only works on Linux systems", "Threading is deprecated in Python", "Asyncio for I/O-bound; threading for blocking libraries"],
                 correct: 3,
-                explanation: "Use asyncio for I/O-bound tasks with async libraries. Use threading when calling blocking/synchronous libraries. For CPU-bound tasks, use multiprocessing to bypass the GIL.",
+                explanation: "Use asyncio for I/O-bound tasks with async libraries. Use threading when calling blocking/synchronous libraries. For CPU-bound tasks, use multiprocessing or free-threaded Python (3.13+).",
                 learnMore: { url: "https://realpython.com/python-concurrency/#when-to-use-which", text: "📚 Concurrency Guide" }
             },
         ],
@@ -2803,7 +2803,7 @@ const questions = {
                 q: "How does multiprocessing bypass the GIL?",
                 options: ["Separate processes with own Python interpreter", "Uses special GIL-free bytecode", "Runs threads in native code only", "Multiprocessing doesn't exist in Python"],
                 correct: 0,
-                explanation: "multiprocessing spawns separate processes, each with own Python interpreter and GIL. True parallelism but higher overhead (IPC, memory copy). Good for CPU-bound.",
+                explanation: "multiprocessing spawns separate processes, each with own Python interpreter and GIL. True parallelism but higher overhead (IPC, memory copy). Good for CPU-bound. Alternative: free-threaded Python (3.13+) disables the GIL entirely.",
                 learnMore: { url: "https://docs.python.org/3/library/multiprocessing.html", text: "📚 Multiprocessing" }
             },
             {
@@ -4391,7 +4391,7 @@ const questions = {
                 options: ["Version-controlled database schema changes", "Database backup and restore process", "Moving database to new server", "Migrating data between tables"],
                 correct: 0,
                 explanation: "Migrations are version-controlled schema changes. Each migration modifies schema (add table, column, index). Applied in order. Rollback possible. Django, Rails have built-in.",
-                learnMore: { url: "https://docs.djangoproject.com/en/4.2/topics/migrations/", text: "📚 Django Migrations" }
+                learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/migrations/", text: "📚 Django Migrations" }
             },
             {
                 q: "What's a materialized view?",
@@ -4972,7 +4972,7 @@ const questions = {
                 options: ["Manual schema changes", "Raw SQL scripts only", "No migration support", "Django migrations per app"],
                 correct: 3,
                 explanation: "Waldur uses Django migrations. Each app has its own migrations folder. Run makemigrations when models change, then migrate to apply. Migrations are version-controlled.",
-                learnMore: { url: "https://docs.djangoproject.com/en/4.2/topics/migrations/", text: "📚 Django Migrations" }
+                learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/migrations/", text: "📚 Django Migrations" }
             },
         ],
         5: [
@@ -7048,8 +7048,8 @@ const questions = {
                 q: "What's an Ingress in Kubernetes?",
                 options: ["Persistent storage volume", "HTTP/HTTPS routing to services", "Compute resource quota", "Internal network between pods"],
                 correct: 1,
-                explanation: "Ingress manages external HTTP/HTTPS access to services. It provides routing rules, TLS termination, and load balancing. Requires an Ingress controller (nginx, traefik).",
-                learnMore: { url: "https://kubernetes.io/docs/concepts/services-networking/ingress/", text: "📚 Ingress" }
+                explanation: "Ingress manages external HTTP/HTTPS access to services. It provides routing rules, TLS termination, and load balancing. Note: Gateway API is the newer successor to Ingress with more features.",
+                learnMore: { url: "https://kubernetes.io/docs/concepts/services-networking/gateway/", text: "📚 Gateway API" }
             },
             {
                 q: "What's a ServiceAccount used for?",
@@ -7078,7 +7078,7 @@ const questions = {
                 q: "What's kube-proxy responsible for?",
                 options: ["Network rules for service communication", "Container proxy", "API server proxy", "Storage proxy"],
                 correct: 0,
-                explanation: "kube-proxy runs on each node, maintaining network rules that allow communication to pods via Services. Implements Service abstraction using iptables or IPVS.",
+                explanation: "kube-proxy runs on each node, maintaining network rules that allow communication to pods via Services. Implements Service abstraction using iptables or nftables (recommended since K8s 1.35+).",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/overview/components/#kube-proxy", text: "📚 kube-proxy" }
             },
             {
@@ -7768,7 +7768,7 @@ const questions = {
                 q: "What's an ARM template?",
                 options: ["Template for ARM processors", "Azure Resource Manager app", "JSON template for deploying Azure resources", "ARM architecture documentation"],
                 correct: 2,
-                explanation: "ARM (Azure Resource Manager) templates are JSON files defining Azure infrastructure. Enables Infrastructure as Code, repeatable deployments."
+                explanation: "ARM (Azure Resource Manager) templates are JSON files defining Azure infrastructure. Enables Infrastructure as Code, repeatable deployments. Note: Bicep is now the recommended DSL for Azure IaC, compiling to ARM templates."
             },
             {
                 q: "What's Azure CLI?",
@@ -7912,10 +7912,10 @@ const questions = {
                 explanation: "Variables provide configuration: secrets, settings. Defined in UI (protected, masked) or .gitlab-ci.yml. Available as environment variables."
             },
             {
-                q: "What's the only/except syntax?",
-                options: ["Exclusive job execution", "Control when jobs run based on conditions", "Exception handling in jobs", "Only run job once ever"],
+                q: "What's the legacy only/except syntax?",
+                options: ["Exclusive job execution", "Deprecated way to control when jobs run (use rules: instead)", "Exception handling in jobs", "Only run job once ever"],
                 correct: 1,
-                explanation: "only/except (now rules:) control job execution: run only on main branch, except for tags, on merge requests. Conditional execution."
+                explanation: "only/except is deprecated in favor of rules: syntax. It controlled job execution based on branch/tag conditions. New pipelines should use rules: for flexibility."
             },
         ],
         4: [
@@ -8264,35 +8264,35 @@ const questions = {
         1: [
             {
                 q: "What tool is used to run Waldur locally for development?",
-                options: ["docker-compose for orchestrating multiple services", "npm start for the JavaScript frontend only", "kubectl apply for Kubernetes deployment", "python manage.py runserver for Django"],
+                options: ["docker compose for orchestrating multiple services", "npm start for the JavaScript frontend only", "kubectl apply for Kubernetes deployment", "python manage.py runserver for Django"],
                 correct: 0,
-                explanation: "Waldur uses docker-compose to orchestrate its services (API, UI, database, etc.) for local development."
+                explanation: "Waldur uses Docker Compose to orchestrate its services (API, UI, database, etc.) for local development."
             },
             {
-                q: "What is docker-compose used for?",
+                q: "What is Docker Compose used for?",
                 options: ["Building container images from Dockerfiles", "Monitoring container network traffic", "Defining and running multi-container applications", "Running a single container in isolation"],
                 correct: 2,
-                explanation: "docker-compose uses YAML files to define and run multi-container applications, managing their lifecycle together."
+                explanation: "Docker Compose uses compose.yaml files to define and run multi-container applications, managing their lifecycle together."
             },
             {
                 q: "Which file defines Waldur's local development setup?",
-                options: ["docker-compose.yml defines all services", "settings.py configures Django application", "package.json lists JavaScript dependencies", "Dockerfile builds a single container"],
+                options: ["compose.yaml defines all services", "settings.py configures Django application", "package.json lists JavaScript dependencies", "Dockerfile builds a single container"],
                 correct: 0,
-                explanation: "docker-compose.yml defines services, networks, and volumes. Waldur's compose file sets up all required components."
+                explanation: "compose.yaml defines services, networks, and volumes. Waldur's compose file sets up all required components."
             },
         ],
         2: [
             {
                 q: "What command starts all Waldur services locally?",
-                options: ["waldur run is not a valid command", "npm start only runs the frontend", "docker-compose up starts all defined services", "docker start waldur starts one container"],
+                options: ["waldur run is not a valid command", "npm start only runs the frontend", "docker compose up starts all defined services", "docker start waldur starts one container"],
                 correct: 2,
-                explanation: "'docker-compose up' starts all services. Add '-d' for detached mode, '--build' to rebuild images."
+                explanation: "'docker compose up' starts all services. Add '-d' for detached mode, '--build' to rebuild images."
             },
             {
                 q: "How do you view logs from the Waldur API container?",
-                options: ["docker-compose logs api shows service output", "cat /var/log/api reads host file system", "waldur logs is not a valid command", "kubectl logs api requires Kubernetes"],
+                options: ["docker compose logs api shows service output", "cat /var/log/api reads host file system", "waldur logs is not a valid command", "kubectl logs api requires Kubernetes"],
                 correct: 0,
-                explanation: "'docker-compose logs <service>' shows logs. Add '-f' to follow in real-time. Service names are defined in compose file."
+                explanation: "'docker compose logs <service>' shows logs. Add '-f' to follow in real-time. Service names are defined in compose file."
             },
             {
                 q: "What database system does Waldur use for data storage?",
@@ -8304,7 +8304,7 @@ const questions = {
         3: [
             {
                 q: "How do you rebuild Waldur containers after code changes?",
-                options: ["docker-compose up --build rebuilds images", "docker restart only restarts existing", "docker refresh is not a valid command", "docker-compose reload is not supported"],
+                options: ["docker compose up --build rebuilds images", "docker restart only restarts existing", "docker refresh is not a valid command", "docker compose reload is not supported"],
                 correct: 0,
                 explanation: "'--build' forces image rebuild before starting. Essential when Dockerfile or dependencies change."
             },
@@ -8316,12 +8316,12 @@ const questions = {
             },
             {
                 q: "How do you access the Waldur PostgreSQL database directly?",
-                options: ["docker-compose logs db shows logs not shell", "mysql -u root is for MySQL databases", "docker-compose exec db psql for Postgres shell", "sqlite3 waldur.db is for SQLite only"],
+                options: ["docker compose logs db shows logs not shell", "mysql -u root is for MySQL databases", "docker compose exec db psql for Postgres shell", "sqlite3 waldur.db is for SQLite only"],
                 correct: 2,
-                explanation: "'docker-compose exec db psql' opens PostgreSQL shell. Use -U flag for username, database name as argument."
+                explanation: "'docker compose exec db psql' opens PostgreSQL shell. Use -U flag for username, database name as argument."
             },
             {
-                q: "What does 'docker-compose down' do?",
+                q: "What does 'docker compose down' do?",
                 options: ["Pauses containers but keeps them running", "Stops and removes containers and networks", "Shows current container status and health", "Restarts all containers with new config"],
                 correct: 1,
                 explanation: "'down' stops containers and removes them plus networks. Add '-v' to also remove volumes (warning: deletes data)."
@@ -8503,7 +8503,7 @@ const questions = {
                 q: "What deployment method does Waldur use?",
                 options: ["Traditional Windows installer package", "FTP upload of application files", "Manual file copying to servers", "Docker containers with Kubernetes or compose"],
                 correct: 3,
-                explanation: "Waldur is containerized for consistent deployment across environments using Docker, Kubernetes, or docker-compose."
+                explanation: "Waldur is containerized for consistent deployment across environments using Docker, Kubernetes, or Docker Compose."
             },
             {
                 q: "Why might an organization choose on-premises deployment?",
@@ -8533,7 +8533,7 @@ const questions = {
             },
             {
                 q: "What is the recommended production deployment?",
-                options: ["Manual installation on bare metal", "Kubernetes cluster with Helm charts", "docker-compose running on a laptop", "Windows Server with IIS web server"],
+                options: ["Manual installation on bare metal", "Kubernetes cluster with Helm charts", "Docker Compose running on a laptop", "Windows Server with IIS web server"],
                 correct: 1,
                 explanation: "Production deployments typically use Kubernetes for scalability, reliability, and operational features."
             },
@@ -8804,6 +8804,41 @@ function getQuestionsForSkill(skillId, level, count = 5) {
 
     // Final shuffle so weak questions aren't always first
     return selected.slice(0, Math.min(count, selected.length)).sort(() => Math.random() - 0.5);
+}
+
+// Get one question for a skill+level using a seed (for cross-skill daily challenge)
+function getOneQuestionForSkill(skillId, level, seed) {
+    const skillQuestions = questions[skillId];
+    if (!skillQuestions) return null;
+
+    const levelQuestions = skillQuestions[level];
+    if (!levelQuestions || levelQuestions.length === 0) return null;
+
+    // Load question history for spaced repetition
+    let history = {};
+    try {
+        const state = loadState();
+        history = state.questionHistory || {};
+    } catch (e) { /* fall back to random */ }
+
+    // Split into weak and neutral
+    const weak = [];
+    const neutral = [];
+    levelQuestions.forEach((q, i) => {
+        const key = `${skillId}:${level}:${i}`;
+        const entry = history[key];
+        if (entry && entry.w > entry.c) {
+            weak.push(q);
+        } else {
+            neutral.push(q);
+        }
+    });
+
+    // 50% chance to pick from weak pool if available
+    const useWeak = weak.length > 0 && seededRandom(seed + 100) < 0.5;
+    const pool = useWeak ? weak : (neutral.length > 0 ? neutral : levelQuestions);
+    const index = Math.floor(seededRandom(seed) * pool.length);
+    return pool[index];
 }
 
 // Get all available levels for a skill (only levels with actual questions)
