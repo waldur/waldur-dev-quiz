@@ -7,7 +7,8 @@ export function useKeyboard(bindings: Record<string, KeyHandler>) {
     // Don't handle keys when typing in an input
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
 
-    const key = e.key.toLowerCase()
+    let key = e.key.toLowerCase()
+    if (key === ' ') key = 'space'
     const fn = bindings[key]
     if (fn) {
       e.preventDefault()
