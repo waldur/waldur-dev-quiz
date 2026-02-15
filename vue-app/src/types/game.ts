@@ -76,6 +76,7 @@ export interface GameSettings {
   soundEnabled: boolean
   musicEnabled: boolean
   idkfa: boolean
+  gender: 'male' | 'female'
 }
 
 export interface GameState {

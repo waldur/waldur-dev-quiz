@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGameStore } from '@/stores/game'
 import { useTShape } from '@/composables/useTShape'
@@ -8,6 +8,8 @@ import { useKeyboard } from '@/composables/useKeyboard'
 import { skills, skillTiers, getSkillsByTier, weaponProfiles } from '@/data/skills'
 import { hasQuestions } from '@/data/questions'
 import { ACHIEVEMENTS, getAchievementById } from '@/data/achievements'
+import { getCharacterStage, getNextStage, getProgressToNextStage, characterStages } from '@/data/characterFaces'
+import type { Gender } from '@/data/characterFaces'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import OverlayModal from '@/components/ui/OverlayModal.vue'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
@@ -27,6 +29,17 @@ const shareFeedbackTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 
 // Stats
 const stats = gameStore.stats
+
+// Character face
+const gender = computed(() => (gameStore.settings.gender || 'male') as Gender)
+const charStage = computed(() => getCharacterStage(gameStore.totalXP))
+const charEmoji = computed(() => charStage.value.emoji[gender.value])
+const nextStage = computed(() => getNextStage(gameStore.totalXP))
+const stageProgress = computed(() => getProgressToNextStage(gameStore.totalXP))
+
+function toggleGender() {
+  gameStore.setGender(gender.value === 'male' ? 'female' : 'male')
+}
 
 // Tier progress computation
 function getTierProgress(tierId: string): number {
@@ -90,13 +103,21 @@ useKeyboard({
     <div class="profile-content animate-in">
       <!-- Top row: Identity + Stats -->
       <div class="profile-top">
-        <!-- Left: weapon + name -->
+        <!-- Left: character + name -->
         <div class="profile-identity">
-          <span class="weapon-icon">{{ currentWeapon.icon }}</span>
+          <div class="character-avatar" @click="toggleGender" title="Click to change gender">
+            <span class="character-emoji">{{ charEmoji }}</span>
+          </div>
           <div class="identity-info">
             <h2 class="player-name">{{ gameStore.playerName }}</h2>
-            <span class="weapon-name">{{ currentWeapon.name }}</span>
-            <span class="weapon-desc">{{ currentWeapon.description }}</span>
+            <span class="character-stage">{{ charStage.name }}</span>
+            <span class="weapon-info-row">{{ currentWeapon.icon }} {{ currentWeapon.name }}</span>
+            <div v-if="nextStage" class="character-progress-row">
+              <div class="character-bar-mini">
+                <div class="character-bar-mini-fill" :style="{ width: stageProgress + '%' }"></div>
+              </div>
+              <span class="character-next-label">{{ nextStage.emoji[gender] }} at {{ nextStage.minXP.toLocaleString() }} XP</span>
+            </div>
           </div>
         </div>
 
@@ -155,6 +176,9 @@ useKeyboard({
         </button>
         <button class="action-btn action-btn--achievements" @click="showAchievements = true">
           Achievements ({{ gameStore.achievements.length }}/{{ ACHIEVEMENTS.length }})
+        </button>
+        <button class="action-btn action-btn--gender" @click="toggleGender">
+          {{ gender === 'male' ? '♂ Male' : '♀ Female' }}
         </button>
         <button class="action-btn action-btn--reset" @click="showResetConfirm = true">
           Reset
@@ -229,7 +253,17 @@ useKeyboard({
   flex-shrink: 0;
 }
 
-.weapon-icon {
+.character-avatar {
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s;
+}
+
+.character-avatar:hover {
+  transform: scale(1.05);
+}
+
+.character-emoji {
   font-size: 56px;
   line-height: 1;
 }
@@ -237,6 +271,7 @@ useKeyboard({
 .identity-info {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .player-name {
@@ -247,15 +282,43 @@ useKeyboard({
   line-height: 1.2;
 }
 
-.weapon-name {
+.character-stage {
   font-size: var(--font-base);
   font-weight: 600;
   color: var(--color-text);
 }
 
-.weapon-desc {
+.weapon-info-row {
   font-size: var(--font-xs);
   color: var(--color-text-muted);
+}
+
+.character-progress-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: 2px;
+}
+
+.character-bar-mini {
+  width: 80px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.character-bar-mini-fill {
+  height: 100%;
+  background: var(--color-gold);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.character-next-label {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  opacity: 0.7;
 }
 
 /* ---- Stats grid ---- */
@@ -346,6 +409,12 @@ useKeyboard({
   background: rgba(255, 215, 0, 0.1);
   color: #FFD700;
   border: 1px solid #FFD700;
+}
+
+.action-btn--gender {
+  background: var(--color-bg-light);
+  color: var(--color-text);
+  border: 1px solid var(--color-text-muted);
 }
 
 .action-btn--reset {

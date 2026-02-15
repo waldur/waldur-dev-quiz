@@ -11,6 +11,8 @@ import { skills, skillTiers } from '@/data/skills'
 import { getAvailableLevels } from '@/data/questions'
 import GameButton from '@/components/ui/GameButton.vue'
 import KeyboardHint from '@/components/layout/KeyboardHint.vue'
+import { getCharacterStage, getNextStage, getProgressToNextStage } from '@/data/characterFaces'
+import type { Gender } from '@/data/characterFaces'
 import type { ResultReaction, DailyBonusInfo } from '@/types/game'
 
 const router = useRouter()
@@ -26,6 +28,7 @@ const dailyBonus = ref<DailyBonusInfo | null>(null)
 const reaction = ref<ResultReaction | null>(null)
 const imageError = ref(false)
 const newLevel = ref(0)
+const prevStageId = ref('')
 
 // Derived from quiz store
 const score = computed(() => quizStore.score)
@@ -65,12 +68,20 @@ const currentSkillLevel = computed(() => {
   return gameStore.getSkillProgress(skillId.value).level
 })
 
+const gender = computed(() => (gameStore.settings.gender || 'male') as Gender)
+const charStage = computed(() => getCharacterStage(gameStore.totalXP))
+const charEmoji = computed(() => charStage.value.emoji[gender.value])
+const stageUp = computed(() => prevStageId.value && prevStageId.value !== charStage.value.id)
+
 onMounted(() => {
   // Redirect if no quiz data
   if (!quizStore.completed || quizStore.questions.length === 0) {
     router.push('/')
     return
   }
+
+  // Record current stage before XP is added
+  prevStageId.value = getCharacterStage(gameStore.totalXP).id
 
   // Calculate XP
   let xp = score.value * 20
@@ -223,22 +234,29 @@ function goToMenu() {
           </div>
         </div>
 
-        <!-- Right: Reaction panel -->
-        <div class="results-reaction" v-if="reaction">
-          <div class="reaction-display">
-            <template v-if="reaction.type === 'image' && reaction.url && !imageError">
-              <img
-                :src="reaction.url"
-                :alt="reaction.caption"
-                class="reaction-image"
-                @error="imageError = true"
-              />
-            </template>
-            <template v-else>
-              <span class="reaction-emoji">{{ reaction.emoji || '\uD83C\uDFAE' }}</span>
-            </template>
+        <!-- Right: Character + Reaction panel -->
+        <div class="results-right">
+          <div class="results-character" :class="{ 'results-character--evolved': stageUp }">
+            <span class="results-character__face">{{ charEmoji }}</span>
+            <span class="results-character__stage">{{ charStage.name }}</span>
+            <span v-if="stageUp" class="results-character__evolved-label">EVOLVED!</span>
           </div>
-          <p class="reaction-caption">{{ reaction.caption }}</p>
+          <div class="results-reaction" v-if="reaction">
+            <div class="reaction-display">
+              <template v-if="reaction.type === 'image' && reaction.url && !imageError">
+                <img
+                  :src="reaction.url"
+                  :alt="reaction.caption"
+                  class="reaction-image"
+                  @error="imageError = true"
+                />
+              </template>
+              <template v-else>
+                <span class="reaction-emoji">{{ reaction.emoji || '\uD83C\uDFAE' }}</span>
+              </template>
+            </div>
+            <p class="reaction-caption">{{ reaction.caption }}</p>
+          </div>
         </div>
       </div>
 
@@ -447,6 +465,52 @@ function goToMenu() {
 .breakdown-level {
   color: var(--color-text-muted);
   font-size: var(--font-xs);
+}
+
+/* Right column */
+.results-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.results-character {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--color-bg-light);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.results-character--evolved {
+  border: 2px solid var(--color-gold);
+  animation: pulseGlow 1.5s ease infinite;
+}
+
+.results-character__face {
+  font-size: 56px;
+  line-height: 1;
+}
+
+.results-character__stage {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+
+.results-character__evolved-label {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--color-gold);
+  letter-spacing: 2px;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 215, 0, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
 }
 
 /* Reaction panel (right column) */

@@ -18,6 +18,7 @@ const gameStore = useGameStore()
 const { tShape, currentWeapon, recommendations } = useTShape()
 
 const selectedTier = ref('literacy')
+const tPanelOpen = ref(false)
 
 const SKILL_GROUP_LABELS: Record<string, Record<string, string>> = {
   foundation: { cs: '🧪 CS Fundamentals', se: '🛠️ Software Engineering' },
@@ -205,61 +206,67 @@ useKeyboard({
       </div>
 
       <!-- Right: T-Shape panel -->
-      <div class="t-panel">
+      <div class="t-panel" :class="{ 't-panel--open': tPanelOpen }">
+        <button class="t-panel__toggle" @click="tPanelOpen = !tPanelOpen">
+          <span class="t-panel__toggle-summary">{{ currentWeapon.icon }} {{ currentWeapon.name }}</span>
+          <span class="t-panel__toggle-arrow">{{ tPanelOpen ? '▲' : '▼' }}</span>
+        </button>
         <h3 class="t-panel__title">Your T-Shape</h3>
         <div class="t-panel__weapon">{{ currentWeapon.icon }} {{ currentWeapon.name }}</div>
 
-        <div class="t-panel__section-label">━ Breadth (horizontal bar)</div>
+        <div class="t-panel__body">
+          <div class="t-panel__section-label">━ Breadth (horizontal bar)</div>
 
-        <div class="t-panel__stat">
-          📚 Literacy: {{ tShape.literacyStarted }}/{{ tShape.literacyTotal }}
-        </div>
-        <ProgressBar :value="tShape.literacyPercent" color="var(--tier-literacy)" :height="8" />
+          <div class="t-panel__stat">
+            📚 Literacy: {{ tShape.literacyStarted }}/{{ tShape.literacyTotal }}
+          </div>
+          <ProgressBar :value="tShape.literacyPercent" color="var(--tier-literacy)" :height="8" />
 
-        <div class="t-panel__stat">
-          🧱 Foundation: {{ tShape.foundationStarted }}/{{ tShape.foundationTotal }}
-        </div>
-        <ProgressBar :value="tShape.foundationPercent" color="var(--tier-foundation)" :height="8" />
+          <div class="t-panel__stat">
+            🧱 Foundation: {{ tShape.foundationStarted }}/{{ tShape.foundationTotal }}
+          </div>
+          <ProgressBar :value="tShape.foundationPercent" color="var(--tier-foundation)" :height="8" />
 
-        <div class="t-panel__section-label">┃ Depth (vertical spike)</div>
-        <div class="t-panel__stat">
-          🎯 Specializations: {{ tShape.specExpert }}/{{ tShape.specTotal }} expert
-        </div>
+          <div class="t-panel__section-label">┃ Depth (vertical spike)</div>
+          <div class="t-panel__stat">
+            🎯 Specializations: {{ tShape.specExpert }}/{{ tShape.specTotal }} expert
+          </div>
 
-        <!-- T-shape visualization -->
-        <div class="t-visual">
-          <div class="t-visual__bar" :style="{
-            width: Math.max(10, tShape.breadthPercent) + '%',
-            backgroundColor: tShape.breadthPercent >= 50 ? 'var(--color-success)' : 'var(--color-warning)',
-          }"></div>
-          <div class="t-visual__spike" :style="{
-            height: Math.max(8, Math.min(tShape.depthCount, 3) * 30) + 'px',
-            backgroundColor: tShape.depthCount >= 1 ? 'var(--color-success)' : 'var(--color-text-muted)',
-          }"></div>
-        </div>
+          <!-- T-shape visualization -->
+          <div class="t-visual">
+            <div class="t-visual__bar" :style="{
+              width: Math.max(10, tShape.breadthPercent) + '%',
+              backgroundColor: tShape.breadthPercent >= 50 ? 'var(--color-success)' : 'var(--color-warning)',
+            }"></div>
+            <div class="t-visual__spike" :style="{
+              height: Math.max(8, Math.min(tShape.depthCount, 3) * 30) + 'px',
+              backgroundColor: tShape.depthCount >= 1 ? 'var(--color-success)' : 'var(--color-text-muted)',
+            }"></div>
+          </div>
 
-        <!-- Recommendations -->
-        <div class="t-panel__rec-header">
-          <span>💡 Recommended Next</span>
-          <button v-if="recommendations.length > 0" class="t-panel__random-btn" @click="goToRandomRecommendation">
-            (R) Random
-          </button>
-        </div>
+          <!-- Recommendations -->
+          <div class="t-panel__rec-header">
+            <span>💡 Recommended Next</span>
+            <button v-if="recommendations.length > 0" class="t-panel__random-btn" @click="goToRandomRecommendation">
+              (R) Random
+            </button>
+          </div>
 
-        <div v-if="recommendations.length === 0" class="t-panel__no-recs">
-          Great job! Keep leveling up your skills.
-        </div>
+          <div v-if="recommendations.length === 0" class="t-panel__no-recs">
+            Great job! Keep leveling up your skills.
+          </div>
 
-        <div
-          v-for="rec in recommendations"
-          :key="rec.skill.id"
-          class="rec-card"
-          :style="{ borderColor: priorityColor(rec.priority) }"
-          @click="router.push({ name: 'skillDetail', params: { skillId: rec.skill.id } })"
-        >
-          <div class="rec-card__name">{{ rec.skill.name }}</div>
-          <div class="rec-card__meta" :style="{ color: priorityColor(rec.priority) }">
-            {{ getSkillLevel(rec.skill.id) > 0 ? `Lv.${getSkillLevel(rec.skill.id)}` : 'New' }} · {{ rec.reason }}
+          <div
+            v-for="rec in recommendations"
+            :key="rec.skill.id"
+            class="rec-card"
+            :style="{ borderColor: priorityColor(rec.priority) }"
+            @click="router.push({ name: 'skillDetail', params: { skillId: rec.skill.id } })"
+          >
+            <div class="rec-card__name">{{ rec.skill.name }}</div>
+            <div class="rec-card__meta" :style="{ color: priorityColor(rec.priority) }">
+              {{ getSkillLevel(rec.skill.id) > 0 ? `Lv.${getSkillLevel(rec.skill.id)}` : 'New' }} · {{ rec.reason }}
+            </div>
           </div>
         </div>
       </div>
@@ -487,6 +494,14 @@ useKeyboard({
   overflow-y: auto;
 }
 
+.t-panel__toggle {
+  display: none;
+}
+
+.t-panel__body {
+  /* always visible on desktop */
+}
+
 .t-panel__title {
   font-size: var(--font-xl);
   color: var(--color-gold);
@@ -645,6 +660,46 @@ useKeyboard({
     width: 100%;
     order: -1;
     max-height: none;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .t-panel__title,
+  .t-panel__weapon {
+    display: none;
+  }
+
+  .t-panel__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    background: rgb(25, 25, 50);
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font-family: var(--font-main);
+    font-size: var(--font-base);
+    cursor: pointer;
+  }
+
+  .t-panel__toggle-summary {
+    font-weight: 600;
+  }
+
+  .t-panel__toggle-arrow {
+    font-size: var(--font-xs);
+    color: var(--color-text-muted);
+  }
+
+  .t-panel__body {
+    display: none;
+    padding: 0 var(--space-4) var(--space-4);
+  }
+
+  .t-panel--open .t-panel__body {
+    display: block;
   }
 
   .tier-tabs {

@@ -30,6 +30,7 @@ const defaultState: GameState = {
     soundEnabled: true,
     musicEnabled: true,
     idkfa: false,
+    gender: 'male',
   },
 }
 
@@ -165,6 +166,10 @@ export const useGameStore = defineStore('game', () => {
     state.value.onboardingDone = true
   }
 
+  function setGender(gender: 'male' | 'female'): void {
+    state.value.settings = { ...state.value.settings, gender }
+  }
+
   function calculateProfile(): string {
     const progress = state.value.skillProgress
     let literacyProficient = 0
@@ -295,6 +300,7 @@ export const useGameStore = defineStore('game', () => {
     setPlayerName,
     updateProfile,
     setOnboardingDone,
+    setGender,
     calculateProfile,
     isDailyChallengeCompleted,
     completeDailyChallenge,

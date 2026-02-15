@@ -8,6 +8,7 @@ import { useTShape } from '@/composables/useTShape'
 import { useKeyboard } from '@/composables/useKeyboard'
 import { skills } from '@/data/skills'
 import { ACHIEVEMENTS } from '@/data/achievements'
+import { getCharacterStage, getNextStage, getProgressToNextStage } from '@/data/characterFaces'
 import GameButton from '@/components/ui/GameButton.vue'
 import OverlayModal from '@/components/ui/OverlayModal.vue'
 import KeyboardHint from '@/components/layout/KeyboardHint.vue'
@@ -22,6 +23,11 @@ const showHelp = ref(false)
 const showWelcome = ref(false)
 
 const stats = computed(() => gameStore.stats)
+const gender = computed(() => gameStore.settings.gender || 'male')
+const charStage = computed(() => getCharacterStage(gameStore.totalXP))
+const charEmoji = computed(() => charStage.value.emoji[gender.value])
+const nextStage = computed(() => getNextStage(gameStore.totalXP))
+const stageProgress = computed(() => getProgressToNextStage(gameStore.totalXP))
 const dailyInfo = computed(() => daily.getDailyChallenge())
 const tierCount = computed(() => {
   if (!dailyInfo.value) return 0
@@ -162,13 +168,24 @@ onMounted(() => {
         </p>
       </div>
 
-      <!-- Right: weapon visual -->
+      <!-- Right: character + weapon visual -->
       <div class="menu__right">
-        <div class="menu__weapon-card">
-          <span class="menu__weapon-icon">{{ currentWeapon.icon }}</span>
-          <div class="menu__weapon-info">
-            <span class="menu__weapon-name">{{ currentWeapon.name }}</span>
-            <span class="menu__weapon-desc">{{ currentWeapon.description }}</span>
+        <div class="menu__character-card">
+          <div class="menu__character-face">{{ charEmoji }}</div>
+          <div class="menu__character-info">
+            <span class="menu__character-name">{{ charStage.name }}</span>
+            <span class="menu__character-desc">{{ charStage.description }}</span>
+          </div>
+          <div v-if="nextStage" class="menu__character-progress">
+            <div class="menu__character-bar">
+              <div class="menu__character-bar-fill" :style="{ width: stageProgress + '%' }"></div>
+            </div>
+            <span class="menu__character-next">{{ nextStage.emoji[gender] }} {{ nextStage.minXP.toLocaleString() }} XP</span>
+          </div>
+          <div v-else class="menu__character-max">Max evolution reached!</div>
+          <div class="menu__weapon-row">
+            <span class="menu__weapon-icon-sm">{{ currentWeapon.icon }}</span>
+            <span class="menu__weapon-name-sm">{{ currentWeapon.name }}</span>
           </div>
           <div class="menu__weapon-glow"></div>
         </div>
@@ -384,7 +401,7 @@ onMounted(() => {
   margin-top: var(--space-1);
 }
 
-/* ---- Right column: weapon card ---- */
+/* ---- Right column: character card ---- */
 .menu__right {
   flex-shrink: 0;
   display: flex;
@@ -393,35 +410,29 @@ onMounted(() => {
   gap: var(--space-3);
 }
 
-.menu__weapon-card {
+.menu__character-card {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-8) var(--space-6);
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-6);
   background: var(--color-bg-light);
   border-radius: var(--radius-xl);
   border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
+  min-width: 200px;
 }
 
-.menu__weapon-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.menu__weapon-icon {
-  font-size: 96px;
+.menu__character-face {
+  font-size: 80px;
   line-height: 1;
   position: relative;
   z-index: 1;
-  filter: drop-shadow(0 4px 24px rgba(99, 102, 241, 0.3));
+  filter: drop-shadow(0 4px 20px rgba(99, 102, 241, 0.25));
 }
 
-.menu__weapon-info {
+.menu__character-info {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -430,15 +441,84 @@ onMounted(() => {
   z-index: 1;
 }
 
-.menu__weapon-name {
-  font-size: var(--font-xl);
+.menu__character-name {
+  font-size: var(--font-lg);
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--color-gold);
 }
 
-.menu__weapon-desc {
+.menu__character-desc {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.menu__character-progress {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+  margin-top: var(--space-1);
+}
+
+.menu__character-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.menu__character-bar-fill {
+  height: 100%;
+  background: var(--color-gold);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.menu__character-next {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+.menu__character-max {
+  font-size: var(--font-xs);
+  color: var(--color-gold);
+  position: relative;
+  z-index: 1;
+}
+
+.menu__weapon-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  position: relative;
+  z-index: 1;
+  margin-top: var(--space-1);
+  padding-top: var(--space-2);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  width: 100%;
+  justify-content: center;
+}
+
+.menu__weapon-icon-sm {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.menu__weapon-name-sm {
   font-size: var(--font-sm);
   color: var(--color-text-muted);
+}
+
+.menu__weapon-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .menu__player {
@@ -576,7 +656,9 @@ onMounted(() => {
   }
 
   .menu__buttons {
-    align-items: center;
+    align-items: stretch;
+    max-width: none;
+    width: 100%;
   }
 
   .menu__daily-hint,
@@ -588,12 +670,48 @@ onMounted(() => {
     order: -1;
   }
 
-  .menu__weapon-card {
-    padding: var(--space-6) var(--space-5);
+  .menu__character-card {
+    padding: var(--space-3) var(--space-4);
+    flex-direction: row;
+    gap: var(--space-3);
+    min-width: 0;
+    width: 100%;
+    align-items: center;
   }
 
-  .menu__weapon-icon {
-    font-size: 64px;
+  .menu__character-face {
+    font-size: 48px;
+    flex-shrink: 0;
+  }
+
+  .menu__character-info {
+    align-items: flex-start;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .menu__character-name {
+    font-size: var(--font-base);
+  }
+
+  .menu__character-desc {
+    display: none;
+  }
+
+  .menu__character-progress {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .menu__weapon-row {
+    justify-content: flex-start;
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  .menu__weapon-glow {
+    display: none;
   }
 
   .help__grid {

@@ -606,6 +606,26 @@ useKeyboard({
 }
 
 @media (max-width: 768px) {
+  .quiz__header {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    min-height: auto;
+  }
+
+  .quiz__title {
+    font-size: var(--font-base);
+  }
+
+  .quiz__question {
+    font-size: var(--font-lg);
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .quiz__code {
+    margin: var(--space-2) var(--space-4);
+  }
+
   .quiz__options {
     padding: var(--space-3) var(--space-4);
   }
@@ -613,6 +633,14 @@ useKeyboard({
   .quiz__explanation {
     margin: var(--space-2) var(--space-4);
     flex-direction: column;
+  }
+
+  .celebration__emoji {
+    font-size: 80px;
+  }
+
+  .celebration__caption {
+    font-size: var(--font-xl);
   }
 }
 </style>
