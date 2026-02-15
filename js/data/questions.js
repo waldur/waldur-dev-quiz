@@ -30,7 +30,7 @@ const questions = {
             },
             {
                 q: "What does 'cd ..' do?",
-                options: ["List files", "Delete directory", "Create directory", "Move to parent directory"],
+                options: ["List all files in directory", "Delete the current directory", "Create a new subdirectory", "Move to the parent directory"],
                 correct: 3,
                 explanation: "In Unix, '..' represents the parent directory. 'cd ..' navigates one level up in the directory tree.",
                 learnMore: { url: "https://linuxcommand.org/lc3_lts0020.php", text: "📚 Navigation Tutorial" }
@@ -53,7 +53,7 @@ const questions = {
         2: [
             {
                 q: "What does 'ls -la' show that 'ls' doesn't?",
-                options: ["Only directories", "File contents", "Hidden files and details", "Running processes"],
+                options: ["Only directory names listed", "Full file content previews", "Hidden files and detailed info", "Currently running processes"],
                 correct: 2,
                 explanation: "The '-l' flag shows long format (permissions, size, date), and '-a' shows hidden files (those starting with '.').",
                 learnMore: { url: "https://linuxize.com/post/how-to-list-files-in-linux-using-the-ls-command/", text: "📚 ls Command Guide" }
@@ -90,7 +90,7 @@ const questions = {
             },
             {
                 q: "How do you find files by name recursively?",
-                options: ["ls -R pattern", "grep pattern", "find . -name 'pattern'", "search pattern"],
+                options: ["ls -R 'pattern' in current dir", "grep -r 'pattern' in files", "find . -name 'pattern' search", "locate 'pattern' from cache"],
                 correct: 2,
                 explanation: "'find' searches directory trees. Use -name for filename patterns, -type f for files only, -mtime for modification time.",
                 learnMore: { url: "https://www.gnu.org/software/findutils/manual/html_mono/find.html", text: "📚 GNU Find Manual" }
@@ -141,7 +141,7 @@ const questions = {
             },
             {
                 q: "How do you find which process is using a port?",
-                options: ["lsof -i :port or ss -tlnp", "grep port /proc", "find /proc -port", "ps --port <number>"],
+                options: ["lsof -i :port or ss -tlnp", "grep port /etc/services", "netstat --find-port <num>", "ps aux --filter port=<num>"],
                 correct: 0,
                 explanation: "'lsof -i :8080' shows processes using port 8080. 'netstat -tlnp' or 'ss -tlnp' also work. Useful for debugging port conflicts.",
                 learnMore: { url: "https://man7.org/linux/man-pages/man8/lsof.8.html", text: "📚 lsof Manual" }
@@ -234,14 +234,14 @@ const questions = {
             },
             {
                 q: "What does 'git commit -m' do?",
-                options: ["Commit to main", "Commit without staging", "Commit with inline message", "Commit and merge"],
+                options: ["Commit changes to main branch", "Commit all files without staging", "Commit with an inline message", "Commit changes and push remote"],
                 correct: 2,
                 explanation: "The '-m' flag lets you provide a commit message inline. Without it, Git opens an editor for the message. Write clear, descriptive messages!",
                 learnMore: { url: "https://cbea.ms/git-commit/", text: "📚 Commit Message Guide" }
             },
             {
                 q: "How do you switch to an existing branch?",
-                options: ["git checkout branchname", "git branch branchname", "git switch branchname", "Both 'git checkout' and 'git switch' work"],
+                options: ["git checkout branchname only", "git branch --switch branchname", "git switch branchname only", "Both git checkout and git switch"],
                 correct: 3,
                 explanation: "Both 'git checkout' and 'git switch' can change branches. 'git switch' (introduced in Git 2.23) is more intuitive for branch operations.",
                 learnMore: { url: "https://git-scm.com/docs/git-switch", text: "📚 Git Switch Docs" }
@@ -271,7 +271,7 @@ const questions = {
             },
             {
                 q: "What does 'git diff' show?",
-                options: ["Config file differences", "List of different branches", "Remote server differences", "Changes between commits or working tree"],
+                options: ["Differences in config settings", "List of all available branches", "Differences with remote server", "Changes in working tree or commits"],
                 correct: 3,
                 explanation: "'git diff' shows unstaged changes. 'git diff --staged' shows staged changes. 'git diff branch1..branch2' compares branches.",
                 learnMore: { url: "https://git-scm.com/docs/git-diff", text: "📚 Git Diff Docs" }
@@ -294,7 +294,7 @@ const questions = {
             },
             {
                 q: "What does 'git stash' do?",
-                options: ["Pushes to remote repo", "Commits current changes", "Temporarily saves uncommitted changes", "Deletes all local changes"],
+                options: ["Pushes changes to remote repo", "Commits all staged modifications", "Temporarily saves uncommitted work", "Deletes all untracked local files"],
                 correct: 2,
                 explanation: "Stash saves work-in-progress without committing. 'git stash pop' restores and removes from stash. 'git stash list' shows all stashes.",
                 learnMore: { url: "https://git-scm.com/docs/git-stash", text: "📚 Git Stash Docs" }
@@ -324,7 +324,7 @@ const questions = {
             },
             {
                 q: "What does 'git reflog' show?",
-                options: ["All ref changes including lost commits", "Remote server activity log", "Git error and debug log", "Only branch reference logs"],
+                options: ["All ref updates including lost commits", "Remote server push and pull activity", "Git internal error and debug messages", "Only the most recent branch references"],
                 correct: 0,
                 explanation: "Reflog tracks all HEAD movements locally - even 'lost' commits after reset. Essential for recovering from mistakes. Entries expire after 90 days.",
                 learnMore: { url: "https://git-scm.com/docs/git-reflog", text: "📚 Git Reflog Docs" }
@@ -649,7 +649,7 @@ const questions = {
             },
             {
                 q: "What does 'len()' return?",
-                options: ["First element", "Last element", "Sum of elements", "Length of a sequence"],
+                options: ["The first element of a sequence", "The last element of a sequence", "The total sum of all elements", "The number of items in a sequence"],
                 correct: 3,
                 explanation: "'len()' returns the number of items in a container (list, string, dict, etc.). It's a built-in function, not a method.",
                 learnMore: { url: "https://docs.python.org/3/library/functions.html#len", text: "📚 Python len()" }
@@ -771,14 +771,14 @@ const questions = {
             },
             {
                 q: "How do you achieve true parallelism in Python?",
-                options: ["async/await", "threading module", "generators", "multiprocessing or free-threaded mode"],
+                options: ["Using async/await coroutines only", "Using the threading module for it", "Using generator-based concurrency", "Multiprocessing or free-threaded mode"],
                 correct: 3,
                 explanation: "multiprocessing spawns separate processes (each with own GIL). Free-threaded Python (3.13+) disables the GIL entirely. Threading helps I/O-bound tasks. async/await is single-threaded concurrency for I/O.",
                 learnMore: { url: "https://docs.python.org/3/library/multiprocessing.html", text: "📚 multiprocessing" }
             },
             {
                 q: "What's a metaclass in Python?",
-                options: ["Abstract class", "Static class", "Class of a class, controls class creation", "Base class"],
+                options: ["An abstract class defining interfaces", "A static class with no instances", "A class of a class, controls creation", "A base class for all inheritance"],
                 correct: 2,
                 explanation: "Metaclasses are 'classes of classes' - they control how classes are created. type() is the default metaclass. Rarely needed, but powerful for frameworks.",
                 learnMore: { url: "https://realpython.com/python-metaclasses/", text: "📚 Python Metaclasses" }
@@ -792,7 +792,7 @@ const questions = {
             },
             {
                 q: "What are __slots__ used for?",
-                options: ["Method slots", "Time slots", "Import slots", "Memory optimization by restricting attributes"],
+                options: ["Defining fixed method dispatch slots", "Scheduling async execution time slots", "Controlling module import slot order", "Memory optimization by restricting attrs"],
                 correct: 3,
                 explanation: "__slots__ replaces instance __dict__ with fixed-size array. Saves memory for many instances. Prevents adding arbitrary attributes. Use for data classes with many instances.",
                 learnMore: { url: "https://docs.python.org/3/reference/datamodel.html#slots", text: "📚 Python __slots__" }
@@ -827,14 +827,14 @@ const questions = {
         2: [
             {
                 q: "What does 'makemigrations' do?",
-                options: ["Creates migration files from model changes", "Shows migration status", "Deletes migrations", "Runs migrations"],
+                options: ["Creates migration files from model changes", "Shows current migration status for apps", "Removes old and conflicting migrations", "Applies pending migrations to the database"],
                 correct: 0,
                 explanation: "makemigrations detects model changes and creates migration files (Python scripts). migrate actually applies them. Always makemigrations before migrate.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/migrations/", text: "📚 Django Migrations" }
             },
             {
                 q: "What is the Django ORM?",
-                options: ["Online Resource Manager", "Object Registry Model", "Object-Relational Mapper for database queries", "Output Render Module"],
+                options: ["An online resource manager for assets", "An object registry model for settings", "An object-relational mapper for queries", "An output render module for templates"],
                 correct: 2,
                 explanation: "The ORM translates Python objects to database rows and vice versa. Write Python, not SQL. Supports multiple databases with same code.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/db/queries/", text: "📚 Django ORM Queries" }
@@ -850,7 +850,7 @@ const questions = {
         3: [
             {
                 q: "What's the purpose of Django admin?",
-                options: ["Testing framework", "Auto-generated CRUD interface for models", "Command line tool", "Deployment tool"],
+                options: ["Built-in automated testing framework", "Auto-generated CRUD interface for models", "Command line management utility tool", "Server deployment configuration tool"],
                 correct: 1,
                 explanation: "Django admin auto-generates an admin interface from your models. Great for content management and debugging. Highly customizable with ModelAdmin classes.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/ref/contrib/admin/", text: "📚 Django Admin" }
@@ -864,14 +864,14 @@ const questions = {
             },
             {
                 q: "What's the difference between FBV and CBV?",
-                options: ["File vs Class", "Function-based vs Class-based views", "Fast vs Basic views", "Frontend vs Backend"],
+                options: ["File-based vs class-based views", "Function-based vs class-based views", "Fast rendering vs basic rendering views", "Frontend views vs backend views split"],
                 correct: 1,
                 explanation: "FBVs are simple functions. CBVs use classes with inheritance for reusability (ListView, CreateView, etc.). CBVs reduce boilerplate for common patterns.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/class-based-views/", text: "📚 Class-based Views" }
             },
             {
                 q: "What does 'migrate' command do?",
-                options: ["Shows migrations", "Applies migrations to database", "Reverts migrations", "Creates migrations"],
+                options: ["Lists all pending migration files", "Applies migration files to database", "Reverts previously applied migrations", "Generates new migration from models"],
                 correct: 1,
                 explanation: "'migrate' applies pending migrations to the database, creating/altering tables. Use 'migrate app_name 0001' to migrate to specific version.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/ref/django-admin/#migrate", text: "📚 Django migrate" }
@@ -901,7 +901,7 @@ const questions = {
             },
             {
                 q: "How do you create a custom management command?",
-                options: ["Django admin", "Edit manage.py", "Use decorators", "Create in management/commands/ directory"],
+                options: ["Register it through the admin interface", "Add handler functions inside manage.py", "Use management command decorator syntax", "Create file in management/commands/ dir"],
                 correct: 3,
                 explanation: "Create app/management/commands/mycommand.py with a Command class inheriting BaseCommand. Implement handle() method. Run with 'manage.py mycommand'.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/howto/custom-management-commands/", text: "📚 Custom Commands" }
@@ -910,7 +910,7 @@ const questions = {
         5: [
             {
                 q: "How do you optimize N+1 query problems in Django?",
-                options: ["Use raw SQL", "Increase timeout", "Add indexes only", "select_related() and prefetch_related()"],
+                options: ["Replace ORM queries with raw SQL calls", "Increase database connection timeout value", "Add composite indexes on related tables", "Use select_related and prefetch_related"],
                 correct: 3,
                 explanation: "N+1: fetching related objects in a loop causes N extra queries. select_related (JOIN) or prefetch_related (separate query, then Python join) solve this.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/ref/models/querysets/#select-related", text: "📚 select_related" }
@@ -924,7 +924,7 @@ const questions = {
             },
             {
                 q: "How do you implement custom model managers?",
-                options: ["Create class inheriting from models.Manager", "Use decorators", "Modify model Meta", "Edit settings.py"],
+                options: ["Create class extending models.Manager", "Add manager decorators to model class", "Configure manager in model Meta options", "Define manager settings in settings.py"],
                 correct: 0,
                 explanation: "Custom managers add reusable query methods. Inherit from Manager, add methods returning QuerySets. Assign to model: objects = MyManager().",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/db/managers/", text: "📚 Custom Managers" }
@@ -938,7 +938,7 @@ const questions = {
             },
             {
                 q: "How do you handle database transactions in Django?",
-                options: ["transaction.atomic() decorator or context manager", "No transaction support", "Auto-commit only", "Manual commit"],
+                options: ["transaction.atomic() decorator or context mgr", "Django has no built-in transaction support", "Only auto-commit mode is available in Django", "Manually call connection.commit() each time"],
                 correct: 0,
                 explanation: "atomic() ensures all-or-nothing: either all operations commit or all rollback on error. Use as decorator or 'with transaction.atomic():' block.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/db/transactions/", text: "📚 DB Transactions" }
@@ -973,7 +973,7 @@ const questions = {
         2: [
             {
                 q: "What is useState hook for?",
-                options: ["Subscribing to external data sources", "Managing component state that triggers re-renders", "Caching expensive computations", "Accessing DOM elements directly"],
+                options: ["Subscribing to external data sources", "Managing state that triggers re-renders", "Caching expensive computed values", "Accessing DOM elements directly by ref"],
                 correct: 1,
                 explanation: "useState adds state to functional components. Returns [value, setValue]. When state changes, component re-renders. Initial value passed as argument.",
                 learnMore: { url: "https://react.dev/reference/react/useState", text: "📚 useState Hook" }
@@ -1100,21 +1100,21 @@ const questions = {
         1: [
             {
                 q: "What is Waldur?",
-                options: ["Operating system", "Cloud resource management platform", "Database", "Programming language"],
+                options: ["A Linux-based operating system distro", "A cloud resource management platform", "A distributed NoSQL database engine", "A server-side programming language"],
                 correct: 1,
                 explanation: "Waldur is an open-source cloud resource management platform for organizations to manage cloud infrastructure, track usage, and handle billing across multiple providers.",
                 learnMore: { url: "https://docs.waldur.com/", text: "📚 Waldur Documentation" }
             },
             {
                 q: "What does multi-tenancy mean in Waldur?",
-                options: ["Multiple users per account", "Multiple servers", "Multiple databases", "Multiple organizations share the platform"],
+                options: ["Multiple users sharing one account", "Running services on multiple servers", "Maintaining separate database per user", "Multiple organizations share the platform"],
                 correct: 3,
                 explanation: "Multi-tenancy allows multiple organizations (customers) to use the same Waldur instance while keeping their data isolated. Each org sees only their resources.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/identities/organizations/", text: "📚 Organizations Guide" }
             },
             {
                 q: "Who are the main users of Waldur?",
-                options: ["Database administrators", "Individual developers only", "Network engineers", "Organizations managing cloud resources"],
+                options: ["Database administrators managing storage", "Individual software developers only", "Network infrastructure engineers only", "Organizations managing cloud resources"],
                 correct: 3,
                 explanation: "Waldur serves organizations (research institutions, universities, companies) needing to manage cloud resources across teams with proper governance and billing.",
                 learnMore: { url: "https://waldur.com/", text: "📚 Waldur Homepage" }
@@ -1123,7 +1123,7 @@ const questions = {
         2: [
             {
                 q: "What is a Waldur marketplace?",
-                options: ["Job board", "App store", "E-commerce store", "Catalog of available resource offerings"],
+                options: ["A job board for hiring cloud engineers", "An app store for installing extensions", "An online store for purchasing hardware", "A catalog of available resource offerings"],
                 correct: 3,
                 explanation: "The marketplace is a catalog where users browse and order resources (VMs, storage, services). Providers publish offerings, customers order them through the marketplace.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/marketplace/", text: "📚 Marketplace Guide" }
@@ -1176,28 +1176,28 @@ const questions = {
         4: [
             {
                 q: "How does Waldur handle resource lifecycle states?",
-                options: ["State machine with defined transitions", "No state management", "Simple on/off", "Manual tracking"],
+                options: ["State machine with defined transitions", "No built-in state management system", "Simple binary on/off status toggles", "Manual tracking via admin dashboard"],
                 correct: 0,
                 explanation: "Resources follow a state machine: Creating → OK → Updating/Terminating. Each state has allowed transitions. Erred states indicate problems needing attention.",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/core-concepts/", text: "📚 Core Concepts" }
             },
             {
                 q: "What are resource actions in Waldur?",
-                options: ["User permissions", "Billing events", "Operations like start, stop, resize on resources", "Log entries"],
+                options: ["Role-based user permission assignments", "Billing and cost calculation events", "Operations like start, stop, and resize", "Audit log entries for tracking changes"],
                 correct: 2,
                 explanation: "Actions are operations users can perform on resources (start, stop, restart, resize). Available actions depend on resource state and type. Actions create async tasks.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/resources/", text: "📚 Resource Actions" }
             },
             {
                 q: "How does quota management work in Waldur?",
-                options: ["Limits on resources per organization/project", "No quota support", "User quotas", "Disk quotas only"],
+                options: ["Limits on resources per org and project", "No built-in quota support in platform", "Per-user quotas on API request rates", "Disk storage quotas on mounted volumes"],
                 correct: 0,
                 explanation: "Quotas limit resource consumption (CPU cores, RAM, storage, VMs) at organization or project level. Prevents overspending and ensures fair resource distribution.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/quotas/", text: "📚 Quotas Guide" }
             },
             {
                 q: "What's the purpose of offering components?",
-                options: ["Plugin system", "UI components", "Network config", "Define measurable attributes like CPU, RAM for billing"],
+                options: ["Extend the plugin system with new modules", "Render frontend UI widgets and forms", "Configure network routing between nodes", "Define measurable attributes like CPU and RAM for billing"],
                 correct: 3,
                 explanation: "Components define measurable units (CPU, RAM, storage) with prices. Used for usage-based billing. Each offering can have multiple components with different pricing.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/marketplace/offerings/", text: "📚 Components" }
@@ -1206,35 +1206,35 @@ const questions = {
         5: [
             {
                 q: "What's the plugin architecture advantage in Waldur?",
-                options: ["No advantages", "Simpler code", "Extensible without modifying core", "Faster performance"],
+                options: ["Reduces API response time significantly", "Simplifies the deployment pipeline setup", "Extensible without modifying core codebase", "Improves database query performance overall"],
                 correct: 2,
                 explanation: "Plugins add support for new cloud providers, resource types, or features without changing core code. Each plugin is a Django app with defined interfaces.",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/plugins/", text: "📚 Plugin Development" }
             },
             {
                 q: "How does Waldur integrate with external providers?",
-                options: ["Direct database access", "No integration", "Manual sync only", "Through backend plugins with defined interfaces"],
+                options: ["Direct database connections to providers", "REST calls without any abstraction layer", "Manual CSV sync on a scheduled basis", "Backend plugins with defined interfaces"],
                 correct: 3,
                 explanation: "Backend plugins implement provider-specific logic (OpenStack, Azure, SLURM). They translate Waldur operations to provider APIs and sync state back.",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/plugins/", text: "📚 Backend Plugins" }
             },
             {
                 q: "What's the role of Waldur API?",
-                options: ["RESTful interface for all operations", "Internal only", "Documentation", "Testing"],
+                options: ["RESTful interface for all platform operations", "Internal message bus between microservices", "Static documentation hosting for developers", "Automated test runner for backend services"],
                 correct: 0,
                 explanation: "The REST API exposes all Waldur functionality. Frontend uses it, integrations use it, and it's the primary interface. Built with Django REST Framework.",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/api/", text: "📚 API Documentation" }
             },
             {
                 q: "How does approval workflow work in Waldur?",
-                options: ["No approval system", "Email-based only", "Orders can require approval before processing", "Automatic approval only"],
+                options: ["All orders are processed automatically by default", "Notifications are sent after order completion", "Orders can require approval before processing", "Approvals are managed through external tools"],
                 correct: 2,
                 explanation: "Orders can require manager approval before execution. Configurable per offering. Enables governance - managers review before resources are provisioned.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/marketplace/", text: "📚 Approval Workflow" }
             },
             {
                 q: "What reporting capabilities does Waldur provide?",
-                options: ["External tools only", "Usage, billing, and resource reports", "Logs only", "No reporting"],
+                options: ["Delegates all reporting to external tools", "Usage, billing, and resource report dashboards", "Only provides raw server access log files", "Sends periodic email summaries to admins"],
                 correct: 1,
                 explanation: "Waldur provides reports on resource usage, costs, and invoices. Export data for analysis. Useful for chargeback, capacity planning, and governance.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/reports/", text: "📚 Reports Guide" }
@@ -1250,7 +1250,7 @@ const questions = {
         1: [
             {
                 q: "What is an array?",
-                options: ["Key-value store", "Graph", "Tree structure", "Ordered collection with index access"],
+                options: ["Collection mapping keys to values in pairs", "Structure connecting nodes through edges", "Hierarchical structure with parent-child nodes", "Ordered collection with numeric index access"],
                 correct: 3,
                 explanation: "Arrays store elements in contiguous memory, accessed by numeric index. O(1) access by index, but O(n) insertion/deletion in middle due to shifting.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Array_(data_structure)", text: "📚 Array Data Structure" }
@@ -1280,14 +1280,14 @@ const questions = {
             },
             {
                 q: "What's a queue's ordering principle?",
-                options: ["LIFO", "FIFO - First In First Out", "Priority only", "Random"],
+                options: ["LIFO - Last In First Out ordering", "FIFO - First In First Out ordering", "Elements ordered by assigned priority", "Elements accessed in randomized order"],
                 correct: 1,
                 explanation: "Queue is First-In-First-Out: enqueue adds to back, dequeue removes from front. Used for: task scheduling, BFS, buffering, message queues.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Queue_(abstract_data_type)", text: "📚 Queue Data Structure" }
             },
             {
                 q: "What's the main advantage of a linked list over an array?",
-                options: ["Faster access", "Simpler code", "Less memory", "No element shifting needed"],
+                options: ["Faster element access by index position", "Simpler implementation with less code", "Uses less memory per stored element", "No element shifting needed on insert"],
                 correct: 3,
                 explanation: "Linked lists don't require shifting elements on insert/delete - just update pointers. Note: finding the position is still O(n). Trade-off: O(n) access, more memory per element (pointers).",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Linked_list", text: "📚 Linked List" }
@@ -1296,28 +1296,28 @@ const questions = {
         3: [
             {
                 q: "In Waldur, why is org hierarchy a tree structure?",
-                options: ["Performance", "Flat is simpler", "Circular references", "Parent-child relationships, single root"],
+                options: ["Optimized for fast query performance", "Flat structures are easier to manage", "Enables circular reference relationships", "Parent-child relationships with single root"],
                 correct: 3,
                 explanation: "Trees model hierarchies: Organization → Project → Resource. Each node has one parent (except root). No cycles allowed. Enables permission inheritance down the tree.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Tree_(data_structure)", text: "📚 Tree Structure" }
             },
             {
                 q: "Why does Celery use queues?",
-                options: ["Process tasks in order they arrived", "Random execution", "No specific reason", "Immediate execution"],
+                options: ["Process tasks in the order they arrived", "Execute tasks in randomized batch order", "Distribute tasks across multiple threads", "Run each task immediately upon submission"],
                 correct: 0,
                 explanation: "Message queues decouple producers from consumers. Tasks wait in queue until workers are available. Enables async processing, load distribution, and reliability.",
                 learnMore: { url: "https://docs.celeryq.dev/en/stable/getting-started/introduction.html", text: "📚 Celery Intro" }
             },
             {
                 q: "What's a binary search tree used for?",
-                options: ["Hash storage", "FIFO processing", "Efficient searching and sorted data", "Stack operations"],
+                options: ["Storing key-value pairs with fast hashing", "Processing elements in arrival order", "Efficient searching and sorted data access", "Managing nested function call operations"],
                 correct: 2,
                 explanation: "BST maintains sorted order: left children < parent < right children. O(log n) search/insert/delete (balanced). In-order traversal gives sorted sequence.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Binary_search_tree", text: "📚 Binary Search Tree" }
             },
             {
                 q: "When would you use a set instead of a list?",
-                options: ["Need index access", "Need duplicates", "Need ordered elements", "Need unique elements with fast lookup"],
+                options: ["Need to access elements by numeric index", "Need to store duplicate values in order", "Need elements sorted by insertion time", "Need unique elements with fast membership lookup"],
                 correct: 3,
                 explanation: "Sets store unique elements with O(1) average membership test. No duplicates, no ordering (usually). Use for: deduplication, membership checks, set operations.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Set_(abstract_data_type)", text: "📚 Set Data Structure" }
@@ -1333,21 +1333,21 @@ const questions = {
             },
             {
                 q: "What's a priority queue?",
-                options: ["Random queue", "Stack variant", "Queue where elements have priority ordering", "First priority only"],
+                options: ["Queue with elements accessed in random order", "Stack variant with a limited capacity buffer", "Queue where elements have priority-based ordering", "Queue restricted to only one priority category"],
                 correct: 2,
                 explanation: "Priority queue retrieves highest (or lowest) priority element first. Usually implemented with heap. Used for: Dijkstra's algorithm, task scheduling, event simulation.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Priority_queue", text: "📚 Priority Queue" }
             },
             {
                 q: "What's the worst-case time complexity of hash table operations?",
-                options: ["O(1)", "O(n) due to collisions", "O(n²)", "O(log n)"],
+                options: ["O(1) constant time in all scenarios", "O(n) linear time due to hash collisions", "O(n squared) due to nested iteration", "O(log n) through balanced tree fallback"],
                 correct: 1,
                 explanation: "Worst case: all keys hash to same bucket (chain), becoming a linked list. O(n) search. Good hash functions and resizing prevent this in practice.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Hash_table#Collision_resolution", text: "📚 Hash Collisions" }
             },
             {
                 q: "When is a doubly linked list preferred over singly linked?",
-                options: ["Simpler implementation", "Memory efficiency", "Need to traverse both directions", "Faster iteration"],
+                options: ["Simpler implementation with fewer pointers", "More memory-efficient per stored element", "Need to traverse in both directions easily", "Provides faster sequential forward iteration"],
                 correct: 2,
                 explanation: "Doubly linked lists have prev+next pointers, enabling bidirectional traversal and O(1) deletion with only node reference. Cost: more memory per node.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Doubly_linked_list", text: "📚 Doubly Linked List" }
@@ -1356,35 +1356,35 @@ const questions = {
         5: [
             {
                 q: "When would a B-tree be better than a binary tree?",
-                options: ["In-memory only", "Disk-based storage, minimize I/O", "Always", "Simple data"],
+                options: ["When data fits entirely in memory only", "For disk-based storage to minimize I/O reads", "It is always better regardless of use case", "When the data set is small and simple"],
                 correct: 1,
                 explanation: "B-trees have high branching factor, reducing tree height. Fewer disk reads needed. Used in databases and filesystems. Each node fits in one disk block.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/B-tree", text: "📚 B-tree" }
             },
             {
                 q: "What's the purpose of a bloom filter?",
-                options: ["Probabilistic membership testing, space-efficient", "Compression", "Exact membership", "Sorting data"],
+                options: ["Probabilistic membership testing, space-efficient", "General-purpose data compression algorithm", "Exact set membership with zero false positives", "Efficient sorting of large numerical datasets"],
                 correct: 0,
                 explanation: "Bloom filters test membership with possible false positives, no false negatives. Very space-efficient. Used for: cache lookups, spell checkers, network routing.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Bloom_filter", text: "📚 Bloom Filter" }
             },
             {
                 q: "What's a trie used for?",
-                options: ["Number sorting", "Efficient string prefix operations", "Graph traversal", "Queue management"],
+                options: ["Sorting numbers by magnitude quickly", "Efficient string prefix search operations", "Traversing nodes in a weighted graph", "Managing a bounded queue of elements"],
                 correct: 1,
                 explanation: "Tries (prefix trees) store strings with shared prefixes. O(m) lookup where m=key length. Used for: autocomplete, spell check, IP routing, dictionary storage.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Trie", text: "📚 Trie" }
             },
             {
                 q: "What's the difference between a heap and a BST?",
-                options: ["BST has min/max at root", "Same structure", "Heap is sorted", "Heap maintains min/max at root, BST is sorted"],
+                options: ["BST keeps the minimum or maximum at the root", "They are structurally identical data structures", "Heap keeps all elements in fully sorted order", "Heap has min/max at root, BST is fully sorted"],
                 correct: 3,
                 explanation: "Heap: parent ≥ children (max-heap), only guarantees root is max. BST: left < parent < right, fully sorted. Heap for priority queue, BST for ordered operations.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Heap_(data_structure)", text: "📚 Heap" }
             },
             {
                 q: "When would you use a graph over a tree?",
-                options: ["Faster operations", "Simpler structure", "Nodes can have multiple parents/cycles", "Single parent needed"],
+                options: ["Graphs provide faster lookup operations overall", "Graphs offer a simpler structural representation", "Nodes can have multiple parents and form cycles", "Each node requires exactly one parent reference"],
                 correct: 2,
                 explanation: "Graphs allow cycles and multiple edges between nodes. Model: social networks, road maps, dependencies. Trees are special acyclic graphs with single parent per node.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Graph_(abstract_data_type)", text: "📚 Graph" }
@@ -1449,7 +1449,7 @@ const questions = {
             },
             {
                 q: "What's the Observer pattern used for?",
-                options: ["Decorate functions", "Notify multiple objects of state changes", "Build objects step by step", "Create single instance"],
+                options: ["Add behavior to functions dynamically", "Notify multiple objects of state changes", "Construct complex objects incrementally", "Restrict a class to a single instance"],
                 correct: 1,
                 explanation: "Observer enables publish-subscribe: subject notifies observers of changes. Loose coupling - subject doesn't know observers. Django signals use this pattern.",
                 learnMore: { url: "https://refactoring.guru/design-patterns/observer", text: "📚 Observer Pattern" }
@@ -1588,7 +1588,7 @@ const questions = {
         3: [
             {
                 q: "What does idempotent mean for an API operation?",
-                options: ["Same result regardless of how many times called", "Logged operation", "Secure operation", "Fast operation"],
+                options: ["Same result regardless of how many times called", "Every call is recorded in the operation audit log", "The operation requires authenticated access tokens", "The operation completes within a time limit"],
                 correct: 0,
                 explanation: "Idempotent: calling N times has same effect as calling once. GET, PUT, DELETE should be idempotent. POST is not (creates new resource each time).",
                 learnMore: { url: "https://restfulapi.net/idempotent-rest-apis/", text: "📚 Idempotency" }
@@ -1609,7 +1609,7 @@ const questions = {
             },
             {
                 q: "What should a RESTful URL look like?",
-                options: ["Any format", "/getResource?id=1", "/resource/get/1", "/resources/{id} using nouns"],
+                options: ["Any format the developer chooses to use", "/getResource?id=1 with verb-based naming", "/resource/get/1 with action in the path", "/resources/{id} using noun-based naming"],
                 correct: 3,
                 explanation: "RESTful URLs use nouns (resources), not verbs. HTTP methods provide the verbs: GET /users/123 (read user), DELETE /users/123 (delete user).",
                 learnMore: { url: "https://restfulapi.net/resource-naming/", text: "📚 REST URL Naming" }
@@ -1618,7 +1618,7 @@ const questions = {
         4: [
             {
                 q: "What's HATEOAS in REST?",
-                options: ["Authentication method", "Hypermedia links in responses for discoverability", "Error handling", "Caching strategy"],
+                options: ["Hostile API deprecation design pattern", "Responses include links to related actions", "Historical API request tracing subsystem", "Hardware-optimized API routing protocol"],
                 correct: 1,
                 explanation: "HATEOAS: responses include links to related resources/actions. Clients discover API by following links, not hardcoding URLs. Level 3 of Richardson Maturity Model.",
                 learnMore: { url: "https://restfulapi.net/hateoas/", text: "📚 HATEOAS" }
@@ -1632,7 +1632,7 @@ const questions = {
             },
             {
                 q: "What's rate limiting used for?",
-                options: ["Speed up requests", "Prevent API abuse, ensure fair usage", "Validate input", "Cache responses"],
+                options: ["Speed up request processing on the server", "Prevent API abuse and ensure fair usage", "Validate and sanitize incoming user input", "Cache and compress API response payloads"],
                 correct: 1,
                 explanation: "Rate limiting restricts requests per time period (e.g., 100/minute). Prevents abuse, ensures availability. Return 429 Too Many Requests with Retry-After header.",
                 learnMore: { url: "https://www.django-rest-framework.org/api-guide/throttling/", text: "📚 Rate Limiting" }
@@ -1692,7 +1692,7 @@ const questions = {
         1: [
             {
                 q: "What is a unit test?",
-                options: ["Tests entire application", "Tests user interface", "Tests a single function/component in isolation", "Tests database"],
+                options: ["Tests the entire application end to end", "Tests the user interface rendering and layout", "Tests a single function or component in isolation", "Tests the database schema and stored queries"],
                 correct: 2,
                 explanation: "Unit tests verify individual functions/methods in isolation. Fast, pinpoint failures precisely. Mock dependencies to test code in isolation.",
                 learnMore: { url: "https://martinfowler.com/bliki/UnitTest.html", text: "📚 Unit Testing" }
@@ -1722,7 +1722,7 @@ const questions = {
             },
             {
                 q: "In pytest, how do you mark a test to skip?",
-                options: ["# skip", "@pytest.mark.skip", "skip()", "@skip"],
+                options: ["# skip comment above the test", "@pytest.mark.skip decorator on it", "skip() function call inside the test", "@skip decorator from unittest module"],
                 correct: 1,
                 explanation: "@pytest.mark.skip skips test unconditionally. Use @pytest.mark.skipif(condition) for conditional skips. Add reason='...' for documentation.",
                 learnMore: { url: "https://docs.pytest.org/en/stable/how-to/skipping.html", text: "📚 Skipping Tests" }
@@ -1840,7 +1840,7 @@ const questions = {
         1: [
             {
                 q: "What is a branch in Git?",
-                options: ["Connection to remote server", "Pointer to commit, enables parallel work", "Backup of repository state", "Full copy of the repository"],
+                options: ["A configured connection to a remote server", "Pointer to a commit, enables parallel work", "An automatic backup of the repository state", "A complete copy of the entire repository"],
                 correct: 1,
                 explanation: "Branches are lightweight pointers to commits. Creating a branch is cheap (41-byte file). Enables parallel work on features/fixes without affecting main.",
                 learnMore: { url: "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell", text: "📚 Git Branching" }
@@ -2015,7 +2015,7 @@ const questions = {
             },
             {
                 q: "What advantage does 'git subtree' have over 'git submodule' for including external repositories?",
-                options: ["Subtree requires less disk space than submodule", "Subtree merges code directly into the repo, requiring no extra commands for cloning", "Subtree automatically keeps dependencies at the latest version", "Subtree stores only references, making the repo lighter"],
+                options: ["Subtree requires less disk space and avoids large repository bloat", "Subtree merges code directly into the repo, no extra clone steps", "Subtree automatically keeps external dependencies at latest version", "Subtree stores only lightweight references to the external project"],
                 correct: 1,
                 explanation: "git subtree merges external repo content directly into your tree. Contributors can clone and work normally without running 'git submodule init/update'. Trade-off: harder to push changes back upstream."
             },
@@ -2093,7 +2093,7 @@ const questions = {
             },
             {
                 q: "What's a Docker layer?",
-                options: ["Virtual network layer", "Container isolation level", "Security permission layer", "Cached filesystem change from instruction"],
+                options: ["Virtual network overlay for containers", "Container runtime isolation level", "Security permission boundary scope", "Cached filesystem change from instruction"],
                 correct: 3,
                 explanation: "Each Dockerfile instruction creates a layer. Layers are cached and reused if instruction and previous layers unchanged. Optimize by ordering least→most changing.",
                 learnMore: { url: "https://docs.docker.com/storage/storagedriver/", text: "📚 Docker Layers" }
@@ -2108,7 +2108,7 @@ const questions = {
             {
                 q: "What will this Dockerfile produce?",
                 code: "FROM python:3.11-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install -r requirements.txt\nCOPY . .\nCMD [\"python\", \"app.py\"]",
-                options: ["A Python app image with dependencies installed first for caching", "An image that only copies requirements.txt", "A container running pip install on every start", "An image without any application code"],
+                options: ["A Python app image with dependencies cached via separate copy step", "An image that copies requirements.txt but never installs packages", "A container that re-runs pip install each time it starts up fresh", "An image that installs dependencies but omits application source"],
                 correct: 0,
                 explanation: "This Dockerfile copies requirements.txt first and installs dependencies separately. This means the pip install layer is cached when only code changes. COPY . . then adds the app code.",
                 learnMore: { url: "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#leverage-build-cache", text: "📚 Build Cache" }
@@ -2124,7 +2124,7 @@ const questions = {
             },
             {
                 q: "What's the difference between Docker Compose and Kubernetes?",
-                options: ["Kubernetes is for development only", "Compose for dev/simple, Kubernetes for production clusters", "Compose is for production clusters", "They do exactly the same thing"],
+                options: ["Kubernetes handles local development; Compose handles production", "Compose targets dev and simple setups; Kubernetes runs clusters", "Compose manages production clusters; Kubernetes is for dev only", "Both tools provide identical container orchestration capabilities"],
                 correct: 1,
                 explanation: "Compose: define multi-container apps, great for development and simple deployments, single host. Kubernetes: orchestration for production clusters, multi-node, service discovery, auto-scaling.",
                 learnMore: { url: "https://docs.docker.com/compose/", text: "📚 Docker Compose" }
@@ -2147,7 +2147,7 @@ const questions = {
         5: [
             {
                 q: "What's the difference between CMD and ENTRYPOINT?",
-                options: ["ENTRYPOINT is deprecated now", "CMD provides default args; ENTRYPOINT sets the main command", "They work exactly the same", "CMD is the newer instruction"],
+                options: ["ENTRYPOINT was deprecated in favor of CMD in recent versions", "CMD provides default arguments; ENTRYPOINT sets the main command", "Both instructions provide identical behavior in all use cases", "CMD runs before ENTRYPOINT during the container startup phase"],
                 correct: 1,
                 explanation: "ENTRYPOINT: the executable (hard to override). CMD: default arguments (easy to override). Best practice: ENTRYPOINT for command, CMD for default args.",
                 learnMore: { url: "https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact", text: "📚 CMD vs ENTRYPOINT" }
@@ -2175,7 +2175,7 @@ const questions = {
             },
             {
                 q: "How do you reduce Docker image attack surface?",
-                options: ["Use larger base images", "Minimal base, non-root user, few tools", "Add more debugging tools", "Always run as root user"],
+                options: ["Use full-featured base images with extensive tooling packages", "Use minimal base images, non-root user, and fewer tools", "Add comprehensive debugging tools for runtime diagnostics", "Run all processes as root to simplify permission handling"],
                 correct: 1,
                 explanation: "Use minimal base (alpine, distroless), non-root USER, remove shells/tools if not needed, scan for vulnerabilities (Trivy, Snyk), update regularly.",
                 learnMore: { url: "https://docs.docker.com/develop/security-best-practices/", text: "📚 Security Best Practices" }
@@ -2183,7 +2183,7 @@ const questions = {
             {
                 q: "What is the issue with this Dockerfile?",
                 code: "FROM node:18\nCOPY . .\nRUN npm install\nRUN npm run build\nEXPOSE 3000\nCMD [\"node\", \"dist/server.js\"]",
-                options: ["COPY before npm install breaks layer caching for dependencies", "EXPOSE is on wrong port number", "CMD syntax is incorrect here", "FROM tag is too old for use"],
+                options: ["Copying all files before npm install breaks dependency layer caching", "The EXPOSE port does not match the application listening port value", "The CMD instruction uses an unsupported syntax for node startup", "The FROM base image tag is outdated and no longer maintained now"],
                 correct: 0,
                 explanation: "COPY . . before npm install means any code change invalidates the npm install cache. Better: COPY package*.json first, npm install, then COPY the rest.",
                 learnMore: { url: "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/", text: "📚 Dockerfile Best Practices" }
@@ -2280,7 +2280,7 @@ const questions = {
         3: [
             {
                 q: "What's the difference between Continuous Delivery and Deployment?",
-                options: ["Delivery is fully automatic", "They are exactly the same thing", "Delivery needs manual approval, Deployment is automatic", "Deployment requires manual approval"],
+                options: ["Delivery pushes changes to production automatically with no gates", "Both terms describe exactly the same process with no distinction", "Delivery requires manual approval to deploy; Deployment is automatic", "Deployment requires manual approval while Delivery is fully automated"],
                 correct: 2,
                 explanation: "Continuous Delivery means code is always ready to deploy but requires manual approval. Continuous Deployment automatically deploys every passing change to production.",
                 learnMore: { url: "https://www.atlassian.com/continuous-delivery/principles/continuous-integration-vs-delivery-vs-deployment", text: "📚 Delivery vs Deployment" }
@@ -2382,7 +2382,7 @@ const questions = {
         1: [
             {
                 q: "What's the purpose of sorting algorithms?",
-                options: ["Convert data types", "Arrange elements in a specific order", "Delete duplicate elements", "Compress data for storage"],
+                options: ["Convert elements between different data types", "Arrange elements into a defined specific order", "Remove duplicate elements from a collection", "Compress data for more efficient storage use"],
                 correct: 1,
                 explanation: "Sorting algorithms arrange elements in a defined order (ascending, descending, alphabetical). Common algorithms include quicksort, mergesort, and bubble sort.",
                 learnMore: { url: "https://www.geeksforgeeks.org/sorting-algorithms/", text: "📚 Sorting Algorithms" }
@@ -2405,7 +2405,7 @@ const questions = {
         2: [
             {
                 q: "What's the difference between linear and binary search?",
-                options: ["Linear checks each element; binary halves sorted data", "They're identical in performance", "Binary works on unsorted data only", "Linear is faster than binary search"],
+                options: ["Linear checks each element sequentially; binary halves sorted data", "Both algorithms perform identically on all types of input datasets", "Binary search only operates on unsorted and randomized data inputs", "Linear search is consistently faster than binary on sorted datasets"],
                 correct: 0,
                 explanation: "Linear search checks each element sequentially (O(n)). Binary search requires sorted data but halves the search space each step (O(log n)).",
                 learnMore: { url: "https://www.geeksforgeeks.org/binary-search/", text: "📚 Binary Search" }
@@ -2458,21 +2458,21 @@ const questions = {
         4: [
             {
                 q: "When would you use dynamic programming?",
-                options: ["Random data with no patterns", "Real-time systems with strict timing", "Overlapping subproblems with optimal substructure", "Simple loops with no repetition"],
+                options: ["Problems with random data and no recurring patterns", "Real-time systems requiring strict timing guarantees", "Overlapping subproblems with optimal substructure", "Simple iterative loops with no repeated computation"],
                 correct: 2,
                 explanation: "Dynamic programming works when problems have overlapping subproblems (same calculations repeated) and optimal substructure (optimal solution from optimal subsolutions).",
                 learnMore: { url: "https://www.geeksforgeeks.org/dynamic-programming/", text: "📚 Dynamic Programming" }
             },
             {
                 q: "What's memoization in algorithms?",
-                options: ["Store data in permanent memory", "Memorize source code by heart", "Cache computed results to avoid recalculation", "Write detailed comments in code"],
+                options: ["Persist intermediate data into permanent storage", "Compress function outputs to reduce memory usage", "Cache computed results to avoid repeated calculation", "Generate detailed execution logs during processing"],
                 correct: 2,
                 explanation: "Memoization caches function results for given inputs. If called again with same inputs, returns cached result. Optimizes recursive algorithms significantly.",
                 learnMore: { url: "https://www.geeksforgeeks.org/memoization-1d-2d-and-3d/", text: "📚 Memoization" }
             },
             {
                 q: "What's a hash collision and how is it handled?",
-                options: ["Memory overflow during hashing", "When hash function returns null value", "Network collision during transfer", "Two keys map to same slot; use chaining or probing"],
+                options: ["Memory overflow that occurs when the hash table is full", "When the hash function produces a null or undefined value", "Network packet collision during distributed data transfer", "Two keys map to the same slot; resolved by chaining or probing"],
                 correct: 3,
                 explanation: "Hash collision occurs when different keys produce the same hash value. Handled via chaining (linked list at each slot) or open addressing (probing for next slot).",
                 learnMore: { url: "https://www.geeksforgeeks.org/hashing-set-2-separate-chaining/", text: "📚 Hash Collisions" }
@@ -2488,35 +2488,35 @@ const questions = {
         5: [
             {
                 q: "When is Dijkstra's algorithm used?",
-                options: ["Sorting arrays of integers quickly", "Compressing text using entropy", "Finding cycles in directed graphs", "Shortest path in weighted graphs with non-negative edges"],
+                options: ["Sorting elements in arrays using comparison operations efficiently", "Compressing text data by leveraging character frequency patterns", "Detecting and identifying cycles within directed graph structures", "Finding shortest paths in weighted graphs with non-negative edges"],
                 correct: 3,
                 explanation: "Dijkstra finds shortest paths from a source to all vertices in weighted graphs with non-negative edges. Uses priority queue for O((V+E) log V) complexity.",
                 learnMore: { url: "https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/", text: "📚 Dijkstra's Algorithm" }
             },
             {
                 q: "What's the difference between greedy and dynamic programming?",
-                options: ["Greedy makes local optimal choices; DP considers all subproblems", "Greedy is always slower than DP", "They're identical approaches to problems", "DP never finds optimal solutions"],
+                options: ["Greedy makes locally optimal choices; DP evaluates all subproblems", "Greedy algorithms are consistently slower than DP in all scenarios", "Both approaches solve optimization problems in an identical manner", "DP approximates solutions but never finds the true optimal answer"],
                 correct: 0,
                 explanation: "Greedy makes locally optimal choices hoping for global optimum (fast but not always optimal). DP systematically solves all subproblems (slower but guaranteed optimal).",
                 learnMore: { url: "https://www.geeksforgeeks.org/greedy-approach-vs-dynamic-programming/", text: "📚 Greedy vs DP" }
             },
             {
                 q: "What's amortized analysis?",
-                options: ["Worst case analysis for single operation", "Best case scenario only considered", "Random sampling of performance", "Average cost per operation over sequence of operations"],
+                options: ["Analyzing the worst-case cost of every single operation", "Considering only the best-case scenario for performance", "Randomly sampling operations to estimate average runtime", "Averaging the cost per operation over a sequence of operations"],
                 correct: 3,
                 explanation: "Amortized analysis averages time over a sequence of operations. Example: ArrayList resize is O(n) sometimes, but amortized O(1) per insertion over time.",
                 learnMore: { url: "https://www.geeksforgeeks.org/analysis-algorithm-set-5-amortized-analysis/", text: "📚 Amortized Analysis" }
             },
             {
                 q: "What's the A* pathfinding algorithm?",
-                options: ["Exhaustive search of all possible paths", "Heuristic-guided search combining actual and estimated cost", "Only works on unweighted graphs", "Random walk until destination found"],
+                options: ["Exhaustive brute-force search exploring all possible paths", "Heuristic-guided search combining actual cost and estimate", "Graph traversal algorithm that only handles unweighted edges", "Randomized walk algorithm that explores until goal is found"],
                 correct: 1,
                 explanation: "A* uses f(n) = g(n) + h(n) where g is actual cost from start and h is heuristic estimate to goal. Guarantees shortest path with admissible heuristic.",
                 learnMore: { url: "https://www.redblobgames.com/pathfinding/a-star/introduction.html", text: "📚 A* Pathfinding" }
             },
             {
                 q: "When would you use a bloom filter?",
-                options: ["Probabilistic membership test with no false negatives", "Exact counting of unique elements", "Sorting large datasets efficiently", "Encrypting sensitive information"],
+                options: ["Probabilistic set membership test allowing no false negatives", "Exact counting structure for tracking all unique element values", "Comparison-based algorithm for sorting large datasets quickly", "Symmetric encryption method for protecting sensitive user data"],
                 correct: 0,
                 explanation: "Bloom filters test set membership with possible false positives but no false negatives. Space-efficient for large sets. Used in caches, spell checkers, databases.",
                 learnMore: { url: "https://www.geeksforgeeks.org/bloom-filters-introduction-and-implementation/", text: "📚 Bloom Filters" }
@@ -2528,7 +2528,7 @@ const questions = {
         1: [
             {
                 q: "What is a finite state machine (FSM)?",
-                options: ["Hardware component for calculations", "Database for storing machine data", "Infinite loop that never terminates", "Model with defined states and transitions between them"],
+                options: ["Hardware component dedicated to arithmetic calculations", "Persistent database schema used for storing machine data", "Infinite processing loop that runs until system power off", "Computation model with defined states and transitions between them"],
                 correct: 3,
                 explanation: "A finite state machine has a finite number of states, transitions between them triggered by events, and defined initial/final states. Models sequential logic.",
                 learnMore: { url: "https://www.geeksforgeeks.org/introduction-of-finite-automata/", text: "📚 Finite Automata" }
@@ -2542,7 +2542,7 @@ const questions = {
             },
             {
                 q: "What triggers a state transition?",
-                options: ["An event or action that causes state change", "A network packet arriving", "A database migration process", "A timer that runs continuously"],
+                options: ["An event or condition that causes a change between states", "A network packet arriving at the server input interface", "A database schema migration applied during a deployment", "A background timer process that runs on a fixed schedule"],
                 correct: 0,
                 explanation: "Transitions are triggered by events (user actions, system events, timeouts). The transition may also have guards (conditions) that must be true to proceed.",
                 learnMore: { url: "https://statecharts.dev/what-is-a-state-machine.html", text: "📚 Transitions" }
@@ -2565,7 +2565,7 @@ const questions = {
             },
             {
                 q: "Why use state machines for workflow?",
-                options: ["Enforce valid state transitions and prevent invalid states", "Reduce memory usage significantly", "Improve database query performance", "Make code run faster overall"],
+                options: ["Enforce valid transitions and prevent illegal state changes", "Significantly reduce overall application memory consumption", "Improve the execution speed of database query operations", "Increase general code execution performance across modules"],
                 correct: 0,
                 explanation: "State machines enforce business rules by only allowing defined transitions. Prevents invalid states (e.g., can't ship before payment). Makes workflow logic explicit.",
                 learnMore: { url: "https://statecharts.dev/benefits-of-statecharts.html", text: "📚 Benefits" }
@@ -2574,14 +2574,14 @@ const questions = {
         3: [
             {
                 q: "What's the difference between Mealy and Moore machines?",
-                options: ["Mealy is only for hardware design", "They're identical in all aspects", "Moore is newer than Mealy machines", "Mealy outputs depend on state+input; Moore only on state"],
+                options: ["Mealy machines are restricted to hardware design applications only", "Both machine types produce identical behavior in all situations now", "Moore machines are a newer replacement for legacy Mealy definitions", "Mealy outputs depend on state plus input; Moore only on current state"],
                 correct: 3,
                 explanation: "Moore machine outputs depend only on current state. Mealy machine outputs depend on both state AND current input. Mealy can be more responsive but complex.",
                 learnMore: { url: "https://www.geeksforgeeks.org/difference-between-mealy-and-moore-machine/", text: "📚 Mealy vs Moore" }
             },
             {
                 q: "How does django-fsm-2 define valid transitions?",
-                options: ["Database table storing all transitions", "XML configuration file for transitions", "@transition decorator specifying source and target states", "Comments describing allowed states"],
+                options: ["A database table that stores all allowed transition records", "An XML configuration file that declares transition mappings", "@transition decorator specifying source and target state values", "Inline comments describing which state changes are permitted"],
                 correct: 2,
                 explanation: "django-fsm-2 uses @transition decorator on methods. Specifies source state(s), target state, and optional conditions. Method executes transition logic.",
                 learnMore: { url: "https://github.com/django-commons/django-fsm-2#usage", text: "📚 FSM Transitions" }
@@ -2618,14 +2618,14 @@ const questions = {
             },
             {
                 q: "How do you test state machine behavior?",
-                options: ["Only test the happy path transitions", "Skip testing since FSM is declarative", "Test each valid transition and verify invalid ones are rejected", "Test only the final states matter"],
+                options: ["Only verify the expected happy path transitions succeed correctly", "Skip all testing because FSM logic is inherently declarative code", "Test valid transitions and verify invalid ones are properly rejected", "Only assert that the final end states match expected output values"],
                 correct: 2,
                 explanation: "Test each valid transition, verify guards work, confirm invalid transitions raise errors, test callbacks execute. State machines need comprehensive testing.",
                 learnMore: { url: "https://statecharts.dev/how-to-use-statecharts.html#testing", text: "📚 Testing FSM" }
             },
             {
                 q: "What's a state machine diagram?",
-                options: ["Database schema for states", "Network topology diagram", "UML class diagram variation", "Visual representation of states and transitions"],
+                options: ["A database schema layout that represents state storage", "A network topology map showing connection relationships", "A UML class diagram variant for object-oriented design", "A visual representation of states and transitions between them"],
                 correct: 3,
                 explanation: "State machine diagrams (statecharts) visually show states as nodes, transitions as arrows with labels. Essential for documenting and communicating workflows.",
                 learnMore: { url: "https://statecharts.dev/how-to-use-statecharts.html#diagrams", text: "📚 State Diagrams" }
@@ -2634,21 +2634,21 @@ const questions = {
         5: [
             {
                 q: "How do you handle concurrent state machines?",
-                options: ["Parallel regions or separate machines with synchronization", "Use single global machine for everything", "State machines can't run concurrently", "Ignore concurrency as it's rare"],
+                options: ["Parallel regions or separate machines with synchronization points", "A single global state machine that manages all system components", "Concurrent execution is unsupported by state machine formalisms", "Concurrency is ignored since it rarely occurs in real applications"],
                 correct: 0,
                 explanation: "Concurrent state machines use parallel regions (orthogonal states) or separate machines with synchronization points. Handle with care for consistency.",
                 learnMore: { url: "https://statecharts.dev/glossary/parallel-state.html", text: "📚 Parallel States" }
             },
             {
                 q: "What's event sourcing with state machines?",
-                options: ["Store all transition events to rebuild current state", "Store only the current state value", "Events are same as transitions", "Delete events after state changes"],
+                options: ["Store all transition events and replay them to rebuild state", "Store only the latest current state and discard past history", "Events and transitions are interchangeable equivalent concepts", "Delete historical events immediately after each state changes"],
                 correct: 0,
                 explanation: "Event sourcing stores all transition events rather than current state. Current state is computed by replaying events. Provides complete audit trail and time-travel.",
                 learnMore: { url: "https://martinfowler.com/eaaDev/EventSourcing.html", text: "📚 Event Sourcing" }
             },
             {
                 q: "How do you migrate state machine definitions?",
-                options: ["Just change the code and redeploy", "Delete all data and start fresh", "State machines can't be migrated", "Plan carefully: add states first, migrate data, then remove old"],
+                options: ["Change the source code directly and redeploy the application", "Delete all existing data and rebuild the state machine fresh", "State machine definitions are immutable and cannot be migrated", "Add new states first, then migrate existing data, then remove old"],
                 correct: 3,
                 explanation: "Migrate carefully: add new states/transitions, migrate existing data, remove old states. Ensure no data is in removed states. Test thoroughly.",
                 learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/migrations/", text: "📚 Data Migrations" }
@@ -2662,7 +2662,7 @@ const questions = {
             },
             {
                 q: "How do state machines integrate with saga pattern?",
-                options: ["State machines can't handle long transactions", "Each saga step is a state; compensating actions on failure", "Sagas are only for microservices", "Sagas replace state machines entirely"],
+                options: ["State machines are unable to handle long-running transactions", "Each saga step maps to a state; failures trigger compensation", "The saga pattern is only applicable within microservice systems", "Sagas completely replace the need for state machine management"],
                 correct: 1,
                 explanation: "Saga pattern uses state machine to track long-running transactions. Each step is a state. Failure triggers compensating transitions to rollback completed steps.",
                 learnMore: { url: "https://microservices.io/patterns/data/saga.html", text: "📚 Saga Pattern" }
@@ -2674,14 +2674,14 @@ const questions = {
         1: [
             {
                 q: "What is concurrency in programming?",
-                options: ["Using multiple monitors at once", "Writing code in multiple languages", "Running code faster by default", "Multiple tasks making progress in overlapping time"],
+                options: ["Using multiple display monitors at the same time", "Writing application code using multiple languages", "Automatically running code faster with no changes", "Multiple tasks making progress in overlapping time"],
                 correct: 3,
                 explanation: "Concurrency is handling multiple tasks that overlap in time. Tasks may not run simultaneously but progress is interleaved. Enables responsive applications.",
                 learnMore: { url: "https://realpython.com/python-concurrency/", text: "📚 Python Concurrency" }
             },
             {
                 q: "What's the difference between concurrency and parallelism?",
-                options: ["Parallelism is slower than concurrency", "Concurrency is structure; parallelism is simultaneous execution", "Concurrency requires multiple CPUs always", "They mean exactly the same thing"],
+                options: ["Parallelism is about structure; concurrency is execution", "Concurrency is structure; parallelism is simultaneous execution", "Concurrency requires multiple CPUs; parallelism does not", "Both describe simultaneous execution on multiple processors"],
                 correct: 1,
                 explanation: "Concurrency is about structure (dealing with multiple things). Parallelism is about execution (doing multiple things at once). Concurrency enables parallelism.",
                 learnMore: { url: "https://blog.golang.org/waza-talk", text: "📚 Concurrency vs Parallelism" }
@@ -2711,7 +2711,7 @@ const questions = {
             },
             {
                 q: "When should you use threading vs asyncio?",
-                options: ["Always use threading for everything", "Asyncio only works on Linux systems", "Threading is deprecated in Python", "Asyncio for I/O-bound; threading for blocking libraries"],
+                options: ["Threading for I/O-bound; asyncio for CPU-bound tasks", "Asyncio for CPU-bound; threading for network-bound tasks", "Threading for event loops; asyncio for parallel threads", "Asyncio for I/O-bound; threading for blocking libraries"],
                 correct: 3,
                 explanation: "Use asyncio for I/O-bound tasks with async libraries. Use threading when calling blocking/synchronous libraries. For CPU-bound tasks, use multiprocessing or free-threaded Python (3.13+).",
                 learnMore: { url: "https://realpython.com/python-concurrency/#when-to-use-which", text: "📚 Concurrency Guide" }
@@ -2720,7 +2720,7 @@ const questions = {
         3: [
             {
                 q: "What is a race condition?",
-                options: ["Competition between two racing programs", "Performance benchmark between threads", "Condition checked before program starts", "Bug when outcome depends on timing of concurrent operations"],
+                options: ["Error when a thread exceeds its allotted CPU time", "Deadlock caused by two threads waiting on each other", "Condition where a thread blocks another indefinitely", "Bug when outcome depends on timing of concurrent operations"],
                 correct: 3,
                 explanation: "Race condition occurs when multiple threads access shared data and outcome depends on execution order. Can cause data corruption, crashes, security vulnerabilities.",
                 learnMore: { url: "https://realpython.com/intro-to-python-threading/#race-conditions", text: "📚 Race Conditions" }
@@ -2741,7 +2741,7 @@ const questions = {
             },
             {
                 q: "What does 'thread-safe' mean?",
-                options: ["Thread is protected from hackers", "Thread has been tested thoroughly", "Thread won't crash the program ever", "Code can be called from multiple threads without corruption"],
+                options: ["Code that runs only on a single thread at a time", "Code that uses locks on every function internally", "Code that prevents threads from running concurrently", "Code callable from multiple threads without corruption"],
                 correct: 3,
                 explanation: "Thread-safe code can be executed by multiple threads concurrently without race conditions or data corruption. Uses proper synchronization or immutable data.",
                 learnMore: { url: "https://docs.python.org/3/glossary.html#term-thread-safe", text: "📚 Thread Safety" }
@@ -2750,7 +2750,7 @@ const questions = {
         4: [
             {
                 q: "What is a semaphore?",
-                options: ["Signal sent between processes only", "Memory barrier for CPU caches", "Counter-based synchronization allowing N concurrent accesses", "Type of timeout for waiting threads"],
+                options: ["Binary flag allowing only one thread at a time", "Lock mechanism that queues threads by priority", "Counter-based synchronization allowing N concurrent accesses", "Barrier that blocks until all threads have arrived"],
                 correct: 2,
                 explanation: "Semaphore is a synchronization primitive with a counter. Allows up to N threads to access a resource. Used for connection pools, rate limiting, bounded buffers.",
                 learnMore: { url: "https://docs.python.org/3/library/threading.html#semaphore-objects", text: "📚 Semaphores" }
@@ -2771,7 +2771,7 @@ const questions = {
             },
             {
                 q: "How do you handle exceptions in async code?",
-                options: ["try/except around await; or gather with return_exceptions", "Use global exception handler only", "Let them crash the event loop always", "Exceptions don't occur in async code"],
+                options: ["try/except around await; or gather with return_exceptions", "Wrap the entire event loop in a single try/except block", "Register a callback that catches errors after completion", "Exceptions propagate automatically without special handling"],
                 correct: 0,
                 explanation: "Use try/except around await calls. For gather(), use return_exceptions=True to collect exceptions. Unhandled exceptions in tasks may be silently lost.",
                 learnMore: { url: "https://docs.python.org/3/library/asyncio-task.html#asyncio.gather", text: "📚 Async Exceptions" }
@@ -2780,14 +2780,14 @@ const questions = {
         5: [
             {
                 q: "What is the actor model?",
-                options: ["Design pattern for user interfaces", "Security model with user actors", "Testing pattern using mock actors", "Concurrency model where actors communicate via messages only"],
+                options: ["Model where shared memory is divided among threads", "Pattern where processes share a global mutable state", "Model where workers pull tasks from a shared queue", "Concurrency model where actors communicate via messages only"],
                 correct: 3,
                 explanation: "Actor model has isolated actors that communicate only via async messages. No shared state. Each actor processes messages sequentially. Erlang, Akka implement this.",
                 learnMore: { url: "https://www.brianstorti.com/the-actor-model/", text: "📚 Actor Model" }
             },
             {
                 q: "What's optimistic vs pessimistic locking?",
-                options: ["Optimistic checks at commit; pessimistic locks immediately", "They're identical in behavior", "Pessimistic never causes conflicts", "Optimistic is faster in all cases"],
+                options: ["Optimistic checks at commit time; pessimistic locks upfront", "Optimistic uses timeouts; pessimistic uses retry loops", "Pessimistic checks at commit; optimistic locks immediately", "Optimistic locks the row first; pessimistic uses versioning"],
                 correct: 0,
                 explanation: "Pessimistic locking acquires lock before reading/writing. Optimistic assumes no conflict, checks version at commit. Optimistic better for low contention.",
                 learnMore: { url: "https://www.baeldung.com/cs/optimistic-vs-pessimistic-locking", text: "📚 Locking Strategies" }
@@ -2896,7 +2896,7 @@ const questions = {
         4: [
             {
                 q: "What's referential transparency?",
-                options: ["Making variables visible in debugger", "Expression can be replaced with its value without changing program", "Transparent references that show through code", "Ability to reference any variable anywhere"],
+                options: ["Function always returns a new reference to the same object", "Expression can be replaced with its value without changing behavior", "Variables are transparently passed between function scopes", "References to objects can be inspected at any program point"],
                 correct: 1,
                 explanation: "Referentially transparent expressions can be substituted with their values without changing program behavior. Key property of pure functions. Enables safe refactoring.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Referential_transparency", text: "📚 Referential Transparency" }
@@ -2917,7 +2917,7 @@ const questions = {
             },
             {
                 q: "What's persistent data structure?",
-                options: ["Data that never changes value", "Data that survives program restart", "Data stored persistently on disk", "Previous versions remain accessible after modification"],
+                options: ["Structure that compresses data to save memory space", "Structure that serializes data for network transmission", "Structure that caches computed results for faster access", "Previous versions remain accessible after modification"],
                 correct: 3,
                 explanation: "Persistent data structures preserve previous versions when modified. New version shares structure with old via structural sharing. Enables efficient undo, time-travel.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Persistent_data_structure", text: "📚 Persistent Data Structures" }
@@ -2926,28 +2926,28 @@ const questions = {
         5: [
             {
                 q: "What's the difference between defensive copying and immutability?",
-                options: ["Defensive copies on every access; immutable needs no copying", "They're identical approaches to safety", "Immutability requires more memory always", "Defensive copying is always faster"],
+                options: ["Defensive copies on every access; immutable needs no copying", "Defensive copying prevents writes; immutability prevents reads", "Immutability copies on access; defensive copying freezes state", "Defensive copying locks the object; immutability uses cloning"],
                 correct: 0,
                 explanation: "Defensive copying makes copies when passing/returning to prevent unwanted modification. Immutable data doesn't need copies since it can't be modified. Immutability is more efficient.",
                 learnMore: { url: "https://wiki.c2.com/?DefensiveCopy", text: "📚 Defensive Copying" }
             },
             {
                 q: "How does Immer.js achieve immutability?",
-                options: ["Copies everything on every change", "Uses Web Workers for isolation", "Deep freezes all objects recursively", "Proxy objects track changes, then produce immutable result"],
+                options: ["Freezes objects deeply then clones on every access", "Wraps all values in read-only WeakRef containers", "Compiles code at build time to remove all mutations", "Proxy objects track changes then produce an immutable result"],
                 correct: 3,
                 explanation: "Immer uses JavaScript Proxy to track mutations to a draft. After mutations, produces new immutable state with structural sharing. 'Write mutable code, get immutable data.'",
                 learnMore: { url: "https://immerjs.github.io/immer/", text: "📚 Immer.js" }
             },
             {
                 q: "What's value semantics vs reference semantics?",
-                options: ["Value semantics uses more memory always", "Value: equality by content; Reference: equality by identity", "They mean the same thing in practice", "Reference semantics is always immutable"],
+                options: ["Value: equality by location; Reference: equality by content", "Value: equality by content; Reference: equality by identity", "Value: shared mutable state; Reference: independent copies", "Value: identity comparison; Reference: structural comparison"],
                 correct: 1,
                 explanation: "Value semantics: objects are equal if contents are equal, copies are independent. Reference semantics: equality is identity, copies share data. Immutability enables value semantics.",
                 learnMore: { url: "https://isocpp.org/wiki/faq/value-vs-ref-semantics", text: "📚 Value Semantics" }
             },
             {
                 q: "How do functional languages optimize immutable operations?",
-                options: ["By using mutable data internally secretly", "Structural sharing, lazy evaluation, and tail call optimization", "They don't optimize immutable operations", "By avoiding immutability when possible"],
+                options: ["Copy-on-write semantics with mutable internal buffers", "Structural sharing, lazy evaluation, and tail call optimization", "Compile-time conversion of immutable types to mutable ones", "Garbage collection tuned specifically for short-lived objects"],
                 correct: 1,
                 explanation: "Functional languages use structural sharing (share unchanged parts), lazy evaluation (compute only when needed), and tail call optimization (reuse stack frames).",
                 learnMore: { url: "https://www.haskell.org/", text: "📚 Haskell" }
@@ -2989,7 +2989,7 @@ const questions = {
         2: [
             {
                 q: "What are Python type hints?",
-                options: ["Optional type annotations for better tooling and documentation", "Comments describing expected types", "Required type declarations like Java", "A different Python dialect with types"],
+                options: ["Optional type annotations for better tooling and documentation", "Mandatory type declarations enforced at runtime by Python", "Compiled type checks that prevent code from running if wrong", "A separate type language embedded inside Python docstrings"],
                 correct: 0,
                 explanation: "Python type hints (PEP 484) are optional annotations. Not enforced at runtime but used by tools like mypy, IDEs. Improve documentation and catch errors.",
                 learnMore: { url: "https://docs.python.org/3/library/typing.html", text: "📚 Python Typing" }
@@ -3033,7 +3033,7 @@ const questions = {
             },
             {
                 q: "What's the difference between interface and type in TypeScript?",
-                options: ["Type is deprecated for interface", "They're completely identical always", "Interface is extendable; type is more flexible with unions", "Interface is for functions only"],
+                options: ["Type supports extension via inheritance; interface does not", "Interface handles only primitive types; type handles objects", "Interface is extendable; type is more flexible with unions", "Type is for object shapes only; interface handles all types"],
                 correct: 2,
                 explanation: "Interfaces can be extended/merged and are good for objects. Type aliases are more flexible (unions, tuples, primitives). Both work for object shapes.",
                 learnMore: { url: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces", text: "📚 Interface vs Type" }
@@ -3042,14 +3042,14 @@ const questions = {
         4: [
             {
                 q: "What's structural typing vs nominal typing?",
-                options: ["Nominal is newer and always better", "Structural is for structures, nominal for classes", "Structural: compatible if same shape; Nominal: must be same named type", "They're the same thing with different names"],
+                options: ["Structural: must share the same declared name to be compatible", "Nominal: compatible if same shape; Structural: same named type", "Structural: compatible if same shape; Nominal: must be same named type", "Nominal: uses duck typing for compatibility; Structural: uses names"],
                 correct: 2,
                 explanation: "Structural typing (TypeScript, Go interfaces) checks shape/structure. Nominal typing (Java, C#) requires explicit type declaration. {name: string} compatible with any matching shape in TS.",
                 learnMore: { url: "https://www.typescriptlang.org/docs/handbook/type-compatibility.html", text: "📚 Type Compatibility" }
             },
             {
                 q: "What's a discriminated union?",
-                options: ["Union that excludes certain types", "Union with shared literal property to distinguish variants", "Union types that are deprecated", "Discriminating between union members randomly"],
+                options: ["Union that restricts members to only primitive type values", "Union with shared literal property to distinguish variants", "Union where all members must implement a common interface", "Union that narrows types based on runtime typeof checks"],
                 correct: 1,
                 explanation: "Discriminated unions use a common literal property (discriminant) to distinguish variants. type Shape = {kind: 'circle', r} | {kind: 'square', side}. Switch on 'kind'.",
                 learnMore: { url: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions", text: "📚 Discriminated Unions" }
@@ -3079,7 +3079,7 @@ const questions = {
             },
             {
                 q: "What are conditional types in TypeScript?",
-                options: ["Types used only in conditional statements", "Types that may or may not exist", "Types that depend on type conditions: T extends U ? X : Y", "Conditional compilation of type code"],
+                options: ["Types that only apply inside if/else conditional blocks", "Types that narrow automatically based on control flow", "Types that depend on type conditions: T extends U ? X : Y", "Types inferred from conditional expressions in assignments"],
                 correct: 2,
                 explanation: "Conditional types: T extends U ? X : Y. If T assignable to U, type is X, else Y. Enables powerful type transformations. Used in utility types like Exclude, Extract.",
                 learnMore: { url: "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html", text: "📚 Conditional Types" }
@@ -3093,7 +3093,7 @@ const questions = {
             },
             {
                 q: "What's Protocol in Python typing?",
-                options: ["Structural subtyping defining expected methods/attributes", "Security protocol enforcement in types", "Protocol buffer type integration", "Network protocol type annotations"],
+                options: ["Structural subtyping defining expected methods and attributes", "Abstract base class requiring explicit inheritance to match", "Runtime type checking interface using isinstance validation", "Generic type alias that maps method signatures to classes"],
                 correct: 0,
                 explanation: "Protocol (typing.Protocol) enables structural subtyping in Python. Class is subtype if it has required methods/attributes. Duck typing with type checking.",
                 learnMore: { url: "https://docs.python.org/3/library/typing.html#typing.Protocol", text: "📚 Python Protocol" }
@@ -3202,7 +3202,7 @@ const questions = {
             },
             {
                 q: "What's cache locality?",
-                options: ["Local cache server location", "Accessing nearby memory locations for cache efficiency", "Location where cache is stored", "Caching data for local users only"],
+                options: ["Storing frequently used data in a local cache server", "Accessing nearby memory locations for CPU cache efficiency", "Distributing cache across multiple geographic locations", "Keeping cached data close to the application web server"],
                 correct: 1,
                 explanation: "Cache locality: accessing memory sequentially or nearby (spatial locality), or recently accessed (temporal locality). Improves cache hit rate. Arrays better than linked lists.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Locality_of_reference", text: "📚 Cache Locality" }
@@ -3239,14 +3239,14 @@ const questions = {
             },
             {
                 q: "How do you identify memory bottlenecks?",
-                options: ["Only hardware upgrade solves memory issues", "Profile memory usage, check cache misses, analyze allocations", "Read the source code very carefully", "Memory bottlenecks can't be identified"],
+                options: ["Run load tests and compare response times under stress", "Profile memory usage, check cache misses, analyze allocations", "Monitor CPU utilization and correlate with thread counts", "Review source code for functions with high cyclomatic complexity"],
                 correct: 1,
                 explanation: "Use profilers (Valgrind, memory_profiler), check cache miss rates, analyze allocation patterns, monitor GC pauses, review data structure choices. Often cache locality issue.",
                 learnMore: { url: "https://www.brendangregg.com/FlameGraphs/memoryflamegraphs.html", text: "📚 Memory Profiling" }
             },
             {
                 q: "What's NUMA in high-performance computing?",
-                options: ["New Unified Memory Architecture standard", "Network Unified Memory Access protocol", "Non-Uniform Memory Access where memory speed varies by location", "Node-based Unified Memory Allocation"],
+                options: ["New Unified Memory Architecture for multi-core processors", "Network-based Unified Memory Access across cluster nodes", "Non-Uniform Memory Access where speed varies by location", "Node-level Unified Memory Allocation for shared segments"],
                 correct: 2,
                 explanation: "NUMA: Non-Uniform Memory Access. In multi-CPU systems, memory attached to different CPUs has different access times. Local memory faster. Important for HPC optimization.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Non-uniform_memory_access", text: "📚 NUMA" }
@@ -3304,7 +3304,7 @@ const questions = {
         3: [
             {
                 q: "What is CORS (Cross-Origin Resource Sharing)?",
-                options: ["Core resource sharing protocol", "Copying resources between servers", "Cross-browser resource compatibility", "Browser security allowing controlled cross-origin requests"],
+                options: ["Protocol encrypting resources shared between two servers", "Server-side mechanism that blocks all external API calls", "Firewall rule limiting which ports accept inbound traffic", "Browser security allowing controlled cross-origin requests"],
                 correct: 3,
                 explanation: "CORS allows servers to specify which origins can access resources. Browser enforces same-origin policy; CORS headers enable controlled exceptions for APIs.",
                 learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS", text: "📚 CORS" }
@@ -3325,7 +3325,7 @@ const questions = {
             },
             {
                 q: "What's input validation?",
-                options: ["Checking database input connections", "Validating programming language input", "Validating that input fields exist", "Checking user input meets expected format and constraints"],
+                options: ["Encrypting all user input before storing it in the database", "Sanitizing output before rendering it in the browser HTML", "Logging every user input for auditing and error tracking", "Checking user input meets expected format and constraints"],
                 correct: 3,
                 explanation: "Input validation ensures user input matches expected format, type, length, range. First line of defense. Validate on server (client validation is bypassable).",
                 learnMore: { url: "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html", text: "📚 Input Validation" }
@@ -3364,7 +3364,7 @@ const questions = {
         5: [
             {
                 q: "What's the OWASP Top 10?",
-                options: ["Ranking of secure programming languages", "Best 10 security products to buy", "Top 10 web development frameworks", "List of most critical web application security risks"],
+                options: ["Ranking of the ten most popular web development frameworks", "Checklist of ten mandatory compliance requirements for APIs", "Guide to the ten most common programming language mistakes", "List of the most critical web application security risks"],
                 correct: 3,
                 explanation: "OWASP Top 10 lists most critical web security risks. Updated periodically. Includes injection, broken auth, XSS, CSRF, misconfig. Standard awareness document.",
                 learnMore: { url: "https://owasp.org/www-project-top-ten/", text: "📚 OWASP Top 10" }
@@ -3501,7 +3501,7 @@ const questions = {
             },
             {
                 q: "How do you debug memory issues?",
-                options: ["Use memory profiler, check heap snapshots, track allocations", "Memory issues fix themselves over time", "Memory can't be debugged directly", "Just add more RAM to the server"],
+                options: ["Use memory profiler, check heap snapshots, track allocations", "Monitor CPU usage graphs and correlate spikes with requests", "Review application logs for timeout and connection errors", "Run load tests and measure average response time per route"],
                 correct: 0,
                 explanation: "Memory debugging: use profilers (memory_profiler, Chrome heap snapshots), track allocations over time, identify leaks (growing memory), check object retention.",
                 learnMore: { url: "https://developer.chrome.com/docs/devtools/memory-problems/", text: "📚 Memory Problems" }
@@ -3531,7 +3531,7 @@ const questions = {
             },
             {
                 q: "How do you debug race conditions?",
-                options: ["Race conditions can't be debugged", "Add logging, use thread sanitizers, try to reproduce reliably", "Just add more sleep statements", "Run the program faster"],
+                options: ["Increase thread pool size and add timeouts to all locks", "Add logging, use thread sanitizers, try to reproduce reliably", "Rewrite the code to use a single thread for all operations", "Wrap all shared variables in try/except blocks for safety"],
                 correct: 1,
                 explanation: "Race conditions are hard: add detailed logging with timestamps, use sanitizers (ThreadSanitizer), stress test to reproduce, review shared state access, use proper locks.",
                 learnMore: { url: "https://clang.llvm.org/docs/ThreadSanitizer.html", text: "📚 Thread Sanitizer" }
@@ -3564,7 +3564,7 @@ const questions = {
             },
             {
                 q: "Why is code review important?",
-                options: ["Slows down development intentionally", "Catches bugs, shares knowledge, ensures quality", "Replaces need for testing", "Only required by strict managers"],
+                options: ["Ensures only senior developers write production code", "Catches bugs, shares knowledge, and ensures code quality", "Generates automated documentation from inline comments", "Replaces the need for writing unit and integration tests"],
                 correct: 1,
                 explanation: "Code review catches bugs early, spreads knowledge across team, ensures code quality and consistency, mentors developers, and documents decisions.",
                 learnMore: { url: "https://stackoverflow.blog/2019/09/30/how-to-make-good-code-reviews-better/", text: "📚 Good Code Reviews" }
@@ -3587,7 +3587,7 @@ const questions = {
             },
             {
                 q: "How should you respond to code review feedback?",
-                options: ["Accept all changes without thinking", "Argue against every comment made", "Ignore feedback you disagree with", "Consider feedback objectively and discuss if needed"],
+                options: ["Apply all suggested changes immediately without question", "Reject comments that don't match your coding preferences", "Wait until all comments are resolved before responding", "Consider feedback objectively and discuss when you disagree"],
                 correct: 3,
                 explanation: "Read feedback objectively, don't take it personally. Ask for clarification if unclear. Discuss disagreements respectfully. Thank reviewers for their time.",
                 learnMore: { url: "https://google.github.io/eng-practices/review/developer/handling-comments.html", text: "📚 Handling Comments" }
@@ -3626,7 +3626,7 @@ const questions = {
         4: [
             {
                 q: "How do you review code in an unfamiliar codebase?",
-                options: ["Approve without understanding it", "Refuse to review unfamiliar code", "Read context, ask questions, focus on general principles", "Only check if tests pass"],
+                options: ["Approve quickly and trust the author's judgment", "Decline and wait until you learn the codebase", "Read context, ask questions, apply general principles", "Run the test suite and approve if it passes"],
                 correct: 2,
                 explanation: "Read surrounding code for context. Ask author to explain unfamiliar parts. Focus on general principles (logic, readability, security). Still catches many issues.",
                 learnMore: { url: "https://google.github.io/eng-practices/review/reviewer/navigate.html", text: "📚 Navigate a CL" }
@@ -3640,14 +3640,14 @@ const questions = {
             },
             {
                 q: "How do you handle disagreements in code review?",
-                options: ["Discuss objectively, escalate if stuck, respect decisions", "Author always wins the argument", "Just merge and fix issues later", "Reviewer always has final say"],
+                options: ["Discuss objectively, escalate if needed, respect outcomes", "Defer to the author since they wrote the code", "Merge the change now and address issues afterward", "Let the reviewer override since they have authority"],
                 correct: 0,
                 explanation: "Discuss technical merits objectively. If stuck, involve third party or tech lead. Once decided, accept the decision. Document rationale for future reference.",
                 learnMore: { url: "https://google.github.io/eng-practices/review/reviewer/pushback-pushback.html", text: "📚 Resolving Conflicts" }
             },
             {
                 q: "What's pair programming vs code review?",
-                options: ["They're the same thing exactly", "Review replaces pair programming", "Pair is better than review always", "Pair: real-time collaboration; Review: async examination"],
+                options: ["They accomplish the same goal in the same way", "Code review can fully replace pair programming", "Pair programming is always superior to reviews", "Pair is real-time collaboration; review is async examination"],
                 correct: 3,
                 explanation: "Pair programming is synchronous: two developers work together real-time. Code review is asynchronous: examination after code is written. Both valuable, different tradeoffs.",
                 learnMore: { url: "https://martinfowler.com/articles/on-pair-programming.html", text: "📚 Pair Programming" }
@@ -3656,28 +3656,28 @@ const questions = {
         5: [
             {
                 q: "How do you review performance-critical code?",
-                options: ["Check algorithms, measure, consider edge cases and scale", "Assume the author tested performance", "Performance can't be reviewed effectively", "Only review if there are benchmarks"],
+                options: ["Check algorithms, measure impact, consider scale and edges", "Trust that the author has benchmarked their changes", "Performance problems can only be found during testing", "Only review performance when benchmarks are provided"],
                 correct: 0,
                 explanation: "Review algorithm complexity, check benchmarks, consider scale and edge cases, look for common issues (N+1 queries, unnecessary work). Request profiling data if needed.",
                 learnMore: { url: "https://google.github.io/eng-practices/review/reviewer/looking-for.html#performance", text: "📚 Performance Review" }
             },
             {
                 q: "How do you review security-sensitive code?",
-                options: ["Trust that security team will review", "Security is automatic if tests pass", "Only specialists can review security", "Check auth, input validation, injection, data exposure"],
+                options: ["Rely on the security team for a separate review", "Security issues are caught automatically by tests", "Only trained security specialists can review this", "Check auth, input validation, injection, data exposure"],
                 correct: 3,
                 explanation: "Check authentication/authorization, input validation, injection vulnerabilities, sensitive data handling, crypto usage. Everyone can catch common issues. Involve security team for high-risk.",
                 learnMore: { url: "https://owasp.org/www-project-code-review-guide/", text: "📚 OWASP Review Guide" }
             },
             {
                 q: "What metrics indicate code review effectiveness?",
-                options: ["Defects found, review time, review coverage, knowledge spread", "Zero metrics needed for reviews", "Lines of code reviewed per hour", "Only number of PRs reviewed matters"],
+                options: ["Defects found, review time, coverage, knowledge spread", "No formal metrics are needed for measuring reviews", "Lines of code reviewed per hour is the best metric", "Total number of PRs reviewed is the main indicator"],
                 correct: 0,
                 explanation: "Track: defects found in review vs production, time to review, coverage (% reviewed), knowledge sharing (who reviews what). Balance speed with thoroughness.",
                 learnMore: { url: "https://www.pluralsight.com/blog/tutorials/code-review-best-practices", text: "📚 Review Metrics" }
             },
             {
                 q: "How do you maintain code review quality at scale?",
-                options: ["Automate checks, use CODEOWNERS, train reviewers, set SLAs", "Remove code review when team grows", "Just add more reviewers to projects", "Only senior developers should review"],
+                options: ["Automate checks, use CODEOWNERS, train reviewers, set SLAs", "Remove mandatory reviews once the team is large enough", "Add more reviewers to every pull request that is opened", "Restrict review duties to only the senior developers"],
                 correct: 0,
                 explanation: "Use linters and static analysis to automate style/security checks. CODEOWNERS assign experts. Train new reviewers. Set review SLAs. Keep PRs small.",
                 learnMore: { url: "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners", text: "📚 CODEOWNERS" }
@@ -3703,7 +3703,7 @@ const questions = {
             },
             {
                 q: "Why refactor code?",
-                options: ["Because managers require it quarterly", "Improve readability, reduce complexity, ease maintenance", "Just to make code look different", "To increase lines of code count"],
+                options: ["Because management mandates it on a regular schedule", "Improve readability, reduce complexity, ease maintenance", "To make the code look different without changing behavior", "To increase the total lines of code in the repository"],
                 correct: 1,
                 explanation: "Refactoring improves code quality: easier to understand, modify, and maintain. Reduces technical debt. Makes future changes faster and safer.",
                 learnMore: { url: "https://martinfowler.com/books/refactoring.html", text: "📚 Refactoring Book" }
@@ -3733,7 +3733,7 @@ const questions = {
             },
             {
                 q: "What's rename refactoring?",
-                options: ["Remove names from code entirely", "Rename the project itself", "Give clearer names to variables, functions, classes", "Rename files in the project"],
+                options: ["Remove all identifiers and use anonymous references", "Rename the project repository and its directory path", "Give clearer names to variables, functions, and classes", "Rename files and directories within the project tree"],
                 correct: 2,
                 explanation: "Rename improves names of identifiers (variables, functions, classes). Good names are crucial for readability. IDEs can rename safely across codebase.",
                 learnMore: { url: "https://refactoring.guru/rename-method", text: "📚 Rename Method" }
@@ -3756,7 +3756,7 @@ const questions = {
             },
             {
                 q: "What's inline refactoring?",
-                options: ["Inline CSS in HTML elements", "Add inline comments to code", "Replace function call with function body", "Put all code on one line"],
+                options: ["Add inline CSS styles directly in HTML elements", "Insert inline comments explaining every code block", "Replace a function call with the function's body", "Consolidate all code onto a single physical line"],
                 correct: 2,
                 explanation: "Inline replaces function call with its body, then deletes function. Useful when function no longer pulls its weight - name doesn't add clarity, or only one caller.",
                 learnMore: { url: "https://refactoring.guru/inline-method", text: "📚 Inline Method" }
@@ -3793,7 +3793,7 @@ const questions = {
             },
             {
                 q: "What's feature envy code smell?",
-                options: ["Envying features in other languages", "Feature requests from users", "Method uses another class's data more than its own", "Envy between team members"],
+                options: ["Wanting features available in other programming languages", "Excessive feature requests from end users of the system", "A method uses another class's data more than its own", "Rivalry between developers competing over feature scope"],
                 correct: 2,
                 explanation: "Feature envy: method seems more interested in another class's data than its own. Solution: move the method to the class whose data it uses most.",
                 learnMore: { url: "https://refactoring.guru/smells/feature-envy", text: "📚 Feature Envy" }
@@ -3802,7 +3802,7 @@ const questions = {
         5: [
             {
                 q: "What's the difference between refactoring and rewriting?",
-                options: ["Refactoring is incremental; rewriting is from scratch", "Rewriting is always better approach", "Refactoring only changes comments", "They're the same thing basically"],
+                options: ["Refactoring changes code incrementally; rewriting starts fresh", "Rewriting from scratch is always the better approach to take", "Refactoring only involves updating comments and documentation", "Both terms describe the same process with different wording"],
                 correct: 0,
                 explanation: "Refactoring: incremental improvement keeping system working. Rewriting: starting from scratch. Refactoring is safer, maintains working software. Rewrites often fail.",
                 learnMore: { url: "https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/", text: "📚 Joel on Rewrites" }
@@ -3823,7 +3823,7 @@ const questions = {
             },
             {
                 q: "What's shotgun surgery code smell?",
-                options: ["Random changes across codebase", "Single change requires modifying many classes", "Surgery on database schema", "Quick surgical fixes to code"],
+                options: ["Making random unrelated changes across the entire codebase", "A single change requires modifying many different classes", "Performing rapid schema changes to the database directly", "Applying minimal targeted fixes to isolated code sections"],
                 correct: 1,
                 explanation: "Shotgun surgery: one logical change requires modifying many classes. Indicates scattered responsibility. Solution: move related code together into single class.",
                 learnMore: { url: "https://refactoring.guru/smells/shotgun-surgery", text: "📚 Shotgun Surgery" }
@@ -3849,7 +3849,7 @@ const questions = {
             },
             {
                 q: "What should a README file contain?",
-                options: ["Only the project name and author", "Complete source code listing", "Project description, setup instructions, usage examples", "Marketing materials for the project"],
+                options: ["Only the project name and the author's contact details", "A complete listing of all source code in the project", "Project description, setup instructions, and usage examples", "Marketing copy and promotional materials for the project"],
                 correct: 2,
                 explanation: "README should include: project description, installation instructions, usage examples, contribution guidelines, license. First thing visitors see.",
                 learnMore: { url: "https://www.makeareadme.com/", text: "📚 Make a README" }
@@ -3879,7 +3879,7 @@ const questions = {
             },
             {
                 q: "What's the difference between comments and documentation?",
-                options: ["They're exactly the same thing", "Documentation is only for users", "Comments in code; documentation external or generated", "Comments are wrong; documentation correct"],
+                options: ["They serve the exact same purpose in a software project", "Documentation is only written for end users of the product", "Comments live in code; documentation is external or generated", "Comments are always wrong while documentation is always right"],
                 correct: 2,
                 explanation: "Comments are inline notes for developers reading code. Documentation is user-facing guides, API docs, tutorials. Some overlap (docstrings become API docs).",
                 learnMore: { url: "https://www.writethedocs.org/", text: "📚 Write the Docs" }
@@ -3895,14 +3895,14 @@ const questions = {
             },
             {
                 q: "What's an ADR (Architecture Decision Record)?",
-                options: ["Document recording architecture decisions and rationale", "API development record", "Automatic documentation record", "Application deployment record"],
+                options: ["A document recording architecture decisions and their rationale", "An API development record tracking endpoint version history", "An automatic documentation record generated from source code", "An application deployment record listing release environments"],
                 correct: 0,
                 explanation: "ADRs document significant architecture decisions: context, decision, consequences. Captures 'why' for future reference. Helps new team members understand history.",
                 learnMore: { url: "https://adr.github.io/", text: "📚 ADR GitHub" }
             },
             {
                 q: "What's JSDoc/TSDoc?",
-                options: ["JSON documentation standard", "Java Server Document format", "Documentation format for JavaScript/TypeScript", "TypeScript Document compiler"],
+                options: ["A standard for documenting JSON data schemas and formats", "A server-side document rendering format for Java projects", "A documentation format for JavaScript and TypeScript code", "A TypeScript compilation tool that generates documentation"],
                 correct: 2,
                 explanation: "JSDoc/TSDoc are documentation standards for JavaScript/TypeScript. Special comments describe functions, parameters, types. IDEs use for intellisense, tools generate docs.",
                 learnMore: { url: "https://jsdoc.app/", text: "📚 JSDoc" }
@@ -3925,14 +3925,14 @@ const questions = {
             },
             {
                 q: "What's Diátaxis documentation framework?",
-                options: ["Four types: tutorials, how-to, reference, explanation", "Dialect for documentation languages", "Diagnostic axis for documentation issues", "Database diagram axis system"],
+                options: ["Four types: tutorials, how-to guides, reference, explanation", "A dialect specification for writing documentation languages", "A diagnostic axis tool for identifying documentation issues", "A database diagramming system with axis-based chart layouts"],
                 correct: 0,
                 explanation: "Diátaxis defines four doc types: tutorials (learning-oriented), how-to guides (goal-oriented), reference (information-oriented), explanation (understanding-oriented).",
                 learnMore: { url: "https://diataxis.fr/", text: "📚 Diátaxis" }
             },
             {
                 q: "How do you keep documentation up to date?",
-                options: ["Update only during major releases", "Assign one person to update everything", "Documentation will naturally stay current", "Automate generation, review with code changes, test docs"],
+                options: ["Schedule documentation updates only during major releases", "Assign one dedicated person to maintain all documentation", "Documentation naturally stays current without intervention", "Automate generation, review with code changes, test docs"],
                 correct: 3,
                 explanation: "Keep docs current: generate from code where possible, review docs in PRs, test examples automatically, schedule doc reviews, make updating easy.",
                 learnMore: { url: "https://www.writethedocs.org/guide/docs-as-code/", text: "📚 Docs Automation" }
@@ -3962,7 +3962,7 @@ const questions = {
             },
             {
                 q: "How do you document a REST API effectively?",
-                options: ["Just list the endpoint URLs available", "Only document the happy path flows", "Let users figure it out from code", "OpenAPI spec with examples, authentication, error codes"],
+                options: ["List all the available endpoint URLs without extra detail", "Document only the happy path flows and ignore edge cases", "Let users read the source code to learn the API behavior", "Use OpenAPI spec with examples, auth details, error codes"],
                 correct: 3,
                 explanation: "REST API docs need: endpoints with methods, request/response schemas, authentication, error codes, rate limits, examples. OpenAPI spec enables tools and testing.",
                 learnMore: { url: "https://learn.openapis.org/", text: "📚 Learn OpenAPI" }
@@ -3995,7 +3995,7 @@ const questions = {
             },
             {
                 q: "What's npm used for?",
-                options: ["JavaScript package manager and script runner", "New project manager tool", "Node performance monitor", "Network protocol manager"],
+                options: ["JavaScript package manager and project script runner", "A new project manager tool for organizing team tasks", "A Node.js performance monitoring and profiling service", "A network protocol manager for configuring connections"],
                 correct: 0,
                 explanation: "npm (Node Package Manager) installs JavaScript dependencies, manages package.json, runs scripts defined in package.json. Standard tool for JavaScript projects.",
                 learnMore: { url: "https://docs.npmjs.com/", text: "📚 npm Documentation" }
@@ -4011,14 +4011,14 @@ const questions = {
         2: [
             {
                 q: "What's a bundler in web development?",
-                options: ["Groups developers into teams", "Bundles user data for analytics", "Combines multiple files into optimized bundles", "Packs files for shipping to users"],
+                options: ["Organizes developers into collaborative working teams", "Bundles user data together for analytics processing", "Combines multiple source files into optimized bundles", "Packages project files for distribution and shipping"],
                 correct: 2,
                 explanation: "Bundlers combine JavaScript modules, CSS, assets into optimized bundles for browser. Tree-shake unused code, minify, split chunks. Examples: webpack, Vite, esbuild.",
                 learnMore: { url: "https://vitejs.dev/guide/", text: "📚 Vite Guide" }
             },
             {
                 q: "What's the purpose of package.json?",
-                options: ["Configure JSON parsing settings", "Package JSON data for transmission", "Define project metadata, dependencies, and scripts", "List of JSON files in project"],
+                options: ["Configure how JSON files are parsed in the application", "Package and serialize JSON data for network transmission", "Define project metadata, dependencies, and build scripts", "Provide a list of all JSON files included in the project"],
                 correct: 2,
                 explanation: "package.json defines: project name/version, dependencies (runtime and dev), scripts (build, test), configuration for tools. Central config for JavaScript projects.",
                 learnMore: { url: "https://docs.npmjs.com/cli/v9/configuring-npm/package-json", text: "📚 package.json" }
@@ -4048,14 +4048,14 @@ const questions = {
             },
             {
                 q: "What's the difference between devDependencies and dependencies?",
-                options: ["devDeps are optional extras", "They're exactly the same thing", "Dependencies are for development", "devDeps for development only; deps for production runtime"],
+                options: ["devDependencies are optional extras you can leave out", "There is no real difference between the two categories", "Regular dependencies are only used during development", "devDeps are for development only; deps are for production"],
                 correct: 3,
                 explanation: "dependencies needed at runtime (React, lodash). devDependencies for development only (testing, building) - not included in production bundle. Affects install with --production.",
                 learnMore: { url: "https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file", text: "📚 npm Dependencies" }
             },
             {
                 q: "What's minification?",
-                options: ["Shrink code by removing whitespace, renaming variables", "Minimizing number of dependencies", "Making code more readable with formatting", "Finding minimum code to fix bugs"],
+                options: ["Shrink code by removing whitespace and renaming variables", "Reduce the total number of dependencies in your project", "Auto-format code to make it more readable and consistent", "Identify the minimum code change needed to fix a bug"],
                 correct: 0,
                 explanation: "Minification reduces code size: remove whitespace/comments, shorten variable names, optimize code. Faster downloads, faster parsing. Tools: terser, esbuild.",
                 learnMore: { url: "https://developer.mozilla.org/en-US/docs/Glossary/Minification", text: "📚 Minification" }
@@ -4071,7 +4071,7 @@ const questions = {
             },
             {
                 q: "What's uv in Python?",
-                options: ["Universal version manager", "Fast Python package installer written in Rust", "Unified virtual environment tool", "Ultraviolet testing framework"],
+                options: ["A universal version manager for Python runtimes", "A fast Python package installer written in Rust", "A unified virtual environment management tool", "An ultraviolet-themed Python testing framework"],
                 correct: 1,
                 explanation: "uv is a fast Python package installer and resolver written in Rust. Drop-in replacement for pip and pip-tools. 10-100x faster than pip for many operations.",
                 learnMore: { url: "https://github.com/astral-sh/uv", text: "📚 uv" }
@@ -4085,7 +4085,7 @@ const questions = {
             },
             {
                 q: "What's a virtual environment in Python?",
-                options: ["Virtual reality Python programming", "Simulated Python interpreter", "Isolated Python installation for project dependencies", "Environment for testing in VMs"],
+                options: ["A virtual reality interface for writing Python code", "A simulated Python interpreter that runs in the cloud", "An isolated Python installation for project dependencies", "An environment for running Python tests inside a VM"],
                 correct: 2,
                 explanation: "Virtual environment isolates project dependencies from system Python and other projects. Each project has own packages. Created with venv, managed by pip or uv.",
                 learnMore: { url: "https://docs.python.org/3/library/venv.html", text: "📚 Python venv" }
@@ -4115,7 +4115,7 @@ const questions = {
             },
             {
                 q: "What's the difference between build and compile?",
-                options: ["Build is broader: compile plus test, bundle, package", "They mean exactly the same thing", "Build is for web, compile for apps", "Compile is broader than building"],
+                options: ["Build is broader: compile plus test, bundle, and package", "Both terms mean exactly the same thing in practice today", "Build is for web projects while compile is for native apps", "Compile is the broader process that includes build steps"],
                 correct: 0,
                 explanation: "Compiling translates source to machine/intermediate code. Building includes compiling plus: running tests, bundling, generating docs, packaging for distribution.",
                 learnMore: { url: "https://en.wikipedia.org/wiki/Software_build", text: "📚 Software Build" }
@@ -4164,7 +4164,7 @@ const questions = {
             },
             {
                 q: "What does 'chmod 755' do?",
-                options: ["Set file permissions: owner all, group/others read+execute", "Move file to directory 755", "Set file mode to compression level", "Change file modification date to 755"],
+                options: ["Owner gets all permissions, group and others get read and execute", "Move the specified file into a directory with the path number 755", "Set the file compression mode to the level indicated by the number", "Change the file's last modification timestamp to the value of 755"],
                 correct: 0,
                 explanation: "chmod 755 sets permissions: owner can read/write/execute (7), group and others can read/execute (5). Common for scripts and executables that should be readable by all.",
                 learnMore: { url: "https://www.geeksforgeeks.org/chmod-command-linux/", text: "📚 chmod" }
@@ -4180,7 +4180,7 @@ const questions = {
         3: [
             {
                 q: "How do you manage services with systemctl?",
-                options: ["systemctl start/stop/restart/status service-name", "systemctl execute service-name", "systemctl run service-name now", "services start service-name"],
+                options: ["systemctl start/stop/restart/status service-name", "systemctl execute service-name with default options", "systemctl run service-name with immediate scheduling", "services start service-name using the init daemon"],
                 correct: 0,
                 explanation: "systemctl controls systemd services: start (begin), stop (end), restart (stop then start), status (check state), enable (start on boot), disable (don't start on boot).",
                 learnMore: { url: "https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units", text: "📚 systemctl Tutorial" }
@@ -4217,7 +4217,7 @@ const questions = {
             },
             {
                 q: "What's cron used for?",
-                options: ["Chronological logging of events", "System boot time measurement", "Schedule recurring tasks to run automatically", "CPU core management utility"],
+                options: ["Chronological logging of system events", "System boot time and uptime measurement", "Schedule recurring tasks automatically", "CPU core management and allocation"],
                 correct: 2,
                 explanation: "cron schedules recurring jobs. crontab defines schedule (minute, hour, day, month, weekday) and command. Used for backups, cleanup, reports. systemd timers are alternative.",
                 learnMore: { url: "https://crontab.guru/", text: "📚 Crontab Guru" }
@@ -4231,7 +4231,7 @@ const questions = {
             },
             {
                 q: "What's iptables/nftables?",
-                options: ["IP address lookup tables", "Network testing utilities", "Linux firewall for filtering network traffic", "Table management for databases"],
+                options: ["IP address resolution lookup tables", "Network connectivity testing utilities", "Linux firewall for filtering traffic", "Table management tool for databases"],
                 correct: 2,
                 explanation: "iptables/nftables are Linux firewall tools. Filter incoming/outgoing packets by rules. Define chains of rules for ACCEPT, DROP, REJECT. nftables is newer replacement.",
                 learnMore: { url: "https://wiki.nftables.org/", text: "📚 nftables" }
@@ -4240,7 +4240,7 @@ const questions = {
         5: [
             {
                 q: "What's LVM (Logical Volume Manager)?",
-                options: ["Log volume monitoring system", "Flexible disk space management abstraction layer", "Local version management tool", "Linux virtual machine manager"],
+                options: ["Log volume monitoring and alerting system", "Flexible disk space management abstraction", "Local software version management tool", "Linux virtual machine management tool"],
                 correct: 1,
                 explanation: "LVM adds abstraction layer over physical disks. Create, resize, move logical volumes without downtime. Snapshots for backups. More flexible than partitions.",
                 learnMore: { url: "https://www.redhat.com/sysadmin/lvm-vs-partitioning", text: "📚 LVM Guide" }
@@ -4282,7 +4282,7 @@ const questions = {
         1: [
             {
                 q: "What is SQL?",
-                options: ["System query library for data", "Server quality language protocol", "Language for querying and managing databases", "Structured queue language"],
+                options: ["System-level query library for data access", "Server quality language for networking", "Language for querying and managing databases", "Structured queue language for messaging"],
                 correct: 2,
                 explanation: "SQL (Structured Query Language) is the standard language for relational databases. Used to query, insert, update, delete data, and manage database structure.",
                 learnMore: { url: "https://www.w3schools.com/sql/", text: "📚 SQL Tutorial" }
@@ -4319,7 +4319,7 @@ const questions = {
             },
             {
                 q: "What's a foreign key?",
-                options: ["Key that can be null values", "Secondary unique identifier", "Key from a foreign database", "Reference to primary key in another table"],
+                options: ["Key that allows nullable column values", "Secondary unique identifier for rows", "Key imported from a foreign database", "Reference to primary key in another table"],
                 correct: 3,
                 explanation: "Foreign key links tables together by referencing another table's primary key. Enforces referential integrity - can't have orphaned references. Creates relationships.",
                 learnMore: { url: "https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-FK", text: "📚 Foreign Keys" }
@@ -4335,7 +4335,7 @@ const questions = {
             },
             {
                 q: "What's a transaction in SQL?",
-                options: ["Transfer of data between tables", "Action performed on database", "Group of operations that succeed or fail together", "Transaction log entry only"],
+                options: ["Transfer of data between separate tables", "Single action performed on one database row", "Group of operations that succeed or fail together", "Log entry recording a completed statement"],
                 correct: 2,
                 explanation: "Transaction groups operations into atomic unit. Either all succeed (COMMIT) or all fail (ROLLBACK). ACID properties ensure data integrity. BEGIN...COMMIT/ROLLBACK.",
                 learnMore: { url: "https://www.postgresql.org/docs/current/tutorial-transactions.html", text: "📚 Transactions" }
@@ -4372,7 +4372,7 @@ const questions = {
             },
             {
                 q: "What's an N+1 query problem?",
-                options: ["Error when N+1 users connect", "Query that returns N+1 results", "Executing N extra queries instead of one efficient query", "Having N+1 tables in database"],
+                options: ["Error when too many users connect at once", "Query that returns more rows than expected", "Executing N extra queries instead of one join", "Having too many tables in a single database"],
                 correct: 2,
                 explanation: "N+1 problem: 1 query gets N items, then N queries get related data for each. Should be 2 queries using JOIN or IN. Very common ORM issue. Devastating for performance.",
                 learnMore: { url: "https://stackoverflow.com/questions/97197/what-is-the-n1-selects-problem-in-orm", text: "📚 N+1 Problem" }
@@ -4409,7 +4409,7 @@ const questions = {
             },
             {
                 q: "What's a database deadlock?",
-                options: ["Lock that prevents all queries", "Two transactions waiting for each other's locks", "Database that stops responding", "Dead connection to database"],
+                options: ["Lock that prevents all concurrent queries", "Two transactions waiting for each other's locks", "Database server that stops responding to requests", "Stale connection that fails to close properly"],
                 correct: 1,
                 explanation: "Deadlock: Transaction A holds lock 1, waits for lock 2. Transaction B holds lock 2, waits for lock 1. Neither can proceed. Database detects and aborts one.",
                 learnMore: { url: "https://www.postgresql.org/docs/current/explicit-locking.html#LOCKING-DEADLOCKS", text: "📚 Deadlocks" }
@@ -4527,7 +4527,7 @@ const questions = {
             },
             {
                 q: "What's constitutional AI prompting?",
-                options: ["Constitution of prompt rules", "Having AI critique and revise its own outputs", "Legal prompts for AI contracts", "Government-approved AI prompts"],
+                options: ["Defining strict rules for prompt structure", "Having AI critique and revise its own outputs", "Using legally vetted prompts for compliance", "Government-regulated prompts for AI systems"],
                 correct: 1,
                 explanation: "Constitutional AI has the model critique and revise its outputs against principles. 'Review your response for potential harms and revise.' Self-correction technique.",
                 learnMore: { url: "https://www.anthropic.com/research/constitutional-ai-harmlessness-from-ai-feedback", text: "📚 Constitutional AI" }
@@ -4564,7 +4564,7 @@ const questions = {
             },
             {
                 q: "What's prompt compression?",
-                options: ["Shorter prompts are always worse", "Reducing prompt length while preserving meaning", "ZIP compression of prompts", "Compressing prompt file storage"],
+                options: ["Making prompts shorter always reduces quality", "Reducing prompt length while preserving meaning", "Applying ZIP compression to prompt text files", "Compressing prompt storage on the file system"],
                 correct: 1,
                 explanation: "Prompt compression reduces token count while keeping essential information. Important for cost and context length limits. Remove redundancy, use concise phrasing, prioritize key info.",
                 learnMore: { url: "https://www.llmlingua.com/", text: "📚 LLMLingua" }
@@ -4722,7 +4722,7 @@ const questions = {
         1: [
             {
                 q: "What's an AI agent?",
-                options: ["AI model that only answers questions", "Artificial intelligence agency", "Agent who sells AI products", "AI that takes actions to achieve goals autonomously"],
+                options: ["AI model limited to answering user questions", "AI system trained only on static data inputs", "AI assistant restricted to text-based responses", "AI that takes actions to achieve goals autonomously"],
                 correct: 3,
                 explanation: "AI agent is an AI system that perceives environment, makes decisions, and takes actions to achieve goals. Unlike chatbots that just respond, agents act autonomously.",
                 learnMore: { url: "https://www.anthropic.com/research/building-effective-agents", text: "📚 Building Effective Agents" }
@@ -4745,14 +4745,14 @@ const questions = {
         2: [
             {
                 q: "What's MCP (Model Context Protocol)?",
-                options: ["Message compression protocol", "Standard for connecting AI to tools and data", "Model checkpoint protocol", "Master control program for AI"],
+                options: ["Message compression protocol for AI traffic", "Standard for connecting AI to tools and data", "Model checkpoint protocol for saving weights", "Master control program for AI orchestration"],
                 correct: 1,
                 explanation: "MCP is Anthropic's open standard for connecting AI models to external data sources and tools. Defines how AI requests tool execution and receives results.",
                 learnMore: { url: "https://www.anthropic.com/news/model-context-protocol", text: "📚 MCP" }
             },
             {
                 q: "What's an MCP server?",
-                options: ["Message coordination protocol server", "Service that provides tools to AI via MCP protocol", "Management control panel server", "Server running AI model inference"],
+                options: ["Message coordination protocol service endpoint", "Service that provides tools to AI via MCP standard", "Management control panel for server monitoring", "Server running AI model inference and training"],
                 correct: 1,
                 explanation: "MCP server exposes tools and data to AI models. Defines available tools, handles requests, returns results. Examples: file system access, database queries, API calls.",
                 learnMore: { url: "https://modelcontextprotocol.io/", text: "📚 MCP Documentation" }
@@ -4782,14 +4782,14 @@ const questions = {
             },
             {
                 q: "What's tool schema in MCP?",
-                options: ["Database schema for tool storage", "Schema of AI model tools", "Tool versioning schema", "Definition of what tool does and its parameters"],
+                options: ["Database schema for storing tool configurations", "Schema describing AI model internal tool usage", "Versioning schema for tool release management", "Definition of what a tool does and its parameters"],
                 correct: 3,
                 explanation: "Tool schema defines: tool name, description, input parameters (types, descriptions, required/optional). AI model uses schema to understand when and how to call tools.",
                 learnMore: { url: "https://modelcontextprotocol.io/docs/specification/schema", text: "📚 Tool Schema" }
             },
             {
                 q: "What's human-in-the-loop for AI agents?",
-                options: ["Human approval required for certain actions", "Humans physically in AI loop", "Human loops replaced by AI", "Human training AI continuously"],
+                options: ["Human approval required for certain agent actions", "Humans embedded in the physical AI processing loop", "Human decision-making replaced entirely by AI logic", "Human annotators continuously retraining the model"],
                 correct: 0,
                 explanation: "Human-in-the-loop requires human approval for sensitive actions: file deletion, external API calls, deployments. Balances autonomy with safety. Often configurable per action type.",
                 learnMore: { url: "https://www.anthropic.com/research/building-effective-agents", text: "📚 Human Oversight" }
@@ -4805,14 +4805,14 @@ const questions = {
             },
             {
                 q: "How do agents handle errors?",
-                options: ["Ignore errors and continue always", "Detect, analyze, and retry with different approach", "Errors are not possible for agents", "Errors always stop the agent"],
+                options: ["Silently ignore errors and continue processing", "Detect, analyze, and retry with a different approach", "Errors cannot occur inside autonomous AI agents", "Errors always terminate the agent immediately"],
                 correct: 1,
                 explanation: "Good agents: detect errors, understand what went wrong, try alternative approaches, ask for help if stuck. Robustness to errors is crucial for autonomous operation.",
                 learnMore: { url: "https://docs.anthropic.com/claude/docs/tool-use#error-handling", text: "📚 Error Handling" }
             },
             {
                 q: "What's context window management in agents?",
-                options: ["Context switching between agents", "Managing limited memory for long-running tasks", "Window size for agent display", "Windows for viewing AI context"],
+                options: ["Switching context between multiple running agents", "Managing limited memory for long-running tasks", "Setting display window size for the agent interface", "Viewing the internal context state of the AI model"],
                 correct: 1,
                 explanation: "Agents must manage context window limits. Strategies: summarize history, keep relevant info, discard old details, use external memory. Critical for long-running tasks.",
                 learnMore: { url: "https://docs.anthropic.com/claude/docs/long-context-window-tips", text: "📚 Context Management" }
@@ -4849,14 +4849,14 @@ const questions = {
             },
             {
                 q: "How do you evaluate AI agent performance?",
-                options: ["Task success rate, efficiency, safety, user satisfaction", "Count number of tool calls made", "Only check if agent responds", "No evaluation needed for agents"],
+                options: ["Task success rate, efficiency, safety, and satisfaction", "Count the total number of tool calls the agent makes", "Only verify whether the agent returns any response", "No formal evaluation is needed for autonomous agents"],
                 correct: 0,
                 explanation: "Evaluate: task completion rate, steps/cost to complete, error rate, safety (no harmful actions), user satisfaction. Create benchmarks for your use cases. Monitor production metrics.",
                 learnMore: { url: "https://www.anthropic.com/research/evaluating-ai-agents", text: "📚 Agent Evaluation" }
             },
             {
                 q: "What are safety considerations for AI agents?",
-                options: ["Just trust the AI decisions", "Limit permissions, require approval, monitor actions", "Agents are inherently safe always", "Safety only matters for robots"],
+                options: ["Trust all AI decisions without additional oversight", "Limit permissions, require approval, monitor actions", "Agents are inherently safe and need no restrictions", "Safety only matters for physical robotics systems"],
                 correct: 1,
                 explanation: "Agent safety: principle of least privilege (minimal permissions), approval gates for sensitive actions, action logging, rate limits, sandboxing, kill switches. Critical for production.",
                 learnMore: { url: "https://www.anthropic.com/research/building-effective-agents", text: "📚 Agent Safety" }
@@ -4902,7 +4902,7 @@ const questions = {
             },
             {
                 q: "What's Celery used for in Waldur?",
-                options: ["HTTP web serving", "Frontend rendering", "Async task processing", "Database connections"],
+                options: ["User session handling and authentication", "Database query caching and optimization", "Asynchronous background task processing", "Frontend state management and rendering"],
                 correct: 2,
                 explanation: "Celery handles asynchronous tasks in Waldur: resource provisioning, periodic sync with backends, sending notifications, generating reports, and other background jobs.",
                 learnMore: { url: "https://docs.celeryq.dev/en/stable/", text: "📚 Celery Documentation" }
@@ -4925,7 +4925,7 @@ const questions = {
             },
             {
                 q: "What's the purpose of waldur-mastermind?",
-                options: ["Main backend with core and plugins", "Documentation website", "Frontend web application", "Mobile application code"],
+                options: ["Main backend repository with core and plugins", "Documentation website for end users and admins", "Frontend web application built with React", "Mobile application codebase for iOS and Android"],
                 correct: 0,
                 explanation: "waldur-mastermind is the main backend repository containing waldur-core and all official plugins. It's the single deployable backend component.",
                 learnMore: { url: "https://github.com/waldur/waldur-mastermind", text: "📚 Waldur Mastermind" }
@@ -4939,7 +4939,7 @@ const questions = {
             },
             {
                 q: "What serializers does Waldur use?",
-                options: ["DRF serializers for API I/O", "XML format only", "Custom binary format", "JSON format only"],
+                options: ["DRF serializers for API input and output", "XML-based serialization format exclusively", "Custom binary serialization format only", "Plain JSON serialization without validation"],
                 correct: 0,
                 explanation: "Waldur uses DRF serializers for validation, parsing input, and formatting output. HyperlinkedModelSerializer provides URL-based relationships between resources.",
                 learnMore: { url: "https://www.django-rest-framework.org/api-guide/serializers/", text: "📚 DRF Serializers" }
@@ -4948,14 +4948,14 @@ const questions = {
         4: [
             {
                 q: "What's the role of waldur-core vs plugins?",
-                options: ["Plugins are part of core", "There is no difference", "Core provides base, plugins add integrations", "Core is an optional component"],
+                options: ["Plugins are bundled directly inside core code", "Core and plugins serve the identical purpose", "Core provides base, plugins add integrations", "Core is an optional add-on to the platform"],
                 correct: 2,
                 explanation: "waldur-core provides base models (Customer, Project), permissions, marketplace, and infrastructure. Plugins add specific provider integrations (OpenStack, Azure, etc.).",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/structure/", text: "📚 Waldur Structure" }
             },
             {
                 q: "How does Waldur handle background jobs?",
-                options: ["System cron job entries", "Python threads directly", "Celery tasks with periodic scheduling", "No background job support"],
+                options: ["System-level cron job entries for scheduling", "Python threads spawned directly by the app", "Celery tasks with periodic beat scheduling", "No built-in support for background job processing"],
                 correct: 2,
                 explanation: "Waldur uses Celery for background jobs. Celery Beat schedules periodic tasks (sync, cleanup). Tasks are defined with @shared_task decorator and can be chained.",
                 learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html", text: "📚 Periodic Tasks" }
@@ -4978,7 +4978,7 @@ const questions = {
         5: [
             {
                 q: "How do you extend Waldur with custom resource types?",
-                options: ["Use configuration files only", "Directly modify the core code", "Build external API bridge", "Create structure app with models and views"],
+                options: ["Use YAML configuration files exclusively", "Directly modify the core source code base", "Build an external API bridge integration", "Create structure app with models and views"],
                 correct: 3,
                 explanation: "Create a new Django app with: Resource model inheriting from marketplace.Resource, serializers, viewsets, processor for order handling, and register via extension.py.",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/plugins/", text: "📚 Custom Plugins" }
@@ -5018,21 +5018,21 @@ const questions = {
         1: [
             {
                 q: "What is an Offering in Waldur marketplace?",
-                options: ["User account", "Template for provisionable resources", "Payment method", "Sales pitch"],
+                options: ["User account within an organization", "Template for provisionable resources", "Payment method for billing purposes", "Sales pitch document for marketing"],
                 correct: 1,
                 explanation: "An Offering is a template that defines what can be provisioned: its type, configuration options, pricing plans, and which backend provides it. Users order from offerings.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/marketplace/", text: "📚 Marketplace Guide" }
             },
             {
                 q: "What is a Category in the marketplace?",
-                options: ["Price category", "Log category", "Grouping for offerings (compute, storage, etc.)", "User category"],
+                options: ["Price tier for billing calculations", "Log severity level for event filtering", "Grouping for offerings like compute or storage", "User role within an organization project"],
                 correct: 2,
                 explanation: "Categories organize offerings by type (Compute, Storage, HPC, etc.). They help users discover relevant services and can have custom icons and descriptions.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/marketplace/", text: "📚 Marketplace Categories" }
             },
             {
                 q: "Who creates offerings in Waldur?",
-                options: ["End users", "External systems", "System automatically", "Service providers/administrators"],
+                options: ["End users requesting resources directly", "External systems via automated imports", "The platform automatically from templates", "Service providers and administrators"],
                 correct: 3,
                 explanation: "Service providers (organizations with provider role) and staff administrators create offerings. End users consume offerings by placing orders.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/providers/", text: "📚 Provider Guide" }
@@ -5041,14 +5041,14 @@ const questions = {
         2: [
             {
                 q: "What's the relationship between Offering and Resource?",
-                options: ["Same thing", "Offering is template, Resource is provisioned instance", "Resource contains Offerings", "No relationship"],
+                options: ["They are the same entity in the data model", "Offering is template, Resource is instance", "Resource is a container that holds Offerings", "They exist independently with no connection"],
                 correct: 1,
                 explanation: "An Offering is a template defining what can be created. A Resource is a provisioned instance created from an offering. Many resources can be created from one offering.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/resources/", text: "📚 Resources" }
             },
             {
                 q: "What is an Order in Waldur?",
-                options: ["Shopping cart for saved offerings", "Invoice for consumed resources", "Request to create/modify/terminate a resource", "Report of usage statistics"],
+                options: ["Shopping cart for saved offering selections", "Invoice generated for consumed resources", "Request to create, modify, or terminate a resource", "Report summarizing resource usage statistics"],
                 correct: 2,
                 explanation: "An Order is a request to perform an action on a resource: create, update, or terminate. Orders go through approval workflow and are processed by backend executors.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/orders/", text: "📚 Order Management" }
@@ -5064,28 +5064,28 @@ const questions = {
         3: [
             {
                 q: "What states can a marketplace Order have?",
-                options: ["No states", "Only Open/Closed", "Pending, Executing, Done, Erred, etc.", "Custom only"],
+                options: ["Orders have no defined states at all", "Orders can only be Open or Closed", "Pending, Executing, Done, Erred, etc.", "Only custom user-defined states apply"],
                 correct: 2,
                 explanation: "Orders transition through states: pending-consumer → pending-provider → executing → done/erred. Approval workflows control state transitions.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/orders/", text: "📚 Order States" }
             },
             {
                 q: "What triggers order processing in Waldur?",
-                options: ["Approval or auto-approve, then Celery tasks", "External trigger", "Immediate execution", "Manual processing"],
+                options: ["Approval or auto-approve then Celery tasks", "An external webhook triggers processing", "Orders execute immediately upon creation", "An admin manually processes each order"],
                 correct: 0,
                 explanation: "After approval (manual or auto), Celery tasks pick up the order, call the appropriate backend executor, and update the resource and order state.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/workflows/", text: "📚 Workflows" }
             },
             {
                 q: "What's a plan in Waldur marketplace?",
-                options: ["Pricing configuration for an offering", "Deployment plan", "Support plan", "Project plan"],
+                options: ["Pricing configuration tied to an offering", "Step-by-step deployment specification", "Customer support escalation template", "Project milestone tracking document"],
                 correct: 0,
                 explanation: "A Plan defines pricing for an offering. It sets prices per component unit and billing period. An offering can have multiple plans (e.g., standard, premium).",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/pricing/", text: "📚 Pricing Plans" }
             },
             {
                 q: "How does resource termination work?",
-                options: ["Direct deletion", "Order of type 'terminate' processed by backend", "Manual removal", "Automatic expiry only"],
+                options: ["Resources are deleted directly from database", "A terminate order is processed by backend", "Admin removes the resource entry manually", "Resources expire automatically after timeout"],
                 correct: 1,
                 explanation: "Termination creates an Order with type='Terminate'. After approval, the backend executor deletes the resource from the provider and marks it terminated in Waldur.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/resources/", text: "📚 Resource Lifecycle" }
@@ -5094,7 +5094,7 @@ const questions = {
         4: [
             {
                 q: "How do offering components affect pricing?",
-                options: ["Visual only", "Define measurable units (CPU, RAM) with prices", "Documentation", "No effect"],
+                options: ["Components are displayed for visual reference only", "They define measurable units like CPU and RAM with prices", "Components serve as documentation for administrators", "Offering components have no effect on pricing at all"],
                 correct: 1,
                 explanation: "Components define billable units. Plans set prices per unit. Usage × Price = Cost. E.g., 4 CPU cores × $0.05/hour = $0.20/hour. Enables usage-based billing.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/pricing/", text: "📚 Component Pricing" }
@@ -5108,14 +5108,14 @@ const questions = {
             },
             {
                 q: "How does Waldur track resource usage?",
-                options: ["Manual entry", "No tracking", "Component usage reported periodically", "External systems only"],
+                options: ["Admins enter usage data manually per resource", "Waldur does not track resource usage at all", "Component usage is reported to Waldur periodically", "Only external monitoring systems track usage"],
                 correct: 2,
                 explanation: "Backend plugins report component usage periodically (CPU hours, storage GB). This feeds into billing calculations and usage reports.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/reporting/", text: "📚 Usage Reporting" }
             },
             {
                 q: "What's the approval workflow in marketplace?",
-                options: ["External approval", "Always auto-approved", "Never approved", "Orders can require manager/admin approval"],
+                options: ["Approval is handled by an external system only", "All marketplace orders are auto-approved always", "Orders in the marketplace are never approved", "Orders can require manager or admin approval"],
                 correct: 3,
                 explanation: "Offerings can require approval: consumer (project manager) and/or provider (service provider). Auto-approve is possible. Configurable per offering.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/workflows/", text: "📚 Approval Workflows" }
@@ -5124,35 +5124,35 @@ const questions = {
         5: [
             {
                 q: "What's the difference between public and private offerings?",
-                options: ["Same visibility", "Public visible to all, private to specific customers", "Public is free", "Private is external"],
+                options: ["Both have the same visibility to all users", "Public visible to all, private to specific customers", "Public offerings are always free of charge", "Private offerings are hosted on external platforms"],
                 correct: 1,
                 explanation: "Public offerings are visible to all users in the marketplace. Private offerings are restricted to specific customers, enabling exclusive services or custom pricing.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/offerings/", text: "📚 Offering Visibility" }
             },
             {
                 q: "How does the marketplace handle billing?",
-                options: ["Billing is not supported in marketplace", "Generate invoices based on component usage and prices", "Only external billing systems work", "Manual invoice creation only"],
+                options: ["Billing is not supported within the marketplace", "Invoices generated from component usage and prices", "Only external billing systems can be integrated", "Admins must create each invoice entry manually"],
                 correct: 1,
                 explanation: "Waldur generates invoices periodically based on resource usage and plan prices. Supports fixed and usage-based billing. Integrates with payment systems.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/billing/", text: "📚 Billing System" }
             },
             {
                 q: "What's offering secret options for?",
-                options: ["Provider-only configuration not visible to users", "Encrypted password storage", "Managing API keys for users", "Storing user secrets and credentials"],
+                options: ["Provider-only configuration hidden from users", "Encrypted storage for all user passwords", "Management interface for user API keys", "Secure vault for storing user credentials"],
                 correct: 0,
                 explanation: "Secret options store provider-side configuration hidden from users: backend credentials, internal settings. Only provider staff can view/edit these.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/offerings/", text: "📚 Secret Options" }
             },
             {
                 q: "How do you implement custom offering types?",
-                options: ["Configuration only", "Modify core", "Create plugin with offering type and processor", "Cannot customize"],
+                options: ["Edit the YAML configuration file for offerings", "Modify the Waldur core source code directly", "Create a plugin with offering type and processor", "Custom offering types are not supported at all"],
                 correct: 2,
                 explanation: "Create a plugin defining: offering type identifier, processor class handling orders, optional executor for backend interaction, and serializers for custom attributes.",
                 learnMore: { url: "https://docs.waldur.com/developer-guide/plugins/", text: "📚 Custom Offerings" }
             },
             {
                 q: "What's the robot account feature?",
-                options: ["Admin account", "User account", "Automated access for resources/integrations", "Test account"],
+                options: ["A superuser account for administrators", "A standard account for regular users", "Automated access for resources and integrations", "A temporary account for running tests"],
                 correct: 2,
                 explanation: "Robot accounts provide API access for automated systems and integrations. They have scoped permissions, can be attached to resources, and support credential rotation.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/robot-accounts/", text: "📚 Robot Accounts" }
@@ -5178,7 +5178,7 @@ const questions = {
             },
             {
                 q: "Can users have different roles in different organizations?",
-                options: ["Only admins", "No, one role only", "Yes, permissions are per-organization", "Only staff"],
+                options: ["Only admin users can hold multiple roles", "No, each user can only have a single role", "Yes, permissions are assigned per-organization", "Only staff users can have different roles"],
                 correct: 2,
                 explanation: "Users can have different roles in different organizations and projects. A user might be owner in one org and member in another, enabling flexible multi-tenant access.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/permissions/", text: "📚 Multi-tenant Permissions" }
@@ -5194,14 +5194,14 @@ const questions = {
             },
             {
                 q: "At what levels can permissions be assigned in Waldur?",
-                options: ["User account level only", "Global system level only", "Resource level only", "Customer/Organization, Project, Resource"],
+                options: ["Only at the individual user account level", "Only at the global system-wide level", "Only at the individual resource level", "Customer, Project, and Resource levels"],
                 correct: 3,
                 explanation: "Permissions can be assigned at: Customer (organization) level, Project level, or specific resource level. Each level has its own set of applicable roles.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/permissions/", text: "📚 Permission Levels" }
             },
             {
                 q: "What's the 'owner' role in an organization?",
-                options: ["Full administrative access to organization", "Read-only access to resources", "Access to projects only", "Access to billing only"],
+                options: ["Full administrative access to the organization", "Read-only access to organization resources", "Access limited to projects within the org", "Access limited to billing data within the org"],
                 correct: 0,
                 explanation: "Organization owner has full admin access: create/delete projects, manage members, view billing, configure settings. It's the highest role within an organization.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/organizations/", text: "📚 Organization Owners" }
@@ -5210,28 +5210,28 @@ const questions = {
         3: [
             {
                 q: "How do project permissions inherit from organization?",
-                options: ["Projects override", "Organization owners have access to all projects", "Manual only", "No inheritance"],
+                options: ["Project permissions override organization roles", "Organization owners can access all projects", "Inheritance requires manual configuration only", "There is no permission inheritance at all"],
                 correct: 1,
                 explanation: "Organization owners automatically have access to all projects within that organization. Project-level permissions are additive - they grant access to users without org-level roles.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/permissions/", text: "📚 Permission Inheritance" }
             },
             {
                 q: "What can a project manager do?",
-                options: ["Create organizations", "Manage project resources and members", "Access all projects", "Modify billing"],
+                options: ["Create new organizations in the system", "Manage project resources and its members", "Access all projects across organizations", "Modify billing settings for the organization"],
                 correct: 1,
                 explanation: "Project managers can: manage project resources, add/remove project members, approve orders within project scope. They cannot create organizations or access billing.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/projects/", text: "📚 Project Management" }
             },
             {
                 q: "How are permissions checked in Waldur API?",
-                options: ["Database triggers", "Frontend only", "Middleware only", "DRF permission classes on viewsets"],
+                options: ["Through database-level trigger functions", "Only validated on the frontend client side", "Through Django middleware interceptors only", "Using DRF permission classes on viewsets"],
                 correct: 3,
                 explanation: "Waldur uses DRF permission classes on viewsets. Each viewset has permission_classes defining who can access. Custom permission classes check user roles against resources.",
                 learnMore: { url: "https://www.django-rest-framework.org/api-guide/permissions/", text: "📚 DRF Permissions" }
             },
             {
                 q: "What's the service manager role?",
-                options: ["Billing", "Manage specific service/offering as provider", "User management", "Manage all services"],
+                options: ["Responsible for organization billing tasks", "Manages a specific service offering as provider", "Handles user account creation and management", "Has administrative access to all services"],
                 correct: 1,
                 explanation: "Service managers can manage offerings and resources for a specific service provider. They handle orders, configure offerings, but don't have full organization access.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/providers/", text: "📚 Service Managers" }
@@ -5240,28 +5240,28 @@ const questions = {
         4: [
             {
                 q: "What's the difference between owner and manager roles?",
-                options: ["Same", "Owner is project level", "Managers have more", "Owners have full access, managers have limited admin rights"],
+                options: ["Owner and manager roles are functionally identical", "Owner role operates only at the project level", "Managers have broader access than owners do", "Owners have full access, managers have limited rights"],
                 correct: 3,
                 explanation: "Owners have complete control (billing, settings, all projects). Managers have administrative rights within a limited scope (their project or assigned resources).",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/roles/", text: "📚 Owner vs Manager" }
             },
             {
                 q: "How do you grant a user access to a project?",
-                options: ["Create new user", "Edit user profile", "Add permission with role via API/UI", "Modify database"],
+                options: ["Create a new user account for the project", "Edit the user profile to include the project", "Add a permission with a role via the API or UI", "Modify the database permission tables directly"],
                 correct: 2,
                 explanation: "Use the API endpoint or UI to add a permission entry linking user, project, and role. The user immediately gains access according to their assigned role.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/projects/", text: "📚 Project Access" }
             },
             {
                 q: "What permissions does a project member have?",
-                options: ["View and use resources, limited modifications", "No access", "Read only", "Full access"],
+                options: ["View and use resources with limited modifications", "No access to any project resources or details", "Read-only access without any resource interaction", "Full administrative access to all project resources"],
                 correct: 0,
                 explanation: "Project members can view project details, see resources, and use allocated resources. They typically cannot create new resources or manage other members.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/roles/", text: "📚 Member Role" }
             },
             {
                 q: "How does Waldur handle permission caching?",
-                options: ["Always recomputed", "No caching", "Permissions computed and can be cached", "Database cache only"],
+                options: ["Permissions are always recomputed on each request", "There is no caching mechanism for permissions", "Permissions are computed and can be cached for speed", "Only database-level query caching is supported"],
                 correct: 2,
                 explanation: "Waldur can cache permission checks for performance. Cache is invalidated when permissions change. Reduces database queries for repeated permission checks.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/performance/", text: "📚 Performance" }
@@ -5270,35 +5270,35 @@ const questions = {
         5: [
             {
                 q: "How can you implement custom permission logic?",
-                options: ["Cannot customize", "Override permission classes in DRF viewsets", "Config file", "Database flags"],
+                options: ["Permission logic cannot be customized at all", "Override permission classes in DRF viewsets", "Edit the system configuration file settings", "Set custom flags in the database user table"],
                 correct: 1,
                 explanation: "Create custom DRF permission classes inheriting from BasePermission. Override has_permission() and has_object_permission() for custom logic. Assign to viewsets.",
                 learnMore: { url: "https://www.django-rest-framework.org/api-guide/permissions/#custom-permissions", text: "📚 Custom Permissions" }
             },
             {
                 q: "What's scope-based filtering in Waldur?",
-                options: ["UI filtering", "Search feature", "Filter querysets based on user permissions", "Report filter"],
+                options: ["Client-side filtering in the UI components", "A keyword search feature across all models", "Filter querysets based on user permissions", "Predefined report filters for administrators"],
                 correct: 2,
                 explanation: "Scope-based filtering automatically restricts querysets to objects the user can access. Uses filter backends in DRF to enforce permissions at the database query level.",
                 learnMore: { url: "https://www.django-rest-framework.org/api-guide/filtering/", text: "📚 Filtering" }
             },
             {
                 q: "How do offering permissions work?",
-                options: ["Admin only", "Control who can order from specific offerings", "No offering permissions", "Public only"],
+                options: ["Only administrators can manage offering access", "Control who can order from specific offerings", "There are no dedicated offering permissions", "All offerings are always publicly accessible"],
                 correct: 1,
                 explanation: "Offerings can be restricted to specific customers or user groups. Offering permissions control visibility and ordering rights, enabling private or exclusive services.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/offerings/", text: "📚 Offering Permissions" }
             },
             {
                 q: "What's the call management feature?",
-                options: ["Request and approval workflow for resources", "Phone calls", "Support tickets", "API calls"],
+                options: ["Request and approval workflow for resources", "Phone call logging and tracking for support", "Support ticket management and escalation", "API call monitoring and rate limit tracking"],
                 correct: 0,
                 explanation: "Call management provides request/approval workflows: users submit calls (requests), managers review and approve/reject. Used for resource allocation with human oversight.",
                 learnMore: { url: "https://docs.waldur.com/user-guide/calls/", text: "📚 Call Management" }
             },
             {
                 q: "How does Waldur audit permission changes?",
-                options: ["No auditing", "External tools", "Event logging for permission modifications", "Manual tracking"],
+                options: ["There is no auditing of permission changes", "Auditing relies on external third-party tools", "Event logging tracks all permission modifications", "Administrators must track changes manually"],
                 correct: 2,
                 explanation: "Waldur logs permission changes as events: who granted/revoked what role, when, to whom. Audit logs help compliance, security review, and troubleshooting.",
                 learnMore: { url: "https://docs.waldur.com/admin-guide/audit-logs/", text: "📚 Audit Logs" }
@@ -5336,7 +5336,7 @@ const questions = {
             },
             {
                 q: "What are pricing components?",
-                options: ["Hardware components tracked", "Component diagrams for pricing", "Pricing team members", "Individual billable aspects of a resource"],
+                options: ["Physical hardware components being tracked", "Diagrams that visualize pricing structure", "Members of the team responsible for pricing", "Individual billable aspects of a resource"],
                 correct: 3,
                 explanation: "Pricing components are individual billable items: CPU hours, storage GB, RAM GB, etc. Each has its own rate and measurement."
             },
@@ -5350,7 +5350,7 @@ const questions = {
         3: [
             {
                 q: "How does Waldur handle different currencies?",
-                options: ["Configurable currency per customer/offering", "Only USD supported always", "Automatic conversion daily", "Currency not tracked in billing"],
+                options: ["Configurable currency per customer or offering", "Only USD is supported as the billing currency", "Automatic currency conversion happens daily", "Currency is not tracked within billing records"],
                 correct: 0,
                 explanation: "Waldur supports configurable currencies. Offerings can specify currency. Invoices generated in customer's currency."
             },
@@ -5362,13 +5362,13 @@ const questions = {
             },
             {
                 q: "How are usage metrics collected for billing?",
-                options: ["No usage tracking needed", "Users manually enter usage", "Backend plugins report usage periodically", "Random sampling of resources"],
+                options: ["Frontend UI polls users for resource stats", "Users manually enter their usage data monthly", "Backend plugins report usage periodically", "Random sampling estimates resource consumption"],
                 correct: 2,
                 explanation: "Backend plugins (OpenStack, SLURM, etc.) report usage metrics via pull tasks. Stored in database, aggregated for billing."
             },
             {
                 q: "What's a pricing plan in Waldur?",
-                options: ["Plan to change prices later", "User subscription tier", "Set of pricing components for an offering", "Marketing pricing strategy"],
+                options: ["Roadmap for future price adjustments", "Tiered subscription level for users", "Set of pricing components for an offering", "Marketing strategy for customer segments"],
                 correct: 2,
                 explanation: "Pricing plan defines how an offering is billed: components, rates, billing frequency. Offerings can have multiple plans."
             },
@@ -5443,7 +5443,7 @@ const questions = {
             },
             {
                 q: "Why are quotas important?",
-                options: ["Quotas slow down the system", "Prevent resource exhaustion and control costs", "Purely decorative feature", "Only for compliance requirements"],
+                options: ["Quotas reduce overall system performance", "Prevent resource exhaustion and control costs", "Quotas serve as a cosmetic UI indicator", "Quotas exist solely for audit compliance"],
                 correct: 1,
                 explanation: "Quotas prevent single users from exhausting shared resources, control costs, enable capacity planning, ensure fair allocation."
             },
@@ -5489,7 +5489,7 @@ const questions = {
             },
             {
                 q: "How do you set default quotas?",
-                options: ["Configure defaults in settings or offerings", "Users set their own defaults", "Defaults are hardcoded only", "No default quotas exist"],
+                options: ["Configure defaults in settings or offerings", "Each user defines their own quota defaults", "Defaults are hardcoded in the source code", "Default quotas are set by the message broker"],
                 correct: 0,
                 explanation: "Default quotas set in configuration or per offering. Applied when creating new projects/customers. Can be overridden per entity."
             },
@@ -5553,7 +5553,7 @@ const questions = {
             },
             {
                 q: "What's burst quota?",
-                options: ["Burst of quota requests", "Fast quota consumption", "Quota for burst computing", "Temporary quota increase above normal limit"],
+                options: ["Sudden spike in quota change requests", "Accelerated rate of quota consumption", "Dedicated quota pool for compute clusters", "Temporary quota increase above normal limit"],
                 correct: 3,
                 explanation: "Burst quota allows temporary exceeding normal limits for short periods. Useful for peak usage. Returns to normal after burst period."
             },
@@ -5630,13 +5630,13 @@ const questions = {
         4: [
             {
                 q: "How do you implement custom notification types?",
-                options: ["Fork and modify core code", "Custom types not supported", "Email Waldur support team", "Define event type, template, and handlers"],
+                options: ["Fork the repository and modify core code", "Custom notification types are not supported", "Submit a feature request to the support team", "Define event type, template, and handlers"],
                 correct: 3,
                 explanation: "Custom notifications: define event type, create templates, register handlers. Plugin notifications follow same pattern."
             },
             {
                 q: "What's the notification event system?",
-                options: ["Central event bus for notification triggers", "Calendar events that notify", "Event planning notifications", "System event logs only"],
+                options: ["Central event bus for notification triggers", "Calendar scheduling system with reminders", "Event planning module with notifications", "Persistent system event log for auditing"],
                 correct: 0,
                 explanation: "Event system: actions emit events, notification system subscribes. Decoupled: code emits event, notification system handles delivery."
             },
@@ -5662,19 +5662,19 @@ const questions = {
             },
             {
                 q: "What's notification deduplication?",
-                options: ["Merge duplicate templates", "Prevent duplicate notifications for same event", "Remove duplicate content text", "No deduplication needed"],
+                options: ["Merging similar notification templates together", "Prevent duplicate notifications for same event", "Removing redundant text within message bodies", "Archiving outdated notification configurations"],
                 correct: 1,
                 explanation: "Deduplication prevents duplicate notifications: same event in short window, multiple triggers for one action. Uses event IDs and timing."
             },
             {
                 q: "How do you handle notification failures?",
-                options: ["User must resend manually", "Failures silently ignored", "Retry with backoff, log errors, alert admin", "No failure handling exists"],
+                options: ["Users must manually resend failed messages", "Failures are silently ignored by the system", "Retry with backoff, log errors, alert admin", "Failed notifications are permanently discarded"],
                 correct: 2,
                 explanation: "Handle failures: retry with exponential backoff, log errors, move to dead letter queue after max retries. Alert admin on persistent failures."
             },
             {
                 q: "What's multi-language notification support?",
-                options: ["Separate systems per language", "Templates in multiple languages per user preference", "Only English supported", "Automatic translation of all text"],
+                options: ["Deploy separate notification systems per language", "Templates in multiple languages per user preference", "All notifications are sent in English only", "Automatic machine translation of all message text"],
                 correct: 1,
                 explanation: "Multi-language: templates defined in supported languages, user preference determines which used. Falls back to default if translation missing."
             },
@@ -5691,13 +5691,13 @@ const questions = {
         1: [
             {
                 q: "What's Celery used for in Waldur?",
-                options: ["User session handling", "Database query caching system", "Asynchronous background task processing", "Frontend state management"],
+                options: ["User session handling service", "Database query caching system", "Asynchronous background task processing", "Frontend state management layer"],
                 correct: 2,
                 explanation: "Celery handles async background tasks: resource provisioning, sync with backends, sending notifications, generating reports. Non-blocking."
             },
             {
                 q: "What's a Celery task?",
-                options: ["Item on user's todo list", "Database task queue entry", "Function executed asynchronously by workers", "Celery vegetable processing"],
+                options: ["Scheduled item on a user's task list", "Database record representing a queued job", "Function executed asynchronously by workers", "Background thread within the main process"],
                 correct: 2,
                 explanation: "Celery task is a Python function decorated with @shared_task. Called asynchronously, executed by worker processes. Returns result or raises exception."
             },
@@ -5723,7 +5723,7 @@ const questions = {
             },
             {
                 q: "How do you define a periodic task?",
-                options: ["Periodic tasks not supported", "Configure in CELERY_BEAT_SCHEDULE setting", "Call task in infinite loop", "Use time.sleep() in task"],
+                options: ["Periodic task scheduling is not supported", "Configure in CELERY_BEAT_SCHEDULE setting", "Call the task function in an infinite loop", "Use time.sleep() delays inside the task body"],
                 correct: 1,
                 explanation: "Periodic tasks defined in CELERY_BEAT_SCHEDULE: task name, schedule (crontab or interval), arguments. Beat process executes on schedule."
             },
@@ -5757,7 +5757,7 @@ const questions = {
         4: [
             {
                 q: "What's task idempotency?",
-                options: ["Idempotent tasks run faster", "Same result regardless of execution count", "Task with unique ID always", "Identical task definitions"],
+                options: ["Idempotent tasks have faster execution times", "Same result regardless of execution count", "Each task instance has a globally unique ID", "Multiple tasks sharing identical definitions"],
                 correct: 1,
                 explanation: "Idempotent task: running multiple times has same effect as running once. Important for retries - avoid duplicate side effects."
             },
@@ -5769,7 +5769,7 @@ const questions = {
             },
             {
                 q: "What's task rate limiting?",
-                options: ["Rate of task code changes", "Limit how many tasks execute per time period", "No rate limiting in Celery", "Limiting task result size"],
+                options: ["Frequency of task source code modifications", "Limit how many tasks execute per time period", "Celery does not support any rate limiting", "Constraining the size of task result payloads"],
                 correct: 1,
                 explanation: "Rate limiting prevents overwhelming backends: max N tasks per second. Useful for external API calls, resource provisioning."
             },
@@ -5783,7 +5783,7 @@ const questions = {
         5: [
             {
                 q: "How do you handle long-running tasks?",
-                options: ["Extend timeout, chunk work, progress tracking", "Split into many small apps", "Just increase server memory", "Long tasks not supported"],
+                options: ["Extend timeout, chunk work, track progress", "Split the application into many small services", "Increase server memory to handle larger tasks", "Long-running tasks are not supported by Celery"],
                 correct: 0,
                 explanation: "Long tasks: set appropriate timeout, emit progress updates, chunk large data, consider splitting into sub-tasks. Avoid blocking workers."
             },
@@ -5801,13 +5801,13 @@ const questions = {
             },
             {
                 q: "What's task routing?",
-                options: ["Network routing for tasks", "Send specific tasks to specific queues", "Task URL routing pattern", "Routing tasks to users"],
+                options: ["Network-level routing between task services", "Send specific tasks to designated queue workers", "URL path routing pattern for task endpoints", "Forwarding task results to specific end users"],
                 correct: 1,
                 explanation: "Routing sends tasks to designated queues: high-priority queue, dedicated queue for heavy tasks. Workers consume from specific queues."
             },
             {
                 q: "How do you debug Celery tasks?",
-                options: ["Use only print debugging", "Run eager mode, check logs, test synchronously", "Celery tasks can't be debugged", "Debug in production only"],
+                options: ["Rely exclusively on print statement debugging", "Run eager mode, check logs, test synchronously", "Celery tasks cannot be debugged or inspected", "Only debug tasks directly in production servers"],
                 correct: 1,
                 explanation: "Debug: CELERY_TASK_ALWAYS_EAGER for sync execution, detailed logging, test tasks directly, Flower for inspection. Reproduce locally."
             },
@@ -5818,13 +5818,13 @@ const questions = {
         1: [
             {
                 q: "What API style does Waldur use?",
-                options: ["REST API with JSON responses", "SOAP XML services", "GraphQL exclusively", "gRPC protocol only"],
+                options: ["REST API with JSON request and response format", "SOAP-based XML web services with WSDL schema", "GraphQL query language as the exclusive method", "gRPC protocol with Protocol Buffer definitions"],
                 correct: 0,
                 explanation: "Waldur uses REST API built with Django REST Framework. JSON request/response format. Follows REST conventions for resources and actions."
             },
             {
                 q: "What's API versioning?",
-                options: ["Versioning is unnecessary", "Different API versions for compatibility", "Version control for API code", "Numbering API endpoints"],
+                options: ["Versioning of APIs is generally unnecessary", "Different API versions for client compatibility", "Version control system applied to API source code", "Sequential numbering scheme for API endpoints"],
                 correct: 1,
                 explanation: "API versioning allows breaking changes without affecting existing clients. Waldur supports versions (v1, v2). Deprecate old versions over time."
             },
@@ -5876,7 +5876,7 @@ const questions = {
             },
             {
                 q: "What's HATEOAS in REST?",
-                options: ["Hate-based API design pattern", "Responses include links to related actions", "Historical API tracing system", "Hardware API optimization"],
+                options: ["Hate-based API deprecation pattern", "Responses include links to related actions", "Historical API request tracing system", "Hardware-optimized API routing layer"],
                 correct: 1,
                 explanation: "HATEOAS: responses include hyperlinks to related resources and available actions. Client discovers API by following links. Waldur uses hyperlinked serializers."
             },
@@ -5902,7 +5902,7 @@ const questions = {
             },
             {
                 q: "What's bulk operations in API?",
-                options: ["Large request body size", "Operations on bulk storage", "Bulk data export feature", "Process multiple items in one request"],
+                options: ["Sending requests with very large body payloads", "Operations for managing bulk storage backends", "Feature for exporting bulk data to external files", "Process multiple items in a single API request"],
                 correct: 3,
                 explanation: "Bulk operations: create, update, delete multiple items in single request. More efficient than individual calls. Waldur supports for some resources."
             },
@@ -5910,7 +5910,7 @@ const questions = {
         5: [
             {
                 q: "How do you maintain API backward compatibility?",
-                options: ["Change API freely anytime", "Compatibility not important", "Deprecate gradually, version breaking changes", "Never change API once released"],
+                options: ["Change the API freely at any point in time", "Backward compatibility is not a real concern", "Deprecate gradually, version breaking changes", "Never modify the API once it has been released"],
                 correct: 2,
                 explanation: "Backward compatibility: add fields without removing, deprecate with warnings, version breaking changes. Give clients time to migrate."
             },
@@ -5928,13 +5928,13 @@ const questions = {
             },
             {
                 q: "What's hypermedia API design?",
-                options: ["Media streaming through API", "Links guide client through API actions", "Hypermedia file uploads", "Multimedia API responses"],
+                options: ["Streaming media content through API endpoints", "Links in responses guide clients through actions", "Uploading hypermedia files via the API interface", "Embedding multimedia elements in API responses"],
                 correct: 1,
                 explanation: "Hypermedia: API responses include links to available actions. Client doesn't hardcode URLs. Discoverable API. Waldur uses hyperlinked relationships."
             },
             {
                 q: "How do you handle API migrations?",
-                options: ["Version new endpoints, support both, deprecate old", "Immediate switch to new API", "Migrations not needed", "Users handle migration themselves"],
+                options: ["Version new endpoints, support both, deprecate old", "Switch all clients to the new API immediately", "API migrations are not needed in practice", "Clients handle the migration on their own schedule"],
                 correct: 0,
                 explanation: "API migration: introduce new version, support both during transition, deprecate warnings, remove old after grace period. Communicate timeline."
             },
@@ -5951,7 +5951,7 @@ const questions = {
             },
             {
                 q: "What's a customer in Waldur?",
-                options: ["Top-level organization/tenant entity", "Individual user account", "Paying subscriber only", "Customer service department"],
+                options: ["Top-level organization or tenant entity", "Individual user account in the system", "Subscriber with an active payment plan", "Department handling customer service tasks"],
                 correct: 0,
                 explanation: "Customer is top-level organization entity. Contains projects, users, resources. Primary tenant boundary. Billing/quotas at customer level."
             },
@@ -5985,19 +5985,19 @@ const questions = {
         3: [
             {
                 q: "How does Waldur handle shared resources?",
-                options: ["Resources shared between all users", "Service settings shared, resources per tenant", "All resources fully shared", "No sharing capabilities exist"],
+                options: ["All resources are shared between every user", "Service settings shared, resources per tenant", "Every resource is fully shared across tenants", "Waldur does not have sharing capabilities"],
                 correct: 1,
                 explanation: "Service settings (provider credentials) can be shared across customers. Individual resources belong to specific project. Enables managed services."
             },
             {
                 q: "What's tenant onboarding?",
-                options: ["User training for tenants", "Tenant rental agreement process", "Onboarding tenants to cloud", "Process of creating new customer/organization"],
+                options: ["Training program for existing tenant users", "Signing a rental agreement for cloud tenants", "Migration of tenants to a new cloud platform", "Process of creating a new customer organization"],
                 correct: 3,
                 explanation: "Onboarding: create customer, configure quotas, assign admin users, set up projects. Can be self-service or admin-driven. API support for automation."
             },
             {
                 q: "How are quotas scoped in multi-tenant?",
-                options: ["Quotas at customer, project, and offering levels", "No quota system in multi-tenant", "Quotas only for single tenant", "Global quotas for all tenants"],
+                options: ["Quotas at customer, project, and offering levels", "Multi-tenant mode has no quota system at all", "Quotas are only available for a single tenant", "One global quota is shared across all tenants"],
                 correct: 0,
                 explanation: "Quotas scoped hierarchically: customer-level limits, project-level within customer, offering-level per service. Enables resource governance."
             },
@@ -6011,7 +6011,7 @@ const questions = {
         4: [
             {
                 q: "How do you migrate between tenants?",
-                options: ["Move projects/resources between customers", "Export/import only option", "Delete and recreate in new tenant", "Migration not supported"],
+                options: ["Move projects and resources between customers", "Export data and import it into the new tenant", "Delete everything and recreate in new tenant", "Cross-tenant migration is not supported at all"],
                 correct: 0,
                 explanation: "Migration moves projects or resources between customers. Requires admin privileges. Updates ownership, preserves resource data."
             },
@@ -6055,7 +6055,7 @@ const questions = {
             },
             {
                 q: "What's federation in multi-tenant context?",
-                options: ["Federal government tenants", "No federation in Waldur", "Federation of tenant users", "Multiple Waldur instances sharing resources"],
+                options: ["Tenant accounts belonging to federal agencies", "Waldur does not support any federation features", "Unified login federation for tenant user accounts", "Multiple Waldur instances sharing resources"],
                 correct: 3,
                 explanation: "Federation connects multiple Waldur instances. Resources from one available in another. Enables consortium deployments, geographic distribution."
             },
@@ -6078,7 +6078,7 @@ const questions = {
             },
             {
                 q: "What types of reports does Waldur generate?",
-                options: ["Only PDF documents", "Usage, billing, cost allocation reports", "Bug and error reports only", "No reporting capabilities"],
+                options: ["Only PDF formatted document exports", "Usage, billing, and cost allocation reports", "Bug tracking and error diagnostic reports", "Waldur has no built-in reporting features"],
                 correct: 1,
                 explanation: "Report types: usage reports (resource consumption), billing reports (invoices, charges), cost allocation (per project/team), capacity reports."
             },
@@ -6104,7 +6104,7 @@ const questions = {
             },
             {
                 q: "How do scheduled reports work?",
-                options: ["Scheduling not supported", "Reports generated on demand only", "Users manually schedule each run", "Automatically generated and sent on schedule"],
+                options: ["Queued by workers and sent via webhooks", "Triggered manually by admin API requests", "Configured per user in their profile page", "Automatically generated and sent on schedule"],
                 correct: 3,
                 explanation: "Scheduled reports: configure frequency (daily, weekly, monthly), recipients, format. Celery Beat triggers generation. Email or store results."
             },
@@ -6118,13 +6118,13 @@ const questions = {
             },
             {
                 q: "How do you create custom reports?",
-                options: ["API queries with filters and aggregations", "Request from Waldur support", "Custom reports not supported", "Modify source code only way"],
+                options: ["API queries with filters and aggregations", "Submit a request to Waldur support team", "Use the built-in report template wizard", "Modify the Django reporting source code"],
                 correct: 0,
                 explanation: "Custom reports via API: query resources, filter by criteria, aggregate data. Export results. Build dashboards with visualization tools."
             },
             {
                 q: "What's trend analysis in reporting?",
-                options: ["Trending topics in reports", "Report popularity metrics", "Analysis of report downloads", "Track metrics over time to identify patterns"],
+                options: ["Ranking report types by user popularity", "Comparing report formats across exports", "Measuring frequency of report generation", "Track metrics over time to identify patterns"],
                 correct: 3,
                 explanation: "Trend analysis tracks metrics over time: usage growth, cost trends, seasonal patterns. Enables forecasting, capacity planning."
             },
@@ -6156,7 +6156,7 @@ const questions = {
             },
             {
                 q: "How do you filter reports by scope?",
-                options: ["Only date range filtering", "No filtering capabilities", "Customer, project, date range, resource type", "Filter in external tools only"],
+                options: ["Only filter by creation date range", "Filter using external analytics tools", "Customer, project, date range, resource type", "Only filter by assigned organization name"],
                 correct: 2,
                 explanation: "Filter reports: by organization (customer), project, date range, resource type, tags. Combine filters for specific views."
             },
@@ -6164,19 +6164,19 @@ const questions = {
         5: [
             {
                 q: "How do you implement custom report plugins?",
-                options: ["Modify core reporting code", "Define data sources, queries, and renderers", "Custom plugins not supported", "Use external BI tools only"],
+                options: ["Modify the core reporting module directly", "Define data sources, queries, and renderers", "Register plugins through the admin settings", "Create Docker containers for each report"],
                 correct: 1,
                 explanation: "Custom plugins: define metric collectors, report queries, output renderers. Register with reporting framework. Follow plugin patterns."
             },
             {
                 q: "What's real-time vs batch reporting?",
-                options: ["Real-time doesn't exist in Waldur", "They are identical approaches", "Batch is deprecated", "Real-time: live data; Batch: processed periodically"],
+                options: ["Real-time runs on separate dedicated servers", "Both modes generate reports simultaneously", "Batch mode has been deprecated in new versions", "Real-time: live data; Batch: processed periodically"],
                 correct: 3,
                 explanation: "Real-time shows current state (dashboard). Batch processes historical data periodically (daily summaries). Choose based on need."
             },
             {
                 q: "How do you ensure report accuracy?",
-                options: ["Accuracy not measurable", "Reports are always accurate", "Validate data sources, test calculations", "Manual verification only way"],
+                options: ["Accuracy depends on the database engine used", "Reports are verified automatically by the API", "Validate data sources, test calculations, audit", "Manual spot-checking of every generated report"],
                 correct: 2,
                 explanation: "Ensure accuracy: validate source data, unit tests for calculations, reconcile with billing, document methodology. Audit periodically."
             },
@@ -6231,7 +6231,7 @@ const questions = {
             },
             {
                 q: "How does routing work in Waldur UI?",
-                options: ["URL routing via Redux", "UI-Router for state-based client-side routing", "No routing - single page", "Server-side routing only"],
+                options: ["URL hash routing managed via Redux store", "UI-Router for state-based client-side routing", "Single-page rendering with no route changes", "Server-side page routing with full reloads"],
                 correct: 1,
                 explanation: "UI-Router for React handles state-based client-side routing. Routes defined in module-specific routes.ts files. Navigation without full page reload. Hierarchical states."
             },
@@ -6251,13 +6251,13 @@ const questions = {
             },
             {
                 q: "How does Waldur handle UI theming?",
-                options: ["No theming support", "External CSS files only", "Hardcoded styles only", "CSS variables and theme configuration"],
+                options: ["Inline styles defined per component only", "External SASS stylesheets compiled at build", "Hardcoded color values in each component", "CSS variables and theme configuration files"],
                 correct: 3,
                 explanation: "Theming via CSS variables, configurable colors/branding. Organizations can customize appearance. Bootstrap-based with overrides."
             },
             {
                 q: "What's the Waldur translation system?",
-                options: ["Browser auto-translation", "No translation support", "Custom translate function with locale files", "Server-side translation only"],
+                options: ["Browser built-in auto-translation feature", "Third-party translation service integration", "Custom translate function with locale files", "Server-side rendered translated HTML pages"],
                 correct: 2,
                 explanation: "Internationalization via custom translate/formatJsx helpers. Locale files managed in repository. Local-first approach without external translation services."
             },
@@ -6265,7 +6265,7 @@ const questions = {
         4: [
             {
                 q: "How do you add new features to Waldur UI?",
-                options: ["Modify existing components only", "Create feature folder with components, actions, reducers", "Features added via plugins only", "Request from core team"],
+                options: ["Modify existing components to add new logic", "Create feature folder with components, actions, reducers", "Install external feature packages via npm only", "Submit a feature request to the core dev team"],
                 correct: 1,
                 explanation: "New features: create folder under features, add components, define Redux actions/reducers, add routes, connect to API. Follow existing patterns."
             },
@@ -6277,13 +6277,13 @@ const questions = {
             },
             {
                 q: "How does Waldur UI handle errors?",
-                options: ["Crashes on any error", "Console.log only", "Errors ignored silently", "Error boundaries and toast notifications"],
+                options: ["Component unmounts and full page reloads", "Errors logged to console without user notice", "Silent catch blocks suppress all exceptions", "Error boundaries and toast notifications shown"],
                 correct: 3,
                 explanation: "Error boundaries catch component errors, show fallback UI. API errors shown as toast notifications. User-friendly error messages."
             },
             {
                 q: "What testing tools does Waldur UI use?",
-                options: ["No frontend testing", "Jest and React Testing Library", "Selenium exclusively", "Manual testing only"],
+                options: ["Cypress for end-to-end browser testing", "Jest and React Testing Library for tests", "Selenium WebDriver for all test scenarios", "Playwright for automated integration tests"],
                 correct: 1,
                 explanation: "Testing: Jest for unit tests, React Testing Library for component tests. Test user interactions. Coverage targets. CI runs tests."
             },
@@ -6291,31 +6291,31 @@ const questions = {
         5: [
             {
                 q: "How do you optimize Waldur UI performance?",
-                options: ["Performance optimization not needed", "Disable features for speed", "Just add more servers", "Memoization, code splitting, lazy loading"],
+                options: ["Reduce component count to minimize complexity", "Disable animations and transitions for speed", "Increase server resources to handle the load", "Memoization, code splitting, and lazy loading"],
                 correct: 3,
                 explanation: "Optimize: React.memo for expensive components, useMemo/useCallback, code splitting, lazy loading, virtualization for large lists."
             },
             {
                 q: "How does Waldur UI handle real-time updates?",
-                options: ["Page refresh only way", "Real-time not supported", "Polling or WebSocket connections", "Server push via HTTP"],
+                options: ["Full page refresh on a timed interval", "Server-sent events via HTTP streaming", "Polling or WebSocket connections for updates", "Redux store sync across browser tabs only"],
                 correct: 2,
                 explanation: "Real-time via polling (periodic API calls) or WebSocket for instant updates. Resource state changes reflected in UI. Configurable intervals."
             },
             {
                 q: "What's the plugin UI architecture?",
-                options: ["No UI plugin support", "Plugins are backend only", "Plugins modify core code", "Extension points for plugin components"],
+                options: ["Plugins cannot add any UI components", "Plugins only extend the backend API layer", "Plugins directly patch the core UI source", "Extension points for registering plugin components"],
                 correct: 3,
                 explanation: "UI plugins: register components at extension points, add routes, extend menus. Core provides hooks for plugin UI. Maintains modularity."
             },
             {
                 q: "How do you debug Waldur UI?",
-                options: ["Print statements only", "React DevTools, Redux DevTools, browser console", "Debug in production only", "No debugging available"],
+                options: ["Add console.log statements throughout code", "React DevTools, Redux DevTools, browser console", "Deploy to staging and test in production mode", "Use the built-in Waldur debug panel interface"],
                 correct: 1,
                 explanation: "Debug tools: React DevTools for components, Redux DevTools for state, browser console, network tab. Source maps for development."
             },
             {
                 q: "What's accessible UI design in Waldur?",
-                options: ["Only visual design matters", "Screen reader software handles it", "ARIA attributes, keyboard navigation, contrast", "Accessibility not implemented"],
+                options: ["Focus only on visual layout and color theme", "Rely on browser default accessibility support", "ARIA attributes, keyboard navigation, contrast", "Accessibility is handled by a separate plugin"],
                 correct: 2,
                 explanation: "Accessibility: ARIA labels, keyboard navigation, sufficient color contrast, focus management. Follows WCAG guidelines. Enables assistive technology."
             },
@@ -6338,7 +6338,7 @@ const questions = {
             },
             {
                 q: "What's a form field component?",
-                options: ["Reusable input with label and validation", "Database field representation", "Server-side form field", "Field in a data form"],
+                options: ["Reusable input with label and validation logic", "A column definition inside a database schema", "A server-side model property for form storage", "A raw HTML input element with no extra logic"],
                 correct: 0,
                 explanation: "Form field component wraps input with label, error display, help text. Standardizes appearance. Connects to form state automatically."
             },
@@ -6366,13 +6366,13 @@ const questions = {
         3: [
             {
                 q: "What's conditional form fields?",
-                options: ["Fields shown based on other field values", "Optional form fields only", "Conditionally required fields", "Fields with if-statements"],
+                options: ["Fields shown or hidden based on other field values", "Fields that are always optional in every context", "Fields with conditional required validation rules", "Fields rendered with inline conditional CSS styles"],
                 correct: 0,
                 explanation: "Conditional fields: show/hide based on other values. Example: show 'other' text field when 'other' selected in dropdown. Dynamic forms."
             },
             {
                 q: "How do you handle form arrays?",
-                options: ["Multiple forms in array", "Arrays in select dropdowns", "Dynamic list of repeated field groups", "Array validation rules"],
+                options: ["Multiple independent forms rendered together", "Array values displayed in dropdown select inputs", "Dynamic list of repeated field groups in a form", "Validation rules applied to array-type data fields"],
                 correct: 2,
                 explanation: "Form arrays: add/remove repeated field groups. Example: multiple IP addresses, multiple team members. useFieldArray hook or similar."
             },
@@ -6392,13 +6392,13 @@ const questions = {
         4: [
             {
                 q: "What's form state management?",
-                options: ["No state management needed", "Only track current value", "State stored in database", "Track values, errors, touched, dirty status"],
+                options: ["Form data stored directly in the database", "Only the current input value is maintained", "State resets on every component re-render cycle", "Track values, errors, touched, and dirty status"],
                 correct: 3,
                 explanation: "Form state: values (current inputs), errors (validation issues), touched (user interacted), dirty (changed from initial). Enables smart UX."
             },
             {
                 q: "How do you handle file uploads in forms?",
-                options: ["File input with preview and upload handling", "Files not supported in forms", "Only URL input for files", "Backend handles file forms"],
+                options: ["File input with preview and upload progress handling", "Files must be uploaded separately outside the form", "Only URL text input is accepted for file references", "Backend API handles all file processing independently"],
                 correct: 0,
                 explanation: "File uploads: file input component, preview images, progress indicator, upload to server (may be separate endpoint). Validate type/size."
             },
@@ -6418,7 +6418,7 @@ const questions = {
         5: [
             {
                 q: "How do you test forms?",
-                options: ["Only test submit button", "Forms don't need testing", "Simulate user input and verify behavior", "Manual testing sufficient"],
+                options: ["Only verify that the submit button is rendered", "Validate form markup matches the HTML snapshot", "Simulate user input and verify expected behavior", "Check that the form component mounts without error"],
                 correct: 2,
                 explanation: "Test forms: simulate typing, check validation errors appear, submit and verify API called, test edge cases. React Testing Library for interactions."
             },
@@ -6436,13 +6436,13 @@ const questions = {
             },
             {
                 q: "What's form performance optimization?",
-                options: ["Optimization not possible", "Forms are always fast enough", "Minimize re-renders, debounce validation", "Just simplify the form"],
+                options: ["Performance tuning is not possible for forms", "Use faster hardware to speed up form rendering", "Minimize re-renders and debounce validation calls", "Reduce the total number of fields on every form"],
                 correct: 2,
                 explanation: "Optimize: minimize re-renders (subscribe only to needed state), debounce expensive validation, virtualize long option lists."
             },
             {
                 q: "How do you handle form accessibility?",
-                options: ["Not relevant for forms", "Screen readers not supported", "Labels, ARIA attributes, keyboard support", "Accessibility handled by browser"],
+                options: ["Accessibility does not apply to form elements", "Screen reader support is not currently available", "Labels, ARIA attributes, and keyboard tab support", "Accessibility is automatically handled by browsers"],
                 correct: 2,
                 explanation: "Accessible forms: proper labels, error announcements, keyboard navigation, focus management. Associate errors with fields via ARIA."
             },
@@ -6453,7 +6453,7 @@ const questions = {
         1: [
             {
                 q: "What are data tables used for in Waldur?",
-                options: ["Database table management", "HTML table styling", "Spreadsheet editing only", "Display lists of resources with features"],
+                options: ["Manage database table schemas and migrations", "Apply custom HTML styling to table elements", "Provide inline spreadsheet editing for records", "Display lists of resources with sorting and actions"],
                 correct: 3,
                 explanation: "Data tables display resource lists: customers, projects, resources. Features: sorting, filtering, pagination, actions. Primary data view."
             },
@@ -6473,7 +6473,7 @@ const questions = {
         2: [
             {
                 q: "What's table filtering?",
-                options: ["Filter table from page", "Filter table events", "Show only rows matching criteria", "Remove table columns"],
+                options: ["Remove a table entirely from the current page", "Intercept and process table lifecycle events", "Show only rows matching user-defined criteria", "Hide or remove specific columns from the view"],
                 correct: 2,
                 explanation: "Filtering shows subset of rows: by status, date range, search text. Filter controls above table. Can combine multiple filters."
             },
@@ -6493,25 +6493,25 @@ const questions = {
         3: [
             {
                 q: "What's server-side vs client-side tables?",
-                options: ["No difference for users", "Server tables on server", "Client-side not supported", "Server-side: data fetched per page; Client: all data loaded"],
+                options: ["Both approaches render identically for all users", "Server tables handle sorting, client handles filtering", "Client-side tables are deprecated in newer versions", "Server-side: data fetched per page; Client: all data loaded"],
                 correct: 3,
                 explanation: "Server-side: fetch only current page from API. Good for large datasets. Client-side: load all data, filter/sort in browser. For small datasets."
             },
             {
                 q: "What's table state management?",
-                options: ["State of table loading", "Track current page, sort, filters", "No state for tables", "Table HTML state"],
+                options: ["Whether the table is currently loading data", "Track current page, sort order, and active filters", "The table component does not maintain any state", "The serialized HTML structure of the table element"],
                 correct: 1,
                 explanation: "Table state: current page, page size, sort column/direction, active filters, selected rows. Managed in component or URL params."
             },
             {
                 q: "How do you export table data?",
-                options: ["Copy-paste only option", "Screenshot the table", "Export not available", "Download as CSV/Excel from table"],
+                options: ["Copy-paste rows into a spreadsheet app", "Take a screenshot of the table contents", "Print the page and scan to a PDF file", "Download as CSV or Excel from the table"],
                 correct: 3,
                 explanation: "Export feature downloads visible data: CSV for data analysis, Excel for business users. May export current page or all matching filters."
             },
             {
                 q: "What's row selection in tables?",
-                options: ["No row selection needed", "Select one or multiple rows for bulk actions", "Row color selection", "Selecting row height"],
+                options: ["Highlight rows with different color themes", "Select one or multiple rows for bulk actions", "Adjust the display height of individual rows", "Choose which row template layout to render"],
                 correct: 1,
                 explanation: "Row selection: checkbox per row, select all. Enable bulk actions (delete multiple, change state). Track selection in state."
             },
@@ -6519,13 +6519,13 @@ const questions = {
         4: [
             {
                 q: "What's virtualized tables?",
-                options: ["Tables in virtual machines", "Virtualized storage tables", "Render only visible rows for performance", "Virtual reality tables"],
+                options: ["Tables hosted inside virtual machines", "Tables stored in virtualized disk volumes", "Render only visible rows for performance", "Tables displayed in a virtual reality view"],
                 correct: 2,
                 explanation: "Virtualization renders only visible rows in DOM. Handles thousands of rows smoothly. Essential for large datasets without pagination."
             },
             {
                 q: "How do you handle table loading states?",
-                options: ["Freeze table during load", "No loading indication needed", "Empty table until loaded", "Show skeletons or spinners during load"],
+                options: ["Freeze the table layout during data fetch", "Hide the table entirely until data arrives", "Display an empty table until data is loaded", "Show skeletons or spinners during data load"],
                 correct: 3,
                 explanation: "Loading states: skeleton rows, spinner overlay, loading text. Indicate partial loading for server-side. Maintain layout stability."
             },
@@ -6545,7 +6545,7 @@ const questions = {
         5: [
             {
                 q: "How do you optimize large tables?",
-                options: ["Virtualization, server-side ops, pagination", "Optimization not needed", "Just add more memory", "Large tables not supported"],
+                options: ["Virtualization, server-side ops, and pagination", "Increase browser memory allocation for the tab", "Split tables into separate pages per data type", "Reduce column count to improve render speed"],
                 correct: 0,
                 explanation: "Optimize: virtualize rows, server-side sorting/filtering, pagination, memoize cell renders, debounce filters. Profile to find bottlenecks."
             },
@@ -6557,19 +6557,19 @@ const questions = {
             },
             {
                 q: "How do you handle table errors?",
-                options: ["Errors crash the table", "Empty table on error", "Error states for load failures, retry option", "No error handling"],
+                options: ["Automatically reload the full page on errors", "Show an empty table without any notification", "Error states for load failures with retry option", "Log errors to console without informing users"],
                 correct: 2,
                 explanation: "Handle errors: show error message on load failure, retry button, partial data indication. Don't lose user's filter state on error."
             },
             {
                 q: "What's accessible table design?",
-                options: ["Screen readers handle it", "Accessibility not possible", "Proper table markup, ARIA attributes, keyboard nav", "Tables are accessible by default"],
+                options: ["Rely on browser defaults for screen readers", "Use only large font sizes for accessibility", "Proper table markup, ARIA attributes, keyboard nav", "Add alt text to every cell value in the table"],
                 correct: 2,
                 explanation: "Accessible tables: semantic table elements, ARIA labels, keyboard navigation for actions, proper column headers. Test with screen readers."
             },
             {
                 q: "How do you test table components?",
-                options: ["Test rendering, interactions, pagination, filtering", "Tables too complex to test", "Manual testing only", "Test framework handles it"],
+                options: ["Test rendering, interactions, pagination, filtering", "Manually click through the table in the browser", "Only verify the table renders without crashing", "Check that the table API returns correct data"],
                 correct: 0,
                 explanation: "Test tables: render with mock data, test sorting/filtering, verify pagination, test row actions. Integration tests for API interaction."
             },
@@ -6600,7 +6600,7 @@ const questions = {
         2: [
             {
                 q: "How do you open modals in Waldur?",
-                options: ["Only links can open modals", "Actions that dispatch modal open events", "Modals open automatically", "Direct DOM manipulation"],
+                options: ["Navigation links that route to modal pages", "Actions that dispatch modal open events", "Modals appear automatically on page load", "Direct DOM manipulation to show overlays"],
                 correct: 1,
                 explanation: "Open modals via actions: dispatch action with modal type and data. Modal manager renders appropriate modal. Decoupled from trigger."
             },
@@ -6646,7 +6646,7 @@ const questions = {
         4: [
             {
                 q: "What's a wizard modal?",
-                options: ["Setup wizard only", "Multi-step modal with navigation", "Magical wizard character", "Help wizard feature"],
+                options: ["Single-page modal for initial app setup", "Multi-step modal with step navigation", "Contextual help tooltip that pops up", "Guided tour overlay for new features"],
                 correct: 1,
                 explanation: "Wizard modal has multiple steps: form spread across screens. Next/Back navigation. Progress indicator. Final step confirms all."
             },
@@ -6658,7 +6658,7 @@ const questions = {
             },
             {
                 q: "What's modal size and positioning?",
-                options: ["Position not configurable", "Configurable size and centered position", "Full screen modals only", "Fixed size only"],
+                options: ["Always full screen regardless of content", "Configurable size with centered positioning", "Fixed dimensions that cannot be overridden", "Sized automatically based on browser window"],
                 correct: 1,
                 explanation: "Modal size: small, medium, large, full-screen variants. Typically centered. May scroll for tall content. Responsive for mobile."
             },
@@ -6672,7 +6672,7 @@ const questions = {
         5: [
             {
                 q: "How do you test modal components?",
-                options: ["Test open/close, content rendering, actions", "Modals can't be tested", "Only test modal trigger", "Visual testing only"],
+                options: ["Test open/close behavior, content rendering, actions", "Manually verify modals by clicking through the app", "Only check that the modal trigger button appears", "Compare screenshots of modals across browser types"],
                 correct: 0,
                 explanation: "Test modals: trigger open, verify content renders, test form submission, verify close behavior. Check accessibility. Test keyboard navigation."
             },
@@ -6690,13 +6690,13 @@ const questions = {
             },
             {
                 q: "What's responsive modal design?",
-                options: ["Fixed design for all screens", "Adapt modal for different screen sizes", "Modal responds quickly", "Responsive to user actions"],
+                options: ["Use a fixed layout design for all screens", "Adapt modal layout for different screen sizes", "Minimize animation speed for faster display", "Reduce modal content on slower connections"],
                 correct: 1,
                 explanation: "Responsive: full-screen on mobile, centered overlay on desktop. Adjust padding, buttons. Consider drawer pattern on mobile."
             },
             {
                 q: "How do you prevent modal content overflow?",
-                options: ["Overflow just hidden", "No overflow handling", "Don't put long content in modals", "Scrollable body, fixed header/footer"],
+                options: ["Truncate all overflowing text with ellipsis", "Limit content length with character validation", "Increase the modal size to fit all the content", "Scrollable body with fixed header and footer"],
                 correct: 3,
                 explanation: "Handle overflow: modal body scrolls, header and action buttons fixed. Max-height based on viewport. Test with long content."
             },
@@ -6707,7 +6707,7 @@ const questions = {
         1: [
             {
                 q: "What's Waldur Site Agent?",
-                options: ["Website monitoring agent", "User support agent", "Local agent running at provider site", "Sales representative"],
+                options: ["A monitoring agent for website uptime checks", "A support agent handling user help requests", "A local agent running at the provider site", "A central dashboard for admin configuration"],
                 correct: 2,
                 explanation: "Site Agent runs at provider location, connecting local resources (SLURM, storage) to central Waldur. Enables remote resource management."
             },
@@ -6727,19 +6727,19 @@ const questions = {
         2: [
             {
                 q: "What tasks does Site Agent perform?",
-                options: ["User authentication only", "Provision resources, collect metrics, sync state", "Only monitoring tasks", "No specific tasks defined"],
+                options: ["Handle user authentication and session tokens", "Provision resources, collect metrics, sync state", "Monitor network connectivity between components", "Generate billing reports for consumed resources"],
                 correct: 1,
                 explanation: "Agent tasks: provision/delete local resources, collect usage metrics, sync resource state, execute operations requested by central Waldur."
             },
             {
                 q: "How is Site Agent configured?",
-                options: ["Auto-configured remotely", "Configuration file with credentials and settings", "No configuration needed", "Configured in database only"],
+                options: ["Auto-configured remotely by the central server", "Configuration file with credentials and settings", "Environment variables injected at container start", "Configured via the central web admin dashboard"],
                 correct: 1,
                 explanation: "Agent configured via config file: central Waldur URL, authentication token, local backend settings. Can be managed via deployment tools."
             },
             {
                 q: "What's the agent-server protocol?",
-                options: ["GraphQL subscriptions", "REST API with webhooks", "Custom binary protocol", "Pull tasks from queue, report results"],
+                options: ["GraphQL subscriptions for real-time updates", "REST API calls triggered by webhook events", "Custom binary protocol over TCP connections", "Pull tasks from a queue and report results"],
                 correct: 3,
                 explanation: "Agent polls central server for pending tasks. Executes locally. Reports results back. Simple and reliable over unreliable networks."
             },
@@ -6747,13 +6747,13 @@ const questions = {
         3: [
             {
                 q: "What backends does Site Agent support?",
-                options: ["Generic backends only", "Backend support varies", "SLURM, OpenStack, storage systems", "Only SLURM integration"],
+                options: ["Only generic backends with standard API calls", "Cloud providers like AWS, GCP, and Azure only", "SLURM, OpenStack, and local storage systems", "Only SLURM clusters for HPC job scheduling"],
                 correct: 2,
                 explanation: "Agent supports multiple backends: SLURM for HPC, OpenStack deployments, storage systems, custom backends via plugins."
             },
             {
                 q: "How does Site Agent handle failures?",
-                options: ["No failure handling", "Manual intervention required", "Retry with backoff, report errors to central", "Fails silently on errors"],
+                options: ["Immediately aborts the operation on any error", "Queues failed tasks for manual user resolution", "Retry with backoff and report errors to central", "Silently skips failed tasks and moves to next"],
                 correct: 2,
                 explanation: "Failure handling: retry tasks with exponential backoff, report persistent errors to central. Task queue ensures no lost work."
             },
@@ -6765,7 +6765,7 @@ const questions = {
             },
             {
                 q: "How do you monitor Site Agent?",
-                options: ["No monitoring available", "Health endpoint, logs, central dashboard", "External tools required", "Agent self-monitors only"],
+                options: ["Agent provides no built-in monitoring features", "Health endpoint, logs, and central dashboard", "Requires separate external monitoring tool setup", "Agent only writes to a local file-based log"],
                 correct: 1,
                 explanation: "Monitor: agent health endpoint, local logs, central Waldur shows agent status and last check-in. Alert on communication failures."
             },
@@ -6773,7 +6773,7 @@ const questions = {
         4: [
             {
                 q: "How do you develop Site Agent plugins?",
-                options: ["Plugins not supported", "Only core team can add plugins", "JavaScript plugins only", "Python modules implementing defined interface"],
+                options: ["The agent does not support custom plugin modules", "Only the core development team can add new plugins", "Plugins are written as JavaScript Node.js modules", "Python modules implementing a defined interface"],
                 correct: 3,
                 explanation: "Agent plugins: Python modules implementing task handlers. Define supported operations. Register with agent. Follow existing plugin patterns."
             },
@@ -6785,7 +6785,7 @@ const questions = {
             },
             {
                 q: "How does Site Agent handle security?",
-                options: ["TLS encryption, token auth, minimal privileges", "Security handled by network only", "Agents have full admin access", "No special security measures"],
+                options: ["TLS encryption, token auth, and minimal privileges", "Security is handled solely by the network firewall", "Agents are granted full admin access to all systems", "Relies on IP allowlisting without any encryption"],
                 correct: 0,
                 explanation: "Security: TLS for all communication, token-based authentication, agent has minimal privileges needed, secrets encrypted in config."
             },
@@ -6799,31 +6799,31 @@ const questions = {
         5: [
             {
                 q: "How do you upgrade Site Agent?",
-                options: ["Full downtime required", "Central upgrades automatically", "Rolling upgrade with version compatibility", "Upgrades not recommended"],
+                options: ["Full downtime of all services is always required", "Central server pushes upgrades to agents directly", "Rolling upgrade with careful version compatibility", "Agents must be redeployed from scratch each time"],
                 correct: 2,
                 explanation: "Upgrade: check version compatibility, update agent software, restart. Rolling upgrade for HA setups. Central backward compatible with older agents."
             },
             {
                 q: "What's the agent scaling model?",
-                options: ["Scaling not supported", "Horizontal scaling with multiple agents", "Central handles all scaling", "Vertical scaling only option"],
+                options: ["Only a single agent instance can run per site", "Horizontal scaling with multiple agent instances", "Central server handles all scaling transparently", "Vertical scaling by adding more CPU and memory"],
                 correct: 1,
                 explanation: "Scale horizontally: add more agents for load distribution. Useful for large sites with many resources. Central load-balances task distribution."
             },
             {
                 q: "How do you troubleshoot Site Agent?",
-                options: ["Reinstall to fix issues", "No troubleshooting available", "Only central team can troubleshoot", "Check logs, test connectivity, verify config"],
+                options: ["Reinstall the agent completely from scratch", "Submit a support ticket to the central team", "Wait for the agent to automatically self-heal", "Check logs, test connectivity, verify the config"],
                 correct: 3,
                 explanation: "Troubleshoot: check agent logs, test connectivity to central, verify configuration, check backend connectivity. Central shows agent errors."
             },
             {
                 q: "What's agent capability reporting?",
-                options: ["Agent reports what operations it supports", "Capabilities hardcoded", "Central knows all agent capabilities", "No capability reporting"],
+                options: ["Agent reports what operations it can support", "Capabilities are hardcoded in the central server", "Central server discovers capabilities on its own", "There is no capability reporting functionality"],
                 correct: 0,
                 explanation: "Agent reports capabilities to central: supported backends, available resources, version info. Central uses to route appropriate tasks."
             },
             {
                 q: "How do you test Site Agent integrations?",
-                options: ["Test in production only", "Central team tests everything", "Test environment, mock backends, integration tests", "No testing methodology"],
+                options: ["Deploy to production and test with real data", "Let the central team handle all agent testing", "Test environment, mock backends, integration tests", "Skip testing since the agent is already reliable"],
                 correct: 2,
                 explanation: "Testing: local test environment, mock backend responses, integration tests with real backends. CI for automated testing."
             },
@@ -6993,7 +6993,7 @@ const questions = {
             },
             {
                 q: "What's kubectl?",
-                options: ["Kubernetes service", "Network plugin", "Command-line tool for Kubernetes", "Container runtime"],
+                options: ["A background service for cluster networking", "A plugin for container network configuration", "A command-line tool for managing Kubernetes", "A container runtime engine used by Kubernetes"],
                 correct: 2,
                 explanation: "kubectl is the CLI for Kubernetes. It communicates with the API server to manage resources: create deployments, check pod status, view logs, exec into containers.",
                 learnMore: { url: "https://kubernetes.io/docs/reference/kubectl/", text: "📚 kubectl Reference" }
@@ -7032,14 +7032,14 @@ const questions = {
         3: [
             {
                 q: "What's a Kubernetes operator?",
-                options: ["Custom controller that extends K8s API", "Monitoring agent", "CLI tool", "Human administrator"],
+                options: ["Custom controller that extends the K8s API", "Built-in monitoring agent for cluster health", "Command-line tool for managing deployments", "Scheduling component for pod placement tasks"],
                 correct: 0,
                 explanation: "Operators are custom controllers that extend Kubernetes with application-specific logic. They use CRDs to manage complex applications (databases, message queues) declaratively.",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/extend-kubernetes/operator/", text: "📚 Operators" }
             },
             {
                 q: "What does kubectl port-forward do?",
-                options: ["Opens firewall", "Tunnels local port to pod port", "Forwards logs", "Redirects DNS"],
+                options: ["Opens firewall ports on the cluster nodes", "Tunnels a local port to a pod's port", "Forwards container logs to a remote host", "Redirects DNS queries between services"],
                 correct: 1,
                 explanation: "port-forward creates a tunnel from localhost to a pod's port. Useful for debugging: access pod's service without exposing it externally (e.g., database, dashboard).",
                 learnMore: { url: "https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/", text: "📚 Port Forwarding" }
@@ -7062,28 +7062,28 @@ const questions = {
         4: [
             {
                 q: "What's the difference between ClusterIP and LoadBalancer service types?",
-                options: ["LoadBalancer is internal", "ClusterIP is external", "ClusterIP is internal only, LoadBalancer exposes externally", "Same"],
+                options: ["LoadBalancer restricts access to internal traffic only", "ClusterIP provides external access via public IP address", "ClusterIP is internal only, LoadBalancer exposes externally", "Both types provide identical networking functionality"],
                 correct: 2,
                 explanation: "ClusterIP exposes service on internal cluster IP (only accessible within cluster). LoadBalancer provisions external load balancer (cloud provider) with public IP.",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types", text: "📚 Service Types" }
             },
             {
                 q: "What's a PodDisruptionBudget?",
-                options: ["Network budget", "Cost budget", "Resource budget", "Ensures minimum pods available during disruption"],
+                options: ["Policy that limits network bandwidth per pod", "Quota that restricts total cluster spending", "Limit on CPU and memory per namespace", "Ensures minimum pods available during disruption"],
                 correct: 3,
                 explanation: "PDB limits voluntary disruptions (upgrades, drain) by ensuring minimum available or maximum unavailable pods. Protects application availability during maintenance.",
                 learnMore: { url: "https://kubernetes.io/docs/tasks/run-application/configure-pdb/", text: "📚 Pod Disruption Budget" }
             },
             {
                 q: "What's kube-proxy responsible for?",
-                options: ["Network rules for service communication", "Container proxy", "API server proxy", "Storage proxy"],
+                options: ["Maintains network rules for service communication", "Proxies container runtime calls to the kernel", "Forwards requests between API server and etcd", "Manages persistent volume mounts on each node"],
                 correct: 0,
                 explanation: "kube-proxy runs on each node, maintaining network rules that allow communication to pods via Services. Implements Service abstraction using iptables or nftables (recommended since K8s 1.35+).",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/overview/components/#kube-proxy", text: "📚 kube-proxy" }
             },
             {
                 q: "What's a sidecar container pattern?",
-                options: ["Network pattern", "Helper container alongside main container in pod", "External service", "Separate pod"],
+                options: ["Mesh network overlay between multiple pods", "Helper container running alongside main container in pod", "External service proxy running outside the cluster", "Separate pod that monitors the main application"],
                 correct: 1,
                 explanation: "Sidecar containers run alongside main app in same pod, sharing network and storage. Common for logging agents, proxies (Envoy), or secret management.",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/", text: "📚 Sidecar Containers" }
@@ -7092,35 +7092,35 @@ const questions = {
         5: [
             {
                 q: "How do you implement zero-downtime deployments in K8s?",
-                options: ["Manual switchover", "Downtime required", "Rolling updates with readiness probes", "Delete and recreate"],
+                options: ["Manual DNS switchover between old and new pods", "Schedule maintenance windows during low traffic", "Rolling updates combined with readiness probes", "Delete all old pods then recreate new ones"],
                 correct: 2,
                 explanation: "Use RollingUpdate strategy with readiness probes. New pods start and pass readiness before old pods terminate. Configure maxSurge and maxUnavailable for control.",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment", text: "📚 Rolling Updates" }
             },
             {
                 q: "What's a Custom Resource Definition (CRD)?",
-                options: ["Built-in type", "Core resource", "Extend Kubernetes API with custom resources", "Network config"],
+                options: ["Built-in resource type included with Kubernetes", "Core controller bundled in every K8s release", "Extension that adds custom resources to K8s API", "Network configuration applied to cluster nodes"],
                 correct: 2,
                 explanation: "CRDs extend the Kubernetes API with custom resource types. Define schema in CRD, then create instances. Controllers watch CRDs and reconcile desired state.",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/", text: "📚 Custom Resources" }
             },
             {
                 q: "How does horizontal pod autoscaling work?",
-                options: ["Metrics server monitors, HPA adjusts replicas", "Manual scaling", "Vertical only", "No autoscaling"],
+                options: ["Metrics server monitors usage and HPA adjusts replicas", "Admin manually scales replicas using kubectl commands", "Vertical pod autoscaler increases CPU and memory limits", "Scheduler distributes pods evenly across all nodes"],
                 correct: 0,
                 explanation: "HPA queries metrics server (CPU, memory, custom metrics), calculates desired replicas based on target utilization, and updates deployment's replica count automatically.",
                 learnMore: { url: "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/", text: "📚 Horizontal Pod Autoscaling" }
             },
             {
                 q: "What's pod priority and preemption?",
-                options: ["Higher priority pods can evict lower priority", "Manual preemption", "No priorities", "Equal priority"],
+                options: ["Higher priority pods can evict lower priority ones", "Admin manually preempts pods through the dashboard", "All pods receive equal priority and share resources", "Pods are scheduled strictly in first-come-first-served"],
                 correct: 0,
                 explanation: "PriorityClasses assign priority to pods. When resources are scarce, scheduler can preempt (evict) lower priority pods to make room for higher priority ones.",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/", text: "📚 Pod Priority" }
             },
             {
                 q: "What's the difference between RollingUpdate and Recreate deployment strategies?",
-                options: ["RollingUpdate has downtime", "Same", "Recreate is faster", "RollingUpdate has no downtime, Recreate has brief downtime"],
+                options: ["RollingUpdate terminates all pods before replacing them", "Both strategies behave identically during deployments", "Recreate is faster because it skips health checks", "RollingUpdate has no downtime, Recreate has brief downtime"],
                 correct: 3,
                 explanation: "RollingUpdate gradually replaces pods (no downtime). Recreate terminates all old pods before starting new ones (brief downtime but simpler, useful for incompatible versions).",
                 learnMore: { url: "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy", text: "📚 Deployment Strategies" }
@@ -7148,7 +7148,7 @@ const questions = {
             },
             {
                 q: "What environments typically use SLURM?",
-                options: ["Desktop applications", "HPC clusters and supercomputers", "Web application servers", "Mobile app backends"],
+                options: ["Desktop productivity applications", "HPC clusters and supercomputers", "Web application server hosting", "Mobile app backend services"],
                 correct: 1,
                 explanation: "SLURM is used in HPC (High Performance Computing) environments: research clusters, supercomputers, and scientific computing centers where batch job scheduling is essential.",
                 learnMore: { url: "https://slurm.schedmd.com/quickstart.html", text: "📚 SLURM Quickstart" }
@@ -7157,7 +7157,7 @@ const questions = {
         2: [
             {
                 q: "What's a SLURM partition?",
-                options: ["User permission group", "Virtual network segment", "Group of nodes with shared properties", "Filesystem disk partition"],
+                options: ["Access control group for users", "Virtual network segment in cluster", "Group of nodes with shared properties", "Filesystem disk partition on node"],
                 correct: 2,
                 explanation: "A partition (queue) is a group of nodes with common properties (GPU nodes, high-memory, etc.). Jobs are submitted to partitions based on requirements.",
                 learnMore: { url: "https://slurm.schedmd.com/quickstart.html#partitions", text: "📚 SLURM Partitions" }
@@ -7187,7 +7187,7 @@ const questions = {
             },
             {
                 q: "What's a job array in SLURM?",
-                options: ["Programming data structure", "Storage disk array", "Array of compute nodes", "Multiple similar jobs as one submission"],
+                options: ["Data structure used in job scripts", "Redundant storage disk configuration", "Grouped set of physical compute nodes", "Multiple similar jobs as one submission"],
                 correct: 3,
                 explanation: "Job arrays submit many similar jobs with one command (--array=0-100). Each array task gets unique SLURM_ARRAY_TASK_ID for parameter sweeps.",
                 learnMore: { url: "https://slurm.schedmd.com/job_array.html", text: "📚 Job Arrays" }
@@ -7201,7 +7201,7 @@ const questions = {
             },
             {
                 q: "What's a SLURM reservation?",
-                options: ["Online booking system", "Memory limit reservation", "Disk space reservation", "Reserved resources for specific users"],
+                options: ["Online booking system for cluster access", "Pre-allocated memory limits per user job", "Dedicated disk space set aside for output", "Reserved resources for specific users or groups"],
                 correct: 3,
                 explanation: "Reservations pre-allocate nodes/resources for specific users, accounts, or maintenance windows. Jobs matching reservation criteria can use reserved resources.",
                 learnMore: { url: "https://slurm.schedmd.com/reservations.html", text: "📚 Reservations" }
@@ -7210,7 +7210,7 @@ const questions = {
         4: [
             {
                 q: "How does SLURM accounting work?",
-                options: ["External tools only", "Simple text file logging", "No usage tracking at all", "Tracks resource usage for fairshare"],
+                options: ["Relies on external third-party tools only", "Uses simple text file logging per node", "Does not provide any usage tracking data", "Tracks resource usage for fairshare scheduling"],
                 correct: 3,
                 explanation: "SLURM accounting tracks CPU-hours, memory, GPU usage per user/account. Data feeds into fairshare scheduling and usage reports. Uses slurmdbd daemon.",
                 learnMore: { url: "https://slurm.schedmd.com/accounting.html", text: "📚 SLURM Accounting" }
@@ -7224,7 +7224,7 @@ const questions = {
             },
             {
                 q: "What's a QOS (Quality of Service) in SLURM?",
-                options: ["Technical support tier", "Network quality metrics", "Customer service level", "Priority and resource limits for jobs"],
+                options: ["Tiered technical support level for users", "Network bandwidth quality measurement tool", "Customer service agreement with the vendor", "Priority and resource limit policy for jobs"],
                 correct: 3,
                 explanation: "QOS defines job class properties: priority, max resources, preemption rights. Users/accounts can be assigned QOS (normal, high-priority, debug) for differentiated service.",
                 learnMore: { url: "https://slurm.schedmd.com/qos.html", text: "📚 Quality of Service" }
@@ -7240,7 +7240,7 @@ const questions = {
         5: [
             {
                 q: "What's fairshare scheduling in SLURM?",
-                options: ["Random job scheduling", "Equal time for all users", "Priority based on usage vs allocation", "First come first served order"],
+                options: ["Randomly assigns jobs to available nodes", "Gives every user exactly equal time slots", "Adjusts priority based on usage vs allocation", "Processes all jobs in first-come-first-served order"],
                 correct: 2,
                 explanation: "Fairshare adjusts job priority based on historical usage vs allocated share. Heavy users get lower priority; underutilized accounts get higher priority.",
                 learnMore: { url: "https://slurm.schedmd.com/fair_tree.html", text: "📚 Fair Tree Scheduling" }
@@ -7254,7 +7254,7 @@ const questions = {
             },
             {
                 q: "What's a SLURM federation?",
-                options: ["Multiple clusters managed together", "Single standalone cluster", "Virtual network setup", "User permission group"],
+                options: ["Multiple clusters managed as a unified group", "Single standalone cluster with one controller", "Virtual network setup linking remote nodes", "Permission group spanning several user accounts"],
                 correct: 0,
                 explanation: "Federation connects multiple SLURM clusters. Users can submit jobs that run on any cluster in the federation. Enables unified access to distributed resources.",
                 learnMore: { url: "https://slurm.schedmd.com/federation.html", text: "📚 SLURM Federation" }
@@ -7430,7 +7430,7 @@ const questions = {
         1: [
             {
                 q: "What is Ansible used for?",
-                options: ["Container runtime environment", "IT automation and configuration management", "General programming language", "Relational database system"],
+                options: ["Container runtime execution environment", "IT automation and configuration management", "General purpose programming language", "Relational database management system"],
                 correct: 1,
                 explanation: "Ansible automates IT tasks: configuration management, application deployment, cloud provisioning, and orchestration. It uses simple YAML playbooks.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/index.html", text: "📚 Ansible Documentation" }
@@ -7444,7 +7444,7 @@ const questions = {
             },
             {
                 q: "What language are Ansible playbooks written in?",
-                options: ["Python programming", "YAML data serialization format", "JSON data format", "XML markup format"],
+                options: ["Python scripting language format", "YAML data serialization format", "JSON structured data notation", "XML document markup language"],
                 correct: 1,
                 explanation: "Ansible playbooks are written in YAML (YAML Ain't Markup Language). YAML is human-readable and defines tasks, variables, and conditions declaratively.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html", text: "📚 Playbook Intro" }
@@ -7476,7 +7476,7 @@ const questions = {
         3: [
             {
                 q: "What's the difference between a role and a playbook?",
-                options: ["Role is reusable component, playbook orchestrates", "Role is larger than playbook", "Playbook is the reusable one", "They are exactly the same thing"],
+                options: ["Role is a reusable component, playbook orchestrates tasks", "Role is a larger collection that contains many playbooks", "Playbook is the reusable unit that roles reference", "They are interchangeable terms for the same concept"],
                 correct: 0,
                 explanation: "Roles are reusable units with structured directories (tasks, handlers, vars, templates). Playbooks orchestrate roles and standalone tasks for specific scenarios.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html", text: "📚 Roles" }
@@ -7490,14 +7490,14 @@ const questions = {
             },
             {
                 q: "What's an Ansible module?",
-                options: ["Configuration file for settings", "Unit of code that performs specific action", "Log file for task output", "Template file for rendering"],
+                options: ["Configuration file that stores settings values", "Unit of code that performs a specific action", "Log file that records task execution output", "Template file used for rendering variables"],
                 correct: 1,
                 explanation: "Modules are units of code Ansible runs on managed nodes. Examples: apt (packages), copy (files), service (daemons), template (Jinja2), command (shell).",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/module_plugin_guide/modules_intro.html", text: "📚 Modules" }
             },
             {
                 q: "What's a handler in Ansible?",
-                options: ["Handler for system events", "Handler for file operations", "Handler for catching task errors", "Task triggered by notification from others"],
+                options: ["Background daemon responding to system events", "Watcher that reacts to file system changes", "Error handler that catches and logs task failures", "Task triggered by notification from other tasks"],
                 correct: 3,
                 explanation: "Handlers are tasks triggered by 'notify' from other tasks. Common use: restart service after config change. Handlers run once at end of play, even if notified multiple times.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html", text: "📚 Handlers" }
@@ -7513,21 +7513,21 @@ const questions = {
             },
             {
                 q: "What's Ansible Galaxy?",
-                options: ["IDE for writing playbooks", "Testing tool for playbooks", "Cloud service for running Ansible", "Repository for sharing roles and collections"],
+                options: ["Integrated development environment for playbooks", "Testing framework for validating playbook logic", "Cloud service for running Ansible remotely", "Repository for sharing roles and collections"],
                 correct: 3,
                 explanation: "Ansible Galaxy is a hub for sharing roles and collections. Use 'ansible-galaxy install' to download community roles. Organizations can host private Galaxy servers.",
                 learnMore: { url: "https://galaxy.ansible.com/", text: "📚 Ansible Galaxy" }
             },
             {
                 q: "What are Ansible facts?",
-                options: ["User-defined facts only", "Network topology facts only", "System info gathered from managed hosts", "Storage capacity facts only"],
+                options: ["User-defined custom variables in playbooks", "Network topology data from scanning tools", "System info gathered from managed hosts automatically", "Storage capacity data from monitoring agents"],
                 correct: 2,
                 explanation: "Facts are variables automatically discovered from hosts: OS, IP, CPU, memory, mounts, etc. Access via ansible_facts or gather_facts module. Use in conditionals and templates.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_vars_facts.html", text: "📚 Facts" }
             },
             {
                 q: "What's idempotency in Ansible context?",
-                options: ["Running playbook multiple times = same result", "Random execution order each time", "No guarantee of consistency", "Running the playbook only once"],
+                options: ["Running a playbook multiple times gives same result", "Tasks execute in randomized order each run", "There is no guarantee of a consistent outcome", "The playbook is designed to only run one time"],
                 correct: 0,
                 explanation: "Idempotent tasks check current state before acting. Running playbook repeatedly yields same result: package already installed → no action. Design tasks to be idempotent.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/reference_appendices/glossary.html#term-Idempotency", text: "📚 Idempotency" }
@@ -7543,7 +7543,7 @@ const questions = {
             },
             {
                 q: "What's an Ansible collection?",
-                options: ["Distribution format for roles, modules, plugins", "Collection of execution logs", "Collection of files on disk", "Collection of user accounts"],
+                options: ["Distribution format for roles, modules, and plugins", "Collection of past execution logs from playbooks", "Collection of configuration files stored on disk", "Collection of user accounts for access control"],
                 correct: 0,
                 explanation: "Collections bundle roles, modules, plugins, and playbooks in a standard format. Namespace.collection format (e.g., community.general). Install from Galaxy or Automation Hub.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/collections_guide/index.html", text: "📚 Collections" }
@@ -7564,7 +7564,7 @@ const questions = {
             },
             {
                 q: "How does Ansible handle failed tasks?",
-                options: ["Cannot handle failures at all", "Stop by default, ignore_errors or block/rescue", "Retry automatically three times", "Continue always without stopping"],
+                options: ["Ansible cannot handle task failures at all", "Stops by default, with ignore_errors or block/rescue", "Automatically retries every failed task three times", "Continues running all tasks regardless of failures"],
                 correct: 1,
                 explanation: "Ansible stops on failure by default. Use ignore_errors: yes to continue. block/rescue/always provides try/catch semantics. failed_when customizes failure conditions.",
                 learnMore: { url: "https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_error_handling.html", text: "📚 Error Handling" }
@@ -7654,7 +7654,7 @@ const questions = {
         4: [
             {
                 q: "What's the difference between metrics and logs?",
-                options: ["Logs are numeric measurements", "Metrics are event records", "They are exactly the same thing", "Metrics are numeric, logs are event records"],
+                options: ["Logs capture numeric measurement data points", "Metrics capture detailed textual event records", "Both serve the exact same observability purpose", "Metrics are numeric values, logs are event records"],
                 correct: 3,
                 explanation: "Metrics: numeric measurements over time (request rate, error percentage). Logs: textual event records with details. Metrics for alerting/trends, logs for debugging.",
                 learnMore: { url: "https://grafana.com/blog/2016/01/05/logs-and-metrics-and-graphs-oh-my/", text: "📚 Logs vs Metrics" }
@@ -7726,7 +7726,7 @@ const questions = {
         1: [
             {
                 q: "What is Microsoft Azure?",
-                options: ["Cloud computing platform from Microsoft", "Windows desktop application", "Blue color palette tool", "Database management system"],
+                options: ["Cloud computing platform from Microsoft", "Desktop application suite for Windows", "Graphic design color palette software", "Relational database management system"],
                 correct: 0,
                 explanation: "Azure is Microsoft's cloud platform offering IaaS, PaaS, SaaS. Provides VMs, storage, databases, AI services, and more."
             },
@@ -7738,7 +7738,7 @@ const questions = {
             },
             {
                 q: "What's a Resource Group in Azure?",
-                options: ["Logical container for related resources", "Group of Azure administrators", "Team collaboration feature", "Resource usage report"],
+                options: ["Logical container for related resources", "Group of Azure platform administrators", "Team collaboration and sharing tool", "Resource usage and billing report"],
                 correct: 0,
                 explanation: "Resource Group is logical container holding related Azure resources. Enables management, access control, and billing at group level."
             },
@@ -7752,7 +7752,7 @@ const questions = {
             },
             {
                 q: "What's Microsoft Entra ID (formerly Azure AD)?",
-                options: ["Directory of Azure services", "Active user tracking tool", "File directory in cloud", "Identity and access management service"],
+                options: ["Directory listing of Azure services", "Active user tracking and analytics", "File directory service in the cloud", "Identity and access management service"],
                 correct: 3,
                 explanation: "Microsoft Entra ID (renamed from Azure AD in 2023) provides identity management: authentication, SSO, MFA, conditional access. Integrates with Microsoft 365, Azure resources."
             },
@@ -7766,13 +7766,13 @@ const questions = {
         3: [
             {
                 q: "What's an ARM template?",
-                options: ["Template for ARM processors", "Azure Resource Manager app", "JSON template for deploying Azure resources", "ARM architecture documentation"],
+                options: ["Template for ARM processor workloads", "Azure Resource Manager mobile app", "JSON template for deploying Azure resources", "ARM architecture reference documentation"],
                 correct: 2,
                 explanation: "ARM (Azure Resource Manager) templates are JSON files defining Azure infrastructure. Enables Infrastructure as Code, repeatable deployments. Note: Bicep is now the recommended DSL for Azure IaC, compiling to ARM templates."
             },
             {
                 q: "What's Azure CLI?",
-                options: ["Container Linux image", "Command-line interface for Azure management", "Client library installer", "Continuous integration tool"],
+                options: ["Container-based Linux image service", "Command-line interface for Azure management", "Client library installation manager", "Continuous integration build service"],
                 correct: 1,
                 explanation: "Azure CLI is cross-platform command-line tool for managing Azure resources. az commands for creating, configuring, managing services."
             },
@@ -7784,7 +7784,7 @@ const questions = {
             },
             {
                 q: "How does Waldur integrate with Azure?",
-                options: ["Azure plugin provisions VMs via Azure APIs", "Azure manages Waldur", "No Azure integration available", "Manual Azure management only"],
+                options: ["Azure plugin provisions VMs via Azure APIs", "Azure directly manages Waldur deployments", "Azure integration is not yet available", "Manual Azure resource management only"],
                 correct: 0,
                 explanation: "Waldur Azure plugin creates VMs, manages storage using Azure APIs. Service settings store Azure credentials. Users order Azure resources through marketplace."
             },
@@ -7804,13 +7804,13 @@ const questions = {
             },
             {
                 q: "How do you manage Azure costs?",
-                options: ["Only Microsoft manages costs", "Azure is free for all usage", "Cost Management, budgets, reserved instances", "Costs can't be controlled"],
+                options: ["Only Microsoft can manage Azure costs", "Azure services are free for all usage", "Cost Management, budgets, reserved instances", "Azure costs cannot be controlled by users"],
                 correct: 2,
                 explanation: "Azure Cost Management: track spending, set budgets, get alerts. Reserved Instances for discounts. Right-size resources. Spot VMs for savings."
             },
             {
                 q: "What's Azure Monitor?",
-                options: ["Screen display for Azure", "User activity monitoring only", "Network monitoring tool", "Monitoring service for Azure resources"],
+                options: ["Dashboard display service for Azure portals", "User activity monitoring and logging tool", "Network-only monitoring and alerting tool", "Full monitoring service for Azure resources"],
                 correct: 3,
                 explanation: "Azure Monitor collects metrics and logs from Azure resources. Alerts, dashboards, Log Analytics for querying. Integrates with Grafana."
             },
@@ -7818,7 +7818,7 @@ const questions = {
         5: [
             {
                 q: "What's Azure Managed Identity?",
-                options: ["Identity only for humans", "User identity management", "Azure-managed credentials for services", "Manual identity creation"],
+                options: ["Identity provider only for human users", "User profile and identity management", "Azure-managed credentials for services", "Manual identity creation and rotation"],
                 correct: 2,
                 explanation: "Managed Identity provides automatic credentials for Azure resources. No secret management needed. System-assigned or user-assigned."
             },
@@ -7830,19 +7830,19 @@ const questions = {
             },
             {
                 q: "What's Azure Bicep?",
-                options: ["Domain-specific language for ARM templates", "Azure fitness program", "Backup and copy tool", "Binary compression format"],
+                options: ["Domain-specific language for ARM templates", "Azure fitness and performance benchmark", "Backup and incremental copy utility", "Binary compression format for storage"],
                 correct: 0,
                 explanation: "Bicep is declarative DSL that compiles to ARM templates. Cleaner syntax than JSON. Microsoft-supported IaC for Azure."
             },
             {
                 q: "How do you handle Azure multi-region deployments?",
-                options: ["Azure handles automatically", "Deploy to one region only", "Multi-region not supported", "Traffic Manager, geo-redundancy, paired regions"],
+                options: ["Azure handles region placement automatically", "Deploy to only one region at a time", "Multi-region deployments are not supported", "Traffic Manager, geo-redundancy, paired regions"],
                 correct: 3,
                 explanation: "Multi-region: Traffic Manager for routing, geo-redundant storage, deploy to paired regions for disaster recovery. Consider latency and compliance."
             },
             {
                 q: "What's Azure DevOps integration?",
-                options: ["Development operations only", "No DevOps integration", "CI/CD pipelines for Azure deployments", "Azure replaces DevOps"],
+                options: ["Development operations monitoring only", "Separate tool with no Azure integration", "CI/CD pipelines for Azure deployments", "Azure completely replaces DevOps tools"],
                 correct: 2,
                 explanation: "Azure DevOps provides: repos, pipelines, boards, artifacts. CI/CD for Azure deployments. Integrate with ARM templates, Terraform, Bicep."
             },
@@ -7867,7 +7867,7 @@ const questions = {
             },
             {
                 q: "What's .gitlab-ci.yml?",
-                options: ["Configuration file defining pipeline", "GitLab settings file", "Git ignore file for CI", "CI log output file"],
+                options: ["Configuration file defining the pipeline", "GitLab server-side settings file", "Git ignore patterns file for CI runs", "Log output file from CI job runs"],
                 correct: 0,
                 explanation: ".gitlab-ci.yml defines pipeline: stages, jobs, scripts, conditions. YAML format in repo root. GitLab reads on events to run pipeline."
             },
@@ -7901,19 +7901,19 @@ const questions = {
             },
             {
                 q: "What's GitLab's environment feature?",
-                options: ["Track deployments to specific environments", "Environment variables only", "Git environment branches", "Server environment setup"],
+                options: ["Track deployments to specific environments", "Environment variables management only", "Git branch naming convention feature", "Server provisioning and setup tooling"],
                 correct: 0,
                 explanation: "Environments track deployments: staging, production. Shows deployment history, enables rollback, links to deployed URLs. Defined in job."
             },
             {
                 q: "What are CI/CD variables?",
-                options: ["Configuration values available in jobs", "Database variables", "Variables in code only", "Variable job execution time"],
+                options: ["Configuration values available in pipeline jobs", "Database connection variables and settings", "Variables defined in application source code", "Variable job scheduling and execution times"],
                 correct: 0,
                 explanation: "Variables provide configuration: secrets, settings. Defined in UI (protected, masked) or .gitlab-ci.yml. Available as environment variables."
             },
             {
                 q: "What's the legacy only/except syntax?",
-                options: ["Exclusive job execution", "Deprecated way to control when jobs run (use rules: instead)", "Exception handling in jobs", "Only run job once ever"],
+                options: ["Exclusive job execution on protected branches", "Deprecated way to control when jobs run", "Exception handling mechanism within CI jobs", "Directive to run a specific job only once"],
                 correct: 1,
                 explanation: "only/except is deprecated in favor of rules: syntax. It controlled job execution based on branch/tag conditions. New pipelines should use rules: for flexibility."
             },
@@ -7921,7 +7921,7 @@ const questions = {
         4: [
             {
                 q: "What's GitLab's rules: syntax?",
-                options: ["Flexible job conditions replacing only/except", "Repository access rules", "Rules for code review", "Merge request rules"],
+                options: ["Flexible job conditions replacing only/except", "Repository access and permission rules", "Rules governing the code review process", "Merge request approval policy settings"],
                 correct: 0,
                 explanation: "rules: is flexible condition syntax: if, when, changes. More powerful than only/except. Can set variables, allow failure conditionally."
             },
@@ -7933,13 +7933,13 @@ const questions = {
             },
             {
                 q: "What's GitLab's Docker integration?",
-                options: ["Only for Docker Hub", "Docker desktop integration", "Docker is not supported", "Build and push images, use Docker executor"],
+                options: ["Only supports pushing to Docker Hub", "Desktop Docker application integration", "Docker containers are not supported", "Build and push images, use Docker executor"],
                 correct: 3,
                 explanation: "GitLab CI integrates Docker: build images in jobs, push to GitLab registry, use Docker executor for jobs. docker-in-docker or kaniko."
             },
             {
                 q: "What are protected branches in CI/CD context?",
-                options: ["Branches that can't be merged", "Branches with special CI rules and permissions", "Backup branch protection", "Protected from all changes"],
+                options: ["Branches that cannot be merged at all", "Branches with special CI rules and permissions", "Automatic backup and branch protection", "Branches protected from all code changes"],
                 correct: 1,
                 explanation: "Protected branches: restricted who can push/merge. Protected CI variables only available on protected branches. Prevents secrets in feature branches."
             },
@@ -7947,13 +7947,13 @@ const questions = {
         5: [
             {
                 q: "What's GitLab's Auto DevOps?",
-                options: ["Automatic CI/CD without configuration", "Automatic code generation", "Auto-scaling GitLab runners", "DevOps team automation"],
+                options: ["Automatic CI/CD without configuration", "Automatic source code generation tool", "Auto-scaling of GitLab runner agents", "Automation tooling for DevOps teams"],
                 correct: 0,
                 explanation: "Auto DevOps provides automatic CI/CD: detects language, builds, tests, deploys. Works out of box. Customizable. Good starting point."
             },
             {
                 q: "How do you implement GitLab releases?",
-                options: ["External release tooling", "Releases not supported", "Git tags only option", "Release feature with artifacts and notes"],
+                options: ["Requires external release tooling only", "Release management is not supported", "Git tags are the only release option", "Release feature with artifacts and notes"],
                 correct: 3,
                 explanation: "GitLab Releases: create from tags, attach artifacts, release notes. API for automation. Integrates with CI/CD for automatic releases."
             },
@@ -7971,7 +7971,7 @@ const questions = {
             },
             {
                 q: "What's GitLab's component catalog?",
-                options: ["Component documentation", "GitLab feature catalog", "Reusable CI/CD components across projects", "Software component library"],
+                options: ["Component usage documentation pages", "Catalog of all GitLab feature flags", "Reusable CI/CD components across projects", "Third-party software component library"],
                 correct: 2,
                 explanation: "CI/CD Catalog: share reusable pipeline components. Include templates, jobs. Publish to catalog for organization use. DRY principle for CI/CD."
             },
@@ -7994,7 +7994,7 @@ const questions = {
             },
             {
                 q: "What is an API in web development?",
-                options: ["A database for storing user sessions", "A contract defining how software components communicate", "A tool for automated browser testing", "A protocol for encrypting web traffic"],
+                options: ["A database system for storing user sessions", "A contract defining how components communicate", "A framework for automated browser testing", "A protocol for encrypting web traffic data"],
                 correct: 1,
                 explanation: "An API defines how software components communicate. Web APIs typically use HTTP to exchange data between frontend and backend."
             },
@@ -8063,7 +8063,7 @@ const questions = {
             },
             {
                 q: "What is Docker used for?",
-                options: ["Managing operating system installations", "Storing and querying structured data", "Writing and compiling programming code", "Building, sharing, and running containerized applications"],
+                options: ["Managing and installing operating systems", "Storing and querying structured databases", "Writing and compiling programming languages", "Building and running containerized applications"],
                 correct: 3,
                 explanation: "Docker is the most popular container platform, providing tools to build, share, and run containerized applications."
             },
@@ -8172,7 +8172,7 @@ const questions = {
             },
             {
                 q: "What is the main difference between Ansible and Terraform?",
-                options: ["They are interchangeable tools for same purpose", "Ansible configures servers, Terraform provisions infrastructure", "Ansible only works with cloud providers", "Terraform only works on Linux systems"],
+                options: ["They are fully interchangeable tools for same tasks", "Ansible configures servers, Terraform provisions infra", "Ansible only integrates with major cloud providers", "Terraform only functions on Linux-based systems"],
                 correct: 1,
                 explanation: "Terraform excels at provisioning infrastructure (VMs, networks). Ansible excels at configuring software on existing servers. Often used together."
             },
@@ -8253,7 +8253,7 @@ const questions = {
             },
             {
                 q: "What is a ConfigMap used for?",
-                options: ["Storing encrypted secrets and credentials", "Defining network firewall rules", "Storing non-sensitive configuration as key-value pairs", "Managing persistent storage volumes"],
+                options: ["Storing encrypted secrets and access credentials", "Defining network policies and firewall rules", "Storing non-sensitive config as key-value pairs", "Managing persistent storage volumes on nodes"],
                 correct: 2,
                 explanation: "ConfigMaps store configuration as key-value pairs, injected into Pods as environment variables or mounted files."
             },
@@ -8406,7 +8406,7 @@ const questions = {
         1: [
             {
                 q: "What type of organizations typically use Waldur?",
-                options: ["Only financial banking institutions", "Exclusively early-stage startup companies", "Primarily retail and e-commerce companies", "Research institutions, universities, and government agencies"],
+                options: ["Financial and banking industry institutions", "Early-stage startup companies and ventures", "Primarily retail and e-commerce businesses", "Research institutions and government agencies"],
                 correct: 3,
                 explanation: "Waldur serves research institutions, universities, government agencies, and organizations managing shared computing resources."
             },
@@ -8426,7 +8426,7 @@ const questions = {
         2: [
             {
                 q: "How does Waldur help with resource allocation?",
-                options: ["Phone-based support for all requests", "Manual processing through email requests only", "No automation - fully manual process", "Automated provisioning with configurable approval workflows"],
+                options: ["Phone-based support for all resource requests", "Manual processing through email requests only", "No automation provided for provisioning tasks", "Automated provisioning with approval workflows"],
                 correct: 3,
                 explanation: "Waldur automates resource provisioning with configurable approval workflows, quotas, and billing integration."
             },
@@ -8438,7 +8438,7 @@ const questions = {
             },
             {
                 q: "How does Waldur support multi-tenancy?",
-                options: ["Multi-tenancy is not supported", "Isolated organizations with their own users and resources", "Single shared workspace for all users", "Maximum of two tenants allowed"],
+                options: ["Multi-tenancy support is not available", "Isolated orgs with own users and resources", "Single shared workspace for all user accounts", "Maximum of two tenants allowed per instance"],
                 correct: 1,
                 explanation: "Waldur supports multiple organizations, each with isolated users, projects, and resources on shared infrastructure."
             },
@@ -8556,7 +8556,7 @@ const questions = {
             },
             {
                 q: "What is a compute allocation in HPC?",
-                options: ["Network bandwidth allocated to users", "Storage quota for research data", "Assigned computing resources granted to a project", "User account creation request"],
+                options: ["Network bandwidth allocated to user groups", "Storage quota assigned for research data", "Computing resources granted to a project", "User account creation and access request"],
                 correct: 2,
                 explanation: "Allocations grant projects access to compute hours, typically measured in core-hours or node-hours."
             },
@@ -8602,7 +8602,7 @@ const questions = {
             },
             {
                 q: "What reporting do HPC centers typically need?",
-                options: ["Only total usage", "No reporting needed", "Usage by project, user, and resource type", "Manual spreadsheets only"],
+                options: ["Only total cluster usage aggregated", "No detailed reporting is required", "Usage by project, user, and resource type", "Manual spreadsheets for tracking usage"],
                 correct: 2,
                 explanation: "HPC centers report usage breakdowns for billing, capacity planning, and demonstrating resource utilization."
             },
@@ -8613,19 +8613,19 @@ const questions = {
         1: [
             {
                 q: "What is a key requirement for government IT systems?",
-                options: ["Fastest performance", "Social media integration", "Cheapest cost", "Compliance and audit capabilities"],
+                options: ["Maximum throughput and fastest performance", "Integration with social media platforms", "Lowest possible procurement and hosting cost", "Compliance with regulations and audit capabilities"],
                 correct: 3,
                 explanation: "Government systems must meet regulatory compliance, maintain audit trails, and ensure data sovereignty."
             },
             {
                 q: "What is data sovereignty?",
-                options: ["Data encryption", "Data ownership by users", "Data compression", "Data subject to laws of country where stored"],
+                options: ["Encrypting data at rest and in transit", "Granting ownership of all data to end users", "Compressing data for efficient long-term storage", "Data being subject to laws of the country where stored"],
                 correct: 3,
                 explanation: "Data sovereignty means data is subject to laws of its storage location, critical for government compliance."
             },
             {
                 q: "Why is audit logging important for government?",
-                options: ["Accountability and compliance verification", "Cost reduction", "Performance optimization", "User convenience"],
+                options: ["Accountability and compliance verification for agencies", "Reducing operational infrastructure hosting costs", "Optimizing application performance under high load", "Improving everyday convenience for end users"],
                 correct: 0,
                 explanation: "Audit logs provide accountability, support compliance audits, and help investigate security incidents."
             },
@@ -8633,19 +8633,19 @@ const questions = {
         2: [
             {
                 q: "How does Waldur support government compliance?",
-                options: ["Manual processes", "Third-party tools only", "Audit trails, approval workflows, access controls", "No compliance features"],
+                options: ["Relying on fully manual processes and spreadsheets", "Delegating compliance entirely to third-party tools", "Audit trails, approval workflows, and access controls", "Providing no built-in compliance features at all"],
                 correct: 2,
                 explanation: "Waldur provides comprehensive audit logging, configurable approvals, and fine-grained access controls."
             },
             {
                 q: "What is an approval workflow?",
-                options: ["Multi-step process requiring authorized approvals", "No approval needed", "Email confirmation", "Automatic approval"],
+                options: ["Multi-step process requiring authorized approvals before action", "An open pipeline where no authorization is ever required", "A simple email confirmation sent after resource provisioning", "An automatic process that instantly grants all user requests"],
                 correct: 0,
                 explanation: "Approval workflows ensure proper authorization before provisioning resources, meeting policy requirements."
             },
             {
                 q: "Why might government prefer on-premises deployment?",
-                options: ["Easier setup", "Better performance", "Always cheaper", "Data control, security policies, regulations"],
+                options: ["Faster initial setup and easier deployment process", "Consistently better application performance benchmarks", "Lower total cost of ownership in every scenario", "Greater data control, security policies, and regulation compliance"],
                 correct: 3,
                 explanation: "On-premises keeps data within controlled environments, meeting security policies and regulatory requirements."
             },
@@ -8653,25 +8653,25 @@ const questions = {
         3: [
             {
                 q: "What security features does Waldur provide?",
-                options: ["RBAC, MFA support, encryption, audit logs", "No security features", "Third-party required", "Basic password only"],
+                options: ["RBAC, MFA support, encryption, and audit logs", "No built-in security features of any kind", "Security delegated entirely to third-party tools", "Only basic password authentication is supported"],
                 correct: 0,
                 explanation: "Waldur includes role-based access control, MFA integration, data encryption, and comprehensive audit logging."
             },
             {
                 q: "How does Waldur handle sensitive data classification?",
-                options: ["Configurable data handling policies and access controls", "Single security level", "No classification support", "Manual tracking"],
+                options: ["Configurable data handling policies and access controls", "A single uniform security level applied to all data", "No support for classifying or categorizing data types", "Manual spreadsheet tracking without any automation"],
                 correct: 0,
                 explanation: "Waldur's access controls and policies can enforce data classification requirements and handling rules."
             },
             {
                 q: "What is change management in government context?",
-                options: ["Automatic updates", "Immediate changes", "Controlled process for implementing changes", "No process needed"],
+                options: ["Pushing automatic updates without any review step", "Applying changes immediately as soon as they are ready", "A controlled process for reviewing and implementing changes", "An informal approach where no formal process is needed"],
                 correct: 2,
                 explanation: "Change management ensures changes are reviewed, tested, approved, and documented before implementation."
             },
             {
                 q: "How does Waldur support disaster recovery requirements?",
-                options: ["Backup support, stateless design, documented recovery", "Automatic failover only", "No DR support", "Manual recovery only"],
+                options: ["Backup support, stateless design, and documented recovery procedures", "Relying on automatic failover with no additional planning needed", "Providing no built-in disaster recovery support or tooling", "Depending entirely on manual recovery without documented steps"],
                 correct: 0,
                 explanation: "Waldur's containerized design and database backups support disaster recovery planning and procedures."
             },
@@ -8682,19 +8682,19 @@ const questions = {
         1: [
             {
                 q: "What is federation in the context of Waldur?",
-                options: ["Email federation", "Single organization", "Social network", "Multiple organizations sharing resources through one portal"],
+                options: ["A protocol for federating email across different providers", "A setup where only one organization manages all resources", "A social networking feature for connecting user profiles", "Multiple organizations sharing resources through one portal"],
                 correct: 3,
                 explanation: "Federation enables multiple organizations to collaborate and share resources through a unified platform."
             },
             {
                 q: "What is a consortium?",
-                options: ["Software license", "Group of organizations collaborating on shared goals", "Network protocol", "Single company"],
+                options: ["A type of software license governing usage rights", "A group of organizations collaborating on shared goals", "A network protocol for inter-system communication", "A single company managing its own internal resources"],
                 correct: 1,
                 explanation: "Consortiums are partnerships where organizations pool resources, common in research and academic contexts."
             },
             {
                 q: "Why do organizations federate resources?",
-                options: ["Share costs, increase capacity, enable collaboration", "Reduce users", "Simplify billing", "Legal requirement"],
+                options: ["To share costs, increase capacity, and enable collaboration", "To reduce the total number of active users on a platform", "To simplify billing into a single unified payment system", "To satisfy a specific legal requirement imposed by regulators"],
                 correct: 0,
                 explanation: "Federation allows resource sharing, cost distribution, and collaboration while maintaining organizational boundaries."
             },
@@ -8702,19 +8702,19 @@ const questions = {
         2: [
             {
                 q: "How does Waldur support multi-organization setups?",
-                options: ["Separate installations", "Hierarchical organization structure with isolation", "No multi-org support", "Single organization only"],
+                options: ["Requiring separate installations for each organization", "Hierarchical organization structure with data isolation", "Not offering any multi-organization support features", "Restricting the platform to a single organization only"],
                 correct: 1,
                 explanation: "Waldur supports organization hierarchies where each org has isolated users and resources within shared infrastructure."
             },
             {
                 q: "What is federated identity?",
-                options: ["No identity management", "Single sign-on across multiple organizations", "Separate logins per system", "Local accounts only"],
+                options: ["An approach with no centralized identity management", "Single sign-on authentication across multiple organizations", "Requiring separate login credentials for each system", "Using only local accounts managed within each service"],
                 correct: 1,
                 explanation: "Federated identity allows users to authenticate once and access resources across member organizations."
             },
             {
                 q: "How are resources shared in a federation?",
-                options: ["Email attachments", "No sharing possible", "Copy data manually", "Through marketplace offerings and cross-org permissions"],
+                options: ["By sending resource data as email attachments to members", "Sharing is not possible between different organizations", "By manually copying data between organization environments", "Through marketplace offerings and cross-org permissions"],
                 correct: 3,
                 explanation: "Waldur marketplace enables organizations to offer resources to federation members with appropriate access controls."
             },
@@ -8722,25 +8722,25 @@ const questions = {
         3: [
             {
                 q: "What is a common federated research infrastructure use case?",
-                options: ["Home computing", "Single university lab", "Small business IT", "European research networks sharing computing resources"],
+                options: ["Personal home computing and individual desktop setups", "A single isolated university lab managing its own servers", "Small business IT departments running internal workloads", "European research networks sharing computing resources"],
                 correct: 3,
                 explanation: "Research federations like EGI or GÉANT member organizations share HPC, cloud, and data resources."
             },
             {
                 q: "How does billing work in federated setups?",
-                options: ["No billing", "Single invoice", "Configurable billing per organization with aggregated reporting", "Cash payments"],
+                options: ["No billing or cost tracking is available at all", "A single shared invoice sent to the entire federation", "Configurable billing per organization with aggregated reporting", "Direct cash payments handled outside of the platform"],
                 correct: 2,
                 explanation: "Waldur tracks usage per organization, enabling internal billing, chargebacks, or funding allocation reporting."
             },
             {
                 q: "What governance challenges exist in federations?",
-                options: ["Coordinating policies across autonomous organizations", "Single authority", "No governance needed", "Automatic resolution"],
+                options: ["Coordinating policies across autonomous organizations", "Having a single central authority making all decisions", "Governance is unnecessary when organizations federate", "Automated conflict resolution handles every disagreement"],
                 correct: 0,
                 explanation: "Federations must balance organizational autonomy with shared policies, requiring clear governance structures."
             },
             {
                 q: "How does Waldur handle cross-organization projects?",
-                options: ["Single org projects only", "Manual coordination", "No project support", "Projects can include members from multiple organizations"],
+                options: ["Restricting every project to a single organization only", "Relying on manual coordination outside of the platform", "Offering no project management support for any teams", "Projects can include members from multiple organizations"],
                 correct: 3,
                 explanation: "Waldur projects can span organizations, enabling collaborative resource usage with appropriate permissions."
             },
