@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGameStore } from '@/stores/game'
 import { useTShape } from '@/composables/useTShape'
 import { useKeyboard } from '@/composables/useKeyboard'
-import { skills, skillTiers, getSkillsByTier, weaponProfiles } from '@/data/skills'
+import { skills, skillTiers, getSkillsByTier, getSkillById, getUnmetPrereqs, weaponProfiles } from '@/data/skills'
 import { hasQuestions, getAvailableLevels } from '@/data/questions'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import KeyboardHint from '@/components/layout/KeyboardHint.vue'
@@ -49,8 +49,9 @@ const SKILL_OVERRIDE_PHRASES = [
   "I know what YAML stands for... mostly",
 ]
 
-// Locked skill popup
+// Locked / prereq skill popups
 const lockedSkill = ref<Skill | null>(null)
+const prereqSkill = ref<Skill | null>(null)
 const overridePhrase = ref('')
 const showingPhrase = ref(false)
 
@@ -84,6 +85,96 @@ const skillGroups = computed<SkillGroup[]>(() => {
   return groups
 })
 
+// Prerequisite helpers
+function getLevel(skillId: string): number {
+  return gameStore.getSkillProgress(skillId).level
+}
+
+function hasUnmetPrereqs(skill: Skill): boolean {
+  if (gameStore.settings.idkfa) return false
+  return getUnmetPrereqs(skill.id, getLevel).length > 0
+}
+
+function getCrossTierPrereqs(skill: Skill): Skill[] {
+  if (!skill.prerequisites) return []
+  return skill.prerequisites
+    .map(pid => getSkillById(pid))
+    .filter((s): s is Skill => s !== undefined && s.tier !== skill.tier)
+}
+
+function getPrereqChecklist(skill: Skill): Array<{ skill: Skill; met: boolean; level: number }> {
+  if (!skill.prerequisites) return []
+  return skill.prerequisites
+    .map(pid => getSkillById(pid))
+    .filter((s): s is Skill => s !== undefined)
+    .map(s => ({ skill: s, met: getLevel(s.id) >= 1, level: getLevel(s.id) }))
+}
+
+function getSkillCardState(skill: Skill): string {
+  if (!hasQuestions(skill.id)) return 'locked'
+  if (hasUnmetPrereqs(skill)) return 'prereq'
+  if (getLevel(skill.id) > 0) return 'started'
+  return 'available'
+}
+
+// SVG connector lines for same-tier prerequisites
+const skillsAreaRef = ref<HTMLElement | null>(null)
+const connectorLines = ref<Array<{
+  x1: number; y1: number; x2: number; y2: number; met: boolean
+}>>([])
+
+function computeConnectors() {
+  const area = skillsAreaRef.value
+  if (!area) { connectorLines.value = []; return }
+
+  const tier = selectedTier.value
+  const tierSkills = getSkillsByTier(tier)
+  const lines: typeof connectorLines.value = []
+
+  for (const skill of tierSkills) {
+    if (!skill.prerequisites) continue
+    const sameTierPrereqs = skill.prerequisites
+      .map(pid => getSkillById(pid))
+      .filter((s): s is Skill => s !== undefined && s.tier === tier)
+
+    for (const prereq of sameTierPrereqs) {
+      const fromEl = area.querySelector(`[data-skill-id="${prereq.id}"]`) as HTMLElement | null
+      const toEl = area.querySelector(`[data-skill-id="${skill.id}"]`) as HTMLElement | null
+      if (!fromEl || !toEl) continue
+
+      const areaRect = area.getBoundingClientRect()
+      const fromRect = fromEl.getBoundingClientRect()
+      const toRect = toEl.getBoundingClientRect()
+
+      lines.push({
+        x1: fromRect.left + fromRect.width / 2 - areaRect.left + area.scrollLeft,
+        y1: fromRect.top + fromRect.height / 2 - areaRect.top + area.scrollTop,
+        x2: toRect.left + toRect.width / 2 - areaRect.left + area.scrollLeft,
+        y2: toRect.top + toRect.height / 2 - areaRect.top + area.scrollTop,
+        met: getLevel(prereq.id) >= 1,
+      })
+    }
+  }
+
+  connectorLines.value = lines
+}
+
+let resizeObserver: ResizeObserver | null = null
+
+onMounted(() => {
+  nextTick(computeConnectors)
+  if (skillsAreaRef.value) {
+    resizeObserver = new ResizeObserver(() => computeConnectors())
+    resizeObserver.observe(skillsAreaRef.value)
+  }
+})
+
+onUnmounted(() => {
+  resizeObserver?.disconnect()
+})
+
+watch(selectedTier, () => nextTick(computeConnectors))
+
 function tierPassedCount(tierId: string): number {
   return getSkillsByTier(tierId).filter(s => gameStore.getSkillProgress(s.id).level > 0).length
 }
@@ -102,11 +193,21 @@ function getSkillMaxLevel(skillId: string): number {
 }
 
 function onSkillClick(skill: Skill) {
-  if (hasQuestions(skill.id)) {
-    router.push({ name: 'skillDetail', params: { skillId: skill.id } })
-  } else {
+  const state = getSkillCardState(skill)
+  if (state === 'locked') {
     lockedSkill.value = skill
+  } else if (state === 'prereq') {
+    prereqSkill.value = skill
+  } else {
+    router.push({ name: 'skillDetail', params: { skillId: skill.id } })
   }
+}
+
+function bypassPrereqs() {
+  if (!prereqSkill.value) return
+  const skillId = prereqSkill.value.id
+  prereqSkill.value = null
+  router.push({ name: 'skillDetail', params: { skillId } })
 }
 
 function overrideLock() {
@@ -166,7 +267,31 @@ useKeyboard({
         </div>
 
         <!-- Skills grid -->
-        <div class="skills-area">
+        <div ref="skillsAreaRef" class="skills-area">
+          <!-- SVG connector lines for same-tier prerequisites -->
+          <svg v-if="connectorLines.length > 0" class="skills-area__connectors">
+            <defs>
+              <marker id="arrow-met" viewBox="0 0 10 7" refX="10" refY="3.5"
+                markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+                <polygon points="0 0, 10 3.5, 0 7" :fill="tierInfo?.color || '#6366f1'" opacity="0.5" />
+              </marker>
+              <marker id="arrow-unmet" viewBox="0 0 10 7" refX="10" refY="3.5"
+                markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+                <polygon points="0 0, 10 3.5, 0 7" fill="var(--color-text-muted)" opacity="0.35" />
+              </marker>
+            </defs>
+            <line
+              v-for="(line, li) in connectorLines"
+              :key="li"
+              :x1="line.x1" :y1="line.y1" :x2="line.x2" :y2="line.y2"
+              :stroke="line.met ? (tierInfo?.color || '#6366f1') : 'var(--color-text-muted)'"
+              :stroke-width="line.met ? 1.5 : 1"
+              :stroke-dasharray="line.met ? 'none' : '6 4'"
+              :stroke-opacity="line.met ? 0.5 : 0.35"
+              :marker-end="line.met ? 'url(#arrow-met)' : 'url(#arrow-unmet)'"
+            />
+          </svg>
+
           <div v-for="(group, gi) in skillGroups" :key="gi" class="skill-group">
             <div v-if="group.label" class="skill-group__header">
               <span>{{ group.label }}</span>
@@ -176,26 +301,32 @@ useKeyboard({
               <div
                 v-for="skill in group.skills"
                 :key="skill.id"
+                :data-skill-id="skill.id"
                 class="skill-card"
                 :class="{
-                  'skill-card--started': hasQuestions(skill.id) && getSkillLevel(skill.id) > 0,
-                  'skill-card--available': hasQuestions(skill.id) && getSkillLevel(skill.id) === 0,
-                  'skill-card--locked': !hasQuestions(skill.id),
+                  'skill-card--started': getSkillCardState(skill) === 'started',
+                  'skill-card--available': getSkillCardState(skill) === 'available',
+                  'skill-card--prereq': getSkillCardState(skill) === 'prereq',
+                  'skill-card--locked': getSkillCardState(skill) === 'locked',
                 }"
-                :style="hasQuestions(skill.id) && getSkillLevel(skill.id) > 0 && tierInfo
+                :style="getSkillCardState(skill) === 'started' && tierInfo
                   ? { borderColor: tierInfo.color, backgroundColor: tierInfo.color + '20' }
                   : {}"
                 @click="onSkillClick(skill)"
               >
                 <div class="skill-card__name">{{ skill.name }}</div>
                 <div class="skill-card__level" :class="{ 'skill-card__level--active': getSkillLevel(skill.id) > 0 }">
-                  {{ !hasQuestions(skill.id) ? '🔒 Soon' : getSkillLevel(skill.id) > 0 ? `Lv.${getSkillLevel(skill.id)}/${getSkillMaxLevel(skill.id)}` : 'Not Started' }}
+                  {{ getSkillCardState(skill) === 'locked' ? '🔒 Soon' : getSkillLevel(skill.id) > 0 ? `Lv.${getSkillLevel(skill.id)}/${getSkillMaxLevel(skill.id)}` : 'Not Started' }}
                 </div>
                 <div class="skill-card__bar">
                   <div
                     class="skill-card__bar-fill"
                     :style="{ width: hasQuestions(skill.id) ? (getSkillLevel(skill.id) / getSkillMaxLevel(skill.id) * 100) + '%' : '0%' }"
                   ></div>
+                </div>
+                <!-- Cross-tier prerequisite badge -->
+                <div v-if="getSkillCardState(skill) === 'prereq' && getCrossTierPrereqs(skill).length > 0" class="skill-card__prereq-badge">
+                  {{ getCrossTierPrereqs(skill).map(s => s.name).join(', ') }}
                 </div>
                 <!-- Advanced badge -->
                 <span v-if="hasQuestions(skill.id) && getSkillMaxLevel(skill.id) > 5" class="skill-card__advanced">⭐</span>
@@ -287,6 +418,30 @@ useKeyboard({
       </div>
     </OverlayModal>
 
+    <!-- Prerequisite popup -->
+    <OverlayModal v-if="prereqSkill" @close="prereqSkill = null">
+      <div class="prereq-popup">
+        <h2 class="prereq-popup__title">🔗 {{ prereqSkill.name }}</h2>
+        <p class="prereq-popup__subtitle">Recommended prerequisites:</p>
+        <ul class="prereq-popup__list">
+          <li
+            v-for="item in getPrereqChecklist(prereqSkill)"
+            :key="item.skill.id"
+            class="prereq-popup__item"
+            :class="{ 'prereq-popup__item--met': item.met }"
+          >
+            <span class="prereq-popup__check">{{ item.met ? '✓' : '✗' }}</span>
+            <span class="prereq-popup__name">{{ item.skill.name }}</span>
+            <span class="prereq-popup__level">{{ item.met ? `(Lv.${item.level})` : '(not started)' }}</span>
+          </li>
+        </ul>
+        <div class="prereq-popup__actions">
+          <GameButton label="Start Anyway" variant="warning" @click="bypassPrereqs" />
+          <GameButton label="Close" variant="ghost" @click="prereqSkill = null" />
+        </div>
+      </div>
+    </OverlayModal>
+
     <!-- Override phrase flash -->
     <div v-if="showingPhrase" class="phrase-flash">
       "{{ overridePhrase }}"
@@ -363,12 +518,22 @@ useKeyboard({
 
 /* Skills area */
 .skills-area {
+  position: relative;
   flex: 1;
   overflow-y: auto;
   background: rgb(20, 20, 45);
   border-radius: var(--radius-md);
   border: 2px solid var(--color-bg-light);
   padding: var(--space-4);
+}
+
+.skills-area__connectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .skill-group {
@@ -430,13 +595,23 @@ useKeyboard({
   opacity: 1;
 }
 
+.skill-card--prereq {
+  background: rgb(25, 25, 45);
+  opacity: 0.35;
+  border: 1px dashed var(--color-text-muted);
+}
+
+.skill-card--prereq:hover {
+  opacity: 0.6;
+}
+
 .skill-card--locked {
   background: rgb(25, 25, 45);
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
 .skill-card--locked:hover {
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .skill-card__name {
@@ -471,6 +646,17 @@ useKeyboard({
   background: var(--color-success);
   border-radius: 3px;
   transition: width 0.3s ease;
+}
+
+.skill-card__prereq-badge {
+  font-size: 10px;
+  color: var(--color-warning);
+  opacity: 0.9;
+  margin-top: 2px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .skill-card__advanced {
@@ -635,6 +821,69 @@ useKeyboard({
   margin-top: var(--space-3);
 }
 
+/* Prereq popup */
+.prereq-popup {
+  text-align: center;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.prereq-popup__title {
+  font-size: var(--font-2xl);
+  color: var(--color-warning);
+  margin-bottom: var(--space-2);
+}
+
+.prereq-popup__subtitle {
+  font-size: var(--font-base);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.prereq-popup__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-6);
+  text-align: left;
+}
+
+.prereq-popup__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-1);
+  color: var(--color-text-muted);
+}
+
+.prereq-popup__item--met {
+  color: var(--color-success);
+}
+
+.prereq-popup__check {
+  font-size: var(--font-lg);
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.prereq-popup__name {
+  flex: 1;
+  font-size: var(--font-base);
+}
+
+.prereq-popup__level {
+  font-size: var(--font-sm);
+  opacity: 0.7;
+}
+
+.prereq-popup__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
 /* Override phrase flash */
 .phrase-flash {
   position: fixed;
@@ -651,6 +900,10 @@ useKeyboard({
 }
 
 @media (max-width: 900px) {
+  .skills-area__connectors {
+    display: none;
+  }
+
   .skill-tree__layout {
     flex-direction: column;
     overflow: visible;

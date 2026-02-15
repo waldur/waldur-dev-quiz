@@ -21,6 +21,7 @@ export interface Skill {
   description: string
   category?: string
   package?: string
+  prerequisites?: string[]
 }
 
 export interface SkillLevel {

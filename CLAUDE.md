@@ -4,54 +4,92 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Waldur Quest is a browser-based skill assessment game for Waldur developers. It uses the KAPLAY game engine (formerly Kaboom.js) to create an interactive quiz experience based on the Waldur Way skill system.
+Waldur Quest is a browser-based skill assessment game for Waldur developers. It uses Vue 3 + TypeScript to create an interactive quiz experience based on the Waldur Way skill system.
 
 ## Running the Project
 
-No build step required. Serve via any static HTTP server:
 ```bash
-python3 -m http.server 8000
-# or
-npx serve .
+npm install
+npm run dev
 ```
 
-Then open `http://localhost:8000` in browser.
+Then open the URL shown in the terminal (typically `http://localhost:5173/waldur-dev-quiz/`).
 
-For GitHub Pages deployment, push to a gh-pages branch or enable Pages in repository settings.
+### Build & Preview
+
+```bash
+npm run build        # Type-check + build to dist/
+npm run preview      # Preview the production build locally
+npm run type-check   # TypeScript type checking only
+```
+
+### Deployment
+
+GitHub Actions automatically builds and deploys to GitHub Pages on push to `main`. The workflow is in `.github/workflows/deploy.yml`. The site is served at `https://waldur.github.io/waldur-dev-quiz/`.
 
 ## Architecture
 
+### Tech Stack
+- **Vue 3** with Composition API (`<script setup>`)
+- **TypeScript** for type safety
+- **Pinia** for state management
+- **Vue Router** for navigation
+- **Vite** for build tooling
+- **LocalStorage** for client-side persistence
+
 ### File Structure
-- `index.html` - Entry point, loads KAPLAY from CDN and all JS files
-- `js/main.js` - Game initialization and all KAPLAY scenes
-- `js/data/skills.js` - Skill definitions (tiers, packages, weapon profiles)
-- `js/data/questions.js` - Question bank organized by skill ID and difficulty level (400+ questions)
-- `js/utils/storage.js` - LocalStorage persistence layer
-
-### No Build System
-The project uses vanilla JS with global variables (no ES modules) for GitHub Pages compatibility. Scripts must load in order: skills.js → questions.js → storage.js → main.js.
-
-### KAPLAY Game Engine
-- Initialized with `kaplay()` returning `k` instance
-- Uses scene-based architecture: `menu`, `skillTree`, `skillDetail`, `quiz`, `results`, `profile`
-- All text elements use `font: 'Inter'` loaded via `k.loadFont()`
-- Scene transitions via `k.go('sceneName', { data })`
-- Overlays (help, confirmations) use z-index layering with `k.z()`
-
-**Text Escaping Rule:**
-KAPLAY uses `[` and `]` for styled text markup. Any dynamic text or text containing square brackets must be escaped to avoid "unclosed tags" errors:
-- Use the `escapeText()` helper function for dynamic content (questions, explanations, user input)
-- For static text, use parentheses instead: `(1) Start Quest` not `[1] Start Quest`
-- The helper escapes brackets: `str.replace(/\[/g, '\\[').replace(/\]/g, '\\]')`
+```
+├── index.html                 # Entry point
+├── vite.config.ts             # Vite config (base: '/waldur-dev-quiz/')
+├── src/
+│   ├── main.ts                # App initialization
+│   ├── App.vue                # Root component
+│   ├── router.ts              # Vue Router routes
+│   ├── views/                 # Page-level components
+│   │   ├── MenuView.vue       # Landing page with profile & stats
+│   │   ├── SkillTreeView.vue  # Browse skills by tier
+│   │   ├── SkillDetailView.vue# Skill info + level selection
+│   │   ├── QuizView.vue       # Quiz gameplay
+│   │   ├── ResultsView.vue    # Quiz results & XP
+│   │   ├── ProfileView.vue    # Player profile & achievements
+│   │   └── SharedProfileView.vue # Read-only shared profile viewer
+│   ├── components/
+│   │   ├── layout/            # AppHeader, KeyboardHint
+│   │   └── ui/                # GameButton, OverlayModal, ProgressBar, etc.
+│   ├── stores/                # Pinia stores
+│   │   ├── game.ts            # Game state (XP, skill progress, achievements)
+│   │   ├── quiz.ts            # Active quiz state
+│   │   └── ui.ts              # UI state (toasts, modals)
+│   ├── composables/           # Reusable logic
+│   │   ├── useAchievements.ts
+│   │   ├── useDailyChallenge.ts
+│   │   ├── useKeyboard.ts
+│   │   ├── useShare.ts
+│   │   ├── useSound.ts
+│   │   ├── useSpacedRepetition.ts
+│   │   └── useTShape.ts
+│   ├── data/                  # Static game data
+│   │   ├── skills.ts          # Skill definitions (tiers, levels, weapons)
+│   │   ├── questions.ts       # Question bank by skill ID & level
+│   │   ├── achievements.ts    # Achievement definitions
+│   │   ├── characterFaces.ts  # Character face system
+│   │   └── resultImages.ts    # Result screen images
+│   ├── types/
+│   │   └── game.ts            # TypeScript type definitions
+│   └── styles/
+│       ├── base.css           # Global styles
+│       ├── variables.css      # CSS custom properties
+│       └── animations.css     # Keyframe animations
+```
 
 ### Data Model
 
-**Skills** (`js/data/skills.js`):
+**Skills** (`src/data/skills.ts`):
 - 5 tiers: literacy, product, foundation, core, specialization
 - Each skill has id, name, tier, description
 - Weapon profiles (dagger → trident) based on T-shape progress
 
-**Questions** (`js/data/questions.js`):
+**Questions** (`src/data/questions.ts`):
 - Keyed by skill ID, then by level (1-7)
 - Format: `{ q: "question", options: ["a", "b", "c", "d"], correct: 0 }`
 - Optional fields for learning assistance:
@@ -60,7 +98,7 @@ KAPLAY uses `[` and `]` for styled text markup. Any dynamic text or text contain
 - Helper functions: `getQuestionsForSkill()`, `getAvailableLevels()`, `hasQuestions()`
 - Minimum questions per level: L1-2: 3, L3-4: 4, L5: 5, L6-7: 6
 
-**Skill Levels** (`js/data/skills.js`):
+**Skill Levels** (`src/data/skills.ts`):
 - Level 1: Aware (blue) - 100 XP
 - Level 2: Competent (green) - 300 XP
 - Level 3: Proficient (yellow) - 600 XP
@@ -71,57 +109,25 @@ KAPLAY uses `[` and `]` for styled text markup. Any dynamic text or text contain
 
 **Advanced Levels (6-7):**
 - Available only for selected foundation skills and all specialization skills
-- Visual indicators: Star badge (⭐) on skills with advanced levels in skill tree
-- Pink/teal button colors for level 6-7 in skill detail scene
+- Visual indicators: Star badge on skills with advanced levels in skill tree
+- Pink/teal button colors for level 6-7 in skill detail
 - Topics cover latest features and advanced concepts (2025-2026 documentation)
 
-**State** (`js/utils/storage.js`):
+**State** (`src/stores/game.ts`):
 - Stored in localStorage under key `waldur-quest`
 - Tracks: totalXP, skillProgress, achievements, currentProfile, stats
-- Key functions: `loadState()`, `saveState()`, `updateSkillProgress()`, `getStats()`, `resetProgress()`
 
 ### Game Flow
-1. **Menu** → shows player profile, stats, and help button (?)
-2. **Skill Tree** → browse skills by tier, T-shape progress panel with recommendations on right
+1. **Menu** → shows player profile, stats, and help button
+2. **Skill Tree** → browse skills by tier, T-shape progress panel with recommendations
 3. **Skill Detail** → choose difficulty level, see skill description
 4. **Quiz** → 5 questions with number hints (1-4), exit button, keyboard controls
 5. **Results** → XP calculation, "Next Level" button if passed, or "Try Again" if failed
 
-### UI Features
-
-**Menu Scene:**
-- Help overlay (?) explains game rules, T-shape concept, XP system, controls
-- Click outside or press ESC to close overlays
-
-**Skill Tree Scene:**
-- Right panel shows T-shape progress (breadth bars + depth count)
-- Visual T-shape indicator grows based on progress
-- "Recommended Next" section suggests skills to improve T-shape
-- Recommendations prioritize: literacy gaps → foundation gaps → specialization depth → level up existing
-- Skills with advanced levels (6-7) show a pink ⭐ badge in the upper right corner
-
-**Quiz Scene:**
-- Exit button (✕) to return to skill tree without finishing
-- Number badges (1-4) on each answer option
-- Keyboard hint footer: "Press 1-4 to answer • Space/Enter for next"
-- Answer with mouse click or keyboard 1-4
-- After answering, shows explanation (if available) with "Learn More" link to tutorials
-- Next question with Enter/Space or click Next button
-
-**Results Scene:**
-- "Next Level →" button appears when quiz passed (60%+) and not at max level for that skill
-- Max level is dynamic per skill (5 for most skills, 6-7 for skills with advanced levels)
-- "Try Again" button appears when quiz failed
-- Always shows "Skill Tree" and "Main Menu" options
-
-**Profile Scene:**
-- "Reset Progress" button with confirmation dialog
-- Shows stats, weapon profile, and tier progress bars
-
 ## Adding New Questions
 
-Add to `js/data/questions.js` under the appropriate skill ID and level:
-```javascript
+Add to `src/data/questions.ts` under the appropriate skill ID and level:
+```typescript
 'skill-id': {
     1: [
         {
@@ -152,34 +158,6 @@ Add to `js/data/questions.js` under the appropriate skill ID and level:
 - Occasional joke/absurd answers are fine for fun, but use sparingly (max 1 per question)
 - The correct answer should NOT be obvious just by being longer or more detailed
 
-**Good example:**
-```javascript
-{
-    q: "What does 'docker ps' show?",
-    options: [
-        "List of currently running containers",
-        "List of all available Docker images",
-        "Docker process and memory statistics",
-        "List of Docker networks and volumes"
-    ],
-    correct: 0
-}
-```
-
-**Bad example (wrong answers too short/obvious):**
-```javascript
-{
-    q: "What does 'docker ps' show?",
-    options: [
-        "Running containers",
-        "Images",           // Too short
-        "Nothing",          // Absurd
-        "Errors"            // Too vague
-    ],
-    correct: 0
-}
-```
-
 **Other guidelines:**
 - `explanation` and `learnMore` are optional but highly recommended for learning
 - Use validated, stable URLs (official docs preferred over blog posts)
@@ -189,8 +167,8 @@ Add to `js/data/questions.js` under the appropriate skill ID and level:
 
 ## Adding New Skills
 
-1. Add skill object to `skills` array in `js/data/skills.js`
-2. Add corresponding questions in `js/data/questions.js`
+1. Add skill object to `skills` array in `src/data/skills.ts`
+2. Add corresponding questions in `src/data/questions.ts`
 3. Skills without questions are hidden from the skill tree
 
 ## T-Shape Developer Concept

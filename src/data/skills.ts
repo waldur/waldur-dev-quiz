@@ -17,7 +17,7 @@ export const skillPackages: SkillPackage[] = [
 ]
 
 export const skills: Skill[] = [
-  // LITERACY TIER (11 skills)
+  // LITERACY TIER (11 skills) — no prerequisites (entry point)
   { id: 'l-cli', name: 'Command Line Basics', tier: 'literacy', description: 'Navigate filesystem, run scripts, read logs' },
   { id: 'l-git-basics', name: 'Git Essentials', tier: 'literacy', description: 'Clone, commit, push, create branches, PRs' },
   { id: 'l-containers-101', name: 'Container Concepts', tier: 'literacy', description: 'Immutability, logs, restart policies' },
@@ -45,35 +45,35 @@ export const skills: Skill[] = [
   { id: 'f-immutability', name: 'Immutability & FP', tier: 'foundation', category: 'cs', description: 'Immutable data, pure functions' },
   { id: 'f-type-systems', name: 'Type Systems', tier: 'foundation', category: 'cs', description: 'TypeScript, Python type hints' },
   { id: 'f-memory-perf', name: 'Memory & Performance', tier: 'foundation', category: 'cs', description: 'Memoization, lazy loading' },
-  { id: 'f-api-principles', name: 'API Design Principles', tier: 'foundation', category: 'cs', description: 'REST semantics, HTTP methods' },
+  { id: 'f-api-principles', name: 'API Design Principles', tier: 'foundation', category: 'cs', description: 'REST semantics, HTTP methods', prerequisites: ['l-django'] },
   { id: 'f-security-basics', name: 'Security Fundamentals', tier: 'foundation', category: 'cs', description: 'Auth concepts, OWASP basics' },
   // FOUNDATION TIER - Software Engineering (14 skills)
-  { id: 'f-testing', name: 'Testing Fundamentals', tier: 'foundation', category: 'se', description: 'pytest, Vitest, RTL' },
-  { id: 'f-debugging', name: 'Debugging & Profiling', tier: 'foundation', category: 'se', description: 'pdb, browser DevTools' },
-  { id: 'f-git', name: 'Git Workflow', tier: 'foundation', category: 'se', description: 'Branching, rebasing, PRs' },
+  { id: 'f-testing', name: 'Testing Fundamentals', tier: 'foundation', category: 'se', description: 'pytest, Vitest, RTL', prerequisites: ['l-python'] },
+  { id: 'f-debugging', name: 'Debugging & Profiling', tier: 'foundation', category: 'se', description: 'pdb, browser DevTools', prerequisites: ['l-python'] },
+  { id: 'f-git', name: 'Git Workflow', tier: 'foundation', category: 'se', description: 'Branching, rebasing, PRs', prerequisites: ['l-git-basics'] },
   { id: 'f-code-review', name: 'Code Review', tier: 'foundation', category: 'se', description: 'Review patterns, feedback' },
   { id: 'f-refactoring', name: 'Refactoring', tier: 'foundation', category: 'se', description: 'Safe refactoring, code smells' },
   { id: 'f-documentation', name: 'Technical Documentation', tier: 'foundation', category: 'se', description: 'API docs, architecture diagrams' },
-  { id: 'f-build-systems', name: 'Build Systems', tier: 'foundation', category: 'se', description: 'Vite, pip, uv, bundling' },
-  { id: 'f-ci-cd', name: 'CI/CD Pipelines', tier: 'foundation', category: 'se', description: 'GitHub Actions, GitLab CI' },
-  { id: 'f-docker', name: 'Containers & Docker', tier: 'foundation', category: 'se', description: 'Dockerfile, docker-compose' },
+  { id: 'f-build-systems', name: 'Build Systems', tier: 'foundation', category: 'se', description: 'Vite, pip, uv, bundling', prerequisites: ['l-browser-apps'] },
+  { id: 'f-ci-cd', name: 'CI/CD Pipelines', tier: 'foundation', category: 'se', description: 'GitHub Actions, GitLab CI', prerequisites: ['l-iac-concepts'] },
+  { id: 'f-docker', name: 'Containers & Docker', tier: 'foundation', category: 'se', description: 'Dockerfile, docker-compose', prerequisites: ['l-containers-101'] },
   { id: 'f-linux', name: 'Linux Administration', tier: 'foundation', category: 'se', description: 'Shell, systemd, networking' },
   { id: 'f-sql', name: 'SQL & Databases', tier: 'foundation', category: 'se', description: 'Queries, indexes, transactions' },
   { id: 'f-ai-prompting', name: 'AI Prompting', tier: 'foundation', category: 'se', description: 'Prompt engineering, context management' },
   { id: 'f-ai-coding', name: 'AI-Assisted Coding', tier: 'foundation', category: 'se', description: 'Copilot, Cursor, Claude Code' },
   { id: 'f-ai-agents', name: 'AI Agent Setup', tier: 'foundation', category: 'se', description: 'MCP servers, agentic workflows' },
   // CORE PLATFORM TIER (15 skills)
-  { id: 'c-waldur-arch', name: 'Waldur Architecture', tier: 'core', category: 'backend', description: 'Plugin system, structure apps' },
-  { id: 'c-marketplace', name: 'Marketplace System', tier: 'core', category: 'backend', description: 'Offerings, resources, orders' },
+  { id: 'c-waldur-arch', name: 'Waldur Architecture', tier: 'core', category: 'backend', description: 'Plugin system, structure apps', prerequisites: ['p-waldur-basics'] },
+  { id: 'c-marketplace', name: 'Marketplace System', tier: 'core', category: 'backend', description: 'Offerings, resources, orders', prerequisites: ['p-waldur-basics'] },
   { id: 'c-permissions', name: 'Permission/RBAC', tier: 'core', category: 'backend', description: 'Roles, permissions, scopes' },
   { id: 'c-billing', name: 'Billing & Invoicing', tier: 'core', category: 'backend', description: 'Pricing, invoices, payments' },
   { id: 'c-quotas', name: 'Quota Management', tier: 'core', category: 'backend', description: 'Resource limits, enforcement' },
   { id: 'c-notifications', name: 'Notifications System', tier: 'core', category: 'backend', description: 'Events, webhooks, email' },
   { id: 'c-celery', name: 'Celery/Task Queue', tier: 'core', category: 'backend', description: 'Async tasks, scheduling' },
-  { id: 'c-api-design', name: 'API v3 Design', tier: 'core', category: 'backend', description: 'Versioning, migration' },
+  { id: 'c-api-design', name: 'API v3 Design', tier: 'core', category: 'backend', description: 'Versioning, migration', prerequisites: ['f-api-principles'] },
   { id: 'c-multi-tenant', name: 'Multi-tenancy', tier: 'core', category: 'backend', description: 'Org hierarchy, isolation' },
   { id: 'c-reporting', name: 'Reporting & Analytics', tier: 'core', category: 'backend', description: 'Usage reports, dashboards' },
-  { id: 'c-waldur-ui', name: 'Waldur UI Framework', tier: 'core', category: 'frontend', description: 'Component library, Redux' },
+  { id: 'c-waldur-ui', name: 'Waldur UI Framework', tier: 'core', category: 'frontend', description: 'Component library, Redux', prerequisites: ['l-react'] },
   { id: 'c-waldur-forms', name: 'Form System', tier: 'core', category: 'frontend', description: 'redux-form, validation' },
   { id: 'c-waldur-tables', name: 'Data Tables', tier: 'core', category: 'frontend', description: 'Pagination, filtering, export' },
   { id: 'c-waldur-modals', name: 'Modal & Dialog System', tier: 'core', category: 'frontend', description: 'Modal patterns, wizards' },
@@ -81,12 +81,12 @@ export const skills: Skill[] = [
   // SPECIALIZATION TIER (8 skills)
   { id: 's-openstack', name: 'OpenStack', tier: 'specialization', package: 'cloud-integrations', description: 'Nova, Neutron, Cinder, Keystone' },
   { id: 's-azure', name: 'Azure Integration', tier: 'specialization', package: 'cloud-integrations', description: 'ARM templates, Azure services' },
-  { id: 's-kubernetes', name: 'Kubernetes Ops', tier: 'specialization', package: 'platform-ops', description: 'K8s deployment, Helm, operators' },
-  { id: 's-ansible', name: 'Ansible Automation', tier: 'specialization', package: 'platform-ops', description: 'Playbooks, roles, AWX' },
+  { id: 's-kubernetes', name: 'Kubernetes Ops', tier: 'specialization', package: 'platform-ops', description: 'K8s deployment, Helm, operators', prerequisites: ['l-k8s-concepts', 'f-docker'] },
+  { id: 's-ansible', name: 'Ansible Automation', tier: 'specialization', package: 'platform-ops', description: 'Playbooks, roles, AWX', prerequisites: ['f-linux'] },
   { id: 's-slurm', name: 'SLURM/HPC', tier: 'specialization', package: 'hpc-research', description: 'Job scheduling, accounting' },
-  { id: 's-oidc', name: 'OIDC Protocol', tier: 'specialization', package: 'identity-security', description: 'OpenID Connect, token flows' },
+  { id: 's-oidc', name: 'OIDC Protocol', tier: 'specialization', package: 'identity-security', description: 'OpenID Connect, token flows', prerequisites: ['f-security-basics'] },
   { id: 's-monitoring', name: 'Monitoring', tier: 'specialization', package: 'platform-ops', description: 'Prometheus, Grafana, ELK' },
-  { id: 's-gitlab-cicd', name: 'GitLab CI/CD', tier: 'specialization', package: 'platform-ops', description: 'Pipelines, runners, releases' },
+  { id: 's-gitlab-cicd', name: 'GitLab CI/CD', tier: 'specialization', package: 'platform-ops', description: 'Pipelines, runners, releases', prerequisites: ['f-ci-cd'] },
 ]
 
 export const skillLevels: SkillLevel[] = [
@@ -115,4 +115,16 @@ export function getSkillsByTier(tierId: string): Skill[] {
 
 export function getTierInfo(tierId: string): SkillTier | undefined {
   return skillTiers.find(t => t.id === tierId)
+}
+
+export function getSkillById(id: string): Skill | undefined {
+  return skills.find(s => s.id === id)
+}
+
+export function getUnmetPrereqs(skillId: string, getLevel: (id: string) => number): Skill[] {
+  const skill = getSkillById(skillId)
+  if (!skill?.prerequisites) return []
+  return skill.prerequisites
+    .map(pid => getSkillById(pid))
+    .filter((s): s is Skill => s !== undefined && getLevel(s.id) < 1)
 }

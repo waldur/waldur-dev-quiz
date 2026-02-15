@@ -5,7 +5,7 @@ import { useGameStore } from '@/stores/game'
 import { useQuizStore } from '@/stores/quiz'
 import { useSpacedRepetition } from '@/composables/useSpacedRepetition'
 import { useKeyboard } from '@/composables/useKeyboard'
-import { skills, getTierInfo } from '@/data/skills'
+import { skills, getTierInfo, getUnmetPrereqs } from '@/data/skills'
 import { hasQuestions, getAvailableLevels, questions } from '@/data/questions'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import GameButton from '@/components/ui/GameButton.vue'
@@ -25,6 +25,9 @@ const levels = computed(() => getAvailableLevels(props.skillId))
 const currentLevel = computed(() => progress.value.level || 0)
 const maxLevel = computed(() => levels.value.length > 0 ? Math.max(...levels.value) : 0)
 const hasAdvancedLevels = computed(() => levels.value.some(l => l > 5))
+const unmetPrereqs = computed(() =>
+  gameStore.settings.idkfa ? [] : getUnmetPrereqs(props.skillId, (id) => gameStore.getSkillProgress(id).level)
+)
 const nextLevel = computed(() => currentLevel.value + 1)
 const canStartNext = computed(() => currentLevel.value < maxLevel.value && levels.value.includes(nextLevel.value))
 
@@ -110,6 +113,10 @@ useKeyboard({
 
     <div class="skill-detail__body animate-in">
       <p class="skill-detail__desc">{{ skill.description }}</p>
+
+      <div v-if="unmetPrereqs.length > 0" class="skill-detail__prereq-banner">
+        Recommended: Complete {{ unmetPrereqs.map(s => s.name).join(', ') }} first
+      </div>
 
       <template v-if="levels.length === 0">
         <div class="skill-detail__empty">
@@ -212,6 +219,16 @@ useKeyboard({
   font-size: var(--font-base);
   color: var(--color-text-muted);
   margin-bottom: var(--space-8);
+}
+
+.skill-detail__prereq-banner {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-sm);
+  color: var(--color-warning);
+  margin-bottom: var(--space-6);
 }
 
 .skill-detail__empty {

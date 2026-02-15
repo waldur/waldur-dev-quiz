@@ -673,7 +673,8 @@ onMounted(() => {
   .menu__character-card {
     padding: var(--space-3) var(--space-4);
     flex-direction: row;
-    gap: var(--space-3);
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
     min-width: 0;
     width: 100%;
     align-items: center;
@@ -700,7 +701,7 @@ onMounted(() => {
 
   .menu__character-progress {
     align-items: flex-start;
-    width: 100%;
+    flex-basis: 100%;
   }
 
   .menu__weapon-row {
@@ -708,6 +709,7 @@ onMounted(() => {
     border-top: none;
     padding-top: 0;
     margin-top: 0;
+    flex-basis: 100%;
   }
 
   .menu__weapon-glow {
