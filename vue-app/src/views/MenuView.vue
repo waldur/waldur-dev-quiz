@@ -125,26 +125,6 @@ onMounted(() => {
         <h1 class="menu__title">WALDUR<br>QUEST</h1>
         <p class="menu__subtitle">Skill Assessment Adventure</p>
 
-        <!-- Stats chips -->
-        <div class="menu__stats">
-          <div class="stat-chip">
-            <span class="stat-chip__value">{{ stats.totalXP.toLocaleString() }}</span>
-            <span class="stat-chip__label">XP</span>
-          </div>
-          <div class="stat-chip">
-            <span class="stat-chip__value">{{ stats.skillsPassed }}/{{ skills.length }}</span>
-            <span class="stat-chip__label">Skills</span>
-          </div>
-          <div class="stat-chip">
-            <span class="stat-chip__value">{{ stats.accuracy }}%</span>
-            <span class="stat-chip__label">Accuracy</span>
-          </div>
-          <div class="stat-chip">
-            <span class="stat-chip__value">{{ stats.achievements }}/{{ ACHIEVEMENTS.length }}</span>
-            <span class="stat-chip__label">Achievements</span>
-          </div>
-        </div>
-
         <!-- Actions -->
         <div class="menu__buttons">
           <GameButton label="Start Quest" shortcut="1" @click="startQuest" />
@@ -190,6 +170,26 @@ onMounted(() => {
           <div class="menu__weapon-glow"></div>
         </div>
         <p class="menu__player">{{ gameStore.playerName }}</p>
+
+        <!-- Stats chips -->
+        <div class="menu__stats">
+          <div class="stat-chip">
+            <span class="stat-chip__value">{{ stats.totalXP.toLocaleString() }}</span>
+            <span class="stat-chip__label">XP</span>
+          </div>
+          <div class="stat-chip">
+            <span class="stat-chip__value">{{ stats.skillsPassed }}/{{ skills.length }}</span>
+            <span class="stat-chip__label">Skills</span>
+          </div>
+          <div class="stat-chip">
+            <span class="stat-chip__value">{{ stats.accuracy }}%</span>
+            <span class="stat-chip__label">Accuracy</span>
+          </div>
+          <div class="stat-chip">
+            <span class="stat-chip__value">{{ stats.achievements }}/{{ ACHIEVEMENTS.length }}</span>
+            <span class="stat-chip__label">Achievements</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -354,7 +354,7 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
-  margin-bottom: var(--space-6);
+  justify-content: center;
 }
 
 .stat-chip {
