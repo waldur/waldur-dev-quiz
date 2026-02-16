@@ -1,20 +1,6 @@
-// Waldur Quest - Question Bank
-// Questions organized by skill ID and difficulty level (1-5)
-// Minimum questions per level: L1-2: 3, L3: 4, L4: 4, L5: 5
-//
-// Question format:
-// {
-//   q: "Question text",
-//   options: ["Option A", "Option B", "Option C", "Option D"],
-//   correct: 0,  // Index of correct answer
-//   explanation: "Optional: Why this answer is correct",  // Shown after answering
-//   learnMore: {  // Optional: Link for further learning
-//     url: "https://...",
-//     text: "📚 Link text"
-//   }
-// }
+import type { Question, QuestionBank } from '@/types/game'
 
-const questions = {
+export const questions: QuestionBank = {
     // ============================================================================
     // LITERACY TIER
     // ============================================================================
@@ -8053,75 +8039,6 @@ const questions = {
         ]
     },
 
-    'l-containers-101': {
-        1: [
-            {
-                q: "What is a container in software development?",
-                options: ["Isolated environment packaging an app with its dependencies", "Physical server dedicated to one application", "Database system for storing application data", "Network device that routes traffic between services"],
-                correct: 0,
-                explanation: "Containers package applications with their dependencies in isolated environments, ensuring consistent behavior across different systems."
-            },
-            {
-                q: "What is Docker used for?",
-                options: ["Managing and installing operating systems", "Storing and querying structured databases", "Writing and compiling programming languages", "Building and running containerized applications"],
-                correct: 3,
-                explanation: "Docker is the most popular container platform, providing tools to build, share, and run containerized applications."
-            },
-            {
-                q: "What is the relationship between a Docker image and container?",
-                options: ["Image is a template, container is a running instance", "Image runs the app, container stores the code", "They are different names for the same thing", "Image is for Linux, container is for Windows"],
-                correct: 0,
-                explanation: "An image is a read-only template with application code and dependencies. Containers are running instances of images."
-            },
-        ],
-        2: [
-            {
-                q: "What information does 'docker ps' display?",
-                options: ["Network configuration and port mappings", "List of currently running containers", "List of all available Docker images", "Docker daemon version and settings"],
-                correct: 1,
-                explanation: "'docker ps' lists running containers. Add '-a' to see all containers including stopped ones."
-            },
-            {
-                q: "What does container immutability mean?",
-                options: ["Containers cannot be stopped once started", "Running containers shouldn't be modified directly", "Containers automatically save their state", "Container images cannot be updated"],
-                correct: 1,
-                explanation: "Immutable containers aren't modified in place. Changes require building a new image and replacing the container."
-            },
-            {
-                q: "Which command displays output from a container?",
-                options: ["docker cat <container> prints file contents", "docker read <container> fetches console", "docker tail <container> streams output", "docker logs <container> shows stdout/stderr"],
-                correct: 3,
-                explanation: "'docker logs' shows stdout/stderr from a container. Add '-f' to follow logs in real-time."
-            },
-        ],
-        3: [
-            {
-                q: "What does a container restart policy control?",
-                options: ["Data persistence when container stops", "Automatic restart behavior after crashes or host reboot", "How container images are updated and replaced", "Network reconnection after connectivity loss"],
-                correct: 1,
-                explanation: "Restart policies (no, always, on-failure, unless-stopped) define automatic container restart behavior after crashes or reboots."
-            },
-            {
-                q: "What's the key difference between containers and virtual machines?",
-                options: ["Containers provide stronger isolation than VMs", "Containers share host OS kernel, VMs include full OS", "VMs are faster to start than containers", "Containers require dedicated hardware, VMs don't"],
-                correct: 1,
-                explanation: "Containers share the host kernel and are lightweight. VMs include full OS, providing stronger isolation but more overhead."
-            },
-            {
-                q: "What is the purpose of a Docker volume?",
-                options: ["Allocated memory for container processes", "Virtual network interface for containers", "CPU cores assigned to the container", "Persistent storage that survives container removal"],
-                correct: 3,
-                explanation: "Volumes persist data outside the container filesystem, surviving container removal. Essential for databases and stateful apps."
-            },
-            {
-                q: "What does 'docker exec -it container bash' accomplish?",
-                options: ["Opens an interactive shell inside a running container", "Builds a new image from a running container", "Gracefully stops the specified container", "Displays detailed container configuration"],
-                correct: 0,
-                explanation: "'exec' runs commands in running containers. '-it' enables interactive terminal mode, 'bash' starts a shell session."
-            },
-        ]
-    },
-
     'l-iac-concepts': {
         1: [
             {
@@ -8187,75 +8104,6 @@ const questions = {
                 options: ["Network latency between data centers", "Memory leaks in running applications", "Scheduled automatic updates to infrastructure", "Manual changes causing systems to differ from code"],
                 correct: 3,
                 explanation: "Drift occurs when manual changes cause actual infrastructure to differ from IaC definitions. IaC tools can detect and correct drift."
-            },
-        ]
-    },
-
-    'l-k8s-concepts': {
-        1: [
-            {
-                q: "What is Kubernetes primarily used for?",
-                options: ["Orchestrating containerized applications across clusters", "Building web user interfaces and components", "Storing structured data in relational tables", "Writing and compiling application source code"],
-                correct: 0,
-                explanation: "Kubernetes (K8s) automates deployment, scaling, and management of containerized applications across clusters of machines."
-            },
-            {
-                q: "What is a Pod in Kubernetes?",
-                options: ["Physical server in the Kubernetes cluster", "Persistent storage volume for application data", "Network device routing traffic between nodes", "Smallest deployable unit containing one or more containers"],
-                correct: 3,
-                explanation: "A Pod is the smallest K8s unit, containing one or more containers that share storage and network, always co-located."
-            },
-            {
-                q: "What is kubectl?",
-                options: ["Web-based dashboard for Kubernetes monitoring", "Automated testing framework for K8s apps", "Command-line tool for managing Kubernetes clusters", "Container runtime that executes containers"],
-                correct: 2,
-                explanation: "kubectl is the CLI for interacting with Kubernetes clusters - deploying apps, inspecting resources, viewing logs."
-            },
-        ],
-        2: [
-            {
-                q: "What's the relationship between Pods and Deployments?",
-                options: ["Deployment manages Pod replicas and updates", "They are different names for same concept", "Pod contains multiple Deployments inside", "Deployment runs inside a single Pod"],
-                correct: 0,
-                explanation: "Deployment manages Pod replicas, handles rolling updates, and ensures desired state. Pods are the actual running instances."
-            },
-            {
-                q: "What does a Kubernetes Service provide?",
-                options: ["Configuration templates for deployments", "Background job processing for batch tasks", "Persistent storage for application data", "Stable network endpoint for accessing Pods"],
-                correct: 3,
-                explanation: "Services provide stable IP/DNS for accessing Pods, load balancing traffic even as Pods are created and destroyed."
-            },
-            {
-                q: "What is a namespace in Kubernetes?",
-                options: ["File system path inside a container", "Unique identifier for container images", "Protocol for inter-pod communication", "Virtual partition for isolating cluster resources"],
-                correct: 3,
-                explanation: "Namespaces partition cluster resources between teams or environments, providing isolation and resource quota boundaries."
-            },
-        ],
-        3: [
-            {
-                q: "What information does 'kubectl get pods' display?",
-                options: ["Cluster node hardware information", "Service endpoint IP addresses", "Deployment configuration YAML files", "List of Pods with their current status"],
-                correct: 3,
-                explanation: "'kubectl get pods' lists Pods in current namespace with status. Add '-A' for all namespaces, '-o wide' for more details."
-            },
-            {
-                q: "What is the purpose of a ReplicaSet?",
-                options: ["Ensures specified number of identical Pods are running", "Defines network traffic rules between Pods", "Provides persistent storage for stateful apps", "Manages user authentication and authorization"],
-                correct: 0,
-                explanation: "ReplicaSet maintains a stable set of replica Pods. Deployments manage ReplicaSets, adding update strategies."
-            },
-            {
-                q: "How do Pods communicate within a Kubernetes cluster?",
-                options: ["Direct communication between Pods is blocked", "Only through Service load balancers", "By routing through external internet", "Via cluster networking where each Pod gets an IP"],
-                correct: 3,
-                explanation: "Kubernetes provides flat networking where all Pods can reach each other by IP. Services add discovery and load balancing."
-            },
-            {
-                q: "What is a ConfigMap used for?",
-                options: ["Storing encrypted secrets and access credentials", "Defining network policies and firewall rules", "Storing non-sensitive config as key-value pairs", "Managing persistent storage volumes on nodes"],
-                correct: 2,
-                explanation: "ConfigMaps store configuration as key-value pairs, injected into Pods as environment variables or mounted files."
             },
         ]
     },
@@ -8748,112 +8596,24 @@ const questions = {
     }
 };
 
-// Get a compound key for a question (used for spaced repetition tracking)
-function getQuestionKey(skillId, level, question) {
-    const skillQuestions = questions[skillId];
-    if (!skillQuestions || !skillQuestions[level]) return null;
-    const index = skillQuestions[level].indexOf(question);
-    return `${skillId}:${level}:${index}`;
+export function getQuestionKey(skillId: string, level: number, question: Question): string | null {
+    const skillQuestions = questions[skillId]
+    if (!skillQuestions || !skillQuestions[level]) return null
+    const index = skillQuestions[level].indexOf(question)
+    return `${skillId}:${level}:${index}`
 }
 
-// Get random questions for a skill and level (with spaced repetition)
-function getQuestionsForSkill(skillId, level, count = 5) {
-    const skillQuestions = questions[skillId];
-    if (!skillQuestions) return [];
-
-    const levelQuestions = skillQuestions[level];
-    if (!levelQuestions || levelQuestions.length === 0) return [];
-
-    // Load question history for spaced repetition
-    let history = {};
-    try {
-        const state = loadState();
-        history = state.questionHistory || {};
-    } catch (e) { /* loadState not available yet, fall back to random */ }
-
-    // Split into weak (more wrong than correct) and neutral
-    const weak = [];
-    const neutral = [];
-    levelQuestions.forEach((q, i) => {
-        const key = `${skillId}:${level}:${i}`;
-        const entry = history[key];
-        if (entry && entry.w > entry.c) {
-            weak.push(q);
-        } else {
-            neutral.push(q);
-        }
-    });
-
-    // Fill quiz: up to 60% weak questions, then neutral
-    const maxWeak = Math.ceil(count * 0.6);
-    const shuffledWeak = [...weak].sort(() => Math.random() - 0.5);
-    const shuffledNeutral = [...neutral].sort(() => Math.random() - 0.5);
-
-    const selected = [];
-    // Add weak questions first (up to 60% of count)
-    selected.push(...shuffledWeak.slice(0, Math.min(maxWeak, shuffledWeak.length)));
-    // Fill remainder with neutral
-    const remaining = count - selected.length;
-    selected.push(...shuffledNeutral.slice(0, Math.min(remaining, shuffledNeutral.length)));
-
-    // If we still need more (not enough neutral), backfill from unused weak
-    if (selected.length < count) {
-        const usedWeak = selected.filter(q => weak.includes(q)).length;
-        selected.push(...shuffledWeak.slice(usedWeak, usedWeak + (count - selected.length)));
-    }
-
-    // Final shuffle so weak questions aren't always first
-    return selected.slice(0, Math.min(count, selected.length)).sort(() => Math.random() - 0.5);
-}
-
-// Get one question for a skill+level using a seed (for cross-skill daily challenge)
-function getOneQuestionForSkill(skillId, level, seed) {
-    const skillQuestions = questions[skillId];
-    if (!skillQuestions) return null;
-
-    const levelQuestions = skillQuestions[level];
-    if (!levelQuestions || levelQuestions.length === 0) return null;
-
-    // Load question history for spaced repetition
-    let history = {};
-    try {
-        const state = loadState();
-        history = state.questionHistory || {};
-    } catch (e) { /* fall back to random */ }
-
-    // Split into weak and neutral
-    const weak = [];
-    const neutral = [];
-    levelQuestions.forEach((q, i) => {
-        const key = `${skillId}:${level}:${i}`;
-        const entry = history[key];
-        if (entry && entry.w > entry.c) {
-            weak.push(q);
-        } else {
-            neutral.push(q);
-        }
-    });
-
-    // 50% chance to pick from weak pool if available
-    const useWeak = weak.length > 0 && seededRandom(seed + 100) < 0.5;
-    const pool = useWeak ? weak : (neutral.length > 0 ? neutral : levelQuestions);
-    const index = Math.floor(seededRandom(seed) * pool.length);
-    return pool[index];
-}
-
-// Get all available levels for a skill (only levels with actual questions)
-function getAvailableLevels(skillId) {
-    const skillQuestions = questions[skillId];
-    if (!skillQuestions) return [];
+export function getAvailableLevels(skillId: string): number[] {
+    const skillQuestions = questions[skillId]
+    if (!skillQuestions) return []
     return Object.keys(skillQuestions)
         .map(Number)
         .filter(level => skillQuestions[level] && skillQuestions[level].length > 0)
-        .sort((a, b) => a - b);
+        .sort((a, b) => a - b)
 }
 
-// Check if skill has questions (at least one level with non-empty questions)
-function hasQuestions(skillId) {
-    const skillQuestions = questions[skillId];
-    if (!skillQuestions) return false;
-    return Object.values(skillQuestions).some(levelQ => levelQ && levelQ.length > 0);
+export function hasQuestions(skillId: string): boolean {
+    const skillQuestions = questions[skillId]
+    if (!skillQuestions) return false
+    return Object.values(skillQuestions).some(levelQ => levelQ && levelQ.length > 0)
 }
