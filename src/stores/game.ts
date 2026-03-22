@@ -31,6 +31,7 @@ const defaultState: GameState = {
     musicEnabled: true,
     idkfa: false,
     gender: 'male',
+    dailyHardMode: false,
   },
 }
 

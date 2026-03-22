@@ -141,7 +141,9 @@ onMounted(() => {
         <p v-if="dailyInfo" class="menu__daily-hint">
           {{ daily.isCompleted.value
             ? `Today: 5 skills across ${tierCount} tiers (completed)`
-            : `Today: 5 skills across ${tierCount} tiers` }}
+            : daily.levelRange.value
+              ? `Today: 5 skills across ${tierCount} tiers (L${daily.levelRange.value.min}–L${daily.levelRange.value.max})`
+              : `Today: 5 skills across ${tierCount} tiers` }}
         </p>
         <p v-if="daily.streak.value > 0" class="menu__streak">
           Daily Streak: {{ daily.streak.value }} day{{ daily.streak.value > 1 ? 's' : '' }}

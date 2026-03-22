@@ -77,6 +77,14 @@ function showFeedback(message: string) {
   }, 3000)
 }
 
+// Hard mode toggle
+function toggleHardMode() {
+  gameStore.state.settings = {
+    ...gameStore.state.settings,
+    dailyHardMode: !gameStore.state.settings.dailyHardMode,
+  }
+}
+
 // Reset
 function handleReset() {
   gameStore.resetProgress()
@@ -179,6 +187,13 @@ useKeyboard({
         </button>
         <button class="action-btn action-btn--gender" @click="toggleGender">
           {{ gender === 'male' ? '♂ Male' : '♀ Female' }}
+        </button>
+        <button
+          class="action-btn"
+          :class="gameStore.settings.dailyHardMode ? 'action-btn--hard-on' : 'action-btn--hard-off'"
+          @click="toggleHardMode"
+        >
+          {{ gameStore.settings.dailyHardMode ? 'Hard Mode ON' : 'Hard Mode' }}
         </button>
         <button class="action-btn action-btn--reset" @click="showResetConfirm = true">
           Reset
@@ -415,6 +430,18 @@ useKeyboard({
   background: var(--color-bg-light);
   color: var(--color-text);
   border: 1px solid var(--color-text-muted);
+}
+
+.action-btn--hard-off {
+  background: var(--color-bg-light);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-text-muted);
+}
+
+.action-btn--hard-on {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid #ef4444;
 }
 
 .action-btn--reset {

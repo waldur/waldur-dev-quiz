@@ -78,6 +78,7 @@ export interface GameSettings {
   musicEnabled: boolean
   idkfa: boolean
   gender: 'male' | 'female'
+  dailyHardMode: boolean
 }
 
 export interface GameState {
