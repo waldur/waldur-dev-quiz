@@ -70,7 +70,7 @@ export const skills: Skill[] = [
   { id: 'c-quotas', name: 'Quota Management', tier: 'core', category: 'backend', description: 'Resource limits, enforcement' },
   { id: 'c-notifications', name: 'Notifications System', tier: 'core', category: 'backend', description: 'Events, webhooks, email' },
   { id: 'c-celery', name: 'Celery/Task Queue', tier: 'core', category: 'backend', description: 'Async tasks, scheduling' },
-  { id: 'c-api-design', name: 'API v3 Design', tier: 'core', category: 'backend', description: 'Versioning, migration', prerequisites: ['f-api-principles'] },
+  { id: 'c-api-design', name: 'API & SDK Contract', tier: 'core', category: 'backend', description: 'OpenAPI schema, generated SDKs, evolution', prerequisites: ['f-api-principles'] },
   { id: 'c-multi-tenant', name: 'Multi-tenancy', tier: 'core', category: 'backend', description: 'Org hierarchy, isolation' },
   { id: 'c-reporting', name: 'Reporting & Analytics', tier: 'core', category: 'backend', description: 'Usage reports, dashboards' },
   { id: 'c-waldur-ui', name: 'Waldur UI Framework', tier: 'core', category: 'frontend', description: 'Component library, Redux', prerequisites: ['l-react'] },
@@ -78,6 +78,10 @@ export const skills: Skill[] = [
   { id: 'c-waldur-tables', name: 'Data Tables', tier: 'core', category: 'frontend', description: 'Pagination, filtering, export' },
   { id: 'c-waldur-modals', name: 'Modal & Dialog System', tier: 'core', category: 'frontend', description: 'Modal patterns, wizards' },
   { id: 'c-site-agent', name: 'Site Agent Framework', tier: 'core', category: 'infra', description: 'Agent protocol, plugins' },
+  { id: 'c-events', name: 'Events & Pub/Sub', tier: 'core', category: 'backend', description: 'Event consumers, bindings, STOMP delivery' },
+  { id: 'c-identity', name: 'Identity & Tokens', tier: 'core', category: 'backend', description: 'PATs, OIDC, SAML, SCIM provisioning', prerequisites: ['f-security-basics'] },
+  { id: 'c-ai-assistant', name: 'AI Assistant', tier: 'core', category: 'backend', description: 'LLM chat module, tools, guardrails', prerequisites: ['f-ai-prompting'] },
+  { id: 'c-proposals', name: 'Calls & Proposals', tier: 'core', category: 'backend', description: 'Calls, rounds, reviews, workflow steps', prerequisites: ['c-marketplace'] },
   // SPECIALIZATION TIER (8 skills)
   { id: 's-openstack', name: 'OpenStack', tier: 'specialization', package: 'cloud-integrations', description: 'Nova, Neutron, Cinder, Keystone' },
   { id: 's-azure', name: 'Azure Integration', tier: 'specialization', package: 'cloud-integrations', description: 'ARM templates, Azure services' },
@@ -87,6 +91,8 @@ export const skills: Skill[] = [
   { id: 's-oidc', name: 'OIDC Protocol', tier: 'specialization', package: 'identity-security', description: 'OpenID Connect, token flows', prerequisites: ['f-security-basics'] },
   { id: 's-monitoring', name: 'Monitoring', tier: 'specialization', package: 'platform-ops', description: 'Prometheus, Grafana, ELK' },
   { id: 's-gitlab-cicd', name: 'GitLab CI/CD', tier: 'specialization', package: 'platform-ops', description: 'Pipelines, runners, releases', prerequisites: ['f-ci-cd'] },
+  { id: 's-openportal', name: 'OpenPortal', tier: 'specialization', package: 'hpc-research', description: 'P2P agent protocol for federated HPC', prerequisites: ['s-slurm'] },
+  { id: 's-e2e-testing', name: 'E2E Testing', tier: 'specialization', package: 'platform-ops', description: 'Playwright suites, emulators, test stack', prerequisites: ['f-testing'] },
 ]
 
 export const skillLevels: SkillLevel[] = [

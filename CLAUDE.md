@@ -97,6 +97,9 @@ GitHub Actions automatically builds and deploys to GitHub Pages on push to `main
   - `learnMore`: Object with `url` and `text` for a tutorial link
 - Helper functions: `getQuestionsForSkill()`, `getAvailableLevels()`, `hasQuestions()`
 - Minimum questions per level: L1-2: 3, L3-4: 4, L5: 5, L6-7: 6
+- ~1520 questions across 70 skills; every skill has levels 1-5 populated
+- `QuizView` Fisher-Yates shuffles the options before display, so the stored `correct`
+  index never leaks the answer — vary it anyway so the raw data stays readable
 
 **Skill Levels** (`src/data/skills.ts`):
 - Level 1: Aware (blue) - 100 XP
@@ -108,10 +111,11 @@ GitHub Actions automatically builds and deploys to GitHub Pages on push to `main
 - Level 7: Grandmaster (teal) - 2800 XP ⭐ Advanced
 
 **Advanced Levels (6-7):**
-- Available only for selected foundation skills and all specialization skills
+- Available for selected foundation skills and the eight original specialization skills (14 skills, all populated)
 - Visual indicators: Star badge on skills with advanced levels in skill tree
 - Pink/teal button colors for level 6-7 in skill detail
 - Topics cover latest features and advanced concepts (2025-2026 documentation)
+- `getAvailableLevels()` filters out empty level arrays, so a declared-but-unpopulated level is hidden rather than broken
 
 **State** (`src/stores/game.ts`):
 - Stored in localStorage under key `waldur-quest`
@@ -148,7 +152,8 @@ Add to `src/data/questions.ts` under the appropriate skill ID and level:
 
 **Skills with Advanced Levels (6-7):**
 - Foundation: f-docker, f-git, f-ci-cd, f-linux, f-sql, f-testing
-- Specialization: All 8 skills (s-kubernetes, s-ansible, s-openstack, s-azure, s-slurm, s-oidc, s-monitoring, s-gitlab-cicd)
+- Specialization: s-kubernetes, s-ansible, s-openstack, s-azure, s-slurm, s-oidc, s-monitoring, s-gitlab-cicd
+- Not yet: s-openportal and s-e2e-testing stop at level 5
 
 ### Question Writing Rules
 
@@ -161,9 +166,17 @@ Add to `src/data/questions.ts` under the appropriate skill ID and level:
 **Other guidelines:**
 - `explanation` and `learnMore` are optional but highly recommended for learning
 - Use validated, stable URLs (official docs preferred over blog posts)
+- Waldur docs are versioned: `https://docs.waldur.com/latest/<path>/` — an unversioned path 404s
 - Higher levels should have harder questions
 - Each quiz pulls 5 random questions from the level
 - Vary which position (0-3) the correct answer is in
+
+**Keeping Waldur content accurate:**
+Questions about Waldur itself go stale as the platform moves. When revisiting, check
+the claims against the actual repositories rather than memory — the frontend stack
+(react-final-form, TanStack React Query, Vite, Vitest), the auth model (Personal
+Access Tokens, OIDC, SCIM), the event pub/sub system and the site agent's plugin set
+have all changed since the questions were first written.
 
 ## Adding New Skills
 
