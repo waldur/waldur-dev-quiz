@@ -2,12 +2,11 @@ import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
 import type { GameState, SkillProgress, QuestionHistoryEntry, DailyBonusInfo, PlayerStats } from '@/types/game'
 import { skills } from '@/data/skills'
-import { hasQuestions } from '@/data/questions'
 
 const STORAGE_KEY = 'waldur-quest'
 
 function generatePlayerId(): string {
-  return 'player_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
+  return 'player_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11)
 }
 
 const defaultState: GameState = {
@@ -35,12 +34,41 @@ const defaultState: GameState = {
   },
 }
 
+// A save is anything that looks like it came from this game: an object whose known
+// fields have the right shape. Unknown extra keys are dropped by mergeState.
+function isValidState(value: unknown): value is Partial<GameState> {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false
+  const s = value as Record<string, unknown>
+  const isPlainObject = (v: unknown) => typeof v === 'object' && v !== null && !Array.isArray(v)
+  if (s.skillProgress !== undefined && !isPlainObject(s.skillProgress)) return false
+  if (s.settings !== undefined && !isPlainObject(s.settings)) return false
+  if (s.achievements !== undefined && !Array.isArray(s.achievements)) return false
+  if (s.totalXP !== undefined && typeof s.totalXP !== 'number') return false
+  if (s.playerName !== undefined && typeof s.playerName !== 'string') return false
+  return true
+}
+
+// Merge a saved state over the defaults. Nested objects are merged key by key so
+// that settings added after a save was written still get their default value.
+function mergeState(saved: Partial<GameState>): GameState {
+  return {
+    ...defaultState,
+    ...saved,
+    playerId: saved.playerId || generatePlayerId(),
+    settings: { ...defaultState.settings, ...(saved.settings || {}) },
+    dailyChallenge: { ...defaultState.dailyChallenge, ...(saved.dailyChallenge || {}) },
+    skillProgress: saved.skillProgress || {},
+    questionHistory: saved.questionHistory || {},
+    achievementTimestamps: saved.achievementTimestamps || {},
+    achievements: Array.isArray(saved.achievements) ? saved.achievements : [],
+  }
+}
+
 function loadFromStorage(): GameState {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved) {
-      const state = JSON.parse(saved)
-      return { ...defaultState, ...state }
+      return mergeState(JSON.parse(saved))
     }
   } catch (e) {
     console.error('Failed to load state:', e)
@@ -183,8 +211,11 @@ export const useGameStore = defineStore('game', () => {
       if (skillId.startsWith('s-') && data.level >= 4) specializationExpert++
     })
 
-    const literacyPercent = (literacyProficient / 11) * 100
-    const foundationPercent = (foundationProficient / 24) * 100
+    // Denominators come from the skill list so adding a skill can't skew the profile
+    const literacyTotal = skills.filter(s => s.tier === 'literacy').length
+    const foundationTotal = skills.filter(s => s.tier === 'foundation').length
+    const literacyPercent = literacyTotal > 0 ? (literacyProficient / literacyTotal) * 100 : 0
+    const foundationPercent = foundationTotal > 0 ? (foundationProficient / foundationTotal) * 100 : 0
 
     let profile = 'dagger'
     if (literacyPercent >= 80 && foundationPercent >= 50 && specializationExpert >= 3) {
@@ -245,13 +276,14 @@ export const useGameStore = defineStore('game', () => {
   }
 
   // Cross-skill results
+  // The daily challenge asks a single question per skill, which is not enough evidence
+  // to promote a skill level — that stays with the 5-question quizzes. Correct answers
+  // award skill XP instead.
   function applyCrossSkillResults(perQuestionResults: Array<{ wasCorrect: boolean; skillId: string; level: number }>, xpGained: number): void {
     perQuestionResults.forEach(r => {
       const current = state.value.skillProgress[r.skillId] || { level: 0, xp: 0, attempts: 0, passed: false }
       if (r.wasCorrect) {
         current.xp += 20
-        current.level = Math.max(current.level, r.level)
-        current.passed = true
       }
       state.value.skillProgress[r.skillId] = current
     })
@@ -271,7 +303,11 @@ export const useGameStore = defineStore('game', () => {
   function importState(jsonString: string): boolean {
     try {
       const imported = JSON.parse(jsonString)
-      state.value = { ...defaultState, ...imported }
+      if (!isValidState(imported)) {
+        console.error('Failed to import state: unrecognised save format')
+        return false
+      }
+      state.value = mergeState(imported)
       return true
     } catch (e) {
       console.error('Failed to import state:', e)

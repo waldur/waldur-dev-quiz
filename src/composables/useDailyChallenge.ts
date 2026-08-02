@@ -97,10 +97,9 @@ export function useDailyChallenge() {
       if (picks.length >= 5) break
       const tierSkills = byTier[tierId]
       if (!tierSkills) continue
-      const sorted = sortByWeakness(tierSkills, seed + seedOffset)
-      const skillIdx = Math.floor(seededRandom(seed + seedOffset++) * sorted.length)
-      // Bias: 70% chance to pick from weaker half already handled in sort
-      const skill = sorted[0]! // Take the first (weakest-biased) skill
+      const sorted = sortByWeakness(tierSkills, seed + seedOffset++)
+      // Bias toward the weaker half is already applied by sortByWeakness
+      const skill = sorted[0]!
       seedOffset++
       const level = pickLevel(skill.id, seed + seedOffset++)
       picks.push({ skillId: skill.id, skill, level })
@@ -129,10 +128,14 @@ export function useDailyChallenge() {
     const today = new Date().toISOString().split('T')[0] ?? ''
     const seed = dateSeed(today)
 
-    return daily.skills.map((entry, i) => {
+    const entries: CrossSkillEntry[] = []
+    daily.skills.forEach((entry, i) => {
       const question = getOneQuestionForSkill(entry.skillId, entry.level, seed + 50 + i)
-      return { question: question!, skillId: entry.skillId, skill: entry.skill, level: entry.level }
-    }).filter(d => d.question !== null)
+      if (question) {
+        entries.push({ question, skillId: entry.skillId, skill: entry.skill, level: entry.level })
+      }
+    })
+    return entries
   }
 
   const isCompleted = computed(() => gameStore.isDailyChallengeCompleted())
