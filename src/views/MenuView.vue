@@ -73,10 +73,11 @@ function closeWelcome() {
   gameStore.setOnboardingDone()
 }
 
+// Shortcuts follow the on-screen order, so 1/2/3 read top to bottom
 useKeyboard({
   '1': () => startQuest(),
-  '2': () => openProfile(),
-  '3': () => startDailyChallenge(),
+  '2': () => startDailyChallenge(),
+  '3': () => openProfile(),
   'h': () => { showHelp.value = true },
   '/': () => { showHelp.value = true },
   'escape': () => {
@@ -125,17 +126,18 @@ onMounted(() => {
         <h1 class="menu__title">WALDUR<br>QUEST</h1>
         <p class="menu__subtitle">Skill Assessment Adventure</p>
 
-        <!-- Actions -->
+        <!-- Actions: one primary path, two quiet alternatives -->
         <div class="menu__buttons">
-          <GameButton label="Start Quest" shortcut="1" @click="startQuest" />
-          <GameButton label="My Profile" shortcut="2" variant="ghost" @click="openProfile" />
+          <GameButton label="Start Quest" shortcut="1" size="lg" full-width @click="startQuest" />
           <GameButton
-            :label="daily.isCompleted.value ? 'Daily Challenge  ✓' : 'Daily Challenge'"
-            shortcut="3"
-            :variant="daily.isCompleted.value ? 'ghost' : 'warning'"
+            :label="daily.isCompleted.value ? 'Daily Challenge ✓' : 'Daily Challenge'"
+            shortcut="2"
+            variant="subtle"
+            full-width
             @click="startDailyChallenge"
             :disabled="daily.isCompleted.value"
           />
+          <GameButton label="My Profile" shortcut="3" variant="subtle" full-width @click="openProfile" />
         </div>
 
         <p v-if="dailyInfo" class="menu__daily-hint">
@@ -153,6 +155,7 @@ onMounted(() => {
       <!-- Right: character + weapon visual -->
       <div class="menu__right">
         <div class="menu__character-card">
+          <span class="menu__player-name">{{ gameStore.playerName }}</span>
           <div class="menu__character-face">{{ charEmoji }}</div>
           <div class="menu__character-info">
             <span class="menu__character-name">{{ charStage.name }}</span>
@@ -171,8 +174,6 @@ onMounted(() => {
           </div>
           <div class="menu__weapon-glow"></div>
         </div>
-        <p class="menu__player">{{ gameStore.playerName }}</p>
-
         <!-- Stats chips -->
         <div class="menu__stats">
           <div class="stat-chip">
@@ -337,18 +338,23 @@ onMounted(() => {
 }
 
 .menu__title {
-  font-size: clamp(3rem, 6vw, 5rem);
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 5.5vw, 4.5rem);
   font-weight: 800;
-  color: var(--color-gold);
-  line-height: 1;
-  letter-spacing: 3px;
+  color: var(--xp);
+  line-height: 0.95;
+  letter-spacing: var(--tracking-tight);
   margin-bottom: var(--space-3);
+  text-wrap: balance;
 }
 
 .menu__subtitle {
-  font-size: var(--font-lg);
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-6);
+  font-size: var(--font-md);
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  margin-bottom: var(--space-8);
 }
 
 /* ---- Stats chips ---- */
@@ -362,22 +368,26 @@ onMounted(() => {
 .stat-chip {
   display: flex;
   align-items: baseline;
-  gap: var(--space-1);
-  padding: var(--space-1) var(--space-3);
-  background: var(--color-bg-light);
-  border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--surface-1);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
 }
 
 .stat-chip__value {
   font-size: var(--font-sm);
   font-weight: 700;
-  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
 }
 
 .stat-chip__label {
   font-size: var(--font-xs);
-  color: var(--color-text-muted);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
 }
 
 /* ---- Buttons ---- */
@@ -385,9 +395,16 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: var(--space-2);
-  margin-bottom: var(--space-3);
-  max-width: 260px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  max-width: 340px;
+}
+
+/* Secondary actions align to the primary's left edge rather than centring,
+   so the three form one column the eye can run down. */
+.menu__buttons :deep(.game-button--subtle) {
+  justify-content: flex-start;
+  padding-left: var(--space-4);
 }
 
 .menu__daily-hint {
@@ -523,9 +540,14 @@ onMounted(() => {
   pointer-events: none;
 }
 
-.menu__player {
-  font-size: var(--font-sm);
-  color: var(--color-text-muted);
+.menu__player-name {
+  position: relative;
+  z-index: 1;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
 }
 
 /* ---- Footer ---- */
@@ -668,8 +690,11 @@ onMounted(() => {
     text-align: center;
   }
 
+  /* The wordmark and the primary action lead; the character card follows.
+     (It used to be order: -1, which pushed the brand halfway down the page.) */
   .menu__right {
-    order: -1;
+    order: 1;
+    width: 100%;
   }
 
   .menu__character-card {
@@ -694,7 +719,7 @@ onMounted(() => {
   }
 
   .menu__character-name {
-    font-size: var(--font-base);
+    font-size: var(--font-md);
   }
 
   .menu__character-desc {

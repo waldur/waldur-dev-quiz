@@ -190,7 +190,7 @@ function goHome() {
 .shared-name {
   font-size: var(--font-2xl);
   font-weight: 800;
-  color: #FFD700;
+  color: var(--xp);
   margin: 0 0 var(--space-1);
 }
 
@@ -256,7 +256,7 @@ function goHome() {
 .shared-skill-level {
   font-size: var(--font-sm);
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--brand-text);
 }
 
 .shared-achievements {
@@ -278,7 +278,7 @@ function goHome() {
   justify-content: center;
   background: var(--color-bg);
   border-radius: var(--radius-sm);
-  border: 1px solid #FFD700;
+  border: 1px solid var(--xp);
 }
 
 .shared-actions {

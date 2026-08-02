@@ -42,7 +42,7 @@ defineProps<{
 
 .progress-bar__track {
   width: 100%;
-  background: rgb(40, 40, 70);
+  background: var(--surface-3);
   border-radius: 4px;
   overflow: hidden;
 }

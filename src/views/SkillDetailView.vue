@@ -69,12 +69,14 @@ function isLevelPassed(level: number): boolean {
   return level <= currentLevel.value
 }
 
+// Three states, three colours: cleared (green), the one to play now (brand),
+// locked (flat). Levels 6-7 are the reward tier, so they borrow the XP gold
+// rather than introducing pink and teal into the palette.
 function levelButtonStyle(level: number): Record<string, string> {
-  if (isLevelPassed(level)) return { backgroundColor: 'var(--color-success)' }
-  if (!isLevelUnlocked(level)) return { backgroundColor: 'var(--color-bg-light)', opacity: '0.5' }
-  if (level === 6) return { backgroundColor: 'rgb(236, 72, 153)' }
-  if (level === 7) return { backgroundColor: 'rgb(20, 184, 166)' }
-  return { backgroundColor: 'var(--color-primary)' }
+  if (isLevelPassed(level)) return { backgroundColor: 'var(--success)', color: 'var(--on-success)' }
+  if (!isLevelUnlocked(level)) return { backgroundColor: 'var(--surface-2)', opacity: '0.5' }
+  if (level > 5) return { backgroundColor: 'var(--xp)', color: 'var(--on-xp)' }
+  return { backgroundColor: 'var(--brand)' }
 }
 
 function getQuestionCount(level: number): number {
@@ -128,34 +130,38 @@ useKeyboard({
 
       <template v-else>
         <div class="skill-detail__progress">
-          <h2>Your Progress</h2>
-          <div class="skill-detail__level-display">Level {{ currentLevel }} / {{ maxLevel }}</div>
+          <span class="skill-detail__progress-label">Your progress</span>
+          <span class="skill-detail__level-display">Level {{ currentLevel }}<span class="skill-detail__level-max"> / {{ maxLevel }}</span></span>
         </div>
 
-        <div class="skill-detail__choose">
-          <h3>Choose Level to Attempt:</h3>
-          <p v-if="hasAdvancedLevels" class="skill-detail__advanced-hint">
-            ⭐ Advanced Path Available
-          </p>
-        </div>
+        <h3 class="skill-detail__choose">Choose a level</h3>
 
         <div class="level-buttons">
           <div v-for="level in levels" :key="level" class="level-btn-wrapper">
-            <span v-if="level > 5" class="level-btn__star">⭐</span>
+            <span v-if="level > 5" class="level-btn__star" aria-hidden="true">★</span>
             <button
               class="level-btn"
               :style="levelButtonStyle(level)"
               :disabled="!isLevelUnlocked(level)"
+              :title="`Level ${level} — ${getQuestionCount(level)} questions${isLevelPassed(level) ? ', cleared' : isLevelUnlocked(level) ? '' : ', locked'}`"
               @click="isLevelUnlocked(level) && startLevel(level)"
             >
               {{ level }}
             </button>
-            <span class="level-btn__qcount">{{ getQuestionCount(level) }}q</span>
+            <span class="level-btn__qcount">{{ getQuestionCount(level) }} Q</span>
           </div>
         </div>
 
+        <!-- What the colours mean, rather than leaving it to be inferred -->
+        <ul class="level-legend">
+          <li><span class="level-legend__swatch" style="background: var(--success)"></span>Cleared</li>
+          <li><span class="level-legend__swatch" style="background: var(--brand)"></span>Available</li>
+          <li v-if="hasAdvancedLevels"><span class="level-legend__swatch" style="background: var(--xp)"></span>★ Advanced</li>
+          <li><span class="level-legend__swatch level-legend__swatch--locked"></span>Locked</li>
+        </ul>
+
         <p class="skill-detail__stats">
-          Attempts: {{ progress.attempts || 0 }} | XP Earned: {{ progress.xp || 0 }}
+          {{ progress.attempts || 0 }} attempts · {{ progress.xp || 0 }} XP earned
         </p>
 
         <div class="skill-detail__actions">
@@ -169,7 +175,7 @@ useKeyboard({
           <GameButton
             v-if="canStartNext"
             :label="`Start Level ${nextLevel}`"
-            variant="success"
+            size="lg"
             @click="startNext"
           />
 
@@ -192,23 +198,32 @@ useKeyboard({
 }
 
 .skill-detail__header-content {
-  padding: var(--space-6) var(--space-4);
+  padding: var(--space-5) var(--space-4);
   text-align: center;
 }
 
 .skill-detail__name {
-  font-size: var(--font-3xl);
-  color: var(--color-text);
-  margin-bottom: var(--space-2);
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
 }
 
 .skill-detail__tier {
-  font-size: var(--font-lg);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
 }
 
+/* Centres what is usually a short page instead of leaving the lower half bare */
 .skill-detail__body {
   flex: 1;
-  padding: var(--space-6) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  padding: var(--space-6) var(--space-4) var(--space-12);
   text-align: center;
   max-width: 700px;
   margin: 0 auto;
@@ -216,7 +231,7 @@ useKeyboard({
 }
 
 .skill-detail__desc {
-  font-size: var(--font-base);
+  font-size: var(--font-md);
   color: var(--color-text-muted);
   margin-bottom: var(--space-8);
 }
@@ -250,34 +265,75 @@ useKeyboard({
   color: var(--color-text-muted);
 }
 
+/* The chips below are the real control, so the read-out stays a read-out */
 .skill-detail__progress {
-  margin-bottom: var(--space-4);
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-6);
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  align-self: center;
 }
 
-.skill-detail__progress h2 {
-  font-size: var(--font-xl);
-  color: var(--color-text);
-  margin-bottom: var(--space-2);
+.skill-detail__progress-label {
+  font-size: var(--font-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
 }
 
 .skill-detail__level-display {
-  font-size: var(--font-3xl);
-  color: var(--color-gold);
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--xp);
+}
+
+.skill-detail__level-max {
+  color: var(--text-tertiary);
+  font-weight: 500;
 }
 
 .skill-detail__choose {
+  font-size: var(--font-md);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-secondary);
   margin-bottom: var(--space-4);
 }
 
-.skill-detail__choose h3 {
-  font-size: var(--font-lg);
-  color: var(--color-text);
-  margin-bottom: var(--space-1);
+/* Legend */
+.level-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2) var(--space-4);
+  list-style: none;
+  margin: var(--space-5) 0 var(--space-4);
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
 }
 
-.skill-detail__advanced-hint {
-  font-size: var(--font-sm);
-  color: rgb(236, 72, 153);
+.level-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.level-legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.level-legend__swatch--locked {
+  background: var(--surface-2);
+  border: 1px solid var(--border-default);
 }
 
 /* Level buttons */
@@ -297,6 +353,8 @@ useKeyboard({
 
 .level-btn__star {
   font-size: 12px;
+  color: var(--xp);
+  line-height: 1;
 }
 
 .level-btn {
@@ -326,7 +384,7 @@ useKeyboard({
 }
 
 .skill-detail__stats {
-  font-size: var(--font-base);
+  font-size: var(--font-md);
   color: var(--color-text-muted);
   margin-bottom: var(--space-4);
 }

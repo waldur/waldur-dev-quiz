@@ -179,6 +179,15 @@ function optionClass(displayIndex: number): string {
   return 'option--faded'
 }
 
+// Colour alone shouldn't carry the correct/incorrect signal — the badge swaps
+// its number for a glyph so the state survives a colour-vision difference.
+function optionGlyph(displayIndex: number): string {
+  const cls = optionClass(displayIndex)
+  if (cls === 'option--correct') return '✓'
+  if (cls === 'option--wrong') return '✕'
+  return ''
+}
+
 const nextButtonLabel = computed(() => {
   const idx = quizStore.currentQuestionIndex
   const histLen = quizStore.answersHistory.length
@@ -228,6 +237,8 @@ useKeyboard({
       </div>
     </div>
 
+    <!-- Body: centred in the viewport instead of hugging the header -->
+    <div class="quiz__body">
     <!-- Question dots -->
     <div class="quiz__dots">
       <button
@@ -257,7 +268,7 @@ useKeyboard({
         :disabled="localAnswered && !isReview"
         @click="handleAnswer(i)"
       >
-        <span class="option__badge">{{ i + 1 }}</span>
+        <span class="option__badge">{{ optionGlyph(i) || i + 1 }}</span>
         <span class="option__text">{{ opt.text }}</span>
       </button>
     </div>
@@ -285,6 +296,7 @@ useKeyboard({
     <div v-if="localAnswered" class="quiz__next-area">
       <button class="quiz__next-btn" @click="goNext">{{ nextButtonLabel }}</button>
     </div>
+    </div><!-- /quiz__body -->
 
     <!-- Streak celebration overlay -->
     <div v-if="showCelebration" class="celebration">
@@ -299,9 +311,20 @@ useKeyboard({
 
 <style scoped>
 .quiz {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
+}
+
+/* The question block sits in the optical centre of what's left after the
+   header, so a 5-option question and a 2-line one both feel deliberate. */
+.quiz__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  gap: var(--space-2);
+  padding-block: var(--space-6) var(--space-12);
 }
 
 /* Header */
@@ -353,12 +376,12 @@ useKeyboard({
 }
 
 .quiz__progress-text {
-  font-size: var(--font-base);
+  font-size: var(--font-md);
   color: var(--color-text-muted);
 }
 
 .quiz__score {
-  font-size: var(--font-base);
+  font-size: var(--font-md);
   color: var(--color-gold);
 }
 
@@ -404,10 +427,15 @@ useKeyboard({
 /* Question */
 .quiz__question {
   font-size: var(--font-xl);
-  color: var(--color-text);
+  font-weight: 600;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
   text-align: center;
-  padding: var(--space-3) var(--space-8);
-  line-height: 1.5;
+  max-width: min(920px, 92vw);
+  margin-inline: auto;
+  padding: var(--space-4) var(--space-6) var(--space-2);
+  line-height: var(--leading-snug);
+  text-wrap: balance;
 }
 
 /* Code block */
@@ -429,13 +457,13 @@ useKeyboard({
   white-space: pre-wrap;
 }
 
-/* Options */
+/* Options: a shorter measure keeps the eye (and the pointer) travelling less */
 .quiz__options {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-3) 100px;
-  max-width: 1000px;
+  padding: var(--space-3) var(--space-6);
+  max-width: calc(var(--measure-narrow) + var(--space-6) * 2);
   margin: 0 auto;
   width: 100%;
 }
@@ -443,22 +471,27 @@ useKeyboard({
 .option {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-4);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
-  border: none;
-  background: var(--color-bg-light);
-  color: var(--color-text);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-1);
+  color: var(--text-primary);
   font-family: var(--font-main);
-  font-size: var(--font-base);
+  font-size: var(--font-md);
   cursor: pointer;
-  transition: all 0.15s;
   text-align: left;
-  min-height: 55px;
+  min-height: 56px;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
 }
 
 .option:not(:disabled):hover {
-  background: var(--color-primary);
+  background: var(--surface-2);
+  border-color: var(--brand);
+  transform: translateX(2px);
 }
 
 .option:disabled {
@@ -466,35 +499,47 @@ useKeyboard({
 }
 
 .option--correct {
-  background: var(--color-success) !important;
+  background: var(--success) !important;
+  border-color: var(--success) !important;
+  color: var(--on-success);
+  font-weight: 600;
   opacity: 1;
 }
 
 .option--wrong {
-  background: var(--color-danger) !important;
+  background: var(--danger) !important;
+  border-color: var(--danger) !important;
+  color: var(--on-danger);
+  font-weight: 600;
   opacity: 1;
 }
 
 .option--faded {
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
 .option__badge {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
-  background: var(--color-primary);
+  border-radius: var(--radius-sm);
+  background: var(--brand-tint-strong);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--font-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
   flex-shrink: 0;
-  opacity: 0.8;
 }
 
 .option--correct .option__badge,
 .option--wrong .option__badge {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.22);
+  border-color: rgba(0, 0, 0, 0.2);
+  color: inherit;
+  font-size: var(--font-md);
 }
 
 .option__text {
@@ -517,24 +562,28 @@ useKeyboard({
   color: var(--color-danger);
 }
 
-/* Explanation */
+/* Explanation — shares the options' measure so the column stays coherent */
 .quiz__explanation {
-  margin: var(--space-2) 50px;
-  padding: var(--space-3) var(--space-4);
-  background: rgb(25, 30, 50);
-  border: 1px solid var(--color-primary);
+  width: 100%;
+  max-width: var(--measure-narrow);
+  margin: var(--space-2) auto;
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-left: 3px solid var(--brand);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  animation: fadeIn 0.2s ease;
+  animation: fadeIn var(--dur-base) var(--ease-out);
 }
 
 .quiz__explanation-text {
   flex: 1;
   font-size: var(--font-sm);
-  color: var(--color-text-muted);
-  line-height: 1.5;
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+  text-align: left;
 }
 
 .quiz__learn-more {
@@ -614,7 +663,7 @@ useKeyboard({
   }
 
   .quiz__title {
-    font-size: var(--font-base);
+    font-size: var(--font-md);
   }
 
   .quiz__question {

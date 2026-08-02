@@ -1,5 +1,5 @@
 @import './variables.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400&display=swap');
 
 *,
 *::before,
@@ -13,18 +13,26 @@
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--surface-0);
+  /* Two very soft pools of light stop the page reading as flat black and give
+     the lower half of every view something to sit on. */
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.14), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 50% 110%, rgba(99, 102, 241, 0.07), transparent 70%);
+  background-attachment: fixed;
+  color: var(--text-primary);
   font-family: var(--font-main);
   font-size: var(--font-md);
-  line-height: 1.5;
+  line-height: var(--leading-normal);
   min-height: 100vh;
+  min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 a {
-  color: var(--color-secondary);
+  color: var(--info);
   text-decoration: none;
 }
 
@@ -33,38 +41,108 @@ a:hover {
 }
 
 ::selection {
-  background-color: var(--color-primary);
-  color: var(--color-text);
+  background-color: var(--brand);
+  color: var(--text-on-accent);
+}
+
+/* --------------------------------------------------------------------------
+   Focus. The app advertises keyboard play (1-4, Space/Enter, arrows), so the
+   ring has to be visible on every surface — the browser default is close to
+   invisible against these backgrounds.
+   -------------------------------------------------------------------------- */
+:focus {
+  outline: none;
+}
+
+:focus-visible,
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+  transition: box-shadow var(--dur-fast) var(--ease-out);
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-bg-light);
-  border-radius: 3px;
+  background: var(--surface-3);
+  border-radius: var(--radius-pill);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
+  background: var(--text-tertiary);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-bg-light) var(--color-bg);
+  scrollbar-color: var(--surface-3) transparent;
 }
 
 button {
   font-family: var(--font-main);
 }
 
+/* --------------------------------------------------------------------------
+   Layout primitives. Views were top-packed, leaving the bottom third of the
+   viewport empty; these centre a short view and let a tall one scroll.
+   -------------------------------------------------------------------------- */
+.view-shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.view-shell--with-header {
+  min-height: calc(100dvh - var(--header-h));
+}
+
+/* Centres its content vertically when there is room to spare. */
+.view-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+.container--narrow {
+  max-width: var(--measure-narrow);
+}
+
 /* Utility: entrance animation for view content */
 .animate-in {
-  animation: slideInUp 0.25s ease both;
+  animation: slideInUp var(--dur-slow) var(--ease-out) both;
+}
+
+/* --------------------------------------------------------------------------
+   Respect a reduced-motion preference: keep state changes, drop the movement.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

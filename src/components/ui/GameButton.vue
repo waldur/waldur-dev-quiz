@@ -3,7 +3,7 @@ defineProps<{
   label: string
   shortcut?: string
   color?: string
-  variant?: 'primary' | 'success' | 'warning' | 'danger' | 'ghost' | 'custom'
+  variant?: 'primary' | 'success' | 'warning' | 'danger' | 'ghost' | 'subtle' | 'custom'
   size?: 'sm' | 'md' | 'lg'
   disabled?: boolean
   fullWidth?: boolean
@@ -33,31 +33,37 @@ defineEmits<{
 
 <style scoped>
 .game-button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  border: none;
+  gap: var(--space-3);
+  border: 1px solid transparent;
   border-radius: var(--radius-md);
   font-family: var(--font-main);
   font-weight: 600;
+  letter-spacing: -0.01em;
   cursor: pointer;
-  transition: opacity 0.15s, transform 0.1s;
-  color: var(--color-text);
+  color: var(--text-on-accent);
   white-space: nowrap;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
 }
 
 .game-button:hover:not(:disabled) {
-  opacity: 0.85;
   transform: translateY(-1px);
 }
 
 .game-button:active:not(:disabled) {
   transform: translateY(0);
+  transition-duration: 60ms;
 }
 
 .game-button--disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
@@ -78,7 +84,7 @@ defineEmits<{
 .game-button--lg {
   padding: var(--space-4) var(--space-6);
   font-size: var(--font-lg);
-  min-height: 52px;
+  min-height: 56px;
   min-width: 220px;
 }
 
@@ -86,25 +92,75 @@ defineEmits<{
   width: 100%;
 }
 
-/* Variants */
-.game-button--primary { background: var(--color-primary); }
-.game-button--success { background: var(--color-success); }
-.game-button--warning { background: var(--color-warning); }
-.game-button--danger { background: var(--color-danger); }
+/* ---- Variants -----------------------------------------------------------
+   Amber and green are light fills, so they take dark text — white on amber
+   was failing contrast badly.
+   ------------------------------------------------------------------------ */
+.game-button--primary {
+  background: var(--brand);
+  box-shadow: var(--shadow-2);
+}
+.game-button--primary:hover:not(:disabled) {
+  background: var(--brand-hover);
+  box-shadow: var(--shadow-glow-brand);
+}
+.game-button--primary:active:not(:disabled) { background: var(--brand-press); }
+
+.game-button--success {
+  background: var(--success);
+  color: var(--on-success);
+}
+.game-button--success:hover:not(:disabled) { background: var(--success-hover); }
+
+.game-button--warning {
+  background: var(--xp);
+  color: var(--on-xp);
+}
+.game-button--warning:hover:not(:disabled) { background: var(--xp-hover); }
+
+.game-button--danger { background: var(--danger); }
+.game-button--danger:hover:not(:disabled) { background: var(--danger-hover); }
+
+/* Quiet action that still reads as a button */
 .game-button--ghost {
-  background: var(--color-bg-light);
-  border: 1px solid var(--color-text-muted);
+  background: var(--surface-2);
+  border-color: var(--border-default);
+  color: var(--text-primary);
+}
+.game-button--ghost:hover:not(:disabled) {
+  background: var(--surface-3);
+  border-color: var(--border-strong);
+}
+
+/* Quietest: sits beneath a primary without competing with it */
+.game-button--subtle {
+  background: transparent;
+  border-color: var(--border-default);
+  color: var(--text-secondary);
+}
+.game-button--subtle:hover:not(:disabled) {
+  background: var(--surface-1);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
 }
 
 .game-button__shortcut {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  font-size: var(--font-sm);
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: var(--font-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
   flex-shrink: 0;
+}
+
+.game-button--subtle .game-button__shortcut,
+.game-button--ghost .game-button__shortcut {
+  background: rgba(255, 255, 255, 0.06);
 }
 </style>

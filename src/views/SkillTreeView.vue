@@ -62,7 +62,22 @@ interface SkillGroup {
 
 const tierInfo = computed(() => skillTiers.find(t => t.id === selectedTier.value))
 
+// Searching spans every tier — with 70 skills, hunting through five tabs to
+// find one by name is the slow path.
+const search = ref('')
+
+const searchResults = computed<Skill[]>(() => {
+  const q = search.value.trim().toLowerCase()
+  if (!q) return []
+  return skills.filter(s =>
+    s.name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q)
+  )
+})
+
 const skillGroups = computed<SkillGroup[]>(() => {
+  if (search.value.trim()) {
+    return [{ label: `${searchResults.value.length} matching`, skills: searchResults.value }]
+  }
   const tier = selectedTier.value
   const tierSkills = getSkillsByTier(tier)
   const labels = SKILL_GROUP_LABELS[tier]
@@ -251,8 +266,21 @@ useKeyboard({
     <div class="skill-tree__layout animate-in">
       <!-- Left: Tier tabs + skill grid -->
       <div class="skill-tree__main">
+        <!-- Search -->
+        <div class="skill-search">
+          <span class="skill-search__icon" aria-hidden="true">⌕</span>
+          <input
+            v-model="search"
+            type="search"
+            class="skill-search__input"
+            placeholder="Search all 70 skills…"
+            aria-label="Search skills"
+          />
+          <button v-if="search" class="skill-search__clear" @click="search = ''" aria-label="Clear search">✕</button>
+        </div>
+
         <!-- Tier tabs -->
-        <div class="tier-tabs">
+        <div class="tier-tabs" :class="{ 'tier-tabs--dimmed': !!search.trim() }">
           <button
             v-for="tier in skillTiers"
             :key="tier.id"
@@ -472,12 +500,79 @@ useKeyboard({
   flex-direction: column;
 }
 
+/* Search */
+.skill-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+  margin-bottom: var(--space-3);
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.skill-search:focus-within {
+  border-color: var(--brand);
+}
+
+.skill-search__icon {
+  font-size: var(--font-lg);
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+
+.skill-search__input {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-3) 0;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: var(--font-sm);
+}
+
+.skill-search__input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.skill-search__input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.skill-search__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.skill-search__clear {
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  font-size: var(--font-sm);
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+}
+
+.skill-search__clear:hover {
+  color: var(--text-primary);
+}
+
 /* Tier tabs */
 .tier-tabs {
   display: flex;
   gap: var(--space-2);
   margin-bottom: var(--space-3);
   flex-wrap: wrap;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+/* While searching, the tier tabs no longer describe what's on screen */
+.tier-tabs--dimmed {
+  opacity: 0.4;
 }
 
 .tier-tab {
@@ -517,14 +612,14 @@ useKeyboard({
 }
 
 /* Skills area */
+/* Scrolls when a tier is long, but draws no box of its own: it used to paint a
+   bordered panel down the full viewport, so a short tier looked like an empty
+   container rather than a finished list. */
 .skills-area {
   position: relative;
   flex: 1;
   overflow-y: auto;
-  background: rgb(20, 20, 45);
-  border-radius: var(--radius-md);
-  border: 2px solid var(--color-bg-light);
-  padding: var(--space-4);
+  padding: var(--space-2) 0 var(--space-4);
 }
 
 .skills-area__connectors {
@@ -596,7 +691,7 @@ useKeyboard({
 }
 
 .skill-card--prereq {
-  background: rgb(25, 25, 45);
+  background: var(--surface-1);
   opacity: 0.35;
   border: 1px dashed var(--color-text-muted);
 }
@@ -606,7 +701,7 @@ useKeyboard({
 }
 
 .skill-card--locked {
-  background: rgb(25, 25, 45);
+  background: var(--surface-1);
   opacity: 0.3;
 }
 
@@ -636,7 +731,7 @@ useKeyboard({
 
 .skill-card__bar {
   height: 6px;
-  background: rgb(40, 40, 70);
+  background: var(--surface-3);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -663,20 +758,25 @@ useKeyboard({
   position: absolute;
   top: 3px;
   right: 6px;
-  background: rgb(236, 72, 153);
+  background: var(--xp);
   border-radius: 3px;
   font-size: 10px;
   padding: 1px 4px;
 }
 
 /* T-Shape panel */
+/* Sizes to its content — it used to stretch to the full viewport height and
+   trail off into an empty bordered box. */
 .t-panel {
-  width: 260px;
+  width: 280px;
   flex-shrink: 0;
-  background: rgb(25, 25, 50);
-  border-radius: var(--radius-md);
-  border: 2px solid var(--color-bg-light);
-  padding: var(--space-4);
+  align-self: flex-start;
+  max-height: 100%;
+  background: var(--surface-1);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-2);
+  padding: var(--space-5);
   overflow-y: auto;
 }
 
@@ -697,7 +797,7 @@ useKeyboard({
 
 .t-panel__weapon {
   text-align: center;
-  font-size: var(--font-base);
+  font-size: var(--font-md);
   margin-bottom: var(--space-4);
 }
 
@@ -741,21 +841,29 @@ useKeyboard({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-2);
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
   font-size: var(--font-sm);
-  color: var(--color-gold);
+  font-weight: 600;
+  color: var(--xp);
 }
 
+/* Quiet enough not to compete with the heading it sits beside */
 .t-panel__random-btn {
+  flex-shrink: 0;
   font-size: var(--font-xs);
-  color: var(--color-gold);
-  background: var(--color-bg-light);
-  border: 1px solid var(--color-gold);
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-sm);
-  padding: 2px 8px;
+  padding: 3px 8px;
   cursor: pointer;
   font-family: var(--font-main);
-  transition: all 0.15s;
+  white-space: nowrap;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
 }
 
 .t-panel__random-btn:hover {
@@ -806,7 +914,7 @@ useKeyboard({
 }
 
 .locked-popup__msg {
-  font-size: var(--font-base);
+  font-size: var(--font-md);
   color: var(--color-text-muted);
   margin-bottom: var(--space-4);
   line-height: 1.6;
@@ -835,7 +943,7 @@ useKeyboard({
 }
 
 .prereq-popup__subtitle {
-  font-size: var(--font-base);
+  font-size: var(--font-md);
   color: var(--color-text-muted);
   margin-bottom: var(--space-4);
 }
@@ -870,7 +978,7 @@ useKeyboard({
 
 .prereq-popup__name {
   flex: 1;
-  font-size: var(--font-base);
+  font-size: var(--font-md);
 }
 
 .prereq-popup__level {
@@ -933,7 +1041,7 @@ useKeyboard({
     border-radius: var(--radius-md);
     color: var(--color-text);
     font-family: var(--font-main);
-    font-size: var(--font-base);
+    font-size: var(--font-md);
     cursor: pointer;
   }
 

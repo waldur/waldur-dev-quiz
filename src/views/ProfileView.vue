@@ -174,17 +174,18 @@ useKeyboard({
         </div>
       </div>
 
-      <!-- Bottom: actions row -->
+      <!-- Bottom: actions, grouped by what they do -->
       <div class="actions-row">
+        <button class="action-btn action-btn--achievements" @click="showAchievements = true">
+          Achievements ({{ gameStore.achievements.length }}/{{ ACHIEVEMENTS.length }})
+        </button>
         <button class="action-btn action-btn--share" @click="handleShareProfile">
           Share Profile
         </button>
         <button class="action-btn action-btn--export" @click="handleExportJson">
           Export JSON
         </button>
-        <button class="action-btn action-btn--achievements" @click="showAchievements = true">
-          Achievements ({{ gameStore.achievements.length }}/{{ ACHIEVEMENTS.length }})
-        </button>
+        <span class="actions-row__divider" aria-hidden="true"></span>
         <button class="action-btn action-btn--gender" @click="toggleGender">
           {{ gender === 'male' ? '♂ Male' : '♀ Female' }}
         </button>
@@ -195,6 +196,7 @@ useKeyboard({
         >
           {{ gameStore.settings.dailyHardMode ? 'Hard Mode ON' : 'Hard Mode' }}
         </button>
+        <span class="actions-row__spacer" aria-hidden="true"></span>
         <button class="action-btn action-btn--reset" @click="showResetConfirm = true">
           Reset
         </button>
@@ -203,7 +205,7 @@ useKeyboard({
     </div>
 
     <!-- Achievement overlay -->
-    <OverlayModal v-if="showAchievements" border-color="#FFD700" @close="showAchievements = false">
+    <OverlayModal v-if="showAchievements" border-color="var(--xp)" @close="showAchievements = false">
       <h2 class="overlay-title">Achievements</h2>
       <div class="achievements-grid">
         <div
@@ -237,20 +239,22 @@ useKeyboard({
 
 <style scoped>
 .profile-view {
-  height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .profile-content {
   flex: 1;
   max-width: 900px;
   margin: 0 auto;
-  padding: var(--space-4) var(--space-6);
+  padding: var(--space-6);
   width: 100%;
   display: flex;
   flex-direction: column;
+  /* "safe" centring: centres when there is room, falls back to top-aligned
+     rather than clipping the first rows when there isn't. */
+  justify-content: safe center;
   gap: var(--space-4);
 }
 
@@ -292,13 +296,13 @@ useKeyboard({
 .player-name {
   font-size: var(--font-xl);
   font-weight: 800;
-  color: #FFD700;
+  color: var(--xp);
   margin: 0;
   line-height: 1.2;
 }
 
 .character-stage {
-  font-size: var(--font-base);
+  font-size: var(--font-md);
   font-weight: 600;
   color: var(--color-text);
 }
@@ -375,7 +379,7 @@ useKeyboard({
 }
 
 .section-title {
-  font-size: var(--font-base);
+  font-size: var(--font-md);
   font-weight: 700;
   margin: 0;
   color: var(--color-text);
@@ -390,8 +394,23 @@ useKeyboard({
 /* ---- Actions row ---- */
 .actions-row {
   display: flex;
+  align-items: center;
   gap: var(--space-2);
   flex-wrap: wrap;
+}
+
+/* Separates "do something with my data" from "change a setting" */
+.actions-row__divider {
+  width: 1px;
+  align-self: stretch;
+  margin-inline: var(--space-2);
+  background: var(--border-default);
+}
+
+/* Pushes the destructive action away from everything benign */
+.actions-row__spacer {
+  flex: 1;
+  min-width: var(--space-8);
 }
 
 .action-btn {
@@ -422,8 +441,8 @@ useKeyboard({
 
 .action-btn--achievements {
   background: rgba(255, 215, 0, 0.1);
-  color: #FFD700;
-  border: 1px solid #FFD700;
+  color: var(--xp);
+  border: 1px solid var(--xp);
 }
 
 .action-btn--gender {
@@ -440,8 +459,8 @@ useKeyboard({
 
 .action-btn--hard-on {
   background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border: 1px solid #ef4444;
+  color: var(--danger);
+  border: 1px solid var(--danger);
 }
 
 .action-btn--reset {
@@ -463,7 +482,7 @@ useKeyboard({
 .overlay-title {
   text-align: center;
   font-size: var(--font-xl);
-  color: #FFD700;
+  color: var(--xp);
   margin: 0 0 var(--space-4);
 }
 
@@ -488,7 +507,7 @@ useKeyboard({
 
 .achievement-cell--earned {
   opacity: 1;
-  border-color: #FFD700;
+  border-color: var(--xp);
 }
 
 .achievement-icon {

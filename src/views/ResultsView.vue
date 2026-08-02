@@ -45,7 +45,7 @@ const isCrossSkill = computed(() => quizStore.isCrossSkill)
 const perQuestionResults = computed(() => quizStore.perQuestionResults)
 
 const headerColor = computed(() => {
-  if (perfect.value) return '#FFD700'
+  if (perfect.value) return 'var(--xp)'
   if (passed.value) return '#4CAF50'
   return '#E53935'
 })
@@ -358,7 +358,10 @@ function goToMenu() {
 
 .results-body {
   flex: 1;
-  padding: var(--space-6) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  padding: var(--space-6) var(--space-4) var(--space-12);
   max-width: 900px;
   margin: 0 auto;
   width: 100%;
@@ -392,7 +395,7 @@ function goToMenu() {
 }
 
 .stat-item--bonus {
-  border: 1px solid #FFD700;
+  border: 1px solid var(--xp);
   background: rgba(255, 215, 0, 0.1);
 }
 
@@ -413,7 +416,7 @@ function goToMenu() {
 }
 
 .stat-value--bonus {
-  color: #FFD700;
+  color: var(--xp);
 }
 
 /* Cross-skill breakdown */
@@ -437,7 +440,7 @@ function goToMenu() {
 }
 
 .breakdown-item--correct {
-  background: rgba(76, 175, 80, 0.1);
+  background: var(--success-tint);
 }
 
 .breakdown-item--wrong {
