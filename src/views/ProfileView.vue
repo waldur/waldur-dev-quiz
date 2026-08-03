@@ -13,17 +13,19 @@ import type { Gender } from '@/data/characterFaces'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import OverlayModal from '@/components/ui/OverlayModal.vue'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
+import ExportModal from '@/components/ui/ExportModal.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
 import KeyboardHint from '@/components/layout/KeyboardHint.vue'
 
 const router = useRouter()
 const gameStore = useGameStore()
 const { tShape, currentWeapon } = useTShape()
-const { generateProfileCard, generateShareUrl, copyToClipboard } = useShare()
+const { generateProfileCard, generateShareUrl, generateProfileYaml, profileFileName, copyToClipboard } = useShare()
 
 // UI state
 const showAchievements = ref(false)
 const showResetConfirm = ref(false)
+const yamlExport = ref<{ content: string; filename: string } | null>(null)
 const shareFeedback = ref('')
 const shareFeedbackTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 
@@ -65,6 +67,12 @@ async function handleExportJson() {
   const json = gameStore.exportState()
   const success = await copyToClipboard(json)
   showFeedback(success ? 'JSON copied!' : 'Failed to copy')
+}
+
+// YAML carries the same progress as the JSON save, plus resolved names and the
+// spaced-repetition review queue — it is the format meant to be read by a human.
+function handleExportYaml() {
+  yamlExport.value = { content: generateProfileYaml(), filename: profileFileName() }
 }
 
 function showFeedback(message: string) {
@@ -182,6 +190,9 @@ useKeyboard({
         <button class="action-btn action-btn--share" @click="handleShareProfile">
           Share Profile
         </button>
+        <button class="action-btn action-btn--export" @click="handleExportYaml">
+          Export YAML
+        </button>
         <button class="action-btn action-btn--export" @click="handleExportJson">
           Export JSON
         </button>
@@ -221,6 +232,15 @@ useKeyboard({
         </div>
       </div>
     </OverlayModal>
+
+    <!-- YAML export -->
+    <ExportModal
+      v-if="yamlExport"
+      title="Export Profile as YAML"
+      :content="yamlExport.content"
+      :filename="yamlExport.filename"
+      @close="yamlExport = null"
+    />
 
     <!-- Reset confirm dialog -->
     <ConfirmDialog

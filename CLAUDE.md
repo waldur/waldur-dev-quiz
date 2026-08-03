@@ -76,6 +76,8 @@ GitHub Actions automatically builds and deploys to GitHub Pages on push to `main
 │   │   └── resultImages.ts    # Result screen images
 │   ├── types/
 │   │   └── game.ts            # TypeScript type definitions
+│   ├── utils/
+│   │   └── yaml.ts            # Minimal YAML emitter (no dependency, writer only)
 │   └── styles/
 │       ├── base.css           # Global styles
 │       ├── variables.css      # CSS custom properties
@@ -116,6 +118,16 @@ GitHub Actions automatically builds and deploys to GitHub Pages on push to `main
 - Pink/teal button colors for level 6-7 in skill detail
 - Topics cover latest features and advanced concepts (2025-2026 documentation)
 - `getAvailableLevels()` filters out empty level arrays, so a declared-but-unpopulated level is hidden rather than broken
+
+**Sharing & Export** (`src/composables/useShare.ts`):
+- ASCII profile card and base64 `?profile=` share URL (read by `SharedProfileView`)
+- `generateProfileYaml()` — profile, stats, T-shape, achievements, per-skill levels and
+  the spaced-repetition review queue (questions not yet mastered, resolved back to text)
+- `generateQuizYaml()` — the finished quiz with every question, the chosen answer, the
+  correct answer, explanation and learn-more link; must be called before the next quiz
+  starts, since `quiz.ts` holds answer detail only for the current quiz
+- Both open in `ExportModal` (preview + copy + download `.yaml`); JSON export of the raw
+  save stays for `importState()` round-trips — nothing in the app parses YAML back
 
 **State** (`src/stores/game.ts`):
 - Stored in localStorage under key `waldur-quest`

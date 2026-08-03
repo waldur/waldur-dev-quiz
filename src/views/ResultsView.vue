@@ -6,10 +6,12 @@ import { useGameStore } from '@/stores/game'
 import { useAchievements } from '@/composables/useAchievements'
 import { useTShape } from '@/composables/useTShape'
 import { useSpacedRepetition } from '@/composables/useSpacedRepetition'
+import { useShare } from '@/composables/useShare'
 import { getResultReaction } from '@/data/resultImages'
 import { skills, skillTiers } from '@/data/skills'
 import { getAvailableLevels } from '@/data/questions'
 import GameButton from '@/components/ui/GameButton.vue'
+import ExportModal from '@/components/ui/ExportModal.vue'
 import KeyboardHint from '@/components/layout/KeyboardHint.vue'
 import { getCharacterStage, getNextStage, getProgressToNextStage } from '@/data/characterFaces'
 import type { Gender } from '@/data/characterFaces'
@@ -21,6 +23,7 @@ const gameStore = useGameStore()
 const { checkAchievements } = useAchievements()
 const { tShape } = useTShape()
 const { getQuestionsForSkill } = useSpacedRepetition()
+const { generateQuizYaml, quizFileName } = useShare()
 
 // Results data
 const xpEarned = ref(0)
@@ -29,6 +32,7 @@ const reaction = ref<ResultReaction | null>(null)
 const imageError = ref(false)
 const newLevel = ref(0)
 const prevStageId = ref('')
+const yamlExport = ref<{ content: string; filename: string } | null>(null)
 
 // Derived from quiz store
 const score = computed(() => quizStore.score)
@@ -133,6 +137,14 @@ onMounted(() => {
     streak: streak.value,
   })
 })
+
+// Snapshot of this quiz — the store still holds the answers until the next quiz starts
+function handleExportYaml() {
+  yamlExport.value = {
+    content: generateQuizYaml({ xpEarned: xpEarned.value, dailyBonus: dailyBonus.value }),
+    filename: quizFileName(),
+  }
+}
 
 function handleTryAgain() {
   if (!skillId.value) return
@@ -321,7 +333,22 @@ function goToMenu() {
           @click="goToMenu"
         />
       </div>
+
+      <!-- Secondary: take the answers with you -->
+      <div class="results-export">
+        <button class="export-link" @click="handleExportYaml">
+          Export answers as YAML
+        </button>
+      </div>
     </div>
+
+    <ExportModal
+      v-if="yamlExport"
+      title="Export Quiz Answers as YAML"
+      :content="yamlExport.content"
+      :filename="yamlExport.filename"
+      @close="yamlExport = null"
+    />
 
     <KeyboardHint hints="ESC → Main Menu" />
   </div>
@@ -557,6 +584,35 @@ function goToMenu() {
   flex-direction: column;
   align-items: center;
   gap: var(--space-3);
+}
+
+.results-export {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-4);
+}
+
+.export-link {
+  background: none;
+  border: none;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-main);
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.export-link:hover {
+  color: var(--color-text);
+}
+
+.export-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 @media (max-width: 640px) {

@@ -1,9 +1,29 @@
 import { useGameStore } from '@/stores/game'
-import { skills, weaponProfiles } from '@/data/skills'
+import { useQuizStore } from '@/stores/quiz'
+import { useTShape } from '@/composables/useTShape'
+import { skills, skillLevels, weaponProfiles, getSkillById, getTierInfo } from '@/data/skills'
+import { questions as questionBank } from '@/data/questions'
+import { getCharacterStage } from '@/data/characterFaces'
 import { ACHIEVEMENTS, getAchievementById } from '@/data/achievements'
+import { toYamlDocument, type YamlValue } from '@/utils/yaml'
+import type { DailyBonusInfo } from '@/types/game'
+
+function levelName(level: number): string {
+  return skillLevels.find(l => l.level === level)?.name ?? 'Unranked'
+}
+
+function isoOrNull(ms: number | null | undefined): string | null {
+  return ms ? new Date(ms).toISOString() : null
+}
+
+function slugify(text: string): string {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'player'
+}
 
 export function useShare() {
   const gameStore = useGameStore()
+  const quizStore = useQuizStore()
+  const { tShape } = useTShape()
 
   function generateProfileCard(): string {
     const stats = gameStore.stats
@@ -50,6 +70,196 @@ export function useShare() {
     return `${window.location.origin}${window.location.pathname}?profile=${encoded}`
   }
 
+  // --- YAML export -------------------------------------------------------
+  // YAML is the sharing format: it diffs well, pastes into an issue or a chat
+  // thread readably, and keeps question text legible via block scalars.
+
+  function achievementsYaml(): YamlValue[] {
+    return gameStore.achievements
+      .map(id => {
+        const achievement = getAchievementById(id)
+        if (!achievement) return null
+        return {
+          id: achievement.id,
+          name: achievement.name,
+          icon: achievement.icon,
+          category: achievement.category,
+          earned_at: isoOrNull(gameStore.achievementTimestamps?.[id]),
+        }
+      })
+      .filter(Boolean) as YamlValue[]
+  }
+
+  function skillsYaml(): YamlValue[] {
+    return Object.entries(gameStore.state.skillProgress)
+      .map(([skillId, progress]) => {
+        const skill = getSkillById(skillId)
+        return {
+          id: skillId,
+          name: skill?.name ?? skillId,
+          tier: skill?.tier ?? 'unknown',
+          level: progress.level,
+          level_name: levelName(progress.level),
+          xp: progress.xp,
+          attempts: progress.attempts,
+          passed: progress.passed,
+        }
+      })
+      .sort((a, b) => b.level - a.level || a.name.localeCompare(b.name)) as YamlValue[]
+  }
+
+  // Answers the player has seen but not yet mastered. The store drops a question
+  // once it has been answered right three times in a row, so this is a review
+  // list rather than a full answer log.
+  function reviewQueueYaml(): YamlValue[] {
+    return Object.entries(gameStore.questionHistory || {})
+      .map(([key, entry]) => {
+        const [skillId = '', levelStr = '', indexStr = ''] = key.split(':')
+        const level = Number(levelStr)
+        const index = Number(indexStr)
+        const question = questionBank[skillId]?.[level]?.[index]
+        return {
+          skill_id: skillId,
+          skill: getSkillById(skillId)?.name ?? skillId,
+          level,
+          question: question?.q ?? '(question no longer in the bank)',
+          times_correct: entry.c,
+          times_wrong: entry.w,
+          last_answered: isoOrNull(entry.last),
+        }
+      })
+      .sort((a, b) => b.times_wrong - a.times_wrong || a.skill.localeCompare(b.skill)) as YamlValue[]
+  }
+
+  function generateProfileYaml(): string {
+    const s = gameStore.state
+    const stats = gameStore.stats
+    const profile = weaponProfiles.find(p => p.id === s.currentProfile) ?? weaponProfiles[0]!
+    const t = tShape.value
+    const stage = getCharacterStage(s.totalXP)
+
+    const doc: YamlValue = {
+      format: 'waldur-quest-profile',
+      version: 1,
+      exported_at: new Date().toISOString(),
+      player: {
+        name: s.playerName,
+        stage: stage.name,
+        weapon: { id: profile.id, name: profile.name, icon: profile.icon },
+        last_played: s.lastPlayed,
+      },
+      stats: {
+        total_xp: stats.totalXP,
+        accuracy_percent: stats.accuracy,
+        questions_answered: stats.questionsAnswered,
+        correct_answers: stats.correctAnswers,
+        quizzes_played: stats.gamesPlayed,
+        best_streak: stats.streakBest,
+        skills_started: stats.skillsStarted,
+        skills_passed: stats.skillsPassed,
+        skills_total: skills.length,
+        achievements_earned: stats.achievements,
+        achievements_total: ACHIEVEMENTS.length,
+      },
+      t_shape: {
+        breadth_percent: t.breadthPercent,
+        literacy: `${t.literacyStarted}/${t.literacyTotal}`,
+        foundation: `${t.foundationStarted}/${t.foundationTotal}`,
+        specializations_at_depth: `${t.specExpert}/${t.specTotal}`,
+      },
+      daily_challenge: {
+        streak: gameStore.getDailyChallengeStreak(),
+        last_completed: s.dailyChallenge?.lastCompletedDate ?? null,
+      },
+      achievements: achievementsYaml(),
+      skills: skillsYaml(),
+      review_queue: reviewQueueYaml(),
+    }
+
+    return toYamlDocument(doc, [
+      'Waldur Quest profile export',
+      'review_queue lists questions still in spaced repetition, not every answer given.',
+    ])
+  }
+
+  // The quiz store keeps the full answer detail only until the next quiz starts,
+  // so this is meant to be exported from the results screen.
+  function generateQuizYaml(extra?: { xpEarned?: number; dailyBonus?: DailyBonusInfo | null }): string {
+    const answers = quizStore.questions.map((question, i) => {
+      const history = quizStore.answersHistory[i]
+      const meta = quizStore.crossSkillMeta[i]
+      const skillId = meta?.skillId ?? quizStore.skillId ?? null
+      const skill = skillId ? getSkillById(skillId) : undefined
+
+      return {
+        number: i + 1,
+        skill: skill?.name ?? quizStore.skillName ?? null,
+        skill_id: skillId,
+        level: meta?.level ?? quizStore.level,
+        question: question.q,
+        code: question.code,
+        your_answer: history ? question.options[history.selectedIndex] ?? null : null,
+        correct_answer: question.options[question.correct] ?? null,
+        correct: history?.wasCorrect ?? null,
+        answered: history !== undefined,
+        explanation: question.explanation,
+        learn_more: question.learnMore?.url,
+      }
+    })
+
+    const tier = quizStore.skillTier ? getTierInfo(quizStore.skillTier) : undefined
+
+    const doc: YamlValue = {
+      format: 'waldur-quest-quiz-result',
+      version: 1,
+      exported_at: new Date().toISOString(),
+      player: gameStore.playerName,
+      quiz: {
+        mode: quizStore.isDaily ? 'daily-challenge' : quizStore.isCrossSkill ? 'cross-skill' : 'skill',
+        skill: quizStore.isCrossSkill ? null : quizStore.skillName || null,
+        skill_id: quizStore.isCrossSkill ? null : quizStore.skillId,
+        tier: quizStore.isCrossSkill ? null : tier?.name ?? null,
+        level: quizStore.isCrossSkill ? null : quizStore.level,
+      },
+      result: {
+        score: quizStore.score,
+        total: quizStore.total,
+        passed: quizStore.passed,
+        perfect: quizStore.perfect,
+        final_streak: quizStore.streak,
+        xp_earned: extra?.xpEarned,
+        daily_bonus_xp: extra?.dailyBonus?.totalBonus,
+        daily_streak: extra?.dailyBonus?.streak,
+      },
+      answers,
+    }
+
+    return toYamlDocument(doc, ['Waldur Quest quiz result export'])
+  }
+
+  function profileFileName(): string {
+    const date = new Date().toISOString().slice(0, 10)
+    return `waldur-quest-${slugify(gameStore.playerName)}-${date}.yaml`
+  }
+
+  function quizFileName(): string {
+    const date = new Date().toISOString().slice(0, 10)
+    if (quizStore.isCrossSkill) return `waldur-quest-daily-${date}.yaml`
+    return `waldur-quest-${slugify(quizStore.skillName || 'quiz')}-l${quizStore.level}-${date}.yaml`
+  }
+
+  function downloadText(filename: string, text: string, mimeType = 'application/yaml'): void {
+    const blob = new Blob([text], { type: `${mimeType};charset=utf-8` })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = filename
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    URL.revokeObjectURL(url)
+  }
+
   async function copyToClipboard(text: string): Promise<boolean> {
     try {
       await navigator.clipboard.writeText(text)
@@ -62,6 +272,11 @@ export function useShare() {
   return {
     generateProfileCard,
     generateShareUrl,
+    generateProfileYaml,
+    generateQuizYaml,
+    profileFileName,
+    quizFileName,
+    downloadText,
     copyToClipboard,
   }
 }
