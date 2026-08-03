@@ -9,6 +9,10 @@ export const useQuizStore = defineStore('quiz', () => {
   const skillTier = ref('')
   const level = ref(0)
   const isDaily = ref(false)
+  // A review quiz re-asks questions the player has already missed. It spans several
+  // levels of one skill, so it scores like the daily challenge (XP per correct answer,
+  // no level promotion) rather than like a level attempt.
+  const isReview = ref(false)
   const isCrossSkill = ref(false)
 
   // Quiz state
@@ -48,6 +52,7 @@ export const useQuizStore = defineStore('quiz', () => {
     skillTier?: string
     level?: number
     isDaily?: boolean
+    isReview?: boolean
     isCrossSkill?: boolean
     questions: Question[]
     crossSkillMeta?: Array<{ skillId: string; skill: Skill; level: number }>
@@ -57,6 +62,7 @@ export const useQuizStore = defineStore('quiz', () => {
     skillTier.value = config.skillTier || ''
     level.value = config.level || 0
     isDaily.value = config.isDaily || false
+    isReview.value = config.isReview || false
     isCrossSkill.value = config.isCrossSkill || false
     questions.value = config.questions
     crossSkillMeta.value = config.crossSkillMeta || []
@@ -115,6 +121,7 @@ export const useQuizStore = defineStore('quiz', () => {
     skillTier.value = ''
     level.value = 0
     isDaily.value = false
+    isReview.value = false
     isCrossSkill.value = false
     questions.value = []
     crossSkillMeta.value = []
@@ -135,6 +142,7 @@ export const useQuizStore = defineStore('quiz', () => {
     skillTier,
     level,
     isDaily,
+    isReview,
     isCrossSkill,
     questions,
     crossSkillMeta,

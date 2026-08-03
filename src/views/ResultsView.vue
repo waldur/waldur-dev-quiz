@@ -7,6 +7,7 @@ import { useAchievements } from '@/composables/useAchievements'
 import { useTShape } from '@/composables/useTShape'
 import { useSpacedRepetition } from '@/composables/useSpacedRepetition'
 import { useShare } from '@/composables/useShare'
+import { useStudyPlan } from '@/composables/useStudyPlan'
 import { getResultReaction } from '@/data/resultImages'
 import { skills, skillTiers } from '@/data/skills'
 import { getAvailableLevels } from '@/data/questions'
@@ -14,7 +15,7 @@ import GameButton from '@/components/ui/GameButton.vue'
 import ExportModal from '@/components/ui/ExportModal.vue'
 import KeyboardHint from '@/components/layout/KeyboardHint.vue'
 import { getCharacterStage, getNextStage, getProgressToNextStage } from '@/data/characterFaces'
-import type { Gender } from '@/data/characterFaces'
+import type { AvatarStyle } from '@/types/game'
 import type { ResultReaction, DailyBonusInfo } from '@/types/game'
 
 const router = useRouter()
@@ -24,6 +25,7 @@ const { checkAchievements } = useAchievements()
 const { tShape } = useTShape()
 const { getQuestionsForSkill } = useSpacedRepetition()
 const { generateQuizYaml, quizFileName } = useShare()
+const { readingFor } = useStudyPlan()
 
 // Results data
 const xpEarned = ref(0)
@@ -45,8 +47,17 @@ const skillName = computed(() => quizStore.skillName)
 const skillTier = computed(() => quizStore.skillTier)
 const level = computed(() => quizStore.level)
 const isDaily = computed(() => quizStore.isDaily)
+const isReview = computed(() => quizStore.isReview)
 const isCrossSkill = computed(() => quizStore.isCrossSkill)
 const perQuestionResults = computed(() => quizStore.perQuestionResults)
+
+// The questions just missed, and the reading attached to them. This is the narrower,
+// more immediate version of the profile's study plan: it only ever covers this quiz.
+const missedQuestions = computed(() =>
+  quizStore.questions.filter((_, i) => !quizStore.answersHistory[i]?.wasCorrect),
+)
+
+const missedReading = computed(() => readingFor(missedQuestions.value))
 
 const headerColor = computed(() => {
   if (perfect.value) return 'var(--xp)'
@@ -72,7 +83,7 @@ const currentSkillLevel = computed(() => {
   return gameStore.getSkillProgress(skillId.value).level
 })
 
-const gender = computed(() => (gameStore.settings.gender || 'male') as Gender)
+const gender = computed(() => (gameStore.settings.gender || 'male') as AvatarStyle)
 const charStage = computed(() => getCharacterStage(gameStore.totalXP))
 const charEmoji = computed(() => charStage.value.emoji[gender.value])
 const stageUp = computed(() => prevStageId.value && prevStageId.value !== charStage.value.id)
@@ -180,6 +191,10 @@ function goToSkillTree() {
 function goToMenu() {
   router.push('/')
 }
+
+function goToProfile() {
+  router.push('/profile')
+}
 </script>
 
 <template>
@@ -187,7 +202,10 @@ function goToMenu() {
     <!-- Colored header stripe -->
     <div class="results-header" :style="{ backgroundColor: headerColor }">
       <h1 class="results-title">{{ title }}</h1>
-      <p class="results-subtitle" v-if="!isCrossSkill">
+      <p class="results-subtitle" v-if="isReview">
+        Review — {{ skillName }}
+      </p>
+      <p class="results-subtitle" v-else-if="!isCrossSkill">
         {{ skillName }} — Level {{ level }}
       </p>
       <p class="results-subtitle" v-else>
@@ -218,6 +236,11 @@ function goToMenu() {
           <div v-if="dailyBonus" class="stat-item stat-item--bonus">
             <span class="stat-label">Daily Bonus</span>
             <span class="stat-value stat-value--bonus">+{{ dailyBonus.totalBonus }}</span>
+          </div>
+
+          <div v-if="dailyBonus && dailyBonus.hardBonus > 0" class="stat-item stat-item--bonus">
+            <span class="stat-label">Hard Mode</span>
+            <span class="stat-value stat-value--bonus">+{{ dailyBonus.hardBonus }}</span>
           </div>
 
           <div v-if="dailyBonus && dailyBonus.streak > 1" class="stat-item">
@@ -272,6 +295,23 @@ function goToMenu() {
         </div>
       </div>
 
+      <!-- What the questions you missed point at -->
+      <div v-if="missedQuestions.length > 0" class="results-reading">
+        <h3 class="reading-title">Worth reading</h3>
+        <ul v-if="missedReading.length > 0" class="reading-list">
+          <li v-for="link in missedReading" :key="link.url">
+            <a class="reading-link" :href="link.url" target="_blank" rel="noopener noreferrer">
+              <span class="reading-link__label">{{ link.label }}</span>
+              <span class="reading-link__context">{{ link.fromQuestion }}</span>
+            </a>
+          </li>
+        </ul>
+        <p v-else class="reading-empty">
+          No links on the questions you missed — check the explanations, and your profile
+          tracks them for review.
+        </p>
+      </div>
+
       <!-- Action buttons -->
       <div class="results-actions">
         <!-- Failed: Try Again + Skill Tree -->
@@ -308,6 +348,20 @@ function goToMenu() {
             label="Skill Tree"
             variant="primary"
             @click="goToSkillTree"
+          />
+        </template>
+
+        <!-- Review mode: back to the plan that sent you here -->
+        <template v-else-if="isReview">
+          <GameButton
+            label="Back to Profile"
+            variant="primary"
+            @click="goToProfile"
+          />
+          <GameButton
+            label="Main Menu"
+            variant="ghost"
+            @click="goToMenu"
           />
         </template>
 
@@ -575,6 +629,79 @@ function goToMenu() {
   font-size: var(--font-md);
   color: var(--color-text-muted);
   margin: 0;
+  font-style: italic;
+}
+
+/* What to read after missing something */
+.results-reading {
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.reading-title {
+  margin: 0;
+  font-size: var(--font-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-tertiary);
+}
+
+.reading-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.reading-link {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  border: 1px solid var(--border-subtle);
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+
+.reading-link:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+
+.reading-link:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.reading-link__label {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--info);
+}
+
+.reading-link__context {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reading-empty {
+  margin: 0;
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
   font-style: italic;
 }
 

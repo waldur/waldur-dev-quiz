@@ -1,9 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
-import type { GameState, SkillProgress, QuestionHistoryEntry, DailyBonusInfo, PlayerStats } from '@/types/game'
+import type { GameState, SkillProgress, QuestionHistoryEntry, DailyBonusInfo, PlayerStats, AvatarStyle } from '@/types/game'
 import { skills } from '@/data/skills'
+import { isLegacyQuestionKey } from '@/data/questions'
 
 const STORAGE_KEY = 'waldur-quest'
+
+// Daily challenge bonuses, as a fraction of the XP the quiz itself earned.
+const DAILY_BONUS_RATE = 0.5
+const HARD_MODE_BONUS_RATE = 0.5
 
 function generatePlayerId(): string {
   return 'player_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11)
@@ -48,6 +53,18 @@ function isValidState(value: unknown): value is Partial<GameState> {
   return true
 }
 
+// Saves written before question keys became content-addressed hold `skillId:level:index`
+// keys whose index no longer identifies the question it was recorded against. Keeping
+// them would attribute someone else's wrong answers to the wrong question, so the stale
+// entries are dropped — the review queue rebuilds itself after a few quizzes.
+function dropLegacyQuestionHistory(history: Record<string, QuestionHistoryEntry>): Record<string, QuestionHistoryEntry> {
+  const migrated: Record<string, QuestionHistoryEntry> = {}
+  Object.entries(history).forEach(([key, entry]) => {
+    if (!isLegacyQuestionKey(key)) migrated[key] = entry
+  })
+  return migrated
+}
+
 // Merge a saved state over the defaults. Nested objects are merged key by key so
 // that settings added after a save was written still get their default value.
 function mergeState(saved: Partial<GameState>): GameState {
@@ -58,7 +75,7 @@ function mergeState(saved: Partial<GameState>): GameState {
     settings: { ...defaultState.settings, ...(saved.settings || {}) },
     dailyChallenge: { ...defaultState.dailyChallenge, ...(saved.dailyChallenge || {}) },
     skillProgress: saved.skillProgress || {},
-    questionHistory: saved.questionHistory || {},
+    questionHistory: dropLegacyQuestionHistory(saved.questionHistory || {}),
     achievementTimestamps: saved.achievementTimestamps || {},
     achievements: Array.isArray(saved.achievements) ? saved.achievements : [],
   }
@@ -195,8 +212,9 @@ export const useGameStore = defineStore('game', () => {
     state.value.onboardingDone = true
   }
 
-  function setGender(gender: 'male' | 'female'): void {
-    state.value.settings = { ...state.value.settings, gender }
+  // The stored key stays `gender` for backwards compatibility with existing saves
+  function setAvatarStyle(style: AvatarStyle): void {
+    state.value.settings = { ...state.value.settings, gender: style }
   }
 
   function calculateProfile(): string {
@@ -255,14 +273,19 @@ export const useGameStore = defineStore('game', () => {
     }
     dc.lastCompletedDate = today ?? null
 
-    const dailyBonus = Math.round(baseXP * 0.5)
+    const dailyBonus = Math.round(baseXP * DAILY_BONUS_RATE)
     const streakBonus = Math.min(dc.streak * 10, 50)
-    const totalBonus = dailyBonus + streakBonus
+    // Hard mode raises the question level without touching the scoring formula, so it
+    // earns less XP than an easy daily unless the bonus makes up for it.
+    const hardBonus = state.value.settings.dailyHardMode
+      ? Math.round(baseXP * HARD_MODE_BONUS_RATE)
+      : 0
+    const totalBonus = dailyBonus + streakBonus + hardBonus
 
     state.value.dailyChallenge = dc
     state.value.totalXP += totalBonus
 
-    return { dailyBonus, streakBonus, totalBonus, streak: dc.streak }
+    return { dailyBonus, streakBonus, hardBonus, totalBonus, streak: dc.streak }
   }
 
   function getDailyChallengeStreak(): number {
@@ -337,7 +360,7 @@ export const useGameStore = defineStore('game', () => {
     setPlayerName,
     updateProfile,
     setOnboardingDone,
-    setGender,
+    setAvatarStyle,
     calculateProfile,
     isDailyChallengeCompleted,
     completeDailyChallenge,

@@ -5701,19 +5701,22 @@ export const questions: QuestionBank = {
                 q: "What does Waldur's billing system track?",
                 options: ["Resource usage and costs for customers", "Network bandwidth usage only", "Hardware inventory costs only", "Employee payroll and salaries"],
                 correct: 0,
-                explanation: "Waldur billing tracks resource consumption, calculates costs based on pricing plans, generates invoices for customers/organizations."
+                explanation: "Waldur billing tracks resource consumption, calculates costs based on pricing plans, generates invoices for customers/organizations.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/billing/", text: "📚 Billing & Invoicing" }
             },
             {
                 q: "What's a price estimate in Waldur?",
                 options: ["Final invoice amount", "Projected cost for a resource", "Discount percentage offered", "Price negotiation tool"],
                 correct: 1,
-                explanation: "Price estimates show projected costs before/during resource usage. Helps users understand costs. Updated as usage changes."
+                explanation: "Price estimates show projected costs before/during resource usage. Helps users understand costs. Updated as usage changes.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/billing/", text: "📚 Billing & Invoicing" }
             },
             {
                 q: "What's an invoice in Waldur?",
                 options: ["List of available resources", "User activity report only", "System configuration file", "Bill for resource usage in a period"],
                 correct: 3,
-                explanation: "Invoices summarize charges for a billing period (usually monthly). Include line items per resource, totals, and payment status."
+                explanation: "Invoices summarize charges for a billing period (usually monthly). Include line items per resource, totals, and payment status.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/billing-and-invoicing/", text: "📚 Billing and Invoicing Guide" }
             },
         ],
         2: [
@@ -5721,19 +5724,22 @@ export const questions: QuestionBank = {
                 q: "How does Waldur calculate resource costs?",
                 options: ["Fixed price for everything", "Random pricing each month", "Pricing plans with rates per unit", "Users set their own prices"],
                 correct: 2,
-                explanation: "Pricing plans define rates: per hour, per GB, per unit. Resources tracked against plans. Costs = usage × rate."
+                explanation: "Pricing plans define rates: per hour, per GB, per unit. Resources tracked against plans. Costs = usage × rate.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/billing-and-invoicing/", text: "📚 Billing and Invoicing Guide" }
             },
             {
                 q: "What are pricing components?",
                 options: ["Diagrams that visualize pricing structure", "Members of the team responsible for pricing", "Individual billable aspects of a resource", "Physical hardware components being tracked"],
                 correct: 2,
-                explanation: "Pricing components are individual billable items: CPU hours, storage GB, RAM GB, etc. Each has its own rate and measurement."
+                explanation: "Pricing components are individual billable items: CPU hours, storage GB, RAM GB, etc. Each has its own rate and measurement.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/component-usage/", text: "📚 Component Usage" }
             },
             {
                 q: "What's a billing period in Waldur?",
                 options: ["Time to pay an invoice", "Period of free trial usage", "Billing team work schedule", "Time range for aggregating charges"],
                 correct: 3,
-                explanation: "Billing period is typically monthly. Usage aggregated, invoice generated at period end. Can be customized per customer."
+                explanation: "Billing period is typically monthly. Usage aggregated, invoice generated at period end. Can be customized per customer.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/billing-and-invoicing/", text: "📚 Billing and Invoicing Guide" }
             },
         ],
         3: [
@@ -5741,25 +5747,29 @@ export const questions: QuestionBank = {
                 q: "How does Waldur handle different currencies?",
                 options: ["Only USD is supported as the billing currency", "Automatic currency conversion happens daily", "Currency is not tracked within billing records", "Configurable currency per customer or offering"],
                 correct: 3,
-                explanation: "Waldur supports configurable currencies. Offerings can specify currency. Invoices generated in customer's currency."
+                explanation: "Waldur supports configurable currencies. Offerings can specify currency. Invoices generated in customer's currency.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/billing-and-accounting/", text: "📚 Billing and Accounting" }
             },
             {
                 q: "What's credit management in Waldur?",
                 options: ["User credit score tracking", "Prepaid balance that offsets invoices", "Database credit transactions", "Credit card payment processing"],
                 correct: 1,
-                explanation: "Credits are prepaid amounts applied to invoices. Organizations can have credit balance. Invoices reduced by available credits."
+                explanation: "Credits are prepaid amounts applied to invoices. Organizations can have credit balance. Invoices reduced by available credits.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/credit-management/", text: "📚 Credit Management" }
             },
             {
                 q: "How are usage metrics collected for billing?",
                 options: ["Users manually enter their usage data monthly", "Backend plugins report usage periodically", "Random sampling estimates resource consumption", "Frontend UI polls users for resource stats"],
                 correct: 1,
-                explanation: "Backend plugins (OpenStack, SLURM, etc.) report usage metrics via pull tasks. Stored in database, aggregated for billing."
+                explanation: "Backend plugins (OpenStack, SLURM, etc.) report usage metrics via pull tasks. Stored in database, aggregated for billing.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/component-usage/", text: "📚 Component Usage" }
             },
             {
                 q: "What's a pricing plan in Waldur?",
                 options: ["Set of pricing components for an offering", "Marketing strategy for customer segments", "Roadmap for future price adjustments", "Tiered subscription level for users"],
                 correct: 0,
-                explanation: "Pricing plan defines how an offering is billed: components, rates, billing frequency. Offerings can have multiple plans."
+                explanation: "Pricing plan defines how an offering is billed: components, rates, billing frequency. Offerings can have multiple plans.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/billing/", text: "📚 Billing & Invoicing" }
             },
         ],
         4: [
@@ -5767,25 +5777,29 @@ export const questions: QuestionBank = {
                 q: "How does Waldur integrate with payment systems?",
                 options: ["Only manual bank transfers", "Direct cryptocurrency only", "Payment gateways via plugins", "No payment integration available"],
                 correct: 2,
-                explanation: "Waldur can integrate with payment gateways (Stripe, PayPal) via plugins. Handles payment processing, status updates, refunds."
+                explanation: "Waldur can integrate with payment gateways (Stripe, PayPal) via plugins. Handles payment processing, status updates, refunds.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/billing-and-accounting/", text: "📚 Billing and Accounting" }
             },
             {
                 q: "What's invoice approval workflow?",
                 options: ["Invoices are always approved automatically", "Review and approve invoices before sending", "Invoices never require any approval step", "Users approve the invoices they receive"],
                 correct: 1,
-                explanation: "Invoice approval allows staff to review before sending to customers. Catch errors, adjust if needed. Configurable per organization."
+                explanation: "Invoice approval allows staff to review before sending to customers. Catch errors, adjust if needed. Configurable per organization.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/service-provider-organization/accounting/", text: "📚 Provider Accounting" }
             },
             {
                 q: "How does downtime billing work?",
                 options: ["Charge the full price whatever else happens", "There is no tracking of outages in the platform", "Track outages and credit the customer for them", "Refund the whole invoice automatically each time"],
                 correct: 2,
-                explanation: "Waldur can track resource downtime. Credits or adjustments can be applied based on SLA agreements. Configurable per offering."
+                explanation: "Waldur can track resource downtime. Credits or adjustments can be applied based on SLA agreements. Configurable per offering.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/billing-and-invoicing/", text: "📚 Billing and Invoicing Guide" }
             },
             {
                 q: "What's resource cost allocation?",
                 options: ["Random cost distribution", "Allocating resources based on cost", "Cost of allocating new resources", "Attribute costs to projects/departments"],
                 correct: 3,
-                explanation: "Cost allocation attributes charges to specific projects, departments, or cost centers. Enables chargeback/showback reporting."
+                explanation: "Cost allocation attributes charges to specific projects, departments, or cost centers. Enables chargeback/showback reporting.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/cost-and-usage-policies/", text: "📚 Cost and Usage Policies" }
             },
         ],
         5: [
@@ -5793,43 +5807,50 @@ export const questions: QuestionBank = {
                 q: "How do you implement custom billing logic?",
                 options: ["External billing system only", "Modify core billing code directly", "Custom billing not supported", "Custom handlers/plugins for calculation"],
                 correct: 3,
-                explanation: "Custom billing via plugins: define custom components, calculation methods, reporting. Hook into billing events."
+                explanation: "Custom billing via plugins: define custom components, calculation methods, reporting. Hook into billing events.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/handlers/", text: "📚 Waldur Handlers" }
             },
             {
                 q: "What's metered vs fixed pricing?",
                 options: ["Fixed means unchangeable prices", "Metered: per usage; Fixed: flat rate", "No difference in Waldur", "Metered is more expensive always"],
                 correct: 1,
-                explanation: "Metered pricing charges per actual usage (CPU hours, GB). Fixed pricing charges flat rate regardless of usage. Can combine both."
+                explanation: "Metered pricing charges per actual usage (CPU hours, GB). Fixed pricing charges flat rate regardless of usage. Can combine both.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/billing/", text: "📚 Billing & Invoicing" }
             },
             {
                 q: "How does Waldur handle billing disputes?",
                 options: ["Support tickets, adjustments, credit notes", "Legal action is only option", "Automatic refund on any complaint", "No dispute mechanism exists"],
                 correct: 0,
-                explanation: "Disputes handled via support. Staff can issue adjustments, credit notes. Audit trail maintained. Configurable dispute workflow."
+                explanation: "Disputes handled via support. Staff can issue adjustments, credit notes. Audit trail maintained. Configurable dispute workflow.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/service-provider-organization/accounting/", text: "📚 Provider Accounting" }
             },
             {
                 q: "What reports does Waldur billing generate?",
                 options: ["Only PDF invoices generated", "Usage, cost, invoice, revenue reports", "No billing reports available", "Reports require external tools"],
                 correct: 1,
-                explanation: "Waldur generates: usage reports, cost breakdowns, invoice summaries, revenue analytics. Export to CSV/Excel. API access for custom reports."
+                explanation: "Waldur generates: usage reports, cost breakdowns, invoice summaries, revenue analytics. Export to CSV/Excel. API access for custom reports.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/staff-users/reporting/", text: "📚 Waldur Reporting" }
             },
             {
                 q: "How do you backfill billing data?",
                 options: ["Manually edit database records", "Delete and recreate resources", "Run collection tasks for past periods", "Backfilling is not possible"],
                 correct: 2,
-                explanation: "If usage data missing, run collection tasks for historical periods. Check backend data availability. May need manual adjustments for gaps."
+                explanation: "If usage data missing, run collection tasks for historical periods. Check backend data availability. May need manual adjustments for gaps.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ad-hoc-scripts/", text: "📚 Ad-hoc Scripts" }
             },
             {
                 q: "A funder pays in advance and consumption draws the balance down.",
                 options: ["A quota that blocks orders above the amount", "A manual reconciliation at the end of the year", "Credits, tracked and consumed as usage is recorded", "A discount applied to every future invoice"],
                 correct: 2,
-                explanation: "Credits model a prepaid balance with its own lifecycle and history, drawn down as consumption is billed — distinct from quotas, which bound how much may exist rather than what has been paid for."
+                explanation: "Credits model a prepaid balance with its own lifecycle and history, drawn down as consumption is billed — distinct from quotas, which bound how much may exist rather than what has been paid for.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/credit-management/", text: "📚 Credit Management" }
             },
             {
                 q: "Why gate an order on a purchase order reference?",
                 options: ["Procurement must commit before spending begins", "Purchase orders replace the invoice entirely", "The provider cannot invoice without one technically", "It is the only way to apply a discount to an order"],
                 correct: 0,
-                explanation: "Public sector and enterprise buyers commit funds before consuming them. Orders — including updates that increase cost — can require a purchase order, with renewal handling built around the same record."
+                explanation: "Public sector and enterprise buyers commit funds before consuming them. Orders — including updates that increase cost — can require a purchase order, with renewal handling built around the same record.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/service-provider-organization/order-management/", text: "📚 Order Management" }
             },
         ]
     },
@@ -5840,19 +5861,22 @@ export const questions: QuestionBank = {
                 q: "What are quotas in Waldur?",
                 options: ["Limits on resource usage", "Quota voting system", "Queue management system", "Quality metrics for resources"],
                 correct: 0,
-                explanation: "Quotas limit how much of a resource can be used: CPU cores, RAM, storage, VMs. Prevents overuse, enables fair sharing."
+                explanation: "Quotas limit how much of a resource can be used: CPU cores, RAM, storage, VMs. Prevents overuse, enables fair sharing.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/quotas/", text: "📚 Quotas Concept" }
             },
             {
                 q: "Why are quotas important?",
                 options: ["Quotas exist solely for audit compliance", "Quotas reduce overall system performance", "Prevent resource exhaustion and control costs", "Quotas serve as a cosmetic UI indicator"],
                 correct: 2,
-                explanation: "Quotas prevent single users from exhausting shared resources, control costs, enable capacity planning, ensure fair allocation."
+                explanation: "Quotas prevent single users from exhausting shared resources, control costs, enable capacity planning, ensure fair allocation.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/quotas/", text: "📚 Quotas Concept" }
             },
             {
                 q: "At what level are quotas applied?",
                 options: ["Quotas can't be hierarchical", "Only at global system level", "Only per individual resource", "Customer, project, or user level"],
                 correct: 3,
-                explanation: "Quotas can be set at multiple levels: customer (organization), project, user. Lower levels inherit and are bounded by higher levels."
+                explanation: "Quotas can be set at multiple levels: customer (organization), project, user. Lower levels inherit and are bounded by higher levels.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/quotas/", text: "📚 Quotas (Developer Guide)" }
             },
         ],
         2: [
@@ -5860,19 +5884,22 @@ export const questions: QuestionBank = {
                 q: "What happens when quota is exceeded?",
                 options: ["New resource creation is blocked", "System crashes immediately", "Resources are automatically deleted", "Users are charged extra fees"],
                 correct: 0,
-                explanation: "When quota reached, new resource creation is blocked with error message. Existing resources continue working. User must delete or request increase."
+                explanation: "When quota reached, new resource creation is blocked with error message. Existing resources continue working. User must delete or request increase.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/quotas/", text: "📚 Quotas (Developer Guide)" }
             },
             {
                 q: "How do users request quota increases?",
                 options: ["Email system administrator directly", "Automatic increase on payment", "Quotas cannot be increased ever", "Submit request through Waldur UI/API"],
                 correct: 3,
-                explanation: "Users request quota increases through Waldur. Requests go to approval workflow. Administrators review and approve/reject."
+                explanation: "Users request quota increases through Waldur. Requests go to approval workflow. Administrators review and approve/reject.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/quotas/", text: "📚 Quotas Concept" }
             },
             {
                 q: "What's quota usage tracking?",
                 options: ["Usage tracking is separate feature", "Tracking quota change history", "Manual counting of resources", "Monitoring current usage against limits"],
                 correct: 3,
-                explanation: "Waldur tracks current usage against quotas: how much used vs allowed. Displayed in UI. Alerts when approaching limits."
+                explanation: "Waldur tracks current usage against quotas: how much used vs allowed. Displayed in UI. Alerts when approaching limits.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/component-usage/", text: "📚 Component Usage" }
             },
         ],
         3: [
@@ -5880,25 +5907,29 @@ export const questions: QuestionBank = {
                 q: "How are quotas inherited in hierarchy?",
                 options: ["Children override parent quotas", "No inheritance between levels", "Only leaf nodes have quotas", "Child quotas bounded by parent quotas"],
                 correct: 3,
-                explanation: "Quota inheritance: project quotas bounded by customer quota. Can't exceed parent. Sum of children can't exceed parent."
+                explanation: "Quota inheritance: project quotas bounded by customer quota. Can't exceed parent. Sum of children can't exceed parent.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/quotas/", text: "📚 Quotas (Developer Guide)" }
             },
             {
                 q: "What's a quota scope?",
                 options: ["Entity that quota applies to", "User permission scope only", "Scope of quota enforcement code", "Range of quota values allowed"],
                 correct: 0,
-                explanation: "Quota scope is the entity (customer, project, offering) the quota applies to. Scopes can have different quota types."
+                explanation: "Quota scope is the entity (customer, project, offering) the quota applies to. Scopes can have different quota types.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/quotas/", text: "📚 Quotas (Developer Guide)" }
             },
             {
                 q: "How do you set default quotas?",
                 options: ["Configure defaults in settings or offerings", "Each user defines their own quota defaults", "Defaults are hardcoded in the source code", "Default quotas are set by the message broker"],
                 correct: 0,
-                explanation: "Default quotas set in configuration or per offering. Applied when creating new projects/customers. Can be overridden per entity."
+                explanation: "Default quotas set in configuration or per offering. Applied when creating new projects/customers. Can be overridden per entity.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/quotas/", text: "📚 Quotas (Developer Guide)" }
             },
             {
                 q: "What's quota aggregation?",
                 options: ["Aggregating quota requests", "Statistical quota analysis", "Summing usage across child resources", "Averaging quotas across projects"],
                 correct: 2,
-                explanation: "Quota aggregation sums usage from child entities. Customer quota usage = sum of project usages. Ensures parent limits respected."
+                explanation: "Quota aggregation sums usage from child entities. Customer quota usage = sum of project usages. Ensures parent limits respected.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/quotas/", text: "📚 Quotas (Developer Guide)" }
             },
         ],
         4: [
@@ -5906,25 +5937,29 @@ export const questions: QuestionBank = {
                 q: "How do quotas interact with offerings?",
                 options: ["Offerings ignore quota system", "Quotas are independent of offerings", "One global quota per offering", "Offerings can define quota limits and types"],
                 correct: 3,
-                explanation: "Offerings define which quotas apply: what types, default limits. Ordering checks offering quotas. Provider can set offering-specific limits."
+                explanation: "Offerings define which quotas apply: what types, default limits. Ordering checks offering quotas. Provider can set offering-specific limits.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/offering/", text: "📚 Offerings" }
             },
             {
                 q: "What's quota reservation?",
                 options: ["No reservation concept exists", "Reserving quota for future use", "Temporarily hold quota during provisioning", "Quota for reservation system only"],
                 correct: 2,
-                explanation: "During resource creation, quota is reserved before provisioning completes. If creation fails, reservation released. Prevents race conditions."
+                explanation: "During resource creation, quota is reserved before provisioning completes. If creation fails, reservation released. Prevents race conditions.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/quotas/", text: "📚 Quotas (Developer Guide)" }
             },
             {
                 q: "How do you monitor quota utilization?",
                 options: ["Only through database queries", "Dashboard, reports, alerts for threshold", "No monitoring capabilities exist", "External monitoring required"],
                 correct: 1,
-                explanation: "Waldur provides: quota dashboards, utilization reports, configurable alerts when approaching limits. API for custom monitoring."
+                explanation: "Waldur provides: quota dashboards, utilization reports, configurable alerts when approaching limits. API for custom monitoring.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/cost-and-usage-policies/", text: "📚 Cost and Usage Policies" }
             },
             {
                 q: "What's over-provisioning in quotas?",
                 options: ["Over-counting resource usage", "Always having excess quota", "Quota errors in provisioning", "Allowing more than physical capacity"],
                 correct: 3,
-                explanation: "Over-provisioning allows quotas exceeding physical capacity, assuming not all users use full quota. Risky but enables flexibility."
+                explanation: "Over-provisioning allows quotas exceeding physical capacity, assuming not all users use full quota. Risky but enables flexibility.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/quotas/", text: "📚 Quotas Concept" }
             },
         ],
         5: [
@@ -5932,31 +5967,36 @@ export const questions: QuestionBank = {
                 q: "How do you implement custom quota types?",
                 options: ["Request from Waldur team", "Define in plugin with handlers", "Modify core quota code only", "Custom quotas not supported"],
                 correct: 1,
-                explanation: "Custom quotas defined in plugins: specify quota name, aggregation logic, enforcement points. Register with quota system."
+                explanation: "Custom quotas defined in plugins: specify quota name, aggregation logic, enforcement points. Register with quota system.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/plugins/plugins/", text: "📚 Waldur Plugins" }
             },
             {
                 q: "How do quotas work with scheduling?",
                 options: ["Check quota before scheduling resources", "Quotas only checked monthly", "Scheduler sets quotas automatically", "Scheduling ignores quotas completely"],
                 correct: 0,
-                explanation: "Resource scheduling (SLURM jobs, etc.) checks quotas before allocation. Job rejected if would exceed quota. Enables fair scheduling."
+                explanation: "Resource scheduling (SLURM jobs, etc.) checks quotas before allocation. Job rejected if would exceed quota. Enables fair scheduling.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/operators/slurm-periodic-usage-policies/", text: "📚 SLURM Usage Policies" }
             },
             {
                 q: "What's quota policy management?",
                 options: ["Rules for automatic quota adjustment", "Political quota allocation system", "No policy features exist", "Policy documents about quotas"],
                 correct: 0,
-                explanation: "Quota policies: automatic adjustments based on rules, time-based quotas, automatic cleanup of unused quota allocations."
+                explanation: "Quota policies: automatic adjustments based on rules, time-based quotas, automatic cleanup of unused quota allocations.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/cost-and-usage-policies/", text: "📚 Cost and Usage Policies" }
             },
             {
                 q: "How do you handle quota migration?",
                 options: ["Quotas are fixed permanently", "Migration not supported", "Transfer quota between entities", "Delete and recreate quotas only"],
                 correct: 2,
-                explanation: "Quota migration: when reorganizing (merge projects, move resources), quotas can be transferred. Requires careful planning to avoid gaps."
+                explanation: "Quota migration: when reorganizing (merge projects, move resources), quotas can be transferred. Requires careful planning to avoid gaps.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/quotas/", text: "📚 Quotas (Developer Guide)" }
             },
             {
                 q: "What's burst quota?",
                 options: ["Sudden spike in quota change requests", "Accelerated rate of quota consumption", "Dedicated quota pool for compute clusters", "Temporary quota increase above normal limit"],
                 correct: 3,
-                explanation: "Burst quota allows temporary exceeding normal limits for short periods. Useful for peak usage. Returns to normal after burst period."
+                explanation: "Burst quota allows temporary exceeding normal limits for short periods. Useful for peak usage. Returns to normal after burst period.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/quotas/", text: "📚 Quotas Concept" }
             },
         ]
     },
@@ -6107,19 +6147,22 @@ export const questions: QuestionBank = {
                 q: "What's Celery used for in Waldur?",
                 options: ["Asynchronous background task processing", "Frontend state management layer", "User session handling service", "Database query caching system"],
                 correct: 0,
-                explanation: "Celery handles async background tasks: resource provisioning, sync with backends, sending notifications, generating reports. Non-blocking."
+                explanation: "Celery handles async background tasks: resource provisioning, sync with backends, sending notifications, generating reports. Non-blocking.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/background/", text: "📚 Background Processing" }
             },
             {
                 q: "What's a Celery task?",
                 options: ["Background thread within the main process", "Scheduled item on a user's task list", "Database record representing a queued job", "Function executed asynchronously by workers"],
                 correct: 3,
-                explanation: "Celery task is a Python function decorated with @shared_task. Called asynchronously, executed by worker processes. Returns result or raises exception."
+                explanation: "Celery task is a Python function decorated with @shared_task. Called asynchronously, executed by worker processes. Returns result or raises exception.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/tasks.html", text: "📚 Celery Tasks" }
             },
             {
                 q: "What's a Celery worker?",
                 options: ["Thread inside main application", "Person who manages Celery", "Process that executes tasks from queue", "External API service worker"],
                 correct: 2,
-                explanation: "Worker is separate process that pulls tasks from queue and executes them. Multiple workers can run in parallel. Scalable."
+                explanation: "Worker is separate process that pulls tasks from queue and executes them. Multiple workers can run in parallel. Scalable.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/workers.html", text: "📚 Celery Workers" }
             },
         ],
         2: [
@@ -6127,19 +6170,22 @@ export const questions: QuestionBank = {
                 q: "What's a message broker in Celery?",
                 options: ["Middleware that queues task messages", "Broker for stock trading tasks", "Message formatting service", "Person who brokers task deals"],
                 correct: 0,
-                explanation: "Message broker (Redis, RabbitMQ) queues task messages between app and workers. Waldur typically uses Redis. Handles delivery guarantees."
+                explanation: "Message broker (Redis, RabbitMQ) queues task messages between app and workers. Waldur typically uses Redis. Handles delivery guarantees.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/index.html", text: "📚 Celery Brokers" }
             },
             {
                 q: "What's Celery Beat?",
                 options: ["Scheduler for periodic tasks", "Beat detection in audio tasks", "Performance benchmark tool", "Monitoring heartbeat service"],
                 correct: 0,
-                explanation: "Celery Beat schedules periodic tasks: run every hour, daily at midnight, etc. Separate process. Waldur uses for sync, cleanup, reporting."
+                explanation: "Celery Beat schedules periodic tasks: run every hour, daily at midnight, etc. Separate process. Waldur uses for sync, cleanup, reporting.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html", text: "📚 Celery Periodic Tasks" }
             },
             {
                 q: "How do you define a periodic task?",
                 options: ["Use time.sleep() delays inside the task body", "Periodic task scheduling is not supported", "Configure in CELERY_BEAT_SCHEDULE setting", "Call the task function in an infinite loop"],
                 correct: 2,
-                explanation: "Periodic tasks defined in CELERY_BEAT_SCHEDULE: task name, schedule (crontab or interval), arguments. Beat process executes on schedule."
+                explanation: "Periodic tasks defined in CELERY_BEAT_SCHEDULE: task name, schedule (crontab or interval), arguments. Beat process executes on schedule.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/background/", text: "📚 Background Processing" }
             },
         ],
         3: [
@@ -6147,25 +6193,29 @@ export const questions: QuestionBank = {
                 q: "What's task retry in Celery?",
                 options: ["User manually retrying failed task", "Retry deprecated in Celery", "Only manual retry supported", "Automatic re-execution on failure"],
                 correct: 3,
-                explanation: "Tasks can auto-retry on failure: max_retries, retry delay, exponential backoff. Handle transient errors (network, rate limits)."
+                explanation: "Tasks can auto-retry on failure: max_retries, retry delay, exponential backoff. Handle transient errors (network, rate limits).",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/tasks.html", text: "📚 Celery Tasks: Retrying" }
             },
             {
                 q: "What's a task result backend?",
                 options: ["Backend server running tasks", "Store task results for later retrieval", "Result of backend operations", "Database for task code storage"],
                 correct: 1,
-                explanation: "Result backend (Redis, database) stores task results. Retrieve results later by task ID. Optional - some tasks don't need results stored."
+                explanation: "Result backend (Redis, database) stores task results. Retrieve results later by task ID. Optional - some tasks don't need results stored.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/index.html", text: "📚 Celery Result Backends" }
             },
             {
                 q: "What's task priority in Celery?",
                 options: ["All tasks have same priority", "Priority of Celery over other apps", "Priority set by execution time", "Higher priority tasks processed first"],
                 correct: 3,
-                explanation: "Task priority determines queue order. Higher priority processed first. Waldur uses for urgent vs batch tasks. Requires broker support."
+                explanation: "Task priority determines queue order. Higher priority processed first. Waldur uses for urgent vs batch tasks. Requires broker support.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/routing.html", text: "📚 Celery Routing" }
             },
             {
                 q: "What's a task chain?",
                 options: ["Physical chain securing servers", "Tasks chained to prevent deletion", "Blockchain for task tracking", "Sequence of tasks where output feeds input"],
                 correct: 3,
-                explanation: "Task chain: tasks executed in sequence, each receiving previous result. chain(task1.s(), task2.s()). For dependent operations."
+                explanation: "Task chain: tasks executed in sequence, each receiving previous result. chain(task1.s(), task2.s()). For dependent operations.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/canvas.html", text: "📚 Celery Canvas" }
             },
         ],
         4: [
@@ -6173,25 +6223,29 @@ export const questions: QuestionBank = {
                 q: "What's task idempotency?",
                 options: ["Idempotent tasks have faster execution times", "Same result regardless of execution count", "Each task instance has a globally unique ID", "Multiple tasks sharing identical definitions"],
                 correct: 1,
-                explanation: "Idempotent task: running multiple times has same effect as running once. Important for retries - avoid duplicate side effects."
+                explanation: "Idempotent task: running multiple times has same effect as running once. Important for retries - avoid duplicate side effects.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/tasks-and-executors/", text: "📚 Tasks and Executors" }
             },
             {
                 q: "How do you monitor Celery tasks?",
                 options: ["Flower dashboard, logs, metrics", "Monitoring is automatic", "No monitoring available for Celery", "Only through print statements"],
                 correct: 0,
-                explanation: "Monitor with: Flower web dashboard, task logs, Prometheus metrics, alerting on failure rates. Essential for production."
+                explanation: "Monitor with: Flower web dashboard, task logs, Prometheus metrics, alerting on failure rates. Essential for production.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/monitoring.html", text: "📚 Celery Monitoring" }
             },
             {
                 q: "What's task rate limiting?",
                 options: ["Celery does not support any rate limiting", "Constraining the size of task result payloads", "Frequency of task source code modifications", "Limit how many tasks execute per time period"],
                 correct: 3,
-                explanation: "Rate limiting prevents overwhelming backends: max N tasks per second. Useful for external API calls, resource provisioning."
+                explanation: "Rate limiting prevents overwhelming backends: max N tasks per second. Useful for external API calls, resource provisioning.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/tasks.html", text: "📚 Celery Tasks" }
             },
             {
                 q: "What's a Celery canvas?",
                 options: ["Primitives for composing task workflows", "Celery's display output", "Canvas for drawing task diagrams", "Visual task designer tool"],
                 correct: 0,
-                explanation: "Canvas provides workflow primitives: chain, group (parallel), chord (group + callback), map. Compose complex async workflows."
+                explanation: "Canvas provides workflow primitives: chain, group (parallel), chord (group + callback), map. Compose complex async workflows.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/canvas.html", text: "📚 Celery Canvas" }
             },
         ],
         5: [
@@ -6199,43 +6253,50 @@ export const questions: QuestionBank = {
                 q: "How do you handle long-running tasks?",
                 options: ["Long-running tasks are not supported by Celery", "Extend timeout, chunk work, track progress", "Split the application into many small services", "Increase server memory to handle larger tasks"],
                 correct: 1,
-                explanation: "Long tasks: set appropriate timeout, emit progress updates, chunk large data, consider splitting into sub-tasks. Avoid blocking workers."
+                explanation: "Long tasks: set appropriate timeout, emit progress updates, chunk large data, consider splitting into sub-tasks. Avoid blocking workers.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/tasks-and-executors/", text: "📚 Tasks and Executors" }
             },
             {
                 q: "What's task serialization?",
                 options: ["Running the tasks strictly in serial order", "Converting task arguments for transport", "Writing the task's code out to local disk", "Assigning a serial number to each task"],
                 correct: 1,
-                explanation: "Serialization converts task args to bytes for broker transport. JSON (safe) or pickle (flexible). JSON recommended for security."
+                explanation: "Serialization converts task args to bytes for broker transport. JSON (safe) or pickle (flexible). JSON recommended for security.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/calling.html", text: "📚 Celery Calling Tasks" }
             },
             {
                 q: "How do you scale Celery workers?",
                 options: ["Only one worker allowed ever", "Run multiple workers, use autoscaling", "Scaling not needed for Celery", "Workers scale automatically always"],
                 correct: 1,
-                explanation: "Scale: run multiple workers across machines, use autoscaling based on queue depth. Concurrency setting per worker. Distribute load."
+                explanation: "Scale: run multiple workers across machines, use autoscaling based on queue depth. Concurrency setting per worker. Distribute load.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/workers.html", text: "📚 Celery Workers" }
             },
             {
                 q: "What's task routing?",
                 options: ["Forwarding task results to specific end users", "Network-level routing between task services", "Send specific tasks to designated queue workers", "URL path routing pattern for task endpoints"],
                 correct: 2,
-                explanation: "Routing sends tasks to designated queues: high-priority queue, dedicated queue for heavy tasks. Workers consume from specific queues."
+                explanation: "Routing sends tasks to designated queues: high-priority queue, dedicated queue for heavy tasks. Workers consume from specific queues.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/routing.html", text: "📚 Celery Routing" }
             },
             {
                 q: "How do you debug Celery tasks?",
                 options: ["Rely exclusively on print statement debugging", "Run eager mode, check logs, test synchronously", "Celery tasks cannot be debugged or inspected", "Only debug tasks directly in production servers"],
                 correct: 1,
-                explanation: "Debug: CELERY_TASK_ALWAYS_EAGER for sync execution, detailed logging, test tasks directly, Flower for inspection. Reproduce locally."
+                explanation: "Debug: CELERY_TASK_ALWAYS_EAGER for sync execution, detailed logging, test tasks directly, Flower for inspection. Reproduce locally.",
+                learnMore: { url: "https://docs.celeryq.dev/en/stable/userguide/testing.html", text: "📚 Celery Testing" }
             },
             {
                 q: "Why must a task that provisions a resource be idempotent?",
                 options: ["Idempotent tasks are scheduled at higher priority", "The broker cannot guarantee ordering between tasks", "It can be delivered or retried more than once", "Celery executes every task exactly twice by design"],
                 correct: 2,
-                explanation: "A worker can die after acting but before acknowledging, so the task runs again. Making the transition idempotent — checking state before acting — is what keeps a retry from creating a second resource."
+                explanation: "A worker can die after acting but before acknowledging, so the task runs again. Making the transition idempotent — checking state before acting — is what keeps a retry from creating a second resource.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/tasks-and-executors/", text: "📚 Tasks and Executors" }
             },
             {
                 q: "How would you notice that a periodic task silently stopped running?",
                 options: ["Cron monitoring that alerts on a missed check-in", "A user reporting that data looks out of date", "The worker logs, reviewed on a regular basis", "Nothing: a task that does not run raises no error"],
                 correct: 0,
-                explanation: "A task that never starts produces no error and no log line. Registering scheduled jobs with cron monitoring turns the absence of a run into an alert, which is why Sentry cron definitions live alongside the schedule."
+                explanation: "A task that never starts produces no error and no log line. Registering scheduled jobs with cron monitoring turns the absence of a run into an alert, which is why Sentry cron definitions live alongside the schedule.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/background/", text: "📚 Background Processing" }
             },
         ]
     },
@@ -6374,19 +6435,22 @@ export const questions: QuestionBank = {
                 q: "What's multi-tenancy in Waldur?",
                 options: ["Tenants renting server space", "Multiple organizations share one system", "Single user per system only", "Multiple servers per organization"],
                 correct: 1,
-                explanation: "Multi-tenancy: multiple organizations (tenants) share single Waldur installation. Data isolated between tenants. Efficient resource usage."
+                explanation: "Multi-tenancy: multiple organizations (tenants) share single Waldur installation. Data isolated between tenants. Efficient resource usage.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/platform/", text: "📚 Waldur Platform Concepts" }
             },
             {
                 q: "What's a customer in Waldur?",
                 options: ["Individual user account in the system", "Subscriber with an active payment plan", "Department handling customer service tasks", "Top-level organization or tenant entity"],
                 correct: 3,
-                explanation: "Customer is top-level organization entity. Contains projects, users, resources. Primary tenant boundary. Billing/quotas at customer level."
+                explanation: "Customer is top-level organization entity. Contains projects, users, resources. Primary tenant boundary. Billing/quotas at customer level.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/terminology/glossary/", text: "📚 Waldur Glossary" }
             },
             {
                 q: "How are tenants isolated?",
                 options: ["Separate databases per tenant", "Physical server separation only", "No isolation between tenants", "Data filtering at application level"],
                 correct: 3,
-                explanation: "Waldur uses application-level isolation: queries filtered by customer/project. All tenants share database but can only access their data."
+                explanation: "Waldur uses application-level isolation: queries filtered by customer/project. All tenants share database but can only access their data.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/permissions/", text: "📚 Waldur Permissions" }
             },
         ],
         2: [
@@ -6394,19 +6458,22 @@ export const questions: QuestionBank = {
                 q: "What's the organization hierarchy in Waldur?",
                 options: ["Flat structure no hierarchy", "Customer > Project > Resources", "Resources > Projects > Customer", "User > Customer > Resources"],
                 correct: 1,
-                explanation: "Hierarchy: Customer (organization) contains Projects, Projects contain Resources. Users belong to Customer with project-specific roles."
+                explanation: "Hierarchy: Customer (organization) contains Projects, Projects contain Resources. Users belong to Customer with project-specific roles.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/project/", text: "📚 Projects" }
             },
             {
                 q: "How do users belong to multiple organizations?",
                 options: ["Not supported in Waldur", "Separate accounts per organization", "Users limited to one organization", "User can have roles in multiple customers"],
                 correct: 3,
-                explanation: "Users can have roles in multiple customers. Switch between organizations in UI. Permissions scoped to customer/project context."
+                explanation: "Users can have roles in multiple customers. Switch between organizations in UI. Permissions scoped to customer/project context.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/terminology/roles_and_permissions/", text: "📚 Roles and Permissions" }
             },
             {
                 q: "What's project-level isolation?",
                 options: ["Physical isolation of project files", "Projects on separate servers", "Resources in project isolated from others", "No project isolation exists"],
                 correct: 2,
-                explanation: "Project isolation: resources within project visible to project members. Different projects in same customer are separate. Enables team boundaries."
+                explanation: "Project isolation: resources within project visible to project members. Different projects in same customer are separate. Enables team boundaries.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/project/", text: "📚 Projects" }
             },
         ],
         3: [
@@ -6414,25 +6481,29 @@ export const questions: QuestionBank = {
                 q: "How does Waldur handle shared resources?",
                 options: ["All resources are shared between every user", "Service settings shared, resources per tenant", "Every resource is fully shared across tenants", "Waldur does not have sharing capabilities"],
                 correct: 1,
-                explanation: "Service settings (provider credentials) can be shared across customers. Individual resources belong to specific project. Enables managed services."
+                explanation: "Service settings (provider credentials) can be shared across customers. Individual resources belong to specific project. Enables managed services.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/offering/", text: "📚 Offerings" }
             },
             {
                 q: "What's tenant onboarding?",
                 options: ["Signing a rental agreement for cloud tenants", "Migration of tenants to a new cloud platform", "Process of creating a new customer organization", "Training program for existing tenant users"],
                 correct: 2,
-                explanation: "Onboarding: create customer, configure quotas, assign admin users, set up projects. Can be self-service or admin-driven. API support for automation."
+                explanation: "Onboarding: create customer, configure quotas, assign admin users, set up projects. Can be self-service or admin-driven. API support for automation.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/staff-users/organization_onboarding/", text: "📚 Organization Onboarding" }
             },
             {
                 q: "How are quotas scoped in multi-tenant?",
                 options: ["One global quota is shared across all tenants", "Quotas at customer, project, and offering levels", "Multi-tenant mode has no quota system at all", "Quotas are only available for a single tenant"],
                 correct: 1,
-                explanation: "Quotas scoped hierarchically: customer-level limits, project-level within customer, offering-level per service. Enables resource governance."
+                explanation: "Quotas scoped hierarchically: customer-level limits, project-level within customer, offering-level per service. Enables resource governance.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/quotas/", text: "📚 Quotas (Developer Guide)" }
             },
             {
                 q: "What's tenant customization?",
                 options: ["Customizing tenant buildings", "All tenants identical configuration", "Tenants can't be customized", "Per-customer configuration and branding"],
                 correct: 3,
-                explanation: "Customization: per-customer settings, branding, notification templates, default quotas. Enables managed service flexibility."
+                explanation: "Customization: per-customer settings, branding, notification templates, default quotas. Enables managed service flexibility.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/staff-users/branding/", text: "📚 Waldur Branding" }
             },
         ],
         4: [
@@ -6440,25 +6511,29 @@ export const questions: QuestionBank = {
                 q: "How do you migrate between tenants?",
                 options: ["Delete everything and recreate in new tenant", "Cross-tenant migration is not supported at all", "Move projects and resources between customers", "Export data and import it into the new tenant"],
                 correct: 2,
-                explanation: "Migration moves projects or resources between customers. Requires admin privileges. Updates ownership, preserves resource data."
+                explanation: "Migration moves projects or resources between customers. Requires admin privileges. Updates ownership, preserves resource data.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/resource-projects/", text: "📚 Resource Projects" }
             },
             {
                 q: "What's cross-tenant reporting?",
                 options: ["Aggregated reports across all tenants", "Tenants report on each other", "External reporting tools only", "No cross-tenant data access"],
                 correct: 0,
-                explanation: "Admin can generate reports across all tenants: usage summaries, billing totals, resource counts. Scoped by admin permissions."
+                explanation: "Admin can generate reports across all tenants: usage summaries, billing totals, resource counts. Scoped by admin permissions.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/staff-users/reporting/", text: "📚 Waldur Reporting" }
             },
             {
                 q: "How do service providers work in multi-tenant?",
                 options: ["One provider per customer only", "Providers are same as tenants", "No provider concept exists", "Providers can serve multiple customers"],
                 correct: 3,
-                explanation: "Service providers (offerings) can serve multiple customers. Provider configures offering, customers order from it. Enables marketplace model."
+                explanation: "Service providers (offerings) can serve multiple customers. Provider configures offering, customers order from it. Enables marketplace model.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/service-provider-organization/service-provider-registration/", text: "📚 Service Provider Registration" }
             },
             {
                 q: "What's tenant-aware caching?",
                 options: ["Shared cache across all tenants", "Cache per user not tenant", "Cache keys include tenant identifier", "No caching in multi-tenant"],
                 correct: 2,
-                explanation: "Cache keys include tenant ID to prevent data leakage. Tenant A's cached data never served to Tenant B. Important for security."
+                explanation: "Cache keys include tenant ID to prevent data leakage. Tenant A's cached data never served to Tenant B. Important for security.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/waldur-architecture/", text: "📚 Waldur Django Architecture" }
             },
         ],
         5: [
@@ -6466,43 +6541,50 @@ export const questions: QuestionBank = {
                 q: "How do you implement tenant data isolation?",
                 options: ["No special implementation needed", "Encryption is sufficient", "Separate databases recommended", "Filter all queries by customer/project"],
                 correct: 3,
-                explanation: "Query filtering: all querysets filtered by customer/project based on user context. Views enforce filtering. Test isolation in code reviews."
+                explanation: "Query filtering: all querysets filtered by customer/project based on user context. Views enforce filtering. Test isolation in code reviews.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/permissions/", text: "📚 Waldur Permissions" }
             },
             {
                 q: "What's tenant provisioning automation?",
                 options: ["Automated setup of new tenants", "Manual provisioning only", "Provisioning not needed", "Tenants provision themselves"],
                 correct: 0,
-                explanation: "Automated provisioning: API/scripts create customer, default projects, quotas, admin users. Integrates with external systems (CRM, billing)."
+                explanation: "Automated provisioning: API/scripts create customer, default projects, quotas, admin users. Integrates with external systems (CRM, billing).",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/autoprovisioning/", text: "📚 Autoprovisioning" }
             },
             {
                 q: "How do you handle tenant deletion?",
                 options: ["Transfer to another tenant only", "Cleanup all tenant data and resources", "Deletion not supported", "Just mark as deleted keep data"],
                 correct: 1,
-                explanation: "Tenant deletion: terminate resources, cleanup data, handle billing. Soft delete preserves for recovery. Hard delete removes completely. Consider data retention."
+                explanation: "Tenant deletion: terminate resources, cleanup data, handle billing. Soft delete preserves for recovery. Hard delete removes completely. Consider data retention.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/staff-users/projects-removal-admin/", text: "📚 Project Removal" }
             },
             {
                 q: "What's federation in multi-tenant context?",
                 options: ["Multiple Waldur instances sharing resources", "Tenant accounts belonging to federal agencies", "Waldur does not support any federation features", "Unified login federation for tenant user accounts"],
                 correct: 0,
-                explanation: "Federation connects multiple Waldur instances. Resources from one available in another. Enables consortium deployments, geographic distribution."
+                explanation: "Federation connects multiple Waldur instances. Resources from one available in another. Enables consortium deployments, geographic distribution.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/providers/remote-waldur/", text: "📚 Remote Waldur" }
             },
             {
                 q: "How do you test multi-tenant isolation?",
                 options: ["Isolation does not need testing in practice", "Inspect the stored data manually now and then", "Check that data never leaks between tenants", "The database guarantees it without any tests"],
                 correct: 2,
-                explanation: "Test isolation: create multiple test tenants, verify queries only return own data, test permission boundaries. Automated tests for isolation."
+                explanation: "Test isolation: create multiple test tenants, verify queries only return own data, test permission boundaries. Automated tests for isolation.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/how-to-write-tests/", text: "📚 How to Write Tests" }
             },
             {
                 q: "What is the scope chain permissions and event bindings both walk?",
                 options: ["Region, zone, host and individual instance", "Offering, plan, component and billing unit", "Customer, project, resource, resource project", "User, session, request and response body"],
                 correct: 2,
-                explanation: "Authorization resolves along that hierarchy, and event scope-keys use the same chain — which is why binding a consumer to a customer picks up its projects' events and why a role on an ancestor grants access below."
+                explanation: "Authorization resolves along that hierarchy, and event scope-keys use the same chain — which is why binding a consumer to a customer picks up its projects' events and why a role on an ancestor grants access below.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/design/pubsub-architecture/", text: "📚 Pub/Sub Architecture" }
             },
             {
                 q: "A project moves to a different organization. What has to follow?",
                 options: ["Access and billing are re-evaluated for the new parent", "Only the displayed organization name changes", "The project's resources must all be recreated", "Nothing, because projects are independent objects"],
                 correct: 0,
-                explanation: "Roles, invoicing and visibility all resolve through the parent customer, so a move changes who may see the project and who is billed for it — and downstream consumers are told about the affected resources."
+                explanation: "Roles, invoicing and visibility all resolve through the parent customer, so a move changes who may see the project and who is billed for it — and downstream consumers are told about the affected resources.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/resource-projects/", text: "📚 Resource Projects" }
             },
         ]
     },
@@ -6513,19 +6595,22 @@ export const questions: QuestionBank = {
                 q: "What does Waldur reporting provide?",
                 options: ["An interface for writing prose reports", "Analytics on usage, cost and resources", "Newspaper-style narrative summaries", "A system for reporting software bugs"],
                 correct: 1,
-                explanation: "Waldur reporting provides analytics: resource usage, cost breakdowns, utilization trends, billing summaries. Helps with capacity planning and chargeback."
+                explanation: "Waldur reporting provides analytics: resource usage, cost breakdowns, utilization trends, billing summaries. Helps with capacity planning and chargeback.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/staff-users/reporting/", text: "📚 Waldur Reporting" }
             },
             {
                 q: "What types of reports does Waldur generate?",
                 options: ["Only PDF formatted document exports", "Usage, billing, and cost allocation reports", "Bug tracking and error diagnostic reports", "Waldur has no built-in reporting features"],
                 correct: 1,
-                explanation: "Report types: usage reports (resource consumption), billing reports (invoices, charges), cost allocation (per project/team), capacity reports."
+                explanation: "Report types: usage reports (resource consumption), billing reports (invoices, charges), cost allocation (per project/team), capacity reports.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/staff-users/reporting/", text: "📚 Waldur Reporting" }
             },
             {
                 q: "How do you access reports in Waldur?",
                 options: ["Web UI dashboards and export options", "External reporting tools only", "Reports not accessible to users", "Command line only"],
                 correct: 0,
-                explanation: "Reports accessed via web UI: dashboard views, exportable to CSV/Excel, scheduled email delivery. API access for custom integrations."
+                explanation: "Reports accessed via web UI: dashboard views, exportable to CSV/Excel, scheduled email delivery. API access for custom integrations.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/staff-users/reporting/", text: "📚 Waldur Reporting" }
             },
         ],
         2: [
@@ -6533,19 +6618,22 @@ export const questions: QuestionBank = {
                 q: "What's resource utilization reporting?",
                 options: ["Track actual usage vs allocated resources", "Resource list generation", "User resource requests reporting", "Report on resource creation"],
                 correct: 0,
-                explanation: "Utilization reports show actual vs allocated: CPU usage %, memory utilization, storage consumption. Identifies over/under-provisioned resources."
+                explanation: "Utilization reports show actual vs allocated: CPU usage %, memory utilization, storage consumption. Identifies over/under-provisioned resources.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/usage_reports/", text: "📚 Usage Reports" }
             },
             {
                 q: "What's cost allocation reporting?",
                 options: ["Attribute costs to departments/projects", "Cost of report storage", "Pricing for report access", "Allocating report generation costs"],
                 correct: 0,
-                explanation: "Cost allocation attributes charges to cost centers: departments, projects, teams. Enables chargeback (billing) or showback (visibility)."
+                explanation: "Cost allocation attributes charges to cost centers: departments, projects, teams. Enables chargeback (billing) or showback (visibility).",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/cost-and-usage-policies/", text: "📚 Cost and Usage Policies" }
             },
             {
                 q: "How do scheduled reports work?",
                 options: ["Queued by workers and sent via webhooks", "Triggered manually by admin API requests", "Configured per user in their profile page", "Automatically generated and sent on schedule"],
                 correct: 3,
-                explanation: "Scheduled reports: configure frequency (daily, weekly, monthly), recipients, format. Celery Beat triggers generation. Email or store results."
+                explanation: "Scheduled reports: configure frequency (daily, weekly, monthly), recipients, format. Celery Beat triggers generation. Email or store results.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/mastermind-configuration/scheduled/", text: "📚 Scheduled Tasks" }
             },
         ],
         3: [
@@ -6553,25 +6641,29 @@ export const questions: QuestionBank = {
                 q: "What metrics does Waldur collect?",
                 options: ["Only error metrics collected", "No metrics collection available", "Usage, performance, and business metrics", "Metrics from external tools only"],
                 correct: 2,
-                explanation: "Waldur collects: resource usage (CPU, memory, storage), API metrics, business metrics (orders, costs). Backend plugins report resource metrics."
+                explanation: "Waldur collects: resource usage (CPU, memory, storage), API metrics, business metrics (orders, costs). Backend plugins report resource metrics.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/component-usage/", text: "📚 Component Usage" }
             },
             {
                 q: "How do you create custom reports?",
                 options: ["API queries with filters and aggregations", "Submit a request to Waldur support team", "Use the built-in report template wizard", "Modify the Django reporting source code"],
                 correct: 0,
-                explanation: "Custom reports via API: query resources, filter by criteria, aggregate data. Export results. Build dashboards with visualization tools."
+                explanation: "Custom reports via API: query resources, filter by criteria, aggregate data. Export results. Build dashboards with visualization tools.",
+                learnMore: { url: "https://docs.waldur.com/latest/integrator-guide/reporting/", text: "📚 Integrator Reporting" }
             },
             {
                 q: "What's trend analysis in reporting?",
                 options: ["Track metrics over time to identify patterns", "Ranking report types by user popularity", "Comparing report formats across exports", "Measuring frequency of report generation"],
                 correct: 0,
-                explanation: "Trend analysis tracks metrics over time: usage growth, cost trends, seasonal patterns. Enables forecasting, capacity planning."
+                explanation: "Trend analysis tracks metrics over time: usage growth, cost trends, seasonal patterns. Enables forecasting, capacity planning.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/usage_reports/", text: "📚 Usage Reports" }
             },
             {
                 q: "How does reporting integrate with billing?",
                 options: ["Billing and reporting are separate", "No integration between them", "Share data for cost reports and invoices", "Reports generate invoices directly"],
                 correct: 2,
-                explanation: "Reporting uses billing data: cost breakdowns, invoice summaries, spending trends. Shared data model ensures consistency."
+                explanation: "Reporting uses billing data: cost breakdowns, invoice summaries, spending trends. Shared data model ensures consistency.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/billing-and-invoicing/", text: "📚 Billing and Invoicing Guide" }
             },
         ],
         4: [
@@ -6579,25 +6671,29 @@ export const questions: QuestionBank = {
                 q: "What's report data aggregation?",
                 options: ["Aggregating report files", "Summarize detailed data into totals", "Database aggregation only", "Collecting report definitions"],
                 correct: 1,
-                explanation: "Aggregation summarizes data: total by customer, average per project, max/min values. Different granularity levels (daily, monthly, yearly)."
+                explanation: "Aggregation summarizes data: total by customer, average per project, max/min values. Different granularity levels (daily, monthly, yearly).",
+                learnMore: { url: "https://docs.waldur.com/latest/integrator-guide/reporting/", text: "📚 Integrator Reporting" }
             },
             {
                 q: "How do you export report data?",
                 options: ["Export to proprietary format", "No export functionality", "Only view in browser", "CSV, Excel, JSON, PDF formats"],
                 correct: 3,
-                explanation: "Export formats: CSV for data analysis, Excel for business users, JSON for integration, PDF for formal reports. API enables custom exports."
+                explanation: "Export formats: CSV for data analysis, Excel for business users, JSON for integration, PDF for formal reports. API enables custom exports.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/call-managing-organization/data-export/", text: "📚 Data Export" }
             },
             {
                 q: "What's report caching?",
                 options: ["Caching only the report templates in use", "Reports are always regenerated on demand", "Storing generated reports for fast access", "Discarding reports older than a single day"],
                 correct: 2,
-                explanation: "Report caching stores generated reports. Avoids regenerating expensive reports. Invalidate when source data changes. TTL-based expiration."
+                explanation: "Report caching stores generated reports. Avoids regenerating expensive reports. Invalidate when source data changes. TTL-based expiration.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/waldur-architecture/", text: "📚 Waldur Django Architecture" }
             },
             {
                 q: "How do you filter reports by scope?",
                 options: ["Only filter by creation date range", "Filter using external analytics tools", "Customer, project, date range, resource type", "Only filter by assigned organization name"],
                 correct: 2,
-                explanation: "Filter reports: by organization (customer), project, date range, resource type, tags. Combine filters for specific views."
+                explanation: "Filter reports: by organization (customer), project, date range, resource type, tags. Combine filters for specific views.",
+                learnMore: { url: "https://docs.waldur.com/latest/integrator-guide/reporting/", text: "📚 Integrator Reporting" }
             },
         ],
         5: [
@@ -6605,43 +6701,50 @@ export const questions: QuestionBank = {
                 q: "How do you implement custom report plugins?",
                 options: ["Define data sources, queries, and renderers", "Register plugins through the admin settings", "Create Docker containers for each report", "Modify the core reporting module directly"],
                 correct: 0,
-                explanation: "Custom plugins: define metric collectors, report queries, output renderers. Register with reporting framework. Follow plugin patterns."
+                explanation: "Custom plugins: define metric collectors, report queries, output renderers. Register with reporting framework. Follow plugin patterns.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/plugins/plugins/", text: "📚 Waldur Plugins" }
             },
             {
                 q: "What's real-time vs batch reporting?",
                 options: ["Batch mode has been deprecated in new versions", "Real-time: live data; Batch: processed periodically", "Real-time runs on separate dedicated servers", "Both modes generate reports simultaneously"],
                 correct: 1,
-                explanation: "Real-time shows current state (dashboard). Batch processes historical data periodically (daily summaries). Choose based on need."
+                explanation: "Real-time shows current state (dashboard). Batch processes historical data periodically (daily summaries). Choose based on need.",
+                learnMore: { url: "https://docs.waldur.com/latest/integrator-guide/reporting/", text: "📚 Integrator Reporting" }
             },
             {
                 q: "How do you ensure report accuracy?",
                 options: ["Manual spot-checking of every generated report", "Accuracy depends on the database engine used", "Reports are verified automatically by the API", "Validate data sources, test calculations, audit"],
                 correct: 3,
-                explanation: "Ensure accuracy: validate source data, unit tests for calculations, reconcile with billing, document methodology. Audit periodically."
+                explanation: "Ensure accuracy: validate source data, unit tests for calculations, reconcile with billing, document methodology. Audit periodically.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/how-to-write-tests/", text: "📚 How to Write Tests" }
             },
             {
                 q: "What's report access control?",
                 options: ["Admin controls all report access", "Permissions determine who sees what", "All reports visible to all users", "No access control for reports"],
                 correct: 1,
-                explanation: "Report access follows permissions: users see their scope's data. Admins see all. Cross-customer reports require admin rights."
+                explanation: "Report access follows permissions: users see their scope's data. Admins see all. Cross-customer reports require admin rights.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/terminology/roles_and_permissions/", text: "📚 Roles and Permissions" }
             },
             {
                 q: "How do you integrate with external BI tools?",
                 options: ["API exports data to BI platforms", "Manual data entry only", "Built-in BI sufficient", "No external integration possible"],
                 correct: 0,
-                explanation: "BI integration: API provides data exports, scheduled data dumps, direct database access for analytics. Connect Grafana, Tableau, Power BI."
+                explanation: "BI integration: API provides data exports, scheduled data dumps, direct database access for analytics. Connect Grafana, Tableau, Power BI.",
+                learnMore: { url: "https://docs.waldur.com/latest/integrator-guide/APIs/api/", text: "📚 Waldur REST API" }
             },
             {
                 q: "Why ship a reporting feature behind an experimental flag?",
                 options: ["Flagged features skip the review process", "It reaches real users gradually while it stabilises", "Flagged code runs faster than released code", "Flags remove the need to test the feature"],
                 correct: 1,
-                explanation: "A flag decouples deploying from releasing: the code ships, a limited audience exercises it, and the switch is flipped when it holds up — without a long-lived branch drifting away from develop."
+                explanation: "A flag decouples deploying from releasing: the code ships, a limited audience exercises it, and the switch is flipped when it holds up — without a long-lived branch drifting away from develop.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/mastermind-configuration/features/", text: "📚 Feature Flags" }
             },
             {
                 q: "What does a usage timeseries give that a single total cannot?",
                 options: ["A more accurate total for the billing period", "A guarantee that the figures were audited", "When consumption happened, so spikes show up", "A smaller volume of data to store and query"],
                 correct: 2,
-                explanation: "Totals cannot be apportioned or explained. Per-period series show growth, spikes and idle allocations — the basis for both funder reporting and a conversation about right-sizing."
+                explanation: "Totals cannot be apportioned or explained. Per-period series show growth, spikes and idle allocations — the basis for both funder reporting and a conversation about right-sizing.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/usage_reports/", text: "📚 Usage Reports" }
             },
         ]
     },
@@ -6652,19 +6755,22 @@ export const questions: QuestionBank = {
                 q: "What framework does Waldur UI use?",
                 options: ["Angular framework", "Vue.js library", "jQuery and plain JavaScript", "React with TypeScript"],
                 correct: 3,
-                explanation: "Waldur Homeport is React with TypeScript, built and served by Vite. Component-based architecture with feature folders."
+                explanation: "Waldur Homeport is React with TypeScript, built and served by Vite. Component-based architecture with feature folders.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/architecture/", text: "📚 Waldur UI Architecture" }
             },
             {
                 q: "Where does data fetched from the Waldur API live?",
                 options: ["In a TanStack React Query cache keyed per query", "In a global Redux store holding raw responses", "In browser localStorage kept between page loads", "In component-local useState inside each view"],
                 correct: 0,
-                explanation: "Homeport fetches through TanStack React Query: one cache keyed per query, with refetching and invalidation handled for you. Redux survives only for a few cross-cutting UI concerns, and redux-saga has been removed entirely."
+                explanation: "Homeport fetches through TanStack React Query: one cache keyed per query, with refetching and invalidation handled for you. Redux survives only for a few cross-cutting UI concerns, and redux-saga has been removed entirely.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/api-integration/", text: "📚 UI API Integration" }
             },
             {
                 q: "What's a React component?",
                 options: ["Server-side rendering unit", "Database component", "API endpoint handler", "Reusable UI building block"],
                 correct: 3,
-                explanation: "React component is reusable UI piece. Has props (inputs), state (internal), and renders JSX. Waldur has component library for consistency."
+                explanation: "React component is reusable UI piece. Has props (inputs), state (internal), and renders JSX. Waldur has component library for consistency.",
+                learnMore: { url: "https://react.dev/learn/your-first-component", text: "📚 React: Your First Component" }
             },
         ],
         2: [
@@ -6672,19 +6778,22 @@ export const questions: QuestionBank = {
                 q: "How is Waldur UI structured?",
                 options: ["Single file application", "Random file organization", "Feature-based folder organization", "Database-driven structure"],
                 correct: 2,
-                explanation: "Feature-based structure: each feature (customers, projects, etc.) has a folder with its components, hooks, API calls and routes. Shared components live in common."
+                explanation: "Feature-based structure: each feature (customers, projects, etc.) has a folder with its components, hooks, API calls and routes. Shared components live in common.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/architecture/", text: "📚 Waldur UI Architecture" }
             },
             {
                 q: "What's the Waldur component library?",
                 options: ["Library for server components", "External npm package", "Shared reusable UI components", "Component documentation site"],
                 correct: 2,
-                explanation: "Waldur has shared component library: buttons, forms, tables, modals. Ensures consistency. Documented with examples."
+                explanation: "Waldur has shared component library: buttons, forms, tables, modals. Ensures consistency. Documented with examples.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/component-library/", text: "📚 Waldur Component Library" }
             },
             {
                 q: "How does routing work in Waldur UI?",
                 options: ["UI-Router for state-based client-side routing", "Single-page rendering with no route changes", "Server-side page routing with full reloads", "URL hash routing managed via Redux store"],
                 correct: 0,
-                explanation: "UI-Router for React handles state-based client-side routing. Routes defined in module-specific routes.ts files. Navigation without full page reload. Hierarchical states."
+                explanation: "UI-Router for React handles state-based client-side routing. Routes defined in module-specific routes.ts files. Navigation without full page reload. Hierarchical states.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/menu-navigation/", text: "📚 Menu and Navigation" }
             },
         ],
         3: [
@@ -6692,25 +6801,29 @@ export const questions: QuestionBank = {
                 q: "How does Waldur UI call the backend REST API?",
                 options: ["Redux actions with redux-saga side effects for every call", "A GraphQL gateway that aggregates the REST endpoints", "Handwritten fetch calls placed inside each component", "Generated waldur-js-client SDK inside React Query hooks"],
                 correct: 3,
-                explanation: "API access goes through waldur-js-client — a TypeScript SDK generated from the backend OpenAPI schema — called from TanStack React Query hooks. Regenerate the SDK after backend contract changes, then let tsc find the callers that broke."
+                explanation: "API access goes through waldur-js-client — a TypeScript SDK generated from the backend OpenAPI schema — called from TanStack React Query hooks. Regenerate the SDK after backend contract changes, then let tsc find the callers that broke.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/sdk/", text: "📚 Waldur JS SDK" }
             },
             {
                 q: "What's lazy loading in Waldur UI?",
                 options: ["Lazy evaluation of state", "Slow loading on purpose", "Loading indicator component", "Load code only when route accessed"],
                 correct: 3,
-                explanation: "Lazy loading splits code by route. Code for route loaded only when navigated to. Improves initial load time. React.lazy + Suspense."
+                explanation: "Lazy loading splits code by route. Code for route loaded only when navigated to. Improves initial load time. React.lazy + Suspense.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/architecture/", text: "📚 Waldur UI Architecture" }
             },
             {
                 q: "How does Waldur handle UI theming?",
                 options: ["Inline styles defined per component only", "External SASS stylesheets compiled at build", "Hardcoded color values in each component", "CSS variables and theme configuration files"],
                 correct: 3,
-                explanation: "Theming via CSS variables, configurable colors/branding. Organizations can customize appearance. Bootstrap-based with overrides."
+                explanation: "Theming via CSS variables, configurable colors/branding. Organizations can customize appearance. Bootstrap-based with overrides.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/theme/", text: "📚 Waldur UI Theme" }
             },
             {
                 q: "What's the Waldur translation system?",
                 options: ["Third-party translation service integration", "Custom translate function with locale files", "Server-side rendered translated HTML pages", "Browser built-in auto-translation feature"],
                 correct: 1,
-                explanation: "Internationalization via custom translate/formatJsx helpers. Locale files managed in repository. Local-first approach without external translation services."
+                explanation: "Internationalization via custom translate/formatJsx helpers. Locale files managed in repository. Local-first approach without external translation services.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/i18n/", text: "📚 Waldur UI i18n" }
             },
         ],
         4: [
@@ -6718,25 +6831,29 @@ export const questions: QuestionBank = {
                 q: "How do you add new features to Waldur UI?",
                 options: ["Install external feature packages from the npm registry", "Submit a feature request to the core development team", "Modify existing components to hold the new logic", "Create a feature folder with components, hooks, routes"],
                 correct: 3,
-                explanation: "New features: create a folder under features, add components and React Query hooks, register routes, call the generated SDK. Follow existing patterns."
+                explanation: "New features: create a folder under features, add components and React Query hooks, register routes, call the generated SDK. Follow existing patterns.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/development-workflow/", text: "📚 UI Development Workflow" }
             },
             {
                 q: "What's code splitting in Waldur UI?",
                 options: ["Code review splitting", "Split code between developers", "Split bundles for faster loading", "Server-side code separation"],
                 correct: 2,
-                explanation: "Code splitting creates separate bundles per route/feature. User downloads only needed code. Vite handles the splitting via dynamic imports. Improves performance."
+                explanation: "Code splitting creates separate bundles per route/feature. User downloads only needed code. Vite handles the splitting via dynamic imports. Improves performance.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/architecture/", text: "📚 Waldur UI Architecture" }
             },
             {
                 q: "How does Waldur UI handle errors?",
                 options: ["Component unmounts and full page reloads", "Errors logged to console without user notice", "Silent catch blocks suppress all exceptions", "Error boundaries and toast notifications shown"],
                 correct: 3,
-                explanation: "Error boundaries catch component errors, show fallback UI. API errors shown as toast notifications. User-friendly error messages."
+                explanation: "Error boundaries catch component errors, show fallback UI. API errors shown as toast notifications. User-friendly error messages.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/api-integration/", text: "📚 UI API Integration" }
             },
             {
                 q: "What testing tools does Waldur UI use?",
                 options: ["Jest with Enzyme for component snapshot tests", "Vitest and React Testing Library, plus Playwright", "Selenium WebDriver drives all of the test scenarios", "Karma and Jasmine run the unit suite in CI"],
                 correct: 1,
-                explanation: "Unit and component tests run on Vitest with React Testing Library. Playwright covers end-to-end and visual regression runs (yarn test:e2e, yarn test:visual). Jest is not used."
+                explanation: "Unit and component tests run on Vitest with React Testing Library. Playwright covers end-to-end and visual regression runs (yarn test:e2e, yarn test:visual). Jest is not used.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/testing/", text: "📚 Waldur UI Testing" }
             },
         ],
         5: [
@@ -6744,31 +6861,36 @@ export const questions: QuestionBank = {
                 q: "How do you optimize Waldur UI performance?",
                 options: ["Increase server resources to handle the load", "Memoization, code splitting, and lazy loading", "Reduce component count to minimize complexity", "Disable animations and transitions for speed"],
                 correct: 1,
-                explanation: "Optimize: React.memo for expensive components, useMemo/useCallback, code splitting, lazy loading, virtualization for large lists."
+                explanation: "Optimize: React.memo for expensive components, useMemo/useCallback, code splitting, lazy loading, virtualization for large lists.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/code-quality/", text: "📚 UI Code Quality" }
             },
             {
                 q: "How does Waldur UI handle real-time updates?",
                 options: ["Redux store sync across browser tabs only", "Full page refresh on a timed interval", "Server-sent events via HTTP streaming", "Query refetch plus STOMP over WebSocket"],
                 correct: 3,
-                explanation: "Lists refetch on an interval through React Query, and pushed events arrive over STOMP on a WebSocket (@stomp/stompjs) fed by RabbitMQ web-STOMP. Resource state changes appear without a reload."
+                explanation: "Lists refetch on an interval through React Query, and pushed events arrive over STOMP on a WebSocket (@stomp/stompjs) fed by RabbitMQ web-STOMP. Resource state changes appear without a reload.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/design/pubsub-architecture/", text: "📚 Pub/Sub Architecture" }
             },
             {
                 q: "What's the plugin UI architecture?",
                 options: ["Plugins cannot add any UI components", "Plugins only extend the backend API layer", "Plugins directly patch the core UI source", "Extension points for registering plugin components"],
                 correct: 3,
-                explanation: "UI plugins: register components at extension points, add routes, extend menus. Core provides hooks for plugin UI. Maintains modularity."
+                explanation: "UI plugins: register components at extension points, add routes, extend menus. Core provides hooks for plugin UI. Maintains modularity.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/architecture/", text: "📚 Waldur UI Architecture" }
             },
             {
                 q: "How do you debug Waldur UI?",
                 options: ["React DevTools, React Query Devtools, console", "Deploy to staging and test in production mode", "Use the built-in Waldur debug panel interface", "Add console.log statements throughout code"],
                 correct: 0,
-                explanation: "Debug tools: React DevTools for the component tree, React Query Devtools to inspect cached queries and their state, browser console and network tab. Source maps in development."
+                explanation: "Debug tools: React DevTools for the component tree, React Query Devtools to inspect cached queries and their state, browser console and network tab. Source maps in development.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/development-setup/", text: "📚 UI Development Setup" }
             },
             {
                 q: "What's accessible UI design in Waldur?",
                 options: ["ARIA attributes, keyboard navigation, contrast", "Accessibility is handled by a separate plugin", "Focus only on visual layout and color theme", "Rely on browser default accessibility support"],
                 correct: 0,
-                explanation: "Accessibility: ARIA labels, keyboard navigation, sufficient color contrast, focus management. Follows WCAG guidelines. Enables assistive technology."
+                explanation: "Accessibility: ARIA labels, keyboard navigation, sufficient color contrast, focus management. Follows WCAG guidelines. Enables assistive technology.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/ui-consistency-guidelines/", text: "📚 UI Consistency Guidelines" }
             },
         ]
     },
@@ -6779,19 +6901,22 @@ export const questions: QuestionBank = {
                 q: "What library does Waldur use for forms?",
                 options: ["react-final-form with field-level subscriptions", "Redux Form keeping all field state in the store", "React Hook Form with uncontrolled ref-based inputs", "Formik paired with Yup schemas on every form view"],
                 correct: 0,
-                explanation: "Homeport builds forms with react-final-form, plus react-final-form-arrays for repeated field groups. Field-level subscriptions keep re-renders down on large forms. redux-form is no longer used."
+                explanation: "Homeport builds forms with react-final-form, plus react-final-form-arrays for repeated field groups. Field-level subscriptions keep re-renders down on large forms. redux-form is no longer used.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/forms/", text: "📚 Waldur UI Forms" }
             },
             {
                 q: "What's form validation?",
                 options: ["Backend form processing", "Validating form design looks good", "Checking input meets requirements", "Form performance testing"],
                 correct: 2,
-                explanation: "Form validation checks user input: required fields, format (email, phone), ranges, custom rules. Show errors, prevent invalid submission."
+                explanation: "Form validation checks user input: required fields, format (email, phone), ranges, custom rules. Show errors, prevent invalid submission.",
+                learnMore: { url: "https://final-form.org/docs/react-final-form/getting-started", text: "📚 React Final Form" }
             },
             {
                 q: "What's a form field component?",
                 options: ["Reusable input with label and validation logic", "A column definition inside a database schema", "A server-side model property for form storage", "A raw HTML input element with no extra logic"],
                 correct: 0,
-                explanation: "Form field component wraps input with label, error display, help text. Standardizes appearance. Connects to form state automatically."
+                explanation: "Form field component wraps input with label, error display, help text. Standardizes appearance. Connects to form state automatically.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/forms/", text: "📚 Waldur UI Forms" }
             },
         ],
         2: [
@@ -6799,19 +6924,22 @@ export const questions: QuestionBank = {
                 q: "How does client-side validation work?",
                 options: ["Only server validates forms", "Validate before server submission", "Validation runs on database", "Client validates server response"],
                 correct: 1,
-                explanation: "Client-side: validate in browser before submit. Instant feedback. Still validate on server (client can be bypassed). Better UX."
+                explanation: "Client-side: validate in browser before submit. Instant feedback. Still validate on server (client can be bypassed). Better UX.",
+                learnMore: { url: "https://final-form.org/docs/react-final-form/getting-started", text: "📚 React Final Form" }
             },
             {
                 q: "What are controlled components?",
                 options: ["Server-controlled components", "Components with access control", "Admin-managed components", "Form inputs controlled by React state"],
                 correct: 3,
-                explanation: "Controlled components: React state is single source of truth for input value. onChange updates state, value comes from state. Enables validation, transformation."
+                explanation: "Controlled components: React state is single source of truth for input value. onChange updates state, value comes from state. Enables validation, transformation.",
+                learnMore: { url: "https://react.dev/reference/react-dom/components/input", text: "📚 React: input" }
             },
             {
                 q: "How do you handle form submission?",
                 options: ["Submission handled by browser", "No submission handling needed", "onSubmit handler calls API", "Form auto-submits to server"],
                 correct: 2,
-                explanation: "onSubmit handler: prevent default, validate, call API action, handle success/error. Show loading state during submission. Reset or navigate on success."
+                explanation: "onSubmit handler: prevent default, validate, call API action, handle success/error. Show loading state during submission. Reset or navigate on success.",
+                learnMore: { url: "https://final-form.org/docs/react-final-form/getting-started", text: "📚 React Final Form" }
             },
         ],
         3: [
@@ -6819,25 +6947,29 @@ export const questions: QuestionBank = {
                 q: "What's conditional form fields?",
                 options: ["Fields with conditional required validation rules", "Fields rendered with inline conditional CSS styles", "Fields shown or hidden based on other field values", "Fields that are always optional in every context"],
                 correct: 2,
-                explanation: "Conditional fields: show/hide based on other values. Example: show 'other' text field when 'other' selected in dropdown. Dynamic forms."
+                explanation: "Conditional fields: show/hide based on other values. Example: show 'other' text field when 'other' selected in dropdown. Dynamic forms.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/forms/", text: "📚 Waldur UI Forms" }
             },
             {
                 q: "How do you handle form arrays?",
                 options: ["Dynamic list of repeated field groups in a form", "Validation rules applied to array-type data fields", "Multiple independent forms rendered together", "Array values displayed in dropdown select inputs"],
                 correct: 0,
-                explanation: "Form arrays: add/remove repeated field groups. Example: multiple IP addresses, multiple team members. Homeport uses FieldArray from react-final-form-arrays."
+                explanation: "Form arrays: add/remove repeated field groups. Example: multiple IP addresses, multiple team members. Homeport uses FieldArray from react-final-form-arrays.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/forms/", text: "📚 Waldur UI Forms" }
             },
             {
                 q: "What's form field error handling?",
                 options: ["Errors logged to console only", "Errors not shown to users", "Single error for whole form", "Display validation errors near fields"],
                 correct: 3,
-                explanation: "Field-level errors shown near each field. Clear when corrected. Summary of all errors optional. Accessible error messages."
+                explanation: "Field-level errors shown near each field. Clear when corrected. Summary of all errors optional. Accessible error messages.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/forms/", text: "📚 Waldur UI Forms" }
             },
             {
                 q: "How do async validators work?",
                 options: ["Only on form submission", "Async is same as sync validation", "Async validation not supported", "Validate against server during input"],
                 correct: 3,
-                explanation: "Async validators call server: check uniqueness, verify availability. Debounce to avoid excessive calls. Show loading state."
+                explanation: "Async validators call server: check uniqueness, verify availability. Debounce to avoid excessive calls. Show loading state.",
+                learnMore: { url: "https://final-form.org/docs/react-final-form/getting-started", text: "📚 React Final Form" }
             },
         ],
         4: [
@@ -6845,25 +6977,29 @@ export const questions: QuestionBank = {
                 q: "What's form state management?",
                 options: ["Only the current input value is maintained", "State resets on every component re-render cycle", "Track values, errors, touched, and dirty status", "Form data stored directly in the database"],
                 correct: 2,
-                explanation: "Form state: values (current inputs), errors (validation issues), touched (user interacted), dirty (changed from initial). Enables smart UX."
+                explanation: "Form state: values (current inputs), errors (validation issues), touched (user interacted), dirty (changed from initial). Enables smart UX.",
+                learnMore: { url: "https://final-form.org/docs/final-form/types/FormState", text: "📚 Final Form: FormState" }
             },
             {
                 q: "How do you handle file uploads in forms?",
                 options: ["Files must be uploaded separately outside the form", "Only URL text input is accepted for file references", "Backend API handles all file processing independently", "File input with preview and upload progress handling"],
                 correct: 3,
-                explanation: "File uploads: file input component, preview images, progress indicator, upload to server (may be separate endpoint). Validate type/size."
+                explanation: "File uploads: file input component, preview images, progress indicator, upload to server (may be separate endpoint). Validate type/size.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/forms/", text: "📚 Waldur UI Forms" }
             },
             {
                 q: "What's form wizard pattern?",
                 options: ["Multi-step form with navigation", "Wizard character in form UI", "Form with helpful tooltips", "Automatic form generation"],
                 correct: 0,
-                explanation: "Form wizard: split complex form into steps. Next/back navigation. Validate per step. Summary before final submit. Progress indicator."
+                explanation: "Form wizard: split complex form into steps. Next/back navigation. Validate per step. Summary before final submit. Progress indicator.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/forms/", text: "📚 Waldur UI Forms" }
             },
             {
                 q: "How do you pre-populate forms?",
                 options: ["Users always start with empty forms", "Pre-population not possible", "Load initial values from API or props", "Database pre-fills forms"],
                 correct: 2,
-                explanation: "Pre-populate: for edit forms, load existing data as initial values. Pass via props or fetch in component. Reset to initial available."
+                explanation: "Pre-populate: for edit forms, load existing data as initial values. Pass via props or fetch in component. Reset to initial available.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/forms/", text: "📚 Waldur UI Forms" }
             },
         ],
         5: [
@@ -6871,31 +7007,36 @@ export const questions: QuestionBank = {
                 q: "How do you test forms?",
                 options: ["Validate form markup matches the HTML snapshot", "Simulate user input and verify expected behavior", "Check that the form component mounts without error", "Only verify that the submit button is rendered"],
                 correct: 1,
-                explanation: "Test forms: simulate typing, check validation errors appear, submit and verify API called, test edge cases. React Testing Library for interactions."
+                explanation: "Test forms: simulate typing, check validation errors appear, submit and verify API called, test edge cases. React Testing Library for interactions.",
+                learnMore: { url: "https://testing-library.com/docs/react-testing-library/example-intro", text: "📚 React Testing Library" }
             },
             {
                 q: "What's optimistic form updates?",
                 options: ["Update UI before server confirms", "Being optimistic about form success", "Server-optimistic responses", "Optimized form rendering"],
                 correct: 0,
-                explanation: "Optimistic updates: show success immediately, rollback if server fails. Better perceived performance. Use for likely-to-succeed operations."
+                explanation: "Optimistic updates: show success immediately, rollback if server fails. Better perceived performance. Use for likely-to-succeed operations.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/useManagedMutation/", text: "📚 useManagedMutation" }
             },
             {
                 q: "How do you handle complex form logic?",
                 options: ["Custom hooks to encapsulate logic", "Put all logic in component", "Logic only in validation", "Complex forms not supported"],
                 correct: 0,
-                explanation: "Complex logic: custom hooks encapsulate business rules, computed values, conditional logic. Keep components clean. Reusable across forms."
+                explanation: "Complex logic: custom hooks encapsulate business rules, computed values, conditional logic. Keep components clean. Reusable across forms.",
+                learnMore: { url: "https://react.dev/learn/reusing-logic-with-custom-hooks", text: "📚 React: Custom Hooks" }
             },
             {
                 q: "What's form performance optimization?",
                 options: ["Performance tuning is not possible for forms", "Use faster hardware to speed up form rendering", "Minimize re-renders and debounce validation calls", "Reduce the total number of fields on every form"],
                 correct: 2,
-                explanation: "Optimize: minimize re-renders (subscribe only to needed state), debounce expensive validation, virtualize long option lists."
+                explanation: "Optimize: minimize re-renders (subscribe only to needed state), debounce expensive validation, virtualize long option lists.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/forms/", text: "📚 Waldur UI Forms" }
             },
             {
                 q: "How do you handle form accessibility?",
                 options: ["Screen reader support is not currently available", "Labels, ARIA attributes, and keyboard tab support", "Accessibility is automatically handled by browsers", "Accessibility does not apply to form elements"],
                 correct: 1,
-                explanation: "Accessible forms: proper labels, error announcements, keyboard navigation, focus management. Associate errors with fields via ARIA."
+                explanation: "Accessible forms: proper labels, error announcements, keyboard navigation, focus management. Associate errors with fields via ARIA.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form", text: "📚 MDN: Structuring Web Forms" }
             },
         ]
     },
@@ -6906,19 +7047,22 @@ export const questions: QuestionBank = {
                 q: "What are data tables used for in Waldur?",
                 options: ["Provide inline spreadsheet editing for records", "Display lists of resources with sorting and actions", "Manage database table schemas and migrations", "Apply custom HTML styling to table elements"],
                 correct: 1,
-                explanation: "Data tables display resource lists: customers, projects, resources. Features: sorting, filtering, pagination, actions. Primary data view."
+                explanation: "Data tables display resource lists: customers, projects, resources. Features: sorting, filtering, pagination, actions. Primary data view.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/tables/", text: "📚 Waldur UI Tables" }
             },
             {
                 q: "What's table pagination?",
                 options: ["Page layout for tables", "Navigating table rows", "Pagination of table code", "Split large data into pages"],
                 correct: 3,
-                explanation: "Pagination splits large datasets into pages. User navigates pages. Page size configurable. Server-side for performance with big data."
+                explanation: "Pagination splits large datasets into pages. User navigates pages. Page size configurable. Server-side for performance with big data.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/fetching/", text: "📚 Table Data Fetching" }
             },
             {
                 q: "What's column sorting in tables?",
                 options: ["Column position arrangement", "Order rows by column values", "Sorting column definitions", "Sort order of table creation"],
                 correct: 1,
-                explanation: "Column sorting orders rows by clicked column. Ascending/descending toggle. Can be client-side or server-side. Visual indicator shows sort state."
+                explanation: "Column sorting orders rows by clicked column. Ascending/descending toggle. Can be client-side or server-side. Visual indicator shows sort state.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/column-setup/", text: "📚 Table Column Setup" }
             },
         ],
         2: [
@@ -6926,19 +7070,22 @@ export const questions: QuestionBank = {
                 q: "What's table filtering?",
                 options: ["Intercept and process table lifecycle events", "Show only rows matching user-defined criteria", "Hide or remove specific columns from the view", "Remove a table entirely from the current page"],
                 correct: 1,
-                explanation: "Filtering shows subset of rows: by status, date range, search text. Filter controls above table. Can combine multiple filters."
+                explanation: "Filtering shows subset of rows: by status, date range, search text. Filter controls above table. Can combine multiple filters.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/filters/", text: "📚 Table Filters" }
             },
             {
                 q: "What are row actions in tables?",
                 options: ["Actions that create rows", "Operations available on each row", "Row-level animation", "Database row operations"],
                 correct: 1,
-                explanation: "Row actions: buttons/menu for operations on item (edit, delete, view details). Context-sensitive based on item state and user permissions."
+                explanation: "Row actions: buttons/menu for operations on item (edit, delete, view details). Context-sensitive based on item state and user permissions.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/row-actions/", text: "📚 Table Row Actions" }
             },
             {
                 q: "What's table column configuration?",
                 options: ["Column width only", "No configuration possible", "Define which columns to display", "Configure column database"],
                 correct: 2,
-                explanation: "Column config: which columns shown, order, width, formatter. Can be user-customizable or fixed. Save preferences per user."
+                explanation: "Column config: which columns shown, order, width, formatter. Can be user-customizable or fixed. Save preferences per user.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/column-setup/", text: "📚 Table Column Setup" }
             },
         ],
         3: [
@@ -6946,25 +7093,29 @@ export const questions: QuestionBank = {
                 q: "What's server-side vs client-side tables?",
                 options: ["Both approaches render identically for all users", "Server tables handle sorting, client handles filtering", "Client-side tables are deprecated in newer versions", "Server-side: data fetched per page; Client: all data loaded"],
                 correct: 3,
-                explanation: "Server-side: fetch only current page from API. Good for large datasets. Client-side: load all data, filter/sort in browser. For small datasets."
+                explanation: "Server-side: fetch only current page from API. Good for large datasets. Client-side: load all data, filter/sort in browser. For small datasets.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/fetching/", text: "📚 Table Data Fetching" }
             },
             {
                 q: "What's table state management?",
                 options: ["Track current page, sort order, and active filters", "The table component does not maintain any state", "The serialized HTML structure of the table element", "Whether the table is currently loading data"],
                 correct: 0,
-                explanation: "Table state: current page, page size, sort column/direction, active filters, selected rows. Managed in component or URL params."
+                explanation: "Table state: current page, page size, sort column/direction, active filters, selected rows. Managed in component or URL params.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/getting-started/", text: "📚 Tables: Getting Started" }
             },
             {
                 q: "How do you export table data?",
                 options: ["Print the page and scan to a PDF file", "Download as CSV or Excel from the table", "Copy-paste rows into a spreadsheet app", "Take a screenshot of the table contents"],
                 correct: 1,
-                explanation: "Export feature downloads visible data: CSV for data analysis, Excel for business users. May export current page or all matching filters."
+                explanation: "Export feature downloads visible data: CSV for data analysis, Excel for business users. May export current page or all matching filters.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/call-managing-organization/data-export/", text: "📚 Data Export" }
             },
             {
                 q: "What's row selection in tables?",
                 options: ["Choose which row template layout to render", "Highlight rows with different color themes", "Select one or multiple rows for bulk actions", "Adjust the display height of individual rows"],
                 correct: 2,
-                explanation: "Row selection: checkbox per row, select all. Enable bulk actions (delete multiple, change state). Track selection in state."
+                explanation: "Row selection: checkbox per row, select all. Enable bulk actions (delete multiple, change state). Track selection in state.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/row-actions/", text: "📚 Table Row Actions" }
             },
         ],
         4: [
@@ -6972,25 +7123,29 @@ export const questions: QuestionBank = {
                 q: "What's virtualized tables?",
                 options: ["Tables hosted inside virtual machines", "Tables stored in virtualized disk volumes", "Render only visible rows for performance", "Tables displayed in a virtual reality view"],
                 correct: 2,
-                explanation: "Virtualization renders only visible rows in DOM. Handles thousands of rows smoothly. Essential for large datasets without pagination."
+                explanation: "Virtualization renders only visible rows in DOM. Handles thousands of rows smoothly. Essential for large datasets without pagination.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/fetching/", text: "📚 Table Data Fetching" }
             },
             {
                 q: "How do you handle table loading states?",
                 options: ["Hide the table entirely until data arrives", "Display an empty table until data is loaded", "Show skeletons or spinners during data load", "Freeze the table layout during data fetch"],
                 correct: 2,
-                explanation: "Loading states: skeleton rows, spinner overlay, loading text. Indicate partial loading for server-side. Maintain layout stability."
+                explanation: "Loading states: skeleton rows, spinner overlay, loading text. Indicate partial loading for server-side. Maintain layout stability.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/layout-wrappers/", text: "📚 Table Layout Wrappers" }
             },
             {
                 q: "What's inline editing in tables?",
                 options: ["Edit table HTML inline", "Edit cell values directly in table", "Editing table structure", "No inline editing possible"],
                 correct: 1,
-                explanation: "Inline editing: click cell to edit value directly. Save on blur or enter. Validate before saving. Alternative to modal forms."
+                explanation: "Inline editing: click cell to edit value directly. Save on blur or enter. Validate before saving. Alternative to modal forms.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/form-integration/", text: "📚 Table Form Integration" }
             },
             {
                 q: "How do you customize table cell rendering?",
                 options: ["Only text in cells allowed", "Renderer not customizable", "CSS customization only", "Custom cell renderer components"],
                 correct: 3,
-                explanation: "Custom renderers: render special content (links, badges, icons, progress bars). Formatter functions or components per column."
+                explanation: "Custom renderers: render special content (links, badges, icons, progress bars). Formatter functions or components per column.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/visual-customizations/", text: "📚 Table Visual Customizations" }
             },
         ],
         5: [
@@ -6998,31 +7153,36 @@ export const questions: QuestionBank = {
                 q: "How do you optimize large tables?",
                 options: ["Increase browser memory allocation for the tab", "Split tables into separate pages per data type", "Reduce column count to improve render speed", "Virtualization, server-side ops, and pagination"],
                 correct: 3,
-                explanation: "Optimize: virtualize rows, server-side sorting/filtering, pagination, memoize cell renders, debounce filters. Profile to find bottlenecks."
+                explanation: "Optimize: virtualize rows, server-side sorting/filtering, pagination, memoize cell renders, debounce filters. Profile to find bottlenecks.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/fetching/", text: "📚 Table Data Fetching" }
             },
             {
                 q: "What's table state persistence?",
                 options: ["State saved automatically", "Save table config across sessions", "Persist table in database", "Persistence not supported"],
                 correct: 1,
-                explanation: "Persistence: save column config, sort, filters to localStorage or user preferences. Restore on return. Per-table settings."
+                explanation: "Persistence: save column config, sort, filters to localStorage or user preferences. Restore on return. Per-table settings.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/storage-manager/", text: "📚 UI Storage Manager" }
             },
             {
                 q: "How do you handle table errors?",
                 options: ["Error states for load failures with retry option", "Log errors to console without informing users", "Automatically reload the full page on errors", "Show an empty table without any notification"],
                 correct: 0,
-                explanation: "Handle errors: show error message on load failure, retry button, partial data indication. Don't lose user's filter state on error."
+                explanation: "Handle errors: show error message on load failure, retry button, partial data indication. Don't lose user's filter state on error.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/table/layout-wrappers/", text: "📚 Table Layout Wrappers" }
             },
             {
                 q: "What's accessible table design?",
                 options: ["Add alt text to every cell value in the table", "Rely on browser defaults for screen readers", "Use only large font sizes for accessibility", "Proper table markup, ARIA attributes, keyboard nav"],
                 correct: 3,
-                explanation: "Accessible tables: semantic table elements, ARIA labels, keyboard navigation for actions, proper column headers. Test with screen readers."
+                explanation: "Accessible tables: semantic table elements, ARIA labels, keyboard navigation for actions, proper column headers. Test with screen readers.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Table_accessibility", text: "📚 MDN: Table Accessibility" }
             },
             {
                 q: "How do you test table components?",
                 options: ["Only verify the table renders without crashing", "Check that the table API returns correct data", "Test rendering, interactions, pagination, filtering", "Manually click through the table in the browser"],
                 correct: 2,
-                explanation: "Test tables: render with mock data, test sorting/filtering, verify pagination, test row actions. Integration tests for API interaction."
+                explanation: "Test tables: render with mock data, test sorting/filtering, verify pagination, test row actions. Integration tests for API interaction.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/testing/", text: "📚 Waldur UI Testing" }
             },
         ]
     },
@@ -7033,19 +7193,22 @@ export const questions: QuestionBank = {
                 q: "What's a modal dialog?",
                 options: ["Overlay window requiring user action", "Background processing dialog", "Mode selection interface", "Dialog about application modes"],
                 correct: 0,
-                explanation: "Modal is overlay window that blocks interaction with rest of page until dismissed. Used for forms, confirmations, important information."
+                explanation: "Modal is overlay window that blocks interaction with rest of page until dismissed. Used for forms, confirmations, important information.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog", text: "📚 MDN: dialog element" }
             },
             {
                 q: "When should you use a modal?",
                 options: ["All forms should be modals", "Important actions needing focus", "Never use modals", "Only for error messages"],
                 correct: 1,
-                explanation: "Use modals for: confirmations (delete?), focused forms, important alerts. Don't overuse - disruptive to flow. Consider inline alternatives."
+                explanation: "Use modals for: confirmations (delete?), focused forms, important alerts. Don't overuse - disruptive to flow. Consider inline alternatives.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/dialog_role", text: "📚 MDN: ARIA dialog role" }
             },
             {
                 q: "What's modal state management?",
                 options: ["Track which modals are open", "State inside modal only", "No state for modals", "Modals manage own state"],
                 correct: 0,
-                explanation: "Modal state: which modals open, data for modal content. Can be local state, context, or Redux. Open/close functions."
+                explanation: "Modal state: which modals open, data for modal content. Can be local state, context, or Redux. Open/close functions.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/component-library/", text: "📚 Waldur Component Library" }
             },
         ],
         2: [
@@ -7053,19 +7216,22 @@ export const questions: QuestionBank = {
                 q: "How do you open modals in Waldur?",
                 options: ["Navigation links that route to modal pages", "Actions that dispatch modal open events", "Modals appear automatically on page load", "Direct DOM manipulation to show overlays"],
                 correct: 1,
-                explanation: "Open modals via actions: dispatch action with modal type and data. Modal manager renders appropriate modal. Decoupled from trigger."
+                explanation: "Open modals via actions: dispatch action with modal type and data. Modal manager renders appropriate modal. Decoupled from trigger.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/component-library/", text: "📚 Waldur Component Library" }
             },
             {
                 q: "What's a confirmation modal?",
                 options: ["Modal confirming success", "Configuration settings modal", "Ask user to confirm before action", "Password confirmation modal"],
                 correct: 2,
-                explanation: "Confirmation modal asks 'Are you sure?' before destructive actions (delete, stop resource). Prevents accidental actions. Confirm/Cancel buttons."
+                explanation: "Confirmation modal asks 'Are you sure?' before destructive actions (delete, stop resource). Prevents accidental actions. Confirm/Cancel buttons.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/alertdialog_role", text: "📚 MDN: ARIA alertdialog role" }
             },
             {
                 q: "How do you pass data to modals?",
                 options: ["Include data in modal open action", "Modal fetches own data", "Global variables for modal data", "Data passed via URL only"],
                 correct: 0,
-                explanation: "Pass data when opening: modal receives props with context (resource ID, action type). Modal can fetch additional data if needed."
+                explanation: "Pass data when opening: modal receives props with context (resource ID, action type). Modal can fetch additional data if needed.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/component-library/", text: "📚 Waldur Component Library" }
             },
         ],
         3: [
@@ -7073,25 +7239,29 @@ export const questions: QuestionBank = {
                 q: "What's modal backdrop handling?",
                 options: ["Backdrop clicking not supported", "Backdrop prevents scrolling only", "Click outside to close modal", "Backdrop is purely decorative"],
                 correct: 2,
-                explanation: "Backdrop click typically closes modal. Can be disabled for important modals. Provides intuitive dismissal. Darkens background for focus."
+                explanation: "Backdrop click typically closes modal. Can be disabled for important modals. Provides intuitive dismissal. Darkens background for focus.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog", text: "📚 MDN: dialog element" }
             },
             {
                 q: "How do you handle modal accessibility?",
                 options: ["Modals are accessible by default", "Focus trap, ARIA attributes, escape key", "Browser handles accessibility", "Accessibility not important"],
                 correct: 1,
-                explanation: "Accessible modals: focus trapped inside, return focus on close, ARIA role='dialog', labelledby title, Escape key closes. Test with screen readers."
+                explanation: "Accessible modals: focus trapped inside, return focus on close, ARIA role='dialog', labelledby title, Escape key closes. Test with screen readers.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/dialog_role", text: "📚 MDN: ARIA dialog role" }
             },
             {
                 q: "What's a form modal?",
                 options: ["Modal containing a form", "Form for modal settings", "Modal for formatting", "Modal form factor"],
                 correct: 0,
-                explanation: "Form modal: modal with input form inside. Submit closes modal on success. Show validation errors inline. Often for create/edit operations."
+                explanation: "Form modal: modal with input form inside. Submit closes modal on success. Show validation errors inline. Often for create/edit operations.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/forms/", text: "📚 Waldur UI Forms" }
             },
             {
                 q: "How do you handle modal loading states?",
                 options: ["Disable modal during load", "Show spinner during async operations", "Modals load instantly always", "No loading indicator needed"],
                 correct: 1,
-                explanation: "Loading states: show spinner when fetching data or submitting. Disable submit button during submission. Prevent double-submit."
+                explanation: "Loading states: show spinner when fetching data or submitting. Disable submit button during submission. Prevent double-submit.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/component-library/", text: "📚 Waldur Component Library" }
             },
         ],
         4: [
@@ -7099,25 +7269,29 @@ export const questions: QuestionBank = {
                 q: "What's a wizard modal?",
                 options: ["Guided tour overlay for new features", "Single-page modal for initial app setup", "Multi-step modal with step navigation", "Contextual help tooltip that pops up"],
                 correct: 2,
-                explanation: "Wizard modal has multiple steps: form spread across screens. Next/Back navigation. Progress indicator. Final step confirms all."
+                explanation: "Wizard modal has multiple steps: form spread across screens. Next/Back navigation. Progress indicator. Final step confirms all.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/component-library/", text: "📚 Waldur Component Library" }
             },
             {
                 q: "How do you stack multiple modals?",
                 options: ["Only one modal at a time", "Stacking not supported", "z-index management, backdrop per modal", "Modals close previous automatically"],
                 correct: 2,
-                explanation: "Stacking: modal opens another modal. Manage z-index stack. Each has backdrop. Closing returns to previous. Use sparingly - complex."
+                explanation: "Stacking: modal opens another modal. Manage z-index stack. Each has backdrop. Closing returns to previous. Use sparingly - complex.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Positioned_layout/Understanding_z-index", text: "📚 MDN: Understanding z-index" }
             },
             {
                 q: "What's modal size and positioning?",
                 options: ["Configurable size with centered positioning", "Fixed dimensions that cannot be overridden", "Sized automatically based on browser window", "Always full screen regardless of content"],
                 correct: 0,
-                explanation: "Modal size: small, medium, large, full-screen variants. Typically centered. May scroll for tall content. Responsive for mobile."
+                explanation: "Modal size: small, medium, large, full-screen variants. Typically centered. May scroll for tall content. Responsive for mobile.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/component-library/", text: "📚 Waldur Component Library" }
             },
             {
                 q: "How do you animate modals?",
                 options: ["Animations slow modals down", "No animations recommended", "JavaScript animations only", "CSS transitions for open/close"],
                 correct: 3,
-                explanation: "Animate: fade backdrop, slide/scale modal. CSS transitions or animation library. Exit animations on close. Keep snappy (200-300ms)."
+                explanation: "Animate: fade backdrop, slide/scale modal. CSS transitions or animation library. Exit animations on close. Keep snappy (200-300ms).",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Transitions/Using", text: "📚 MDN: CSS Transitions" }
             },
         ],
         5: [
@@ -7125,31 +7299,36 @@ export const questions: QuestionBank = {
                 q: "How do you test modal components?",
                 options: ["Test open/close behavior, content rendering, actions", "Manually verify modals by clicking through the app", "Only check that the modal trigger button appears", "Compare screenshots of modals across browser types"],
                 correct: 0,
-                explanation: "Test modals: trigger open, verify content renders, test form submission, verify close behavior. Check accessibility. Test keyboard navigation."
+                explanation: "Test modals: trigger open, verify content renders, test form submission, verify close behavior. Check accessibility. Test keyboard navigation.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/testing/", text: "📚 Waldur UI Testing" }
             },
             {
                 q: "What's modal portal rendering?",
                 options: ["Portal to another application", "Rendering in portal view", "Render modal outside component tree", "Modal for portals feature"],
                 correct: 2,
-                explanation: "Portal renders modal at document body level, not inside component. Avoids z-index/overflow issues. React createPortal or library support."
+                explanation: "Portal renders modal at document body level, not inside component. Avoids z-index/overflow issues. React createPortal or library support.",
+                learnMore: { url: "https://react.dev/reference/react-dom/createPortal", text: "📚 React: createPortal" }
             },
             {
                 q: "How do you handle modal state cleanup?",
                 options: ["Reset form state on close", "Framework handles cleanup", "No cleanup needed", "State persists between opens"],
                 correct: 0,
-                explanation: "Cleanup: reset form state on close, clear errors, cancel pending requests. Don't persist stale data. Consider unmount vs hide."
+                explanation: "Cleanup: reset form state on close, clear errors, cancel pending requests. Don't persist stale data. Consider unmount vs hide.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/ui/component-library/", text: "📚 Waldur Component Library" }
             },
             {
                 q: "What's responsive modal design?",
                 options: ["Minimize animation speed for faster display", "Reduce modal content on slower connections", "Use a fixed layout design for all screens", "Adapt modal layout for different screen sizes"],
                 correct: 3,
-                explanation: "Responsive: full-screen on mobile, centered overlay on desktop. Adjust padding, buttons. Consider drawer pattern on mobile."
+                explanation: "Responsive: full-screen on mobile, centered overlay on desktop. Adjust padding, buttons. Consider drawer pattern on mobile.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using", text: "📚 MDN: Using Media Queries" }
             },
             {
                 q: "How do you prevent modal content overflow?",
                 options: ["Scrollable body with fixed header and footer", "Truncate all overflowing text with ellipsis", "Limit content length with character validation", "Increase the modal size to fit all the content"],
                 correct: 0,
-                explanation: "Handle overflow: modal body scrolls, header and action buttons fixed. Max-height based on viewport. Test with long content."
+                explanation: "Handle overflow: modal body scrolls, header and action buttons fixed. Max-height based on viewport. Test with long content.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overflow", text: "📚 MDN: CSS overflow" }
             },
         ]
     },
@@ -9041,19 +9220,22 @@ export const questions: QuestionBank = {
                 q: "What does SPA stand for in web development?",
                 options: ["Single Page Application", "Static Page Assembly", "Synchronized Page Access", "Server Page Architecture"],
                 correct: 0,
-                explanation: "SPA (Single Page Application) loads once and dynamically updates content without full page reloads, providing a smoother user experience."
+                explanation: "SPA (Single Page Application) loads once and dynamically updates content without full page reloads, providing a smoother user experience.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Glossary/SPA", text: "📚 MDN: SPA" }
             },
             {
                 q: "What is an API in web development?",
                 options: ["A database system for storing user sessions", "A contract defining how components communicate", "A framework for automated browser testing", "A protocol for encrypting web traffic data"],
                 correct: 1,
-                explanation: "An API defines how software components communicate. Web APIs typically use HTTP to exchange data between frontend and backend."
+                explanation: "An API defines how software components communicate. Web APIs typically use HTTP to exchange data between frontend and backend.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Glossary/API", text: "📚 MDN: API" }
             },
             {
                 q: "Which browser feature helps developers debug JavaScript code?",
                 options: ["Browser extension marketplace", "Developer Tools with Console panel", "Password manager settings", "Reading mode for articles"],
                 correct: 1,
-                explanation: "Browser Developer Tools (F12) include a Console for JavaScript debugging, Network tab for requests, and Elements for DOM inspection."
+                explanation: "Browser Developer Tools (F12) include a Console for JavaScript debugging, Network tab for requests, and Elements for DOM inspection.",
+                learnMore: { url: "https://developer.chrome.com/docs/devtools/console", text: "📚 DevTools Console" }
             },
         ],
         2: [
@@ -9061,19 +9243,22 @@ export const questions: QuestionBank = {
                 q: "What does JSON stand for?",
                 options: ["Java Standard Output Notation", "Java Serialized Object Network", "JavaScript Oriented Name-value", "JavaScript Object Notation"],
                 correct: 3,
-                explanation: "JSON is a lightweight data format that's easy for humans to read and machines to parse. It's the standard for web API data exchange."
+                explanation: "JSON is a lightweight data format that's easy for humans to read and machines to parse. It's the standard for web API data exchange.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/JSON", text: "📚 MDN: Working with JSON" }
             },
             {
                 q: "Where does the data in a POST request travel?",
                 options: ["In the request body, rather than the URL", "In the query string appended to the URL", "In a cookie set before the request is sent", "In the response headers that come back"],
                 correct: 0,
-                explanation: "A POST carries its payload in the body, so it is not bounded by URL length and does not end up in browser history or server access logs the way query parameters do."
+                explanation: "A POST carries its payload in the body, so it is not bounded by URL length and does not end up in browser history or server access logs the way query parameters do.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST", text: "📚 MDN: HTTP POST" }
             },
             {
                 q: "What information does the Network tab in DevTools display?",
                 options: ["HTML element hierarchy and attributes", "HTTP requests, responses, and timing data", "JavaScript syntax errors and warnings", "Applied CSS styles and computed values"],
                 correct: 1,
-                explanation: "The Network tab shows all HTTP requests, their timing, headers, payloads, and responses - essential for debugging API calls."
+                explanation: "The Network tab shows all HTTP requests, their timing, headers, payloads, and responses - essential for debugging API calls.",
+                learnMore: { url: "https://developer.chrome.com/docs/devtools/network", text: "📚 DevTools Network Panel" }
             },
         ],
         3: [
@@ -9081,25 +9266,29 @@ export const questions: QuestionBank = {
                 q: "What is CORS in web development?",
                 options: ["A caching system for static site resources", "A policy controlling cross-origin requests", "A protocol used for real-time communication", "A standard for compressing web page assets"],
                 correct: 1,
-                explanation: "CORS is a security mechanism that controls which domains can access resources from another domain, preventing unauthorized cross-site requests."
+                explanation: "CORS is a security mechanism that controls which domains can access resources from another domain, preventing unauthorized cross-site requests.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS", text: "📚 MDN: CORS" }
             },
             {
                 q: "What's the difference between localStorage and sessionStorage?",
                 options: ["localStorage is synchronous, sessionStorage is asynchronous", "localStorage is domain-specific, sessionStorage is global", "localStorage has 5MB limit, sessionStorage has unlimited storage", "localStorage persists until cleared, sessionStorage clears on tab close"],
                 correct: 3,
-                explanation: "localStorage persists until explicitly cleared. sessionStorage is cleared when the browser tab closes. Both store key-value pairs."
+                explanation: "localStorage persists until explicitly cleared. sessionStorage is cleared when the browser tab closes. Both store key-value pairs.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage", text: "📚 MDN: sessionStorage" }
             },
             {
                 q: "What is the DOM in web browsers?",
                 options: ["A memory allocation system for browser tabs", "A database for storing offline application data", "A tree of the page that JavaScript can modify", "A protocol used to download web page resources"],
                 correct: 2,
-                explanation: "The DOM is a tree representation of HTML that JavaScript can manipulate to dynamically change page content and structure."
+                explanation: "The DOM is a tree representation of HTML that JavaScript can manipulate to dynamically change page content and structure.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model", text: "📚 MDN: Intro to the DOM" }
             },
             {
                 q: "What does a 404 HTTP status code indicate?",
                 options: ["The request was successful and complete", "The server encountered an internal error", "The requested resource was not found on server", "The request requires user authentication"],
                 correct: 2,
-                explanation: "404 means the requested resource doesn't exist. 200 is success, 401/403 are auth errors, 500 is server error."
+                explanation: "404 means the requested resource doesn't exist. 200 is success, 401/403 are auth errors, 500 is server error.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/404", text: "📚 MDN: HTTP 404" }
             },
         ],
         4: [
@@ -9107,25 +9296,29 @@ export const questions: QuestionBank = {
                 q: "Why does the browser send an OPTIONS request before a POST?",
                 options: ["It is a CORS preflight asking what is allowed", "To fetch the API schema before posting data", "To check whether the user is still logged in", "To warm up the connection to the server"],
                 correct: 0,
-                explanation: "For cross-origin requests that are not simple, the browser preflights with OPTIONS. The server answers with Access-Control-Allow-* headers, and only then is the real request sent."
+                explanation: "For cross-origin requests that are not simple, the browser preflights with OPTIONS. The server answers with Access-Control-Allow-* headers, and only then is the real request sent.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/OPTIONS", text: "📚 MDN: HTTP OPTIONS" }
             },
             {
                 q: "Why mark a session cookie HttpOnly?",
                 options: ["It is hidden from the browser's developer tools", "It is sent only to the origin that first set it", "JavaScript on the page cannot read its value", "It expires as soon as the browser tab closes"],
                 correct: 2,
-                explanation: "HttpOnly keeps the cookie out of document.cookie, so an injected script cannot exfiltrate the session. Secure restricts it to HTTPS and SameSite limits when it is sent cross-site — three separate flags, three separate protections."
+                explanation: "HttpOnly keeps the cookie out of document.cookie, so an injected script cannot exfiltrate the session. Secure restricts it to HTTPS and SameSite limits when it is sent cross-site — three separate flags, three separate protections.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies", text: "📚 MDN: HTTP Cookies" }
             },
             {
                 q: "A page feels slow. What does the Network waterfall tell you?",
                 options: ["How much memory each JavaScript object holds", "Which CSS rules were applied to which element", "How many times each function has been called", "Which requests block, and how long each one waits"],
                 correct: 3,
-                explanation: "The waterfall shows queueing, connection, waiting for the first byte and download time per request — enough to tell a slow server apart from a request that started too late."
+                explanation: "The waterfall shows queueing, connection, waiting for the first byte and download time per request — enough to tell a slow server apart from a request that started too late.",
+                learnMore: { url: "https://developer.chrome.com/docs/devtools/network", text: "📚 DevTools Network Panel" }
             },
             {
                 q: "What does a request with status 0 and no response usually mean?",
                 options: ["The server returned an empty response body", "The request was blocked, aborted or failed CORS", "The endpoint responded faster than the timer", "The browser served the response from its cache"],
                 correct: 1,
-                explanation: "Status 0 is the browser's way of saying the response never became readable: a CORS rejection, a blocked mixed-content request, a network failure or a cancelled fetch."
+                explanation: "Status 0 is the browser's way of saying the response never became readable: a CORS rejection, a blocked mixed-content request, a network failure or a cancelled fetch.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS/Errors", text: "📚 MDN: CORS Errors" }
             },
         ],
         5: [
@@ -9133,31 +9326,36 @@ export const questions: QuestionBank = {
                 q: "What does an ETag header let a client do?",
                 options: ["Revalidate a cached copy without downloading it", "Encrypt the response body before transmission", "Tag a request so the server can group its logs", "Declare which content types the client accepts"],
                 correct: 0,
-                explanation: "The client sends the stored ETag back in If-None-Match. If the resource is unchanged the server answers 304 Not Modified with no body, so the cached copy is reused."
+                explanation: "The client sends the stored ETag back in If-None-Match. If the resource is unchanged the server answers 304 Not Modified with no body, so the cached copy is reused.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag", text: "📚 MDN: ETag" }
             },
             {
                 q: "How does the same-origin policy relate to CORS?",
                 options: ["They are unrelated: one is for cookies only", "CORS applies to servers, same-origin to browsers", "CORS replaced the same-origin policy entirely", "CORS is the way a server relaxes that default"],
                 correct: 3,
-                explanation: "Same-origin is the browser's default: scripts cannot read responses from another origin. CORS is the opt-in by which a server declares which origins may read its responses."
+                explanation: "Same-origin is the browser's default: scripts cannot read responses from another origin. CORS is the opt-in by which a server declares which origins may read its responses.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Same-origin_policy", text: "📚 MDN: Same-origin Policy" }
             },
             {
                 q: "When is a WebSocket a better fit than repeated polling?",
                 options: ["When updates are frequent and must arrive promptly", "When the payloads are large but change rarely", "When the client is behind a restrictive proxy", "When the server has no persistent state at all"],
                 correct: 0,
-                explanation: "Polling costs a round trip per check and adds latency up to the interval. A persistent connection pays the handshake once and pushes updates as they happen — which is why Waldur streams events over STOMP on a WebSocket."
+                explanation: "Polling costs a round trip per check and adds latency up to the interval. A persistent connection pays the handshake once and pushes updates as they happen — which is why Waldur streams events over STOMP on a WebSocket.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API", text: "📚 MDN: WebSockets API" }
             },
             {
                 q: "What does a Content-Security-Policy header do?",
                 options: ["Signs the response so the client can verify it", "Lists the cookies the page is allowed to write", "Restricts where scripts and other assets may load from", "Encrypts the page's contents while in transit"],
                 correct: 2,
-                explanation: "CSP declares allowed sources for scripts, styles, images and connections, so an injected inline script has no permitted origin to run from. It limits the blast radius of an XSS bug rather than preventing the injection."
+                explanation: "CSP declares allowed sources for scripts, styles, images and connections, so an injected inline script has no permitted origin to run from. It limits the blast radius of an XSS bug rather than preventing the injection.",
+                learnMore: { url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP", text: "📚 MDN: Content Security Policy" }
             },
             {
                 q: "Production code is minified. How do you debug it?",
                 options: ["Load the source maps the build emitted", "Read the minified bundle line by line", "Rebuild locally and hope it reproduces", "Add alert calls until the flow is clear"],
                 correct: 0,
-                explanation: "Source maps let DevTools display the original source and set breakpoints in it while the minified bundle actually runs. Without them, stack traces point at meaningless one-letter names."
+                explanation: "Source maps let DevTools display the original source and set breakpoints in it while the minified bundle actually runs. Without them, stack traces point at meaningless one-letter names.",
+                learnMore: { url: "https://developer.chrome.com/docs/devtools/javascript/source-maps", text: "📚 DevTools Source Maps" }
             },
         ]
     },
@@ -9168,19 +9366,22 @@ export const questions: QuestionBank = {
                 q: "What does IaC stand for?",
                 options: ["Integrated Application Control - app management", "Internal Access Configuration - security settings", "Internet and Computing - network protocols", "Infrastructure as Code - managing infra via code files"],
                 correct: 3,
-                explanation: "Infrastructure as Code manages infrastructure through code files rather than manual processes, enabling version control and automation."
+                explanation: "Infrastructure as Code manages infrastructure through code files rather than manual processes, enabling version control and automation.",
+                learnMore: { url: "https://developer.hashicorp.com/terraform/intro", text: "📚 What is Terraform?" }
             },
             {
                 q: "What is Ansible primarily used for?",
                 options: ["Building container images from scratch", "Storing application data in databases", "Automating server configuration and deployment", "Monitoring application performance metrics"],
                 correct: 2,
-                explanation: "Ansible automates software provisioning, configuration management, and deployment using simple YAML playbooks."
+                explanation: "Ansible automates software provisioning, configuration management, and deployment using simple YAML playbooks.",
+                learnMore: { url: "https://docs.ansible.com/projects/ansible/latest/getting_started/index.html", text: "📚 Ansible Getting Started" }
             },
             {
                 q: "What is Terraform primarily used for?",
                 options: ["Orchestrating container deployments", "Running continuous integration pipelines", "Provisioning cloud infrastructure resources", "Monitoring server health and metrics"],
                 correct: 2,
-                explanation: "Terraform provisions and manages infrastructure across multiple cloud providers using declarative configuration files."
+                explanation: "Terraform provisions and manages infrastructure across multiple cloud providers using declarative configuration files.",
+                learnMore: { url: "https://developer.hashicorp.com/terraform/intro", text: "📚 What is Terraform?" }
             },
         ],
         2: [
@@ -9188,19 +9389,22 @@ export const questions: QuestionBank = {
                 q: "What is declarative configuration?",
                 options: ["Configuring systems manually via UI", "Describing desired end state, tool determines steps", "Generating configs at application runtime", "Writing step-by-step procedural instructions"],
                 correct: 1,
-                explanation: "Declarative: you describe WHAT you want (desired state). The tool figures out HOW to achieve it. Imperative: you describe exact steps."
+                explanation: "Declarative: you describe WHAT you want (desired state). The tool figures out HOW to achieve it. Imperative: you describe exact steps.",
+                learnMore: { url: "https://developer.hashicorp.com/terraform/language", text: "📚 Terraform Language" }
             },
             {
                 q: "What does idempotency mean in IaC?",
                 options: ["Changes are automatically rolled back", "Running config repeatedly produces same result", "Each run produces different outcomes", "Configuration can only be applied once"],
                 correct: 1,
-                explanation: "Idempotent operations can run repeatedly without changing the result beyond the initial run. Essential for reliable automation."
+                explanation: "Idempotent operations can run repeatedly without changing the result beyond the initial run. Essential for reliable automation.",
+                learnMore: { url: "https://docs.ansible.com/projects/ansible/latest/reference_appendices/glossary.html", text: "📚 Ansible Glossary" }
             },
             {
                 q: "What is a playbook in Ansible?",
                 options: ["YAML file defining automation tasks to execute", "Log file recording execution history", "Python script for data processing", "Database storing server configurations"],
                 correct: 0,
-                explanation: "Playbooks are Ansible's configuration files written in YAML, defining tasks to execute on managed hosts."
+                explanation: "Playbooks are Ansible's configuration files written in YAML, defining tasks to execute on managed hosts.",
+                learnMore: { url: "https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_intro.html", text: "📚 Ansible Playbooks" }
             },
         ],
         3: [
@@ -9208,25 +9412,29 @@ export const questions: QuestionBank = {
                 q: "What is Terraform state used for?",
                 options: ["Recording network traffic between services", "Storing application debug logs", "Tracking which real resources match your config", "Monitoring current CPU and memory usage"],
                 correct: 2,
-                explanation: "Terraform state tracks which real resources correspond to your configuration, enabling updates and deletions."
+                explanation: "Terraform state tracks which real resources correspond to your configuration, enabling updates and deletions.",
+                learnMore: { url: "https://developer.hashicorp.com/terraform/language/state", text: "📚 Terraform State" }
             },
             {
                 q: "What is the main difference between Ansible and Terraform?",
                 options: ["Ansible configures servers, Terraform provisions infra", "Ansible only integrates with major cloud providers", "Terraform only functions on Linux-based systems", "They are fully interchangeable tools for same tasks"],
                 correct: 0,
-                explanation: "Terraform excels at provisioning infrastructure (VMs, networks). Ansible excels at configuring software on existing servers. Often used together."
+                explanation: "Terraform excels at provisioning infrastructure (VMs, networks). Ansible excels at configuring software on existing servers. Often used together.",
+                learnMore: { url: "https://docs.ansible.com/projects/ansible/latest/getting_started/introduction.html", text: "📚 Ansible Introduction" }
             },
             {
                 q: "Why store IaC files in version control?",
                 options: ["IaC tools technically require a repository", "Configurations apply faster from a repository", "Change history, review, audit and rollback", "Files stored in git are compressed smaller"],
                 correct: 2,
-                explanation: "Version control provides change history, enables code review, supports rollback, and documents infrastructure evolution."
+                explanation: "Version control provides change history, enables code review, supports rollback, and documents infrastructure evolution.",
+                learnMore: { url: "https://developer.hashicorp.com/terraform/language/style", text: "📚 Terraform Style Guide" }
             },
             {
                 q: "What is configuration drift?",
                 options: ["Manual changes causing systems to differ from code", "Network latency between data centers", "Memory leaks in running applications", "Scheduled automatic updates to infrastructure"],
                 correct: 0,
-                explanation: "Drift occurs when manual changes cause actual infrastructure to differ from IaC definitions. IaC tools can detect and correct drift."
+                explanation: "Drift occurs when manual changes cause actual infrastructure to differ from IaC definitions. IaC tools can detect and correct drift.",
+                learnMore: { url: "https://developer.hashicorp.com/terraform/cli/commands/plan", text: "📚 terraform plan" }
             },
         ],
         4: [
@@ -9234,25 +9442,29 @@ export const questions: QuestionBank = {
                 q: "What does terraform plan give you that apply does not?",
                 options: ["A faster path that skips provider downloads", "A backup copy of the current state file", "A validation of syntax without reading state", "A preview of the changes before they happen"],
                 correct: 3,
-                explanation: "plan compares configuration against state and shows what would be created, changed or destroyed. Reading a plan before applying is how you catch a rename that would actually delete and recreate a resource."
+                explanation: "plan compares configuration against state and shows what would be created, changed or destroyed. Reading a plan before applying is how you catch a rename that would actually delete and recreate a resource.",
+                learnMore: { url: "https://developer.hashicorp.com/terraform/cli/commands/plan", text: "📚 terraform plan" }
             },
             {
                 q: "Where do secrets belong in an IaC repository?",
                 options: ["Outside it: a vault or injected at run time", "In a file that is committed but base64 encoded", "In the state file, which tools keep encrypted", "In the playbook, since the repo is private"],
                 correct: 0,
-                explanation: "Committed secrets live forever in history and travel with every clone. Reference them instead — Ansible Vault, a secret manager, or CI variables injected at run time."
+                explanation: "Committed secrets live forever in history and travel with every clone. Reference them instead — Ansible Vault, a secret manager, or CI variables injected at run time.",
+                learnMore: { url: "https://docs.ansible.com/projects/ansible/latest/vault_guide/index.html", text: "📚 Ansible Vault" }
             },
             {
                 q: "What is an Ansible inventory?",
                 options: ["The list of hosts and groups to act upon", "A record of every task that has been run", "The set of modules available to a playbook", "A cache of facts gathered from managed hosts"],
                 correct: 0,
-                explanation: "The inventory defines managed hosts and groups them, so a play can target webservers or a single host. It can be a static file or generated dynamically from a cloud API."
+                explanation: "The inventory defines managed hosts and groups them, so a play can target webservers or a single host. It can be a static file or generated dynamically from a cloud API.",
+                learnMore: { url: "https://docs.ansible.com/projects/ansible/latest/inventory_guide/intro_inventory.html", text: "📚 Ansible Inventory" }
             },
             {
                 q: "Why factor automation into roles or modules?",
                 options: ["To make each run measurably faster to execute", "Because variables cannot be shared without them", "To reuse and test a unit instead of copying it", "Because the tools refuse files above a size limit"],
                 correct: 2,
-                explanation: "A role or module packages tasks, variables and defaults behind an interface. The same unit is reused across environments, and a change is made once rather than in every copy."
+                explanation: "A role or module packages tasks, variables and defaults behind an interface. The same unit is reused across environments, and a change is made once rather than in every copy.",
+                learnMore: { url: "https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_reuse_roles.html", text: "📚 Ansible Roles" }
             },
         ],
         5: [
@@ -9260,31 +9472,36 @@ export const questions: QuestionBank = {
                 q: "Why does Terraform state need locking?",
                 options: ["To keep the file from growing without bound", "To prevent reads while a plan is running", "To encrypt credentials that end up inside it", "To stop two applies corrupting it at once"],
                 correct: 3,
-                explanation: "State is the source of truth for what exists. A remote backend with locking stops two people applying simultaneously and interleaving their writes into an inconsistent picture."
+                explanation: "State is the source of truth for what exists. A remote backend with locking stops two people applying simultaneously and interleaving their writes into an inconsistent picture.",
+                learnMore: { url: "https://developer.hashicorp.com/terraform/language/state/locking", text: "📚 Terraform State Locking" }
             },
             {
                 q: "What does Ansible's check mode do?",
                 options: ["Compares two playbooks for conflicting tasks", "Reports what would change without changing it", "Verifies playbook syntax without touching hosts", "Checks that every host is reachable over SSH"],
                 correct: 1,
-                explanation: "Check mode is Ansible's dry run: modules report whether they would change something. It relies on modules implementing it properly, so a shell command that ignores check mode is a common blind spot."
+                explanation: "Check mode is Ansible's dry run: modules report whether they would change something. It relies on modules implementing it properly, so a shell command that ignores check mode is a common blind spot.",
+                learnMore: { url: "https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_checkmode.html", text: "📚 Ansible Check Mode" }
             },
             {
                 q: "How does immutable infrastructure differ from config management?",
                 options: ["Servers are configured once and never audited", "Configuration lives in the image, not in the repo", "Only containers can be treated as immutable", "Servers are replaced rather than modified in place"],
                 correct: 3,
-                explanation: "Immutable means building a new image or instance and swapping it in, so drift cannot accumulate. Config management converges an existing machine toward a desired state instead."
+                explanation: "Immutable means building a new image or instance and swapping it in, so drift cannot accumulate. Config management converges an existing machine toward a desired state instead.",
+                learnMore: { url: "https://developer.hashicorp.com/terraform/intro", text: "📚 What is Terraform?" }
             },
             {
                 q: "You find drift on a production host. What is the safe response?",
                 options: ["Update the code to match, or re-apply deliberately", "Immediately re-apply and move on without review", "Delete the host so it is recreated from scratch", "Disable drift detection until the release ships"],
                 correct: 0,
-                explanation: "Drift is information: either the manual change was needed — so it belongs in code — or it was not, and re-applying is correct. Blindly re-applying can undo an emergency fix nobody wrote down."
+                explanation: "Drift is information: either the manual change was needed — so it belongs in code — or it was not, and re-applying is correct. Blindly re-applying can undo an emergency fix nobody wrote down.",
+                learnMore: { url: "https://developer.hashicorp.com/terraform/cli/commands/plan", text: "📚 terraform plan" }
             },
             {
                 q: "In what sense is a Helm chart infrastructure as code?",
                 options: ["It only packages container images for distribution", "It replaces the need for a Kubernetes API server", "It declares desired Kubernetes state in version control", "It imperatively runs kubectl commands in sequence"],
                 correct: 2,
-                explanation: "A chart is a versioned, parameterised declaration of the desired cluster state. Waldur ships one, which is why upgrading a deployment is a values change and a release rather than a sequence of manual edits."
+                explanation: "A chart is a versioned, parameterised declaration of the desired cluster state. Waldur ships one, which is why upgrading a deployment is a values change and a release rather than a sequence of manual edits.",
+                learnMore: { url: "https://helm.sh/docs/topics/charts/", text: "📚 Helm Charts" }
             },
         ]
     },
@@ -9295,19 +9512,22 @@ export const questions: QuestionBank = {
                 q: "What tool is used to run Waldur locally for development?",
                 options: ["docker compose for orchestrating multiple services", "npm start for the JavaScript frontend only", "kubectl apply for Kubernetes deployment", "python manage.py runserver for Django"],
                 correct: 0,
-                explanation: "Waldur uses Docker Compose to orchestrate its services (API, UI, database, etc.) for local development."
+                explanation: "Waldur uses Docker Compose to orchestrate its services (API, UI, database, etc.) for local development.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/docker-compose/", text: "📚 Waldur Docker Compose" }
             },
             {
                 q: "What is Docker Compose used for?",
                 options: ["Defining and running multi-container applications", "Running a single container in isolation", "Building container images from Dockerfiles", "Monitoring container network traffic"],
                 correct: 0,
-                explanation: "Docker Compose uses compose.yaml files to define and run multi-container applications, managing their lifecycle together."
+                explanation: "Docker Compose uses compose.yaml files to define and run multi-container applications, managing their lifecycle together.",
+                learnMore: { url: "https://docs.docker.com/compose/", text: "📚 Docker Compose Docs" }
             },
             {
                 q: "Which file defines Waldur's local development setup?",
                 options: ["compose.yaml defines all services", "settings.py configures Django application", "package.json lists JavaScript dependencies", "Dockerfile builds a single container"],
                 correct: 0,
-                explanation: "compose.yaml defines services, networks, and volumes. Waldur's compose file sets up all required components."
+                explanation: "compose.yaml defines services, networks, and volumes. Waldur's compose file sets up all required components.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/docker-compose/", text: "📚 Waldur Docker Compose" }
             },
         ],
         2: [
@@ -9315,19 +9535,22 @@ export const questions: QuestionBank = {
                 q: "What command starts all Waldur services locally?",
                 options: ["waldur run is not a valid command", "npm start only runs the frontend", "docker compose up starts all defined services", "docker start waldur starts one container"],
                 correct: 2,
-                explanation: "'docker compose up' starts all services. Add '-d' for detached mode, '--build' to rebuild images."
+                explanation: "'docker compose up' starts all services. Add '-d' for detached mode, '--build' to rebuild images.",
+                learnMore: { url: "https://docs.docker.com/reference/cli/docker/compose/up/", text: "📚 docker compose up" }
             },
             {
                 q: "How do you view logs from the Waldur API container?",
                 options: ["kubectl logs api requires Kubernetes", "docker compose logs api shows service output", "cat /var/log/api reads host file system", "waldur logs is not a valid command"],
                 correct: 1,
-                explanation: "'docker compose logs <service>' shows logs. Add '-f' to follow in real-time. Service names are defined in compose file."
+                explanation: "'docker compose logs <service>' shows logs. Add '-f' to follow in real-time. Service names are defined in compose file.",
+                learnMore: { url: "https://docs.docker.com/reference/cli/docker/compose/logs/", text: "📚 docker compose logs" }
             },
             {
                 q: "What database system does Waldur use for data storage?",
                 options: ["SQLite embedded database", "MongoDB document database", "MySQL relational database", "PostgreSQL relational database"],
                 correct: 3,
-                explanation: "Waldur uses PostgreSQL for data persistence. The compose setup includes a postgres service container."
+                explanation: "Waldur uses PostgreSQL for data persistence. The compose setup includes a postgres service container.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/helm/docs/postgres-db/", text: "📚 Waldur PostgreSQL Setup" }
             },
         ],
         3: [
@@ -9335,25 +9558,29 @@ export const questions: QuestionBank = {
                 q: "How do you rebuild Waldur containers after code changes?",
                 options: ["docker compose up --build rebuilds images", "docker restart only restarts existing", "docker refresh is not a valid command", "docker compose reload is not supported"],
                 correct: 0,
-                explanation: "'--build' forces image rebuild before starting. Essential when Dockerfile or dependencies change."
+                explanation: "'--build' forces image rebuild before starting. Essential when Dockerfile or dependencies change.",
+                learnMore: { url: "https://docs.docker.com/reference/cli/docker/compose/up/", text: "📚 docker compose up --build" }
             },
             {
                 q: "What is the default URL for Waldur API locally?",
                 options: ["http://admin.waldur/ is not configured", "http://waldur.local/ requires DNS setup", "http://localhost/api/ with standard port", "http://0.0.0.0:8000/ is Django default"],
                 correct: 2,
-                explanation: "Waldur API is typically available at localhost with /api/ prefix. Check compose file for exact port mappings."
+                explanation: "Waldur API is typically available at localhost with /api/ prefix. Check compose file for exact port mappings.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/docker-compose/", text: "📚 Waldur Docker Compose" }
             },
             {
                 q: "How do you access the Waldur PostgreSQL database directly?",
                 options: ["mysql -u root is for MySQL databases", "docker compose exec db psql for Postgres shell", "sqlite3 waldur.db is for SQLite only", "docker compose logs db shows logs not shell"],
                 correct: 1,
-                explanation: "'docker compose exec db psql' opens PostgreSQL shell. Use -U flag for username, database name as argument."
+                explanation: "'docker compose exec db psql' opens PostgreSQL shell. Use -U flag for username, database name as argument.",
+                learnMore: { url: "https://docs.docker.com/reference/cli/docker/compose/exec/", text: "📚 docker compose exec" }
             },
             {
                 q: "What does 'docker compose down' do?",
                 options: ["Shows current container status and health", "Restarts all containers with new config", "Pauses containers but keeps them running", "Stops and removes containers and networks"],
                 correct: 3,
-                explanation: "'down' stops containers and removes them plus networks. Add '-v' to also remove volumes (warning: deletes data)."
+                explanation: "'down' stops containers and removes them plus networks. Add '-v' to also remove volumes (warning: deletes data).",
+                learnMore: { url: "https://docs.docker.com/reference/cli/docker/compose/down/", text: "📚 docker compose down" }
             },
         ],
         4: [
@@ -9361,25 +9588,29 @@ export const questions: QuestionBank = {
                 q: "Besides the API, what else runs in the Waldur stack?",
                 options: ["Nothing — the API container is self-contained", "Only a database; everything else is in the API", "A worker, a beat scheduler, a queue and a router", "A second API replica for load balancing only"],
                 correct: 2,
-                explanation: "The compose stack runs the Mastermind API, a Celery worker, the beat scheduler, PostgreSQL, RabbitMQ, Homeport and a Caddy router in front — plus optional add-ons such as Keycloak and the Matrix chat services."
+                explanation: "The compose stack runs the Mastermind API, a Celery worker, the beat scheduler, PostgreSQL, RabbitMQ, Homeport and a Caddy router in front — plus optional add-ons such as Keycloak and the Matrix chat services.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/architecture/", text: "📚 Waldur Architecture" }
             },
             {
                 q: "You changed a Django model. What must happen before the API works?",
                 options: ["The database volume is deleted and recreated", "Nothing: Django alters tables at request time", "Migrations are generated and applied to the database", "The container is rebuilt, which syncs the schema"],
                 correct: 2,
-                explanation: "Django never changes the schema implicitly. Generate the migration, then apply it — the compose stack has a dedicated migration step for exactly this."
+                explanation: "Django never changes the schema implicitly. Generate the migration, then apply it — the compose stack has a dedicated migration step for exactly this.",
+                learnMore: { url: "https://docs.djangoproject.com/en/stable/topics/migrations/", text: "📚 Django Migrations" }
             },
             {
                 q: "How do you override configuration for a local stack?",
                 options: ["Environment variables and mounted config files", "Change the values in the running container", "Configuration cannot be changed after startup", "Edit the image and rebuild it every time"],
                 correct: 0,
-                explanation: "Compose passes environment variables and mounts configuration into the containers, so local overrides never require touching the published image."
+                explanation: "Compose passes environment variables and mounts configuration into the containers, so local overrides never require touching the published image.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/mastermind-configuration/configuration-guide/", text: "📚 Waldur Configuration Guide" }
             },
             {
                 q: "'docker compose up' fails with a port already allocated.",
                 options: ["The image was built for the wrong architecture", "The database volume is corrupted and must be reset", "Docker ran out of disk space for new layers", "Another process holds that port on the host"],
                 correct: 3,
-                explanation: "A published port is exclusive on the host. Either stop whatever holds it, or shift the mapping — which is exactly why parallel workspaces offset every port instead of sharing one set."
+                explanation: "A published port is exclusive on the host. Either stop whatever holds it, or shift the mapping — which is exactly why parallel workspaces offset every port instead of sharing one set.",
+                learnMore: { url: "https://docs.docker.com/reference/compose-file/services/", text: "📚 Compose Port Mapping" }
             },
         ],
         5: [
@@ -9387,31 +9618,36 @@ export const questions: QuestionBank = {
                 q: "What is the waldur-docker-compose repository actually for?",
                 options: ["Local development, demos and single-server deployments", "Building the container images published to the registry", "Running the production Kubernetes deployment", "Generating the documentation site from source"],
                 correct: 0,
-                explanation: "It packages the whole platform as a Compose stack: fast to start for development and demos, and viable for a single-VM deployment. Kubernetes deployments use the Helm chart instead."
+                explanation: "It packages the whole platform as a Compose stack: fast to start for development and demos, and viable for a single-VM deployment. Kubernetes deployments use the Helm chart instead.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/docker-compose/", text: "📚 Waldur Docker Compose" }
             },
             {
                 q: "What does the Celery beat container do that the worker does not?",
                 options: ["Serves the API when the main process is busy", "Stores task results for later inspection", "Schedules periodic tasks onto the queue", "Executes the long-running tasks the worker rejects"],
                 correct: 2,
-                explanation: "Beat is the scheduler: it enqueues periodic jobs at their due time. Workers execute whatever is on the queue. Running two beats duplicates every scheduled task."
+                explanation: "Beat is the scheduler: it enqueues periodic jobs at their due time. Workers execute whatever is on the queue. Running two beats duplicates every scheduled task.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/background/", text: "📚 Background Processing" }
             },
             {
                 q: "You want a genuinely clean database. What do you run?",
                 options: ["docker compose down -v, removing the volumes", "docker compose restart, recreating containers", "docker compose down, which clears the data", "docker compose up --build, rebuilding images"],
                 correct: 0,
-                explanation: "Data lives in named volumes that survive down and up. Only -v removes them — which is also why it is the one flag to think twice about."
+                explanation: "Data lives in named volumes that survive down and up. Only -v removes them — which is also why it is the one flag to think twice about.",
+                learnMore: { url: "https://docs.docker.com/reference/cli/docker/compose/down/", text: "📚 docker compose down -v" }
             },
             {
                 q: "An API request 500s. Where do you look first?",
                 options: ["The router logs, which record every route", "The API container logs, for the traceback", "The browser console, for a JavaScript error", "The database logs, since data is involved"],
                 correct: 1,
-                explanation: "A 500 means the traceback was raised server side and logged by the API container. If the work happened in a background task, the worker's logs hold it instead."
+                explanation: "A 500 means the traceback was raised server side and logged by the API container. If the work happened in a background task, the worker's logs hold it instead.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/debugging/", text: "📚 Waldur Debugging" }
             },
             {
                 q: "Why point a local stack at emulators rather than real backends?",
                 options: ["Emulators are the only backends Waldur supports locally", "Emulated backends validate business logic more strictly", "Real backends cannot be reached from a container", "Real credentials and quota are not needed to develop"],
                 correct: 3,
-                explanation: "The OpenStack and SLURM emulators answer the same APIs without a cloud or a cluster, so provisioning flows can be exercised locally and in CI — the same emulators the E2E suite uses."
+                explanation: "The OpenStack and SLURM emulators answer the same APIs without a cloud or a cluster, so provisioning flows can be exercised locally and in CI — the same emulators the E2E suite uses.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/install-from-src/", text: "📚 Install From Source" }
             },
         ]
     },
@@ -9422,19 +9658,22 @@ export const questions: QuestionBank = {
                 q: "What is a feature branch in Git?",
                 options: ["A tag that marks a particular released version", "A separate branch used for one piece of work", "A branch that has already been deleted upstream", "The main production branch of the repository"],
                 correct: 1,
-                explanation: "Feature branches isolate development work, allowing parallel development without affecting main code until ready."
+                explanation: "Feature branches isolate development work, allowing parallel development without affecting main code until ready.",
+                learnMore: { url: "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging", text: "📚 Git Branching" }
             },
             {
                 q: "What is a Pull Request (PR)?",
                 options: ["A request for new feature from customer", "Request to merge your changes into another branch", "A formal bug report filed in the tracker", "Request to download code from remote repo"],
                 correct: 1,
-                explanation: "PRs propose changes for review before merging. They enable code review, discussion, and CI checks."
+                explanation: "PRs propose changes for review before merging. They enable code review, discussion, and CI checks.",
+                learnMore: { url: "https://docs.gitlab.com/user/project/merge_requests/", text: "📚 GitLab Merge Requests" }
             },
             {
                 q: "What is Jira commonly used for in development teams?",
                 options: ["Hosting git repositories and their history", "Running the automated CI and CD pipelines", "Tracking issues, tasks and project progress", "Managing the deployment of containers"],
                 correct: 2,
-                explanation: "Jira tracks issues, tasks, and project progress. Teams use it to manage work items and sprints."
+                explanation: "Jira tracks issues, tasks, and project progress. Teams use it to manage work items and sprints.",
+                learnMore: { url: "https://www.atlassian.com/software/jira/guides/issues/overview", text: "📚 Jira Issues Overview" }
             },
         ],
         2: [
@@ -9442,19 +9681,22 @@ export const questions: QuestionBank = {
                 q: "What should you do before starting work on a new feature?",
                 options: ["Create a new branch from latest main branch", "Commit your changes directly to main branch", "Merge all open PRs before starting", "Delete all your old feature branches first"],
                 correct: 0,
-                explanation: "Start from updated main to avoid conflicts. Create a descriptive branch name like 'feature/add-login'."
+                explanation: "Start from updated main to avoid conflicts. Create a descriptive branch name like 'feature/add-login'.",
+                learnMore: { url: "https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows", text: "📚 Git Branching Workflows" }
             },
             {
                 q: "What is code review in software development?",
                 options: ["Automated testing of code functionality", "Team members examining changes before merge", "Monitoring application performance metrics", "Writing technical documentation for code"],
                 correct: 1,
-                explanation: "Code review catches bugs, shares knowledge, ensures standards, and improves code quality through peer feedback."
+                explanation: "Code review catches bugs, shares knowledge, ensures standards, and improves code quality through peer feedback.",
+                learnMore: { url: "https://docs.gitlab.com/user/project/merge_requests/reviews/", text: "📚 GitLab Code Review" }
             },
             {
                 q: "Why should commits reference Jira ticket numbers?",
                 options: ["Commits become significantly faster to build", "Git requires a ticket number in the message", "Traceability between code and requirements", "The commit history takes up much less space"],
                 correct: 2,
-                explanation: "Linking provides traceability, helps track what changes address which requirements, and aids debugging."
+                explanation: "Linking provides traceability, helps track what changes address which requirements, and aids debugging.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/workflow/", text: "📚 Waldur Development Workflow" }
             },
         ],
         3: [
@@ -9462,25 +9704,29 @@ export const questions: QuestionBank = {
                 q: "What makes a good Pull Request description?",
                 options: ["Left empty since code speaks for itself", "Explains what changed, why, and how to test", "Copy of all the changed code inline", "Contains only the Jira ticket number"],
                 correct: 1,
-                explanation: "Good descriptions help reviewers understand context, changes made, and how to verify correctness."
+                explanation: "Good descriptions help reviewers understand context, changes made, and how to verify correctness.",
+                learnMore: { url: "https://docs.gitlab.com/user/project/merge_requests/", text: "📚 GitLab Merge Requests" }
             },
             {
                 q: "When should you update your feature branch from main?",
                 options: ["Never - keep your branch completely isolated", "Only when Git reports merge conflicts", "Only once at the very beginning", "Regularly throughout development and before merge"],
                 correct: 3,
-                explanation: "Regular updates reduce merge conflicts and catch integration issues early. Rebase or merge from main frequently."
+                explanation: "Regular updates reduce merge conflicts and catch integration issues early. Rebase or merge from main frequently.",
+                learnMore: { url: "https://git-scm.com/docs/git-rebase", text: "📚 git rebase" }
             },
             {
                 q: "What does CI mean in development workflow?",
                 options: ["Container Image - Docker artifacts", "Code Inspection - manual review process", "Continuous Integration - automated build and test", "Customer Interface - user-facing features"],
                 correct: 2,
-                explanation: "CI automatically builds and tests code on every commit, catching issues early and ensuring code quality."
+                explanation: "CI automatically builds and tests code on every commit, catching issues early and ensuring code quality.",
+                learnMore: { url: "https://docs.gitlab.com/ci/", text: "📚 GitLab CI/CD" }
             },
             {
                 q: "What should you do after your PR is approved?",
                 options: ["Merge to main and delete the feature branch", "Keep the branch for future reference", "Create another PR with more changes", "Revert all the changes you made"],
                 correct: 0,
-                explanation: "After approval and CI passing, merge to main and delete the feature branch to keep the repository clean."
+                explanation: "After approval and CI passing, merge to main and delete the feature branch to keep the repository clean.",
+                learnMore: { url: "https://docs.gitlab.com/user/project/merge_requests/methods/", text: "📚 Merge Methods" }
             },
         ],
         4: [
@@ -9488,25 +9734,29 @@ export const questions: QuestionBank = {
                 q: "What does a branch named fix/WAL-1234-quota-validation tell a reviewer?",
                 options: ["A personal branch that will not be merged", "A bug fix, tracked by that Jira ticket", "A feature branch owned by user WAL", "A release branch cut for version 1234"],
                 correct: 1,
-                explanation: "The convention is fix/ or feature/ plus the ticket ID and a short description. The prefix says what kind of change it is and the ID links it back to the tracker."
+                explanation: "The convention is fix/ or feature/ plus the ticket ID and a short description. The prefix says what kind of change it is and the ID links it back to the tracker.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/workflow/", text: "📚 Waldur Development Workflow" }
             },
             {
                 q: "Why open a merge request as a draft?",
                 options: ["Because drafts skip the review requirement", "To stop the pipeline from running at all", "Because non-draft MRs cannot be updated", "To signal work in progress while CI already runs"],
                 correct: 3,
-                explanation: "A draft gets early feedback and pipeline results without inviting a final review or an accidental merge. Marking it ready is the explicit signal that it should be reviewed."
+                explanation: "A draft gets early feedback and pipeline results without inviting a final review or an accidental merge. Marking it ready is the explicit signal that it should be reviewed.",
+                learnMore: { url: "https://docs.gitlab.com/user/project/merge_requests/drafts/", text: "📚 Draft Merge Requests" }
             },
             {
                 q: "What belongs in a commit message beyond the description?",
                 options: ["The line count added and removed in total", "The task ID, so the change traces to its ticket", "The name of every file the commit touches", "The reviewer's name and approval timestamp"],
                 correct: 1,
-                explanation: "The format is `Description [TASK-ID]`. The diff already lists the files; the ticket reference is the piece git cannot reconstruct on its own."
+                explanation: "The format is `Description [TASK-ID]`. The diff already lists the files; the ticket reference is the piece git cannot reconstruct on its own.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/workflow/", text: "📚 Waldur Development Workflow" }
             },
             {
                 q: "What must pass before pushing backend changes?",
                 options: ["A manual review by two other developers", "Nothing — CI exists to catch problems later", "Linting, the relevant tests, and schema validation", "A successful production deployment to staging"],
                 correct: 2,
-                explanation: "Pre-push means pre-commit lint, the relevant tests, and `spectacular --validate` for the API schema — the frontend equivalent being lint plus tsc --noEmit. Pushing code that does not compile burns everyone's CI time."
+                explanation: "Pre-push means pre-commit lint, the relevant tests, and `spectacular --validate` for the API schema — the frontend equivalent being lint plus tsc --noEmit. Pushing code that does not compile burns everyone's CI time.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/waldur-code-style/", text: "📚 Waldur Code Style" }
             },
         ],
         5: [
@@ -9514,31 +9764,36 @@ export const questions: QuestionBank = {
                 q: "Rebasing versus merging main into your branch — what's the trade-off?",
                 options: ["Rebase keeps history linear but rewrites commits", "Merge rewrites history while rebase preserves it", "They produce identical history in every case", "Rebase is always safe on a shared branch"],
                 correct: 0,
-                explanation: "Rebase replays your commits on top of main for a linear history, but changes their hashes — awkward once others have pulled the branch. A merge commit preserves what actually happened."
+                explanation: "Rebase replays your commits on top of main for a linear history, but changes their hashes — awkward once others have pulled the branch. A merge commit preserves what actually happened.",
+                learnMore: { url: "https://git-scm.com/book/en/v2/Git-Branching-Rebasing", text: "📚 Git Rebasing" }
             },
             {
                 q: "A merged change broke the default branch. What is the first move?",
                 options: ["Leave it and fix it in the next sprint", "Delete the branch so it cannot be merged again", "Revert the merge, then fix forward calmly", "Force-push the branch back to its old state"],
                 correct: 2,
-                explanation: "Reverting restores a working default branch for everyone else without discarding history, and it leaves the original commits available to fix and re-submit properly."
+                explanation: "Reverting restores a working default branch for everyone else without discarding history, and it leaves the original commits available to fix and re-submit properly.",
+                learnMore: { url: "https://git-scm.com/docs/git-revert", text: "📚 git revert" }
             },
             {
                 q: "A backend change alters the API contract. What else is in scope?",
                 options: ["Only the backend, since clients adapt themselves", "Only the documentation, which describes the API", "Nothing else until a client reports a failure", "Regenerating the SDK and updating the frontend"],
                 correct: 3,
-                explanation: "Full-stack delivery follows the chain: backend, SDK regeneration, frontend, docs, E2E tests, and packaging when a new mandatory setting is introduced."
+                explanation: "Full-stack delivery follows the chain: backend, SDK regeneration, frontend, docs, E2E tests, and packaging when a new mandatory setting is introduced.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/openapi/", text: "📚 OpenAPI Schema Generation" }
             },
             {
                 q: "Why do some repositories trigger pipelines in other repositories?",
                 options: ["Because triggered runs skip the slower test stages", "Because a change here can break a consumer there", "Because CI minutes are pooled across the group", "Because every repo shares one pipeline definition"],
                 correct: 1,
-                explanation: "Frontend changes trigger the integration-testing suite, and backend or frontend changes trigger the packaging stack. Breakage surfaces against the change that caused it rather than days later."
+                explanation: "Frontend changes trigger the integration-testing suite, and backend or frontend changes trigger the packaging stack. Breakage surfaces against the change that caused it rather than days later.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/waldur-ci-cd/", text: "📚 Waldur CI/CD" }
             },
             {
                 q: "How should you respond to review comments you disagree with?",
                 options: ["Resolve the thread silently and merge anyway", "Apply the change even when it is wrong", "Wait for the reviewer to approve regardless", "Reply with the reasoning and resolve it together"],
                 correct: 3,
-                explanation: "Review is a conversation. Stating the reasoning either convinces the reviewer or surfaces the context you were missing — both better outcomes than a silently resolved thread."
+                explanation: "Review is a conversation. Stating the reasoning either convinces the reviewer or surfaces the context you were missing — both better outcomes than a silently resolved thread.",
+                learnMore: { url: "https://docs.gitlab.com/user/project/merge_requests/reviews/", text: "📚 GitLab Code Review" }
             },
         ]
     },
@@ -9553,19 +9808,22 @@ export const questions: QuestionBank = {
                 q: "What type of organizations typically use Waldur?",
                 options: ["Research institutions and government agencies", "Financial and banking industry institutions", "Early-stage startup companies and ventures", "Primarily retail and e-commerce businesses"],
                 correct: 0,
-                explanation: "Waldur serves research institutions, universities, government agencies, and organizations managing shared computing resources."
+                explanation: "Waldur serves research institutions, universities, government agencies, and organizations managing shared computing resources.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/getting-started/", text: "📚 Getting Started with Waldur" }
             },
             {
                 q: "What is a common use case for Waldur?",
                 options: ["Hosting email servers and mailboxes", "Scheduling social media posts and campaigns", "Streaming video content to end users", "Managing cloud resource allocation for researchers"],
                 correct: 3,
-                explanation: "Waldur helps organizations manage and allocate computing resources (VMs, HPC, storage) to users and projects."
+                explanation: "Waldur helps organizations manage and allocate computing resources (VMs, HPC, storage) to users and projects.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/marketplace/", text: "📚 Waldur Marketplace" }
             },
             {
                 q: "Why do customers choose Waldur over alternatives?",
                 options: ["Self-service ordering with retained admin control", "Photo and video editing built into the portal", "Gaming and entertainment features for staff", "Social networking between the platform's users"],
                 correct: 0,
-                explanation: "Waldur provides self-service portals where users request resources, while admins maintain control and visibility."
+                explanation: "Waldur provides self-service portals where users request resources, while admins maintain control and visibility.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/getting-started/", text: "📚 Getting Started with Waldur" }
             },
         ],
         2: [
@@ -9573,19 +9831,22 @@ export const questions: QuestionBank = {
                 q: "How does Waldur help with resource allocation?",
                 options: ["No automation provided for provisioning tasks", "Automated provisioning with approval workflows", "Phone-based support for all resource requests", "Manual processing through email requests only"],
                 correct: 1,
-                explanation: "Waldur automates resource provisioning with configurable approval workflows, quotas, and billing integration."
+                explanation: "Waldur automates resource provisioning with configurable approval workflows, quotas, and billing integration.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/service-provider-organization/order-management/", text: "📚 Order Management" }
             },
             {
                 q: "What does one portal across several providers save a customer?",
                 options: ["A separate request process for each provider", "The cost of the resources they consume", "The need to write any application code", "The need for user accounts on the portal"],
                 correct: 0,
-                explanation: "Without a broker, every provider brings its own request path, quota model and reporting. One portal gives users a single way to ask and administrators a single place to see what was granted."
+                explanation: "Without a broker, every provider brings its own request path, quota model and reporting. One portal gives users a single way to ask and administrators a single place to see what was granted.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/marketplace/", text: "📚 Waldur Marketplace" }
             },
             {
                 q: "How does Waldur support multi-tenancy?",
                 options: ["Multi-tenancy support is not available", "Isolated orgs with own users and resources", "Single shared workspace for all user accounts", "Maximum of two tenants allowed per instance"],
                 correct: 1,
-                explanation: "Waldur supports multiple organizations, each with isolated users, projects, and resources on shared infrastructure."
+                explanation: "Waldur supports multiple organizations, each with isolated users, projects, and resources on shared infrastructure.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/project/", text: "📚 Projects" }
             },
         ],
         3: [
@@ -9593,25 +9854,29 @@ export const questions: QuestionBank = {
                 q: "What is a typical deployment scenario for research institutions?",
                 options: ["Manual tracking of allocations in spreadsheets", "Federated access to HPC clusters and clouds", "A desktop application installed per researcher", "An offline system with no network access at all"],
                 correct: 1,
-                explanation: "Research institutions federate access across HPC clusters, OpenStack clouds, and commercial clouds through Waldur."
+                explanation: "Research institutions federate access across HPC clusters, OpenStack clouds, and commercial clouds through Waldur.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/providers/slurm/", text: "📚 SLURM Provider" }
             },
             {
                 q: "How does Waldur integrate with existing infrastructure?",
                 options: ["Only as complete infrastructure replacement", "Through plugins connecting to various backends", "Integration with existing systems not possible", "Through manual data entry and sync"],
                 correct: 1,
-                explanation: "Waldur's plugin architecture connects to OpenStack, Kubernetes, SLURM, Azure, and other backends."
+                explanation: "Waldur's plugin architecture connects to OpenStack, Kubernetes, SLURM, Azure, and other backends.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/plugins/plugins/", text: "📚 Waldur Plugins" }
             },
             {
                 q: "What compliance features does Waldur provide?",
                 options: ["Third-party compliance tooling is required", "Basic activity logging and nothing beyond it", "Audit trails, approvals and access controls", "No compliance-related features are included"],
                 correct: 2,
-                explanation: "Waldur provides audit trails, configurable approval workflows, and fine-grained access controls for compliance."
+                explanation: "Waldur provides audit trails, configurable approval workflows, and fine-grained access controls for compliance.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/policies/", text: "📚 Waldur Policies" }
             },
             {
                 q: "How do customers typically measure Waldur ROI?",
                 options: ["By counting the servers under management", "By measuring the lines of code written", "By time saved and administrative overhead cut", "By counting the total number of user accounts"],
                 correct: 2,
-                explanation: "ROI comes from reduced manual work, better resource utilization, faster provisioning, and improved visibility."
+                explanation: "ROI comes from reduced manual work, better resource utilization, faster provisioning, and improved visibility.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/getting-started/", text: "📚 Getting Started with Waldur" }
             },
         ],
         4: [
@@ -9619,25 +9884,29 @@ export const questions: QuestionBank = {
                 q: "A provider wants to offer resources through Waldur. What comes first?",
                 options: ["A service provider organization, then an offering", "A project inside the customer's own organization", "A support ticket asking staff to create it", "A remote Waldur instance to import from"],
                 correct: 0,
-                explanation: "The organization is registered as a service provider, then publishes offerings with plans and components. Users order against those offerings, which is what makes provisioning and billing traceable."
+                explanation: "The organization is registered as a service provider, then publishes offerings with plans and components. Users order against those offerings, which is what makes provisioning and billing traceable.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/service-provider-organization/service-provider-registration/", text: "📚 Service Provider Registration" }
             },
             {
                 q: "A university wants per-department cost reporting. What supports that?",
                 options: ["Manual reconciliation against cloud invoices", "Project-scoped usage and cost allocation reports", "A monthly export of raw provisioning logs", "Separate Waldur deployments per department"],
                 correct: 1,
-                explanation: "Resources belong to projects inside an organization, so usage and cost roll up per project and per organization. That is the basis for internal chargeback without splitting the deployment."
+                explanation: "Resources belong to projects inside an organization, so usage and cost roll up per project and per organization. That is the basis for internal chargeback without splitting the deployment.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/staff-users/reporting/", text: "📚 Waldur Reporting" }
             },
             {
                 q: "Resources should not be provisioned until someone signs off.",
                 options: ["A read-only portal with provisioning done by hand", "Emailing the provider and waiting for a reply", "Quotas set to zero until an admin raises them", "Order approval workflows before provisioning starts"],
                 correct: 3,
-                explanation: "Orders can require approval from the consumer or the provider side before they execute, with auto-approval configurable per role — so self-service and oversight coexist."
+                explanation: "Orders can require approval from the consumer or the provider side before they execute, with auto-approval configurable per role — so self-service and oversight coexist.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/service-provider-organization/order-management/", text: "📚 Order Management" }
             },
             {
                 q: "Resources are allocated through a competitive funding process.",
                 options: ["The marketplace cannot express competitive rounds", "The calls and proposals module handles that end to end", "Each award is entered manually as an order", "Allocations are tracked outside Waldur in a sheet"],
                 correct: 1,
-                explanation: "A call defines requested offerings, rounds set the submission window, proposals are reviewed, and an allocation decision turns an accepted proposal into a project with provisioned resources."
+                explanation: "A call defines requested offerings, rounds set the submission window, proposals are reviewed, and an allocation decision turns an accepted proposal into a project with provisioned resources.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/call-management/", text: "📚 Call Management" }
             },
         ],
         5: [
@@ -9645,31 +9914,36 @@ export const questions: QuestionBank = {
                 q: "Several centres want to share resources under one portal.",
                 options: ["One deployment per centre with no connection", "Manual duplication of every offering by hand", "Remote offerings, so one Waldur imports another's", "A single database shared between all centres"],
                 correct: 2,
-                explanation: "A local Waldur can import an offering from a remote Waldur over its API, so users order in one place while the resource is delivered and managed by the remote deployment."
+                explanation: "A local Waldur can import an offering from a remote Waldur over its API, so users order in one place while the resource is delivered and managed by the remote deployment.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/providers/remote-waldur/", text: "📚 Remote Waldur" }
             },
             {
                 q: "A funder pays up front and users draw down the balance.",
                 options: ["Credits, with prepaid billing against the balance", "Monthly invoices issued after consumption", "A flat annual fee unrelated to consumption", "Billing disabled, with usage tracked separately"],
                 correct: 0,
-                explanation: "Credits model a prepaid balance that consumption draws down, alongside purchase orders and renewals — which is how publicly funded allocations are usually administered."
+                explanation: "Credits model a prepaid balance that consumption draws down, alongside purchase orders and renewals — which is how publicly funded allocations are usually administered.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/credit-management/", text: "📚 Credit Management" }
             },
             {
                 q: "A centre wants to offer LLM inference to its users.",
                 options: ["Manual account creation on the inference host", "It cannot be modelled in the marketplace at all", "An inference offering, provisioned like any other", "A separate product outside the Waldur platform"],
                 correct: 2,
-                explanation: "Inference services are marketplace offerings too — the site agent has plugins for vLLM-backed OpenNebula deployments and an Envoy AI Gateway, so access and usage are handled like any other resource."
+                explanation: "Inference services are marketplace offerings too — the site agent has plugins for vLLM-backed OpenNebula deployments and an Envoy AI Gateway, so access and usage are handled like any other resource.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/inference-services/", text: "📚 Inference Services" }
             },
             {
                 q: "Which situation is the weakest fit for Waldur?",
                 options: ["A university sharing HPC across many departments", "A provider selling capacity to external customers", "A consortium allocating resources across institutions", "One team, one cloud account, no approvals or chargeback"],
                 correct: 3,
-                explanation: "Waldur's value is in mediating between many consumers and many providers: approvals, quotas, chargeback and audit. A single team on a single account has little of that mediation to do."
+                explanation: "Waldur's value is in mediating between many consumers and many providers: approvals, quotas, chargeback and audit. A single team on a single account has little of that mediation to do.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/getting-started/", text: "📚 Getting Started with Waldur" }
             },
             {
                 q: "How is the value of a Waldur deployment usually argued?",
                 options: ["The count of integrations that are switched on", "Less manual administration and faster time to resource", "The raw number of virtual machines that exist", "The volume of log data the platform produces"],
                 correct: 1,
-                explanation: "The measurable outcomes are administrative: requests fulfilled without ticket ping-pong, usage attributable to projects, and an audit trail that satisfies a funder or auditor."
+                explanation: "The measurable outcomes are administrative: requests fulfilled without ticket ping-pong, usage attributable to projects, and an audit trail that satisfies a funder or auditor.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/getting-started/", text: "📚 Getting Started with Waldur" }
             },
         ]
     },
@@ -9680,19 +9954,22 @@ export const questions: QuestionBank = {
                 q: "Where can Waldur be deployed?",
                 options: ["Cloud, on-premises, or hybrid environments", "Only in on-premises data centers", "Only in public cloud environments", "Only on desktop computers"],
                 correct: 0,
-                explanation: "Waldur supports flexible deployment: public cloud, private data centers, or hybrid combinations."
+                explanation: "Waldur supports flexible deployment: public cloud, private data centers, or hybrid combinations.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/helm/", text: "📚 Helm Deployment" }
             },
             {
                 q: "What is an on-premises deployment?",
                 options: ["Running software in your own data center", "Using a public cloud service provider", "Installing a mobile application", "Adding a browser extension"],
                 correct: 0,
-                explanation: "On-premises means hosting in your own infrastructure, giving full control over hardware and data."
+                explanation: "On-premises means hosting in your own infrastructure, giving full control over hardware and data.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/helm/", text: "📚 Helm Deployment" }
             },
             {
                 q: "What is a SaaS deployment model?",
                 options: ["Software you install and manage yourself", "Desktop application you download", "Mobile app from an app store", "Software hosted and managed by the vendor"],
                 correct: 3,
-                explanation: "SaaS is vendor-hosted, reducing operational burden. Customers access via internet without managing infrastructure."
+                explanation: "SaaS is vendor-hosted, reducing operational burden. Customers access via internet without managing infrastructure.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/getting-started/", text: "📚 Getting Started with Waldur" }
             },
         ],
         2: [
@@ -9700,19 +9977,22 @@ export const questions: QuestionBank = {
                 q: "What is an air-gapped deployment?",
                 options: ["Isolated network with no internet connection", "Development and testing environment", "Mobile deployment for field workers", "Standard cloud-based deployment setup"],
                 correct: 0,
-                explanation: "Air-gapped systems have no external network access, used for high-security environments requiring complete isolation."
+                explanation: "Air-gapped systems have no external network access, used for high-security environments requiring complete isolation.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/checklist-for-production/", text: "📚 Production Checklist" }
             },
             {
                 q: "What deployment method does Waldur use?",
                 options: ["Manual file copying to servers", "Docker containers with Kubernetes or compose", "Traditional Windows installer package", "FTP upload of application files"],
                 correct: 1,
-                explanation: "Waldur is containerized for consistent deployment across environments using Docker, Kubernetes, or Docker Compose."
+                explanation: "Waldur is containerized for consistent deployment across environments using Docker, Kubernetes, or Docker Compose.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/docker-compose/", text: "📚 Waldur Docker Compose" }
             },
             {
                 q: "Why might an organization choose on-premises deployment?",
                 options: ["Data sovereignty, security, and compliance needs", "On-premises is always the cheapest option", "Docker requires on-premises deployment", "Performance is always better on-premises"],
                 correct: 0,
-                explanation: "On-premises gives control over data location, meets regulatory requirements, and addresses security policies."
+                explanation: "On-premises gives control over data location, meets regulatory requirements, and addresses security policies.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/data-processing/", text: "📚 Waldur Data Processing" }
             },
         ],
         3: [
@@ -9720,25 +10000,29 @@ export const questions: QuestionBank = {
                 q: "What is hybrid cloud deployment?",
                 options: ["Using two different public cloud providers", "Running on both desktop and mobile", "Combination of on-premises and cloud resources", "Separate development and production systems"],
                 correct: 2,
-                explanation: "Hybrid combines private infrastructure with public cloud, balancing control, cost, and flexibility."
+                explanation: "Hybrid combines private infrastructure with public cloud, balancing control, cost, and flexibility.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/architecture/", text: "📚 Waldur Architecture" }
             },
             {
                 q: "What are considerations for air-gapped Waldur deployment?",
                 options: ["No special considerations are required at all", "Offline updates, a local registry, manual sync", "The standard internet update process applies", "Cloud backup becomes a mandatory requirement"],
                 correct: 1,
-                explanation: "Air-gapped requires offline update mechanisms, local container registries, and manual data import procedures."
+                explanation: "Air-gapped requires offline update mechanisms, local container registries, and manual data import procedures.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/checklist-for-production/", text: "📚 Production Checklist" }
             },
             {
                 q: "How does Waldur handle high availability?",
                 options: ["Multiple replicas behind a load balancer", "Single server deployment is required", "Manual failover process only", "High availability is not supported"],
                 correct: 0,
-                explanation: "Waldur supports HA through container orchestration, database replication, and load balancing."
+                explanation: "Waldur supports HA through container orchestration, database replication, and load balancing.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/helm/docs/hpa/", text: "📚 Horizontal Pod Autoscaling" }
             },
             {
                 q: "What is the recommended production deployment?",
                 options: ["Windows Server with IIS web server", "Manual installation on bare metal", "Kubernetes cluster with Helm charts", "Docker Compose running on a laptop"],
                 correct: 2,
-                explanation: "Production deployments typically use Kubernetes for scalability, reliability, and operational features."
+                explanation: "Production deployments typically use Kubernetes for scalability, reliability, and operational features.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/helm/", text: "📚 Helm Deployment" }
             },
         ],
         4: [
@@ -9746,25 +10030,29 @@ export const questions: QuestionBank = {
                 q: "Which method is supported for deploying onto Kubernetes?",
                 options: ["A Compose file converted by a script", "Hand-written manifests kept per site", "Only managed hosting by the vendor", "The published Waldur Helm chart"],
                 correct: 3,
-                explanation: "Two installation methods are supported: Helm for Kubernetes clusters, and Docker Compose for a single server. The chart is published as a Helm repository, so upgrades are a values change plus a release."
+                explanation: "Two installation methods are supported: Helm for Kubernetes clusters, and Docker Compose for a single server. The chart is published as a Helm repository, so upgrades are a values change plus a release.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/helm/docs/helm/", text: "📚 Waldur Helm Chart" }
             },
             {
                 q: "What sits in front of the API and the frontend in the Compose stack?",
                 options: ["Nothing — each service is exposed on its own port", "A Caddy router terminating and dispatching requests", "The API container, which also serves the UI files", "A CDN that must be configured before first start"],
                 correct: 1,
-                explanation: "A Caddy router fronts the stack and routes to the API and Homeport, so the deployment presents one origin instead of a set of ports."
+                explanation: "A Caddy router fronts the stack and routes to the API and Homeport, so the deployment presents one origin instead of a set of ports.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/docker-compose/", text: "📚 Waldur Docker Compose" }
             },
             {
                 q: "Which optional services can the Compose stack bring up alongside Waldur?",
                 options: ["A second database for reporting queries", "A Kubernetes control plane for testing", "A managed monitoring service in the cloud", "Keycloak, a Matrix homeserver and LiveKit"],
                 correct: 3,
-                explanation: "Beyond the core services the stack can start Keycloak for identity, a Matrix homeserver with its init jobs for chat, and LiveKit with a JWT service for calls."
+                explanation: "Beyond the core services the stack can start Keycloak for identity, a Matrix homeserver with its init jobs for chat, and LiveKit with a JWT service for calls.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/docker-compose/", text: "📚 Waldur Docker Compose" }
             },
             {
                 q: "Why does the stack run a migration step before the API?",
                 options: ["The schema must match the code the API runs", "Migrations warm the database query cache", "The API refuses to start without a backup", "Migrations generate the OpenAPI schema file"],
                 correct: 0,
-                explanation: "A dedicated migration container applies schema changes first, so API containers never serve traffic against a database that does not match their code."
+                explanation: "A dedicated migration container applies schema changes first, so API containers never serve traffic against a database that does not match their code.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/docker-compose/", text: "📚 Waldur Docker Compose" }
             },
         ],
         5: [
@@ -9772,31 +10060,36 @@ export const questions: QuestionBank = {
                 q: "How is the version of a deployment pinned?",
                 options: ["The database records the version to use", "Versions are chosen at runtime per request", "Chart and Compose files set a target version", "Every container tracks the latest tag"],
                 correct: 2,
-                explanation: "Both packaging repositories carry an explicit target version that is bumped deliberately, including release candidates. Tracking a floating latest tag makes a restart an unplanned upgrade."
+                explanation: "Both packaging repositories carry an explicit target version that is bumped deliberately, including release candidates. Tracking a floating latest tag makes a restart an unplanned upgrade.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/helm/docs/helm/", text: "📚 Waldur Helm Chart" }
             },
             {
                 q: "What does an air-gapped deployment need beyond the usual?",
                 options: ["Mirrored images and no reliance on outbound calls", "A faster network link to the vendor's registry", "A separate license key issued for offline use", "Manual entry of every user account by hand"],
                 correct: 0,
-                explanation: "Images and dependencies must be mirrored inside the perimeter, and features that reach outward — including the update check — are turned off. Identity and mail have to resolve to internal services too."
+                explanation: "Images and dependencies must be mirrored inside the perimeter, and features that reach outward — including the update check — are turned off. Identity and mail have to resolve to internal services too.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/checklist-for-production/", text: "📚 Production Checklist" }
             },
             {
                 q: "Which component must not be scaled to several replicas?",
                 options: ["The frontend static server", "The Celery beat scheduler", "The API server processes", "The Celery worker pool"],
                 correct: 1,
-                explanation: "API servers and workers scale horizontally. Two beat schedulers would enqueue every periodic task twice, so beat stays a single instance."
+                explanation: "API servers and workers scale horizontally. Two beat schedulers would enqueue every periodic task twice, so beat stays a single instance.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/background/", text: "📚 Background Processing" }
             },
             {
                 q: "How does a GitOps deployment of Waldur work?",
                 options: ["Each operator applies manifests from a laptop", "The API pushes its own configuration to the cluster", "Deployments are triggered by a manual webhook", "ArgoCD reconciles the cluster against the chart in git"],
                 correct: 3,
-                explanation: "An ArgoCD setup is documented alongside Helm: the desired release lives in git and the controller converges the cluster toward it, so drift is visible rather than silent."
+                explanation: "An ArgoCD setup is documented alongside Helm: the desired release lives in git and the controller converges the cluster toward it, so drift is visible rather than silent.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/argocd/argocd/", text: "📚 ArgoCD Deployment" }
             },
             {
                 q: "What should be completed before a deployment goes to production?",
                 options: ["A performance benchmark against a reference", "The go-live checklist in the admin guide", "A full penetration test by the vendor", "A migration of all users from the old system"],
                 correct: 1,
-                explanation: "The admin guide carries an explicit checklist for production — identity, mail, backups, TLS and configuration review — so the predictable omissions are caught before real users arrive."
+                explanation: "The admin guide carries an explicit checklist for production — identity, mail, backups, TLS and configuration review — so the predictable omissions are caught before real users arrive.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/checklist-for-production/", text: "📚 Production Checklist" }
             },
         ]
     },
@@ -9935,19 +10228,22 @@ export const questions: QuestionBank = {
                 q: "What is a key requirement for government IT systems?",
                 options: ["Maximum throughput and fastest performance", "Integration with social media platforms", "Lowest possible procurement and hosting cost", "Compliance with regulations and audit capabilities"],
                 correct: 3,
-                explanation: "Government systems must meet regulatory compliance, maintain audit trails, and ensure data sovereignty."
+                explanation: "Government systems must meet regulatory compliance, maintain audit trails, and ensure data sovereignty.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/policies/", text: "📚 Waldur Policies" }
             },
             {
                 q: "What is data sovereignty?",
                 options: ["Granting ownership of all data to end users", "Compressing data for efficient long-term storage", "Data being subject to laws of the country where stored", "Encrypting data at rest and in transit"],
                 correct: 2,
-                explanation: "Data sovereignty means data is subject to laws of its storage location, critical for government compliance."
+                explanation: "Data sovereignty means data is subject to laws of its storage location, critical for government compliance.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/data-processing/", text: "📚 Waldur Data Processing" }
             },
             {
                 q: "Why is audit logging important for government?",
                 options: ["Accountability and compliance verification for agencies", "Reducing operational infrastructure hosting costs", "Optimizing application performance under high load", "Improving everyday convenience for end users"],
                 correct: 0,
-                explanation: "Audit logs provide accountability, support compliance audits, and help investigate security incidents."
+                explanation: "Audit logs provide accountability, support compliance audits, and help investigate security incidents.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/logging/", text: "📚 Waldur Logging" }
             },
         ],
         2: [
@@ -9955,19 +10251,22 @@ export const questions: QuestionBank = {
                 q: "How does Waldur support government compliance?",
                 options: ["Providing no built-in compliance features at all", "Relying on fully manual processes and spreadsheets", "Delegating compliance entirely to third-party tools", "Audit trails, approval workflows, and access controls"],
                 correct: 3,
-                explanation: "Waldur provides comprehensive audit logging, configurable approvals, and fine-grained access controls."
+                explanation: "Waldur provides comprehensive audit logging, configurable approvals, and fine-grained access controls.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/policies/", text: "📚 Waldur Policies" }
             },
             {
                 q: "What is an approval workflow?",
                 options: ["An automatic process that instantly grants all user requests", "Multi-step process requiring authorized approvals before action", "An open pipeline where no authorization is ever required", "A simple email confirmation sent after resource provisioning"],
                 correct: 1,
-                explanation: "Approval workflows ensure proper authorization before provisioning resources, meeting policy requirements."
+                explanation: "Approval workflows ensure proper authorization before provisioning resources, meeting policy requirements.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/service-provider-organization/order-management/", text: "📚 Order Management" }
             },
             {
                 q: "Why might government prefer on-premises deployment?",
                 options: ["Consistently better performance benchmarks", "Data control, security policy and compliance", "Lower total cost of ownership in every case", "Faster initial setup and simpler deployment"],
                 correct: 1,
-                explanation: "On-premises keeps data within controlled environments, meeting security policies and regulatory requirements."
+                explanation: "On-premises keeps data within controlled environments, meeting security policies and regulatory requirements.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/helm/", text: "📚 Helm Deployment" }
             },
         ],
         3: [
@@ -9975,25 +10274,29 @@ export const questions: QuestionBank = {
                 q: "What security features does Waldur provide?",
                 options: ["Only basic password authentication is supported", "RBAC, MFA support, encryption, and audit logs", "No built-in security features of any kind", "Security delegated entirely to third-party tools"],
                 correct: 1,
-                explanation: "Waldur includes role-based access control, MFA integration, data encryption, and comprehensive audit logging."
+                explanation: "Waldur includes role-based access control, MFA integration, data encryption, and comprehensive audit logging.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/terminology/roles_and_permissions/", text: "📚 Roles and Permissions" }
             },
             {
                 q: "How does Waldur handle sensitive data classification?",
                 options: ["A single uniform security level applied to all data", "No support for classifying or categorizing data types", "Manual spreadsheet tracking without any automation", "Configurable data handling policies and access controls"],
                 correct: 3,
-                explanation: "Waldur's access controls and policies can enforce data classification requirements and handling rules."
+                explanation: "Waldur's access controls and policies can enforce data classification requirements and handling rules.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/data-processing/", text: "📚 Waldur Data Processing" }
             },
             {
                 q: "What is change management in government context?",
                 options: ["Pushing automatic updates without any review step", "Applying changes immediately as soon as they are ready", "A controlled process for reviewing and implementing changes", "An informal approach where no formal process is needed"],
                 correct: 2,
-                explanation: "Change management ensures changes are reviewed, tested, approved, and documented before implementation."
+                explanation: "Change management ensures changes are reviewed, tested, approved, and documented before implementation.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/release-orchestration/", text: "📚 Release Orchestration" }
             },
             {
                 q: "How does Waldur support disaster recovery requirements?",
                 options: ["Backup support, stateless design, and documented recovery procedures", "Relying on automatic failover with no additional planning needed", "Providing no built-in disaster recovery support or tooling", "Depending entirely on manual recovery without documented steps"],
                 correct: 0,
-                explanation: "Waldur's containerized design and database backups support disaster recovery planning and procedures."
+                explanation: "Waldur's containerized design and database backups support disaster recovery planning and procedures.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/backups/", text: "📚 Waldur Backups" }
             },
         ],
         4: [
@@ -10001,25 +10304,29 @@ export const questions: QuestionBank = {
                 q: "The corporate directory owns the user lifecycle. How does Waldur follow?",
                 options: ["A nightly database dump is copied across", "SCIM provisioning pushes users and groups in", "An operator retypes each joiner and leaver", "Users are created on first login and never removed"],
                 correct: 1,
-                explanation: "The SCIM 2.0 service provider lets Okta, Entra ID, Keycloak or JumpCloud provision and deprovision accounts through a standard protocol, so leavers actually disappear."
+                explanation: "The SCIM 2.0 service provider lets Okta, Entra ID, Keycloak or JumpCloud provision and deprovision accounts through a standard protocol, so leavers actually disappear.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/mastermind-configuration/scim-integration/", text: "📚 SCIM Integration" }
             },
             {
                 q: "An auditor asks who granted a role six months ago.",
                 options: ["The database backup from that month", "The support team's email archive", "Nothing records role changes over time", "The audit log of security and permission events"],
                 correct: 3,
-                explanation: "Permission changes, authentication events and impersonation are audit-logged, which is what makes after-the-fact reconstruction possible instead of guesswork."
+                explanation: "Permission changes, authentication events and impersonation are audit-logged, which is what makes after-the-fact reconstruction possible instead of guesswork.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/logging/", text: "📚 Waldur Logging" }
             },
             {
                 q: "One ministry needs a role the other organizations must not have.",
                 options: ["Add the permission to the shared template", "Clone the role into that organization only", "Create a second Waldur deployment for it", "Grant the closest system role to everyone"],
                 correct: 1,
-                explanation: "Organization-scoped role clones bind availability to one customer and its projects. The paired conceal mechanism hides the superseded system role there without touching other organizations."
+                explanation: "Organization-scoped role clones bind availability to one customer and its projects. The paired conceal mechanism hides the superseded system role there without touching other organizations.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/staff-users/organization-roles/", text: "📚 Organization Roles" }
             },
             {
                 q: "Procurement requires a purchase order before spending starts.",
                 options: ["Purchase orders exist only in the invoice export", "The platform cannot represent procurement rules", "Orders can be gated on a purchase order reference", "Spending is reconciled manually at year end"],
                 correct: 2,
-                explanation: "Purchase orders can be attached and required before orders proceed, with renewal handling alongside them — so the commitment exists before the resource does."
+                explanation: "Purchase orders can be attached and required before orders proceed, with renewal handling alongside them — so the commitment exists before the resource does.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/service-provider-organization/order-management/", text: "📚 Order Management" }
             },
         ],
         5: [
@@ -10027,31 +10334,36 @@ export const questions: QuestionBank = {
                 q: "How is the platform's own dependency risk managed?",
                 options: ["Vulnerability scanning of dependencies in the pipeline", "An annual manual review of the requirements file", "Trusting upstream maintainers to announce issues", "Pinning every dependency and never updating"],
                 correct: 0,
-                explanation: "Dependency vulnerability management is a documented process backed by scanning in CI, so a known-vulnerable transitive dependency surfaces as a pipeline signal rather than an audit finding."
+                explanation: "Dependency vulnerability management is a documented process backed by scanning in CI, so a known-vulnerable transitive dependency surfaces as a pipeline signal rather than an audit finding.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/dependency-vulnerability-management/", text: "📚 Dependency Vulnerability Management" }
             },
             {
                 q: "Support needs to reproduce what a user sees, without their password.",
                 options: ["A screen-sharing session arranged by email", "Copying the user's session cookie manually", "Impersonation, recorded in the audit trail", "A shared account both parties can log into"],
                 correct: 2,
-                explanation: "ImpersonationAuthentication lets authorized staff act as a user while actions remain attributable — the reason it sits first in the authentication chain and is logged."
+                explanation: "ImpersonationAuthentication lets authorized staff act as a user while actions remain attributable — the reason it sits first in the authentication chain and is logged.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/staff-users/impersonation/", text: "📚 Impersonation" }
             },
             {
                 q: "Data must not leave the national perimeter. What follows?",
                 options: ["A vendor-hosted deployment in a near region", "Encrypting the data before sending it out", "On-premises or air-gapped, with local identity", "Restricting the UI to a national IP range"],
                 correct: 2,
-                explanation: "Residency is a deployment decision: run it on infrastructure inside the perimeter, with identity, mail and object storage resolving locally. Encryption alone does not change where data sits."
+                explanation: "Residency is a deployment decision: run it on infrastructure inside the perimeter, with identity, mail and object storage resolving locally. Encryption alone does not change where data sits.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/deployment/helm/", text: "📚 Helm Deployment" }
             },
             {
                 q: "Which order approval configuration suits a strict environment?",
                 options: ["Approval by the requester's own account", "Explicit approval, with auto-approval only where justified", "Auto-approval everywhere to reduce administration", "No approvals, relying on quotas to bound spending"],
                 correct: 1,
-                explanation: "Approval is configurable per offering and per role, so it can be relaxed where the risk is low and required where it is not — auto-approval is a deliberate exception, not the default posture."
+                explanation: "Approval is configurable per offering and per role, so it can be relaxed where the risk is low and required where it is not — auto-approval is a deliberate exception, not the default posture.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/service-provider-organization/order-management/", text: "📚 Order Management" }
             },
             {
                 q: "Why do PII guards matter in the AI assistant for public sector use?",
                 options: ["The model refuses to answer questions with names", "Guards make the assistant respond more quickly", "Regulations forbid AI assistants altogether", "Personal data must not leak into an LLM prompt"],
                 correct: 3,
-                explanation: "Guards run fail-closed before any text reaches the model and again on every tool argument, so a prompt or a fetched record cannot quietly carry personal data to an external inference service."
+                explanation: "Guards run fail-closed before any text reaches the model and again on every tool argument, so a prompt or a fetched record cannot quietly carry personal data to an external inference service.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/ai-assistant/", text: "📚 Waldur AI Assistant" }
             },
         ]
     },
@@ -10062,19 +10374,22 @@ export const questions: QuestionBank = {
                 q: "What is federation in the context of Waldur?",
                 options: ["Multiple organizations sharing resources through one portal", "A protocol for federating email across different providers", "A setup where only one organization manages all resources", "A social networking feature for connecting user profiles"],
                 correct: 0,
-                explanation: "Federation enables multiple organizations to collaborate and share resources through a unified platform."
+                explanation: "Federation enables multiple organizations to collaborate and share resources through a unified platform.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/providers/remote-waldur/", text: "📚 Remote Waldur" }
             },
             {
                 q: "What is a consortium?",
                 options: ["A type of software license governing usage rights", "A group of organizations collaborating on shared goals", "A network protocol for inter-system communication", "A single company managing its own internal resources"],
                 correct: 1,
-                explanation: "Consortiums are partnerships where organizations pool resources, common in research and academic contexts."
+                explanation: "Consortiums are partnerships where organizations pool resources, common in research and academic contexts.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/call-management/", text: "📚 Call Management" }
             },
             {
                 q: "Why do organizations federate resources?",
                 options: ["To simplify billing into a single unified payment system", "To satisfy a specific legal requirement imposed by regulators", "To share costs, increase capacity, and enable collaboration", "To reduce the total number of active users on a platform"],
                 correct: 2,
-                explanation: "Federation allows resource sharing, cost distribution, and collaboration while maintaining organizational boundaries."
+                explanation: "Federation allows resource sharing, cost distribution, and collaboration while maintaining organizational boundaries.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/providers/remote-waldur/", text: "📚 Remote Waldur" }
             },
         ],
         2: [
@@ -10082,19 +10397,22 @@ export const questions: QuestionBank = {
                 q: "How does Waldur support multi-organization setups?",
                 options: ["Not offering any multi-organization support features", "Restricting the platform to a single organization only", "Requiring separate installations for each organization", "Hierarchical organization structure with data isolation"],
                 correct: 3,
-                explanation: "Waldur supports organization hierarchies where each org has isolated users and resources within shared infrastructure."
+                explanation: "Waldur supports organization hierarchies where each org has isolated users and resources within shared infrastructure.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/core-concepts/project/", text: "📚 Projects" }
             },
             {
                 q: "What is federated identity?",
                 options: ["Using only local accounts managed within each service", "An approach with no centralized identity management", "Single sign-on authentication across multiple organizations", "Requiring separate login credentials for each system"],
                 correct: 2,
-                explanation: "Federated identity allows users to authenticate once and access resources across member organizations."
+                explanation: "Federated identity allows users to authenticate once and access resources across member organizations.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/identity/", text: "📚 Waldur Identity" }
             },
             {
                 q: "How are resources shared in a federation?",
                 options: ["By sending resource data as email attachments to members", "Sharing is not possible between different organizations", "By manually copying data between organization environments", "Through marketplace offerings and cross-org permissions"],
                 correct: 3,
-                explanation: "Waldur marketplace enables organizations to offer resources to federation members with appropriate access controls."
+                explanation: "Waldur marketplace enables organizations to offer resources to federation members with appropriate access controls.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/marketplace/", text: "📚 Waldur Marketplace" }
             },
         ],
         3: [
@@ -10102,25 +10420,29 @@ export const questions: QuestionBank = {
                 q: "What is a common federated research infrastructure use case?",
                 options: ["A single isolated university lab managing its own servers", "Small business IT departments running internal workloads", "European research networks sharing computing resources", "Personal home computing and individual desktop setups"],
                 correct: 2,
-                explanation: "Research federations like EGI or GÉANT member organizations share HPC, cloud, and data resources."
+                explanation: "Research federations like EGI or GÉANT member organizations share HPC, cloud, and data resources.",
+                learnMore: { url: "https://docs.waldur.com/latest/integrations/lexis/", text: "📚 LEXIS Integration" }
             },
             {
                 q: "How does billing work in federated setups?",
                 options: ["Per-organization billing with aggregate reports", "Cash payments handled outside the platform", "No billing or cost tracking is available here", "One shared invoice sent to the whole federation"],
                 correct: 0,
-                explanation: "Waldur tracks usage per organization, enabling internal billing, chargebacks, or funding allocation reporting."
+                explanation: "Waldur tracks usage per organization, enabling internal billing, chargebacks, or funding allocation reporting.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/billing/", text: "📚 Billing & Invoicing" }
             },
             {
                 q: "What governance challenges exist in federations?",
                 options: ["Having a single central authority making all decisions", "Governance is unnecessary when organizations federate", "Automated conflict resolution handles every disagreement", "Coordinating policies across autonomous organizations"],
                 correct: 3,
-                explanation: "Federations must balance organizational autonomy with shared policies, requiring clear governance structures."
+                explanation: "Federations must balance organizational autonomy with shared policies, requiring clear governance structures.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/policies/", text: "📚 Waldur Policies" }
             },
             {
                 q: "How does Waldur handle cross-organization projects?",
                 options: ["Restricting every project to a single organization only", "Relying on manual coordination outside of the platform", "Offering no project management support for any teams", "Projects can include members from multiple organizations"],
                 correct: 3,
-                explanation: "Waldur projects can span organizations, enabling collaborative resource usage with appropriate permissions."
+                explanation: "Waldur projects can span organizations, enabling collaborative resource usage with appropriate permissions.",
+                learnMore: { url: "https://docs.waldur.com/latest/user-guide/customer-organization/project_membership_management/", text: "📚 Project Membership" }
             },
         ],
         4: [
@@ -10128,25 +10450,29 @@ export const questions: QuestionBank = {
                 q: "How does one Waldur deployment offer another's resources?",
                 options: ["It imports the offering from the remote Waldur's API", "It copies the remote deployment's database rows", "It proxies every page of the remote user interface", "It cannot: offerings are always local to a deployment"],
                 correct: 0,
-                explanation: "With an API URL and a token for an owner account, a service provider organization imports a remote offering. Orders placed locally are then fulfilled by the remote deployment."
+                explanation: "With an API URL and a token for an owner account, a service provider organization imports a remote offering. Orders placed locally are then fulfilled by the remote deployment.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/providers/remote-waldur/", text: "📚 Remote Waldur" }
             },
             {
                 q: "Two federated deployments share a common identity source.",
                 options: ["Identity federation is incompatible with remote offerings", "Accounts can be synchronised so remote projects map users", "Each deployment keeps entirely separate user records", "Users must register twice and link the accounts"],
                 correct: 1,
-                explanation: "When both sides rely on a common identity registry such as eduTEAMS, local accounts from the organization and project are pushed and mapped into the remote project when a resource is provisioned."
+                explanation: "When both sides rely on a common identity registry such as eduTEAMS, local accounts from the organization and project are pushed and mapped into the remote project when a resource is provisioned.",
+                learnMore: { url: "https://docs.waldur.com/latest/admin-guide/identities/eduTEAMS/", text: "📚 eduTEAMS Identity" }
             },
             {
                 q: "What does a consortium need beyond shared login?",
                 options: ["A single shared administrator account", "Identical hardware at every participating site", "One organization owning all of the projects", "Agreed allocation, billing and membership policy"],
                 correct: 3,
-                explanation: "Federation is mostly governance: who allocates, who invoices whom, and who may change membership. The platform expresses those decisions, it does not remove the need to make them."
+                explanation: "Federation is mostly governance: who allocates, who invoices whom, and who may change membership. The platform expresses those decisions, it does not remove the need to make them.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/call-management/", text: "📚 Call Management" }
             },
             {
                 q: "A project spans two organizations. Who can see its costs?",
                 options: ["Costs are hidden entirely for shared projects", "Access follows roles and billing visibility settings", "Everyone in either organization sees everything", "Only Waldur staff can see cross-org costs"],
                 correct: 1,
-                explanation: "Visibility is a permission question: roles on the project and its customer decide access, and billing visibility can be restricted separately so members see resources without seeing prices."
+                explanation: "Visibility is a permission question: roles on the project and its customer decide access, and billing visibility can be restricted separately so members see resources without seeing prices.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/terminology/roles_and_permissions/", text: "📚 Roles and Permissions" }
             },
         ],
         5: [
@@ -10154,31 +10480,36 @@ export const questions: QuestionBank = {
                 q: "Which membership_control policy blocks local changes at the centre?",
                 options: ["members_only, which lets existing members add others", "roles_only, which allows any role-holder to edit", "locked, so membership is controlled by the awarding portal", "open, since anyone may adjust the membership list"],
                 correct: 2,
-                explanation: "OpenPortal awards carry a membership_control policy of open, members_only, roles_only or locked. It decides whether membership may be changed at the centre or only by the portal that granted the award."
+                explanation: "OpenPortal awards carry a membership_control policy of open, members_only, roles_only or locked. It decides whether membership may be changed at the centre or only by the portal that granted the award.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/guides/membership-sync-status/", text: "📚 Membership Sync Status" }
             },
             {
                 q: "An external IdM system must react to role changes in Waldur.",
                 options: ["It registers an event consumer bound to the relevant scopes", "It polls every user endpoint on a short interval", "It reads the Waldur database with a read-only account", "It waits for an operator to notify it of changes"],
                 correct: 0,
-                explanation: "An event consumer is generic: an IdM or IGA sync owns a queue bound to the projects or customers it cares about, and delivery is re-authorized against live roles on every event."
+                explanation: "An event consumer is generic: an IdM or IGA sync owns a queue bound to the projects or customers it cares about, and delivery is re-authorized against live roles on every event.",
+                learnMore: { url: "https://docs.waldur.com/latest/developer-guide/design/pubsub-architecture/", text: "📚 Pub/Sub Architecture" }
             },
             {
                 q: "Who invoices whom in a federated setup?",
                 options: ["Nobody: federated resources are always free of charge", "Each user is invoiced by their own home institution", "The provider organization invoices the consuming organization", "The platform operator invoices every end user directly"],
                 correct: 2,
-                explanation: "Billing follows the marketplace relationship: the service provider organization bills the customer organization whose project consumed the resource. Funding bodies sit behind that through credits and awards."
+                explanation: "Billing follows the marketplace relationship: the service provider organization bills the customer organization whose project consumed the resource. Funding bodies sit behind that through credits and awards.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/billing/", text: "📚 Billing & Invoicing" }
             },
             {
                 q: "Why does an award carry links back to the call and funder?",
                 options: ["Because the protocol requires every field to be populated", "So the cluster can display them on the login banner", "To let the centre apply for renewal on the user's behalf", "So an allocation at a centre can be traced to its funding"],
                 correct: 3,
-                explanation: "Provenance travels with the award: the funding call, the award record on the funder's system, the project page and the renewal link — so a centre holding an allocation can answer where it came from."
+                explanation: "Provenance travels with the award: the funding call, the award record on the funder's system, the project page and the renewal link — so a centre holding an allocation can answer where it came from.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/call-management/", text: "📚 Call Management" }
             },
             {
                 q: "What is the main risk when federating autonomous organizations?",
                 options: ["Storage cannot be shared between institutions", "Policy diverges while the technical link stays working", "The network latency between sites becomes limiting", "Users need one browser tab per organization"],
                 correct: 1,
-                explanation: "The integration is the easy half. Divergent policy — different approval rules, different eligibility, different reporting expectations — is what actually breaks a federation, which is why governance is modelled explicitly."
+                explanation: "The integration is the easy half. Divergent policy — different approval rules, different eligibility, different reporting expectations — is what actually breaks a federation, which is why governance is modelled explicitly.",
+                learnMore: { url: "https://docs.waldur.com/latest/about/concepts/policies/", text: "📚 Waldur Policies" }
             },
         ]
     },
@@ -10962,11 +11293,58 @@ export const questions: QuestionBank = {
     }
 };
 
+// Question history is keyed by the question's text, not its position in the bank.
+// Positions shift every time the bank is edited, which used to silently repoint a
+// saved history entry at whichever question had taken over that index.
+function hashQuestionText(text: string): string {
+    // FNV-1a, 32-bit. Short, stable across runs, and good enough to separate ~1500
+    // strings — collisions are checked by the reverse index below.
+    let hash = 0x811c9dc5
+    for (let i = 0; i < text.length; i++) {
+        hash ^= text.charCodeAt(i)
+        hash = Math.imul(hash, 0x01000193)
+    }
+    return (hash >>> 0).toString(36)
+}
+
 export function getQuestionKey(skillId: string, level: number, question: Question): string | null {
     const skillQuestions = questions[skillId]
     if (!skillQuestions || !skillQuestions[level]) return null
-    const index = skillQuestions[level].indexOf(question)
-    return `${skillId}:${level}:${index}`
+    if (!skillQuestions[level].includes(question)) return null
+    return `${skillId}:${level}:h${hashQuestionText(question.q)}`
+}
+
+// A key written by an older build (`skillId:level:index`) can no longer be trusted to
+// name the question it was recorded against, so it is treated as unreadable rather
+// than resolved to whatever now sits at that index.
+export function isLegacyQuestionKey(key: string): boolean {
+    return !(key.split(':')[2] ?? '').startsWith('h')
+}
+
+export interface QuestionRef {
+    question: Question
+    skillId: string
+    level: number
+}
+
+let questionIndex: Map<string, QuestionRef> | null = null
+
+function buildQuestionIndex(): Map<string, QuestionRef> {
+    const index = new Map<string, QuestionRef>()
+    Object.entries(questions).forEach(([skillId, levels]) => {
+        Object.entries(levels).forEach(([levelStr, levelQuestions]) => {
+            const level = Number(levelStr)
+            levelQuestions?.forEach(question => {
+                index.set(`${skillId}:${level}:h${hashQuestionText(question.q)}`, { question, skillId, level })
+            })
+        })
+    })
+    return index
+}
+
+export function getQuestionByKey(key: string): QuestionRef | null {
+    if (!questionIndex) questionIndex = buildQuestionIndex()
+    return questionIndex.get(key) ?? null
 }
 
 export function getAvailableLevels(skillId: string): number[] {

@@ -5,6 +5,9 @@ import { skills, skillTiers } from '@/data/skills'
 import { hasQuestions, getAvailableLevels } from '@/data/questions'
 import type { CrossSkillEntry, Skill } from '@/types/game'
 
+// Hard mode's promise: no daily question below this level.
+const HARD_MODE_MIN_LEVEL = 3
+
 export function useDailyChallenge() {
   const gameStore = useGameStore()
   const { getOneQuestionForSkill } = useSpacedRepetition()
@@ -34,8 +37,11 @@ export function useDailyChallenge() {
     const currentStreak = gameStore.getDailyChallengeStreak()
     const streakBoost = currentStreak >= 7 ? 2 : currentStreak >= 3 ? 1 : 0
 
-    // Hard mode forces minimum level 3
+    // Hard mode forces minimum level 3. It has to lift the XP ceiling too: under 500 XP
+    // the cap is 2, and a floor of 3 above a ceiling of 2 leaves no levels to choose from
+    // — which used to fall through to the hardest level in the whole bank.
     const hardMode = gameStore.settings.dailyHardMode
+    if (hardMode) maxLevel = Math.max(maxLevel, HARD_MODE_MIN_LEVEL)
 
     // Seeded-shuffle the tier order
     const tierIds = Object.keys(byTier)
@@ -56,10 +62,18 @@ export function useDailyChallenge() {
       minLevel = Math.min(minLevel + streakBoost, maxLevel)
 
       // Hard mode: minimum level 3
-      if (hardMode) minLevel = Math.max(minLevel, 3)
+      if (hardMode) minLevel = Math.max(minLevel, HARD_MODE_MIN_LEVEL)
+      // The floor must never outrun the ceiling, whatever raised it
+      minLevel = Math.min(minLevel, maxLevel)
 
       const pool = levels.filter(l => l >= minLevel && l <= maxLevel)
-      const finalPool = pool.length > 0 ? pool : [levels[levels.length - 1]!]
+      // Nothing in the wanted band: take the hardest level still under the cap rather than
+      // the hardest level that exists, and only exceed the cap when this skill has no
+      // level below it at all.
+      const underCap = levels.filter(l => l <= maxLevel)
+      const finalPool = pool.length > 0
+        ? pool
+        : underCap.length > 0 ? [Math.max(...underCap)] : [Math.min(...levels)]
 
       // Bias toward higher levels: pick the higher of two random draws
       if (finalPool.length > 1) {

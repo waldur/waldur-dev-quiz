@@ -2,7 +2,7 @@ import { useGameStore } from '@/stores/game'
 import { useQuizStore } from '@/stores/quiz'
 import { useTShape } from '@/composables/useTShape'
 import { skills, skillLevels, weaponProfiles, getSkillById, getTierInfo } from '@/data/skills'
-import { questions as questionBank } from '@/data/questions'
+import { getQuestionByKey } from '@/data/questions'
 import { getCharacterStage } from '@/data/characterFaces'
 import { ACHIEVEMENTS, getAchievementById } from '@/data/achievements'
 import { toYamlDocument, type YamlValue } from '@/utils/yaml'
@@ -114,15 +114,13 @@ export function useShare() {
   function reviewQueueYaml(): YamlValue[] {
     return Object.entries(gameStore.questionHistory || {})
       .map(([key, entry]) => {
-        const [skillId = '', levelStr = '', indexStr = ''] = key.split(':')
-        const level = Number(levelStr)
-        const index = Number(indexStr)
-        const question = questionBank[skillId]?.[level]?.[index]
+        const ref = getQuestionByKey(key)
+        const skillId = ref?.skillId ?? key.split(':')[0] ?? ''
         return {
           skill_id: skillId,
           skill: getSkillById(skillId)?.name ?? skillId,
-          level,
-          question: question?.q ?? '(question no longer in the bank)',
+          level: ref?.level ?? Number(key.split(':')[1]),
+          question: ref?.question.q ?? '(question no longer in the bank)',
           times_correct: entry.c,
           times_wrong: entry.w,
           last_answered: isoOrNull(entry.last),
@@ -215,9 +213,17 @@ export function useShare() {
       exported_at: new Date().toISOString(),
       player: gameStore.playerName,
       quiz: {
-        mode: quizStore.isDaily ? 'daily-challenge' : quizStore.isCrossSkill ? 'cross-skill' : 'skill',
-        skill: quizStore.isCrossSkill ? null : quizStore.skillName || null,
-        skill_id: quizStore.isCrossSkill ? null : quizStore.skillId,
+        mode: quizStore.isDaily
+          ? 'daily-challenge'
+          : quizStore.isReview
+            ? 'review'
+            : quizStore.isCrossSkill
+              ? 'cross-skill'
+              : 'skill',
+        // A review quiz covers one skill across several levels, so it names the skill
+        // but has no single level of its own.
+        skill: quizStore.isCrossSkill && !quizStore.isReview ? null : quizStore.skillName || null,
+        skill_id: quizStore.isCrossSkill && !quizStore.isReview ? null : quizStore.skillId,
         tier: quizStore.isCrossSkill ? null : tier?.name ?? null,
         level: quizStore.isCrossSkill ? null : quizStore.level,
       },
@@ -229,6 +235,7 @@ export function useShare() {
         final_streak: quizStore.streak,
         xp_earned: extra?.xpEarned,
         daily_bonus_xp: extra?.dailyBonus?.totalBonus,
+        hard_mode_bonus_xp: extra?.dailyBonus?.hardBonus,
         daily_streak: extra?.dailyBonus?.streak,
       },
       answers,
@@ -244,6 +251,7 @@ export function useShare() {
 
   function quizFileName(): string {
     const date = new Date().toISOString().slice(0, 10)
+    if (quizStore.isReview) return `waldur-quest-review-${slugify(quizStore.skillName || 'skill')}-${date}.yaml`
     if (quizStore.isCrossSkill) return `waldur-quest-daily-${date}.yaml`
     return `waldur-quest-${slugify(quizStore.skillName || 'quiz')}-l${quizStore.level}-${date}.yaml`
   }

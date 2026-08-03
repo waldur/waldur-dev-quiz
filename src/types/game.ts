@@ -73,11 +73,17 @@ export interface DailyChallengeState {
   streak: number
 }
 
+// Which set of character emoji represents the player. Cosmetic only — it never reaches
+// scoring, the share URL, the profile card or the YAML export.
+export type AvatarStyle = 'male' | 'female' | 'neutral'
+
 export interface GameSettings {
   soundEnabled: boolean
   musicEnabled: boolean
   idkfa: boolean
-  gender: 'male' | 'female'
+  // Saves in the wild store this key as `gender`, so the key keeps that name even though
+  // the values it holds are avatar styles. Renaming it would reset everyone's choice.
+  gender: AvatarStyle
   dailyHardMode: boolean
 }
 
@@ -151,6 +157,7 @@ export interface PerQuestionResult {
 export interface DailyBonusInfo {
   dailyBonus: number
   streakBonus: number
+  hardBonus: number
   totalBonus: number
   streak: number
 }
@@ -170,6 +177,36 @@ export interface TShapeData {
 
 export interface Recommendation {
   skill: Skill
+  reason: string
+  priority: 'high' | 'medium' | 'low'
+}
+
+export interface WeakQuestion {
+  key: string
+  question: Question
+  skillId: string
+  level: number
+  wrong: number
+  correct: number
+  lastAnswered: number | null
+}
+
+export interface ReadingLink {
+  url: string
+  label: string
+  fromQuestion: string
+}
+
+export interface StudyTopic {
+  skill: Skill
+  levels: number[]
+  wrong: number
+  correct: number
+  failedAttempts: number
+  score: number
+  lastAnswered: number | null
+  questions: WeakQuestion[]
+  links: ReadingLink[]
   reason: string
   priority: 'high' | 'medium' | 'low'
 }

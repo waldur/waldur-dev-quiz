@@ -4,22 +4,27 @@ import { useRouter } from 'vue-router'
 import { useGameStore } from '@/stores/game'
 import { useTShape } from '@/composables/useTShape'
 import { useShare } from '@/composables/useShare'
+import { useStudyPlan } from '@/composables/useStudyPlan'
+import { useQuizStore } from '@/stores/quiz'
 import { useKeyboard } from '@/composables/useKeyboard'
 import { skills, skillTiers, getSkillsByTier, weaponProfiles } from '@/data/skills'
 import { hasQuestions } from '@/data/questions'
 import { ACHIEVEMENTS, getAchievementById } from '@/data/achievements'
 import { getCharacterStage, getNextStage, getProgressToNextStage, characterStages } from '@/data/characterFaces'
-import type { Gender } from '@/data/characterFaces'
+import type { AvatarStyle } from '@/types/game'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import OverlayModal from '@/components/ui/OverlayModal.vue'
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
 import ExportModal from '@/components/ui/ExportModal.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
+import StudyPlanPanel from '@/components/ui/StudyPlanPanel.vue'
 import KeyboardHint from '@/components/layout/KeyboardHint.vue'
 
 const router = useRouter()
 const gameStore = useGameStore()
+const quizStore = useQuizStore()
 const { tShape, currentWeapon } = useTShape()
+const { topics, hasPlan, buildReviewQuiz } = useStudyPlan()
 const { generateProfileCard, generateShareUrl, generateProfileYaml, profileFileName, copyToClipboard } = useShare()
 
 // UI state
@@ -33,14 +38,24 @@ const shareFeedbackTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 const stats = gameStore.stats
 
 // Character face
-const gender = computed(() => (gameStore.settings.gender || 'male') as Gender)
+const gender = computed(() => (gameStore.settings.gender || 'male') as AvatarStyle)
 const charStage = computed(() => getCharacterStage(gameStore.totalXP))
 const charEmoji = computed(() => charStage.value.emoji[gender.value])
 const nextStage = computed(() => getNextStage(gameStore.totalXP))
 const stageProgress = computed(() => getProgressToNextStage(gameStore.totalXP))
 
-function toggleGender() {
-  gameStore.setGender(gender.value === 'male' ? 'female' : 'male')
+const AVATAR_CYCLE: AvatarStyle[] = ['male', 'female', 'neutral']
+const AVATAR_LABELS: Record<AvatarStyle, string> = {
+  male: '♂ Male',
+  female: '♀ Female',
+  neutral: '🧑 Neutral',
+}
+
+// One button cycling through the styles rather than a pair of toggles — it is a cosmetic
+// choice with no default worth privileging.
+function cycleAvatarStyle() {
+  const next = AVATAR_CYCLE[(AVATAR_CYCLE.indexOf(gender.value) + 1) % AVATAR_CYCLE.length]!
+  gameStore.setAvatarStyle(next)
 }
 
 // Tier progress computation
@@ -100,6 +115,14 @@ function handleReset() {
   router.push('/')
 }
 
+// Re-ask the questions this skill is still being missed on
+function handleReview(skillId: string) {
+  const config = buildReviewQuiz(skillId)
+  if (!config) return
+  quizStore.startQuiz(config)
+  router.push('/quiz')
+}
+
 // Navigation
 function goBack() {
   router.push('/')
@@ -121,7 +144,7 @@ useKeyboard({
       <div class="profile-top">
         <!-- Left: character + name -->
         <div class="profile-identity">
-          <div class="character-avatar" @click="toggleGender" title="Click to change gender">
+          <div class="character-avatar" @click="cycleAvatarStyle" title="Click to change avatar">
             <span class="character-emoji">{{ charEmoji }}</span>
           </div>
           <div class="identity-info">
@@ -182,6 +205,13 @@ useKeyboard({
         </div>
       </div>
 
+      <!-- What to study next, drawn from the questions still being missed -->
+      <div v-if="hasPlan" class="study-section">
+        <h3 class="section-title">What to read next</h3>
+        <p class="section-hint">Based on the questions you are still getting wrong.</p>
+        <StudyPlanPanel :topics="topics" @review="handleReview" />
+      </div>
+
       <!-- Bottom: actions, grouped by what they do -->
       <div class="actions-row">
         <button class="action-btn action-btn--achievements" @click="showAchievements = true">
@@ -197,16 +227,29 @@ useKeyboard({
           Export JSON
         </button>
         <span class="actions-row__divider" aria-hidden="true"></span>
-        <button class="action-btn action-btn--gender" @click="toggleGender">
-          {{ gender === 'male' ? '♂ Male' : '♀ Female' }}
-        </button>
-        <button
-          class="action-btn"
-          :class="gameStore.settings.dailyHardMode ? 'action-btn--hard-on' : 'action-btn--hard-off'"
-          @click="toggleHardMode"
-        >
-          {{ gameStore.settings.dailyHardMode ? 'Hard Mode ON' : 'Hard Mode' }}
-        </button>
+        <!-- Both settings are easy to mistake for something that changes your score,
+             so each one says what it actually touches. -->
+        <span class="setting">
+          <button
+            class="action-btn action-btn--gender"
+            aria-describedby="setting-hint-gender"
+            @click="cycleAvatarStyle"
+          >
+            {{ AVATAR_LABELS[gender] }}
+          </button>
+          <span id="setting-hint-gender" class="setting__hint">Avatar emoji only — not shared or exported</span>
+        </span>
+        <span class="setting">
+          <button
+            class="action-btn"
+            :class="gameStore.settings.dailyHardMode ? 'action-btn--hard-on' : 'action-btn--hard-off'"
+            aria-describedby="setting-hint-hard"
+            @click="toggleHardMode"
+          >
+            {{ gameStore.settings.dailyHardMode ? 'Hard Mode ON' : 'Hard Mode' }}
+          </button>
+          <span id="setting-hint-hard" class="setting__hint">Daily challenge from level 3 up · doubles the daily XP bonus</span>
+        </span>
         <span class="actions-row__spacer" aria-hidden="true"></span>
         <button class="action-btn action-btn--reset" @click="showResetConfirm = true">
           Reset
@@ -411,18 +454,35 @@ useKeyboard({
   gap: var(--space-2);
 }
 
+/* ---- Study plan ---- */
+.study-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.section-hint {
+  margin: -4px 0 0;
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+}
+
 /* ---- Actions row ---- */
 .actions-row {
   display: flex;
-  align-items: center;
+  /* Top-aligned rather than centred: the two settings carry a hint line beneath them,
+     and centring would push their buttons out of line with the rest of the row. */
+  align-items: flex-start;
   gap: var(--space-2);
   flex-wrap: wrap;
 }
 
-/* Separates "do something with my data" from "change a setting" */
+/* Separates "do something with my data" from "change a setting". Matched to the button
+   height rather than stretched, so the hint lines don't lengthen it. */
 .actions-row__divider {
   width: 1px;
   align-self: stretch;
+  max-height: 38px;
   margin-inline: var(--space-2);
   background: var(--border-default);
 }
@@ -463,6 +523,21 @@ useKeyboard({
   background: rgba(255, 215, 0, 0.1);
   color: var(--xp);
   border: 1px solid var(--xp);
+}
+
+/* A setting plus the one line that says what it affects */
+.setting {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.setting__hint {
+  font-size: 10px;
+  line-height: var(--leading-snug);
+  color: var(--text-tertiary);
+  max-width: 22ch;
 }
 
 .action-btn--gender {

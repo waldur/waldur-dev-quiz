@@ -67,6 +67,7 @@ GitHub Actions automatically builds and deploys to GitHub Pages on push to `main
 │   │   ├── useShare.ts
 │   │   ├── useSound.ts
 │   │   ├── useSpacedRepetition.ts
+│   │   ├── useStudyPlan.ts    # "What to read next" from missed questions
 │   │   └── useTShape.ts
 │   ├── data/                  # Static game data
 │   │   ├── skills.ts          # Skill definitions (tiers, levels, weapons)
@@ -97,7 +98,12 @@ GitHub Actions automatically builds and deploys to GitHub Pages on push to `main
 - Optional fields for learning assistance:
   - `explanation`: Text explaining why the answer is correct (shown after answering)
   - `learnMore`: Object with `url` and `text` for a tutorial link
-- Helper functions: `getQuestionsForSkill()`, `getAvailableLevels()`, `hasQuestions()`
+- Helper functions: `getQuestionsForSkill()`, `getAvailableLevels()`, `hasQuestions()`,
+  `getQuestionKey()`, `getQuestionByKey()`, `isLegacyQuestionKey()`
+- Question history keys are `skillId:level:h<hash-of-question-text>`. They are *not*
+  positional: an index-based key silently repoints at a different question whenever the
+  bank is edited, so `mergeState` drops any key still in the old `skillId:level:index`
+  form. Reword a question and its history is dropped rather than misattributed.
 - Minimum questions per level: L1-2: 3, L3-4: 4, L5: 5, L6-7: 6
 - ~1520 questions across 70 skills; every skill has levels 1-5 populated
 - `QuizView` Fisher-Yates shuffles the options before display, so the stored `correct`
@@ -128,6 +134,42 @@ GitHub Actions automatically builds and deploys to GitHub Pages on push to `main
   starts, since `quiz.ts` holds answer detail only for the current quiz
 - Both open in `ExportModal` (preview + copy + download `.yaml`); JSON export of the raw
   save stays for `importState()` round-trips — nothing in the app parses YAML back
+
+**Study Plan** (`src/composables/useStudyPlan.ts`):
+- Ranks skills by weakness using `questionHistory` (wrong answers, weighted ×2) plus
+  attempts on a skill that has never been passed. Top 4 surface on the profile.
+- Reading links come from the `learnMore` of the questions actually missed, deduped by
+  URL and labelled from the URL itself ("Multi stage · docs.docker.com") — the stored
+  `text` is a call to action, not a page name, so it cannot distinguish two links that
+  share a host.
+- `buildReviewQuiz(skillId)` builds a quiz from that skill's missed questions across
+  levels. It sets `isReview` *and* `isCrossSkill`, so it scores per answer via
+  `applyCrossSkillResults` and never promotes a level — a mixed-level quiz has no single
+  level to promote.
+- 1136 of 1524 questions (75%) carry a `learnMore` link; every skill has at least one.
+
+**Daily Challenge & Hard Mode** (`src/composables/useDailyChallenge.ts`):
+- One question per tier, level-capped by total XP, seeded by the date so everyone gets the
+  same set. Streaks raise the floor.
+- Hard Mode (`settings.dailyHardMode`) raises the floor to `HARD_MODE_MIN_LEVEL` (3) **and**
+  the XP ceiling with it. Raising only the floor puts it above the cap for players under
+  500 XP, which empties the candidate pool — the fallback then reaches for the hardest
+  level in the bank and serves a beginner level 7. Keep floor and ceiling moving together.
+- The empty-pool fallback prefers the hardest level under the cap, and only exceeds the cap
+  when a skill has no level below it.
+- Hard Mode adds a second bonus worth `HARD_MODE_BONUS_RATE` (50%) of the quiz XP, doubling
+  the daily bonus. Without it Hard Mode earns *less* XP than the easy daily, since harder
+  questions lower the score and the scoring formula has no difficulty term.
+
+**Avatar style** (`AvatarStyle` in `src/types/game.ts`):
+- `'male' | 'female' | 'neutral'`, cosmetic only — it picks an emoji per XP stage in
+  `characterFaces.ts` and never reaches scoring, the share URL, the profile card or the
+  YAML export.
+- Persisted under `settings.gender`; the key keeps that name for backwards compatibility
+  with existing saves even though the type no longer does.
+- `emoji` is a `Record<AvatarStyle, string>`, so adding a style makes TypeScript demand an
+  entry for every stage. Keep each stage's three emoji parallel — vary one attribute, don't
+  swap a face for a profession.
 
 **State** (`src/stores/game.ts`):
 - Stored in localStorage under key `waldur-quest`

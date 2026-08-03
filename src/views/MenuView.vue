@@ -222,7 +222,7 @@ onMounted(() => {
           </div>
           <div class="help__section">
             <h3>💎 XP System</h3>
-            <p>+20 per correct · +50 for passing<br>+100 for perfect · +5 per streak<br>Daily: Cross-skill + 50% XP bonus!</p>
+            <p>+20 per correct · +50 for passing<br>+100 for perfect · +5 per streak<br>Daily: Cross-skill + 50% XP bonus!<br>Hard Mode doubles that daily bonus</p>
           </div>
           <div class="help__section">
             <h3>⌨️ Controls</h3>

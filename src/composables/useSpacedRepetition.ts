@@ -1,5 +1,5 @@
 import { useGameStore } from '@/stores/game'
-import { questions } from '@/data/questions'
+import { questions, getQuestionKey } from '@/data/questions'
 import type { Question } from '@/types/game'
 
 // Seeded PRNG (mulberry32)
@@ -34,9 +34,9 @@ export function useSpacedRepetition() {
 
     const weak: Question[] = []
     const neutral: Question[] = []
-    levelQuestions.forEach((q, i) => {
-      const key = `${skillId}:${level}:${i}`
-      const entry = history[key]
+    levelQuestions.forEach(q => {
+      const key = getQuestionKey(skillId, level, q)
+      const entry = key ? history[key] : undefined
       if (entry && entry.w > entry.c) {
         weak.push(q)
       } else {
@@ -72,9 +72,9 @@ export function useSpacedRepetition() {
 
     const weak: Question[] = []
     const neutral: Question[] = []
-    levelQuestions.forEach((q, i) => {
-      const key = `${skillId}:${level}:${i}`
-      const entry = history[key]
+    levelQuestions.forEach(q => {
+      const key = getQuestionKey(skillId, level, q)
+      const entry = key ? history[key] : undefined
       if (entry && entry.w > entry.c) {
         weak.push(q)
       } else {
